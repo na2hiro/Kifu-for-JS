@@ -1,2 +1,6 @@
-all:
-	pegjs -e KifuParser kif-parser.pegjs
+all: csa
+
+kif:
+	pegjs -e KifParser kif-parser.pegjs
+csa:
+	pegjs -e CsaParser csa-parser.pegjs

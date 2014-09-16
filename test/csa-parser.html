@@ -1,0 +1,30 @@
+<script src="../csa-parser.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	$.ajax('../formal.csa', {
+		success: function(data) {
+			kifu=data;
+//			console.log("loaded", data);
+			ks=data.split("\n");
+			ks.pop();
+			ks.pop();
+			ks.push("");
+			touryounuki=ks.join("\n");
+			parse(data);
+		},
+		beforeSend: function(xhr){
+			xhr.overrideMimeType("text/html;charset=Shift_JIS");
+		},
+	}, 'text');
+});
+
+function parse(data){
+	res=CsaParser.parse(data);
+	console.log(res);
+/*	for(var i=0; i<res.moves.length; i++){
+		console.log(res.moves[i].kifu, res.moves[i].comments.join("\n"))
+	}*/
+}
+</script>

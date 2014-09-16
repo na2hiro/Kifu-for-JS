@@ -1,9 +1,9 @@
-<script src="./kif-parser.js"></script>
+<script src="../kif-parser.js"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
 $(document).ready(function() {
-	$.ajax('./jt201409130101.kif', {
+	$.ajax('../jt201409130101.kif', {
 		success: function(data) {
 			kifu=data;
 //			console.log("loaded", data);
@@ -21,7 +21,7 @@ $(document).ready(function() {
 });
 
 function parse(data){
-	res=KifuParser.parse(data);
+	res=KifParser.parse(data);
 	console.log(res);
 /*	for(var i=0; i<res.moves.length; i++){
 		console.log(res.moves[i].kifu, res.moves[i].comments.join("\n"))
