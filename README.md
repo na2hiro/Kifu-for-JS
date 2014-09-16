@@ -35,19 +35,19 @@
 			* total `time` 合計
 	* result 文字列 結果(先手,後手,上手,下手,千日手,持将棋)
 * `time` 時間を表す
-	* h `Number` 時
-	* m `Number` 分
-	* s `Number` 秒
+	* h `Integer` 時
+	* m `Integer` 分
+	* s `Integer` 秒
 * `place` 座標を表す
-	* x `Number` 1から9
-	* y `Number` 一から九
+	* x `Integer` 1から9
+	* y `Integer` 一から九
 
 ## プログラム
 
 * `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
+* `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
 
 用意する予定のプログラム
 
 * `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
-* `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
 * `generalizer.js`: type={KIF/KI2/CSA}であるJSONをtype=generalであるJSONに変換するプログラム
