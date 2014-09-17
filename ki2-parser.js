@@ -34,7 +34,7 @@ Ki2Parser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res} },
+        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res, type:"ki2"} },
         peg$c3 = function(h, hs) { hs[h.k]=h.v; return hs;},
         peg$c4 = "",
         peg$c5 = function() {return {}},

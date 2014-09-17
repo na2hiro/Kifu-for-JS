@@ -7,7 +7,7 @@
 		return {h:remain, m:m, s:s};
 	}
 }
-kifu = p:players? s:startboard? ms:move* { return {players:p, start:s, moves:ms} }
+kifu = p:players? s:startboard? ms:move* { return {players:p, start:s, moves:ms, type:"csa"} }
 
 players = comment* sen:("N+" n:nonl* nl { return n })? comment* go:("N-" n:nonl* nl { return n})? { return [sen.join(""), go.join("")] }
 

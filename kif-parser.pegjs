@@ -12,7 +12,7 @@
 }
 
 kifu
- = version headers:headers split? moves:moves res:result? {return {header:headers, moves:moves,result:res}}
+ = version headers:headers split? moves:moves res:result? {return {header:headers, moves:moves,result:res, type:"kif"}}
 
 version = "#" nonl* nl / ""
 

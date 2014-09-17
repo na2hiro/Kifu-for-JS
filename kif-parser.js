@@ -34,7 +34,7 @@ KifParser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(headers, moves, res) {return {header:headers, moves:moves,result:res}},
+        peg$c2 = function(headers, moves, res) {return {header:headers, moves:moves,result:res, type:"kif"}},
         peg$c3 = "#",
         peg$c4 = { type: "literal", value: "#", description: "\"#\"" },
         peg$c5 = [],
