@@ -48,18 +48,20 @@ JSONで将棋の棋譜を取り扱う標準形式を定義し，また既存のK
 ## プログラム
 
 * `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
+* `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
 * `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
 
 用意する予定のプログラム
 
-* `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
 * `generalizer.js`: type={KIF/KI2/CSA}であるJSONをtype=generalであるJSONに変換するプログラム
 
 ## TODO
 KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教えて下さい．
 
-* 初期局面
-* 分岐
+* パーサテスト追加
+* 棋譜形式対応
+	* 初期局面
+	* 分岐
 
 ## reference
 
