@@ -6,12 +6,6 @@ $(document).ready(function() {
 	$.ajax('../jt201409130101.kif', {
 		success: function(data) {
 			kifu=data;
-//			console.log("loaded", data);
-			ks=data.split("\n");
-			ks.pop();
-			ks.pop();
-			ks.push("");
-			touryounuki=ks.join("\n");
 			parse(data);
 		},
 		beforeSend: function(xhr){
@@ -23,8 +17,5 @@ $(document).ready(function() {
 function parse(data){
 	res=KifParser.parse(data);
 	console.log(res);
-/*	for(var i=0; i<res.moves.length; i++){
-		console.log(res.moves[i].kifu, res.moves[i].comments.join("\n"))
-	}*/
 }
 </script>

@@ -6,12 +6,6 @@ $(document).ready(function() {
 	$.ajax('../20091203.ki2', {
 		success: function(data) {
 			kifu=data;
-//			console.log("loaded", data);
-			ks=data.split("\n");
-			ks.pop();
-			ks.pop();
-			ks.push("");
-			touryounuki=ks.join("\n");
 			parse(data);
 		},
 		beforeSend: function(xhr){
@@ -21,16 +15,7 @@ $(document).ready(function() {
 });
 
 function parse(data){
-	try{
-		res=Ki2Parser.parse(data);
-		console.log(res);
-	}catch(e){
-		console.log(e);
-		console.log(e.message)
-		E = e
-	}
-/*	for(var i=0; i<res.moves.length; i++){
-		console.log(res.moves[i].kifu, res.moves[i].comments.join("\n"))
-	}*/
+	res=Ki2Parser.parse(data);
+	console.log(res);
 }
 </script>
