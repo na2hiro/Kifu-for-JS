@@ -1,0 +1,3 @@
+[submodule "Shogi.js"]
+	path = Shogi.js
+	url = https://github.com/na2hiro/Shogi.js
