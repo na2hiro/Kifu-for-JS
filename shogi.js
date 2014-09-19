@@ -19,7 +19,7 @@ var Shogi = (function () {
     Shogi.prototype.move = function (fromx, fromy, tox, toy, promote) {
         if (typeof promote === "undefined") { promote = false; }
         if (this.get(tox, toy) != null)
-            this.pick(tox, toy);
+            this.capture(tox, toy);
         var piece = this.get(fromx, fromy);
         if (promote)
             piece.promote();
@@ -28,7 +28,7 @@ var Shogi = (function () {
     };
 
     // (tox, toy)へcolorの持ち駒のkindを打つ．
-    Shogi.prototype.put = function (tox, toy, kind, color) {
+    Shogi.prototype.drop = function (tox, toy, kind, color) {
         if (this.get(tox, toy) != null)
             throw "there is a piece at " + tox + ", " + toy;
         var piece = this.popFromHand(kind, color);
@@ -56,6 +56,7 @@ var Shogi = (function () {
         return ret.join("\n");
     };
 
+    // 以下private method
     // (x, y)の駒を得る
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
@@ -67,7 +68,7 @@ var Shogi = (function () {
     };
 
     // (x, y)の駒を取って反対側の持ち駒に加える
-    Shogi.prototype.pick = function (x, y) {
+    Shogi.prototype.capture = function (x, y) {
         var piece = this.get(x, y);
         this.set(x, y, null);
         piece.unpromote();
@@ -140,11 +141,6 @@ var Piece = (function () {
         return (this.color == 0 /* Black */ ? "+" : "-") + this.kind;
     };
 
-    // 現在成っているかどうかを返す
-    Piece.prototype.isPromoted = function () {
-        return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(this.kind) >= 0;
-    };
-
     // 成った時の種類を返す．なければnull．
     Piece.promote = function (kind) {
         return {
@@ -169,6 +165,11 @@ var Piece = (function () {
             RY: "HI",
             OU: "OU"
         }[kind] || null;
+    };
+    // 以下private method
+    // 現在成っているかどうかを返す
+    Piece.prototype.isPromoted = function () {
+        return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(this.kind) >= 0;
     };
     return Piece;
 })();

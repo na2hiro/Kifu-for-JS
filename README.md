@@ -5,7 +5,7 @@
 * 最低限の将棋の法則に従って操作ができる．
 	* 局面を平手に並べることができる．
 	* 駒を移動(move)すると，移動先の駒を取れる．
-	* 駒を打つ(put)ことができる．
+	* 駒を打つ(drop)ことができる．
 
 ## Class詳細
 "//"が付いているものは未実装
@@ -16,7 +16,7 @@
 #### move(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean)
 (fromx, fromy)から(tox, toy)へ移動し，適当な処理を行う．
 
-#### put(tox: number, toy: number, kind: string, color: Color)
+#### drop(tox: number, toy: number, kind: string, color: Color)
 (tox, toy)へcolorの持ち駒のkindを打つ．
 
 #### toCSAString()

@@ -29,14 +29,14 @@ class Shogi{
 	}
 	// (fromx, fromy)から(tox, toy)へ移動し，適当な処理を行う．
 	move(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false){
-		if(this.get(tox, toy)!=null) this.pick(tox, toy);
+		if(this.get(tox, toy)!=null) this.capture(tox, toy);
 		var piece = this.get(fromx, fromy);
 		if(promote) piece.promote();
 		this.set(tox, toy, piece);
 		this.set(fromx, fromy, null);
 	}
 	// (tox, toy)へcolorの持ち駒のkindを打つ．
-	put(tox: number, toy: number, kind: string, color: Color){
+	drop(tox: number, toy: number, kind: string, color: Color){
 		if(this.get(tox, toy)!=null) throw "there is a piece at "+tox+", "+toy;
 		var piece = this.popFromHand(kind, color);
 		this.set(tox, toy, piece);
@@ -61,6 +61,9 @@ class Shogi{
 		}
 		return ret.join("\n");
 	}
+
+	// 以下private method
+
 	// (x, y)の駒を得る
 	private get(x: number, y: number){
 		return this.board[x-1][y-1];
@@ -70,7 +73,7 @@ class Shogi{
 		this.board[x-1][y-1] = piece;
 	}
 	// (x, y)の駒を取って反対側の持ち駒に加える
-	private pick(x: number, y: number){
+	private capture(x: number, y: number){
 		var piece = this.get(x, y);
 		this.set(x, y, null);
 		piece.unpromote();
@@ -119,10 +122,6 @@ class Piece{
 	toCSAString(){
 		return (this.color==Color.Black ? "+" : "-")+this.kind;
 	}
-	// 現在成っているかどうかを返す
-	private isPromoted(){
-		return ["TO","NY","NK","NG","UM","RY"].indexOf(this.kind)>=0;
-	}
 	// 成った時の種類を返す．なければnull．
 	static promote(kind: string){
 		return {
@@ -146,5 +145,11 @@ class Piece{
 			RY: "HI",
 			OU: "OU",
 		}[kind] || null;
+	}
+	// 以下private method
+
+	// 現在成っているかどうかを返す
+	private isPromoted(){
+		return ["TO","NY","NK","NG","UM","RY"].indexOf(this.kind)>=0;
 	}
 }
