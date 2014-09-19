@@ -1,0 +1,32 @@
+<script src="shogi.js"></script>
+<script>
+var shogi = new Shogi();
+console.log(shogi.toCSAString());
+shogi.move(7, 7, 7, 6);
+console.log(shogi.toCSAString());
+shogi.move(3, 3, 3, 4);
+console.log(shogi.toCSAString());
+shogi.move(8, 8, 2, 2, true);
+console.log(shogi.toCSAString());
+shogi.move(8, 2, 2, 2);
+console.log(shogi.toCSAString());
+shogi.put(6, 5, "KA", Color.Black);
+console.log(shogi.toCSAString());
+
+shogi.initialize();
+console.log(shogi.toCSAString());
+shogi.move(2, 7, 2, 6);
+console.log(shogi.toCSAString());
+shogi.move(5, 1, 4, 2);
+console.log(shogi.toCSAString());
+shogi.move(2, 6, 2, 5);
+console.log(shogi.toCSAString());
+shogi.move(4, 2, 3, 2);
+console.log(shogi.toCSAString());
+shogi.move(2, 5, 2, 4);
+console.log(shogi.toCSAString());
+shogi.move(8, 2, 4, 2);
+console.log(shogi.toCSAString());
+shogi.move(2, 4, 2, 3, true);
+console.log(shogi.toCSAString());
+</script>
