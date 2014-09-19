@@ -61,6 +61,61 @@ class Shogi{
 		}
 		return ret.join("\n");
 	}
+	// (x, y)の駒の移動可能な動きをすべて得る
+	// 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
+	getMovesFrom(x: number, y: number):Move[]{
+		// 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
+		var legal = function(x: number, y: number, color: Color){
+			if(x<1 || 9<x || y<1 || 9<y) return false;
+			var piece = this.get(x, y);
+			return piece==null || piece.color!=color;
+		}.bind(this);
+		var piece = this.get(x, y);
+		if(piece==null) return [];
+		var moveDef = Piece.getMoveDef(piece.kind);
+		var ret = [], from = {x: x, y: y};
+		if(moveDef.just){
+			for(var i=0; i<moveDef.just.length; i++){
+				var def = moveDef.just[i];
+				if(piece.color==Color.White){ def[0]*=-1; def[1]*=-1; }
+				var to = {x: from.x+def[0], y: from.y+def[1]};
+				if(legal(to.x, to.y, piece.color)) ret.push({from: from, to: to});
+			}
+		}
+		if(moveDef.fly){
+			for(var i=0; i<moveDef.fly.length; i++){
+				var def = moveDef.fly[i];
+				if(piece.color==Color.White){ def[0]*=-1; def[1]*=-1; }
+				var to = {x: from.x+def[0], y: from.y+def[1]};
+				while(legal(to.x, to.y, piece.color)){
+					ret.push({from: from, to: {x: to.x, y: to.y}});
+					to.x+=def[0];
+					to.y+=def[1];
+				}
+			}
+		}
+		return ret;
+	}
+	// colorが打てる動きを全て得る
+	getDropsBy(color: Color): Move[]{
+		var ret = [];
+		var places = [];
+		for(var i=1; i<=9; i++){
+			for(var j=1; j<=9; j++){
+				if(this.get(i, j)==null) places.push({x: i, y: j});
+			}
+		}
+		var done: {[index:string]:boolean} = {};
+		for(var i=0; i<this.hands[color].length; i++){
+			var kind = this.hands[color][i].kind;
+			if(done[kind]) continue;
+			done[kind]=true;
+			for(var j=0; j<places.length; j++){
+				ret.push({to: places[j], color: color, kind: kind});
+			}
+		}
+		return ret;
+	}
 
 	// 以下private method
 
@@ -82,11 +137,11 @@ class Shogi{
 	}
 	// 駒pieceを持ち駒に加える
 	private pushToHand(piece: Piece){
-		this.hands[piece.color==Color.Black?0:1].push(piece);
+		this.hands[piece.color].push(piece);
 	}
 	// color側のkindの駒を取って返す
 	private popFromHand(kind: string, color: Color){
-		var hand = this.hands[color==Color.Black?0:1];
+		var hand = this.hands[color];
 		for(var i=0; i<hand.length; i++){
 			if(hand[i].kind!=kind) continue;
 			var piece = hand[i];
@@ -96,7 +151,17 @@ class Shogi{
 		throw color+" has no "+kind;
 	}
 }
+interface Move{
+	from?: {x: number; y: number;};
+	to: {x: number; y: number;};
+	kind?: string;
+	color?: Color;
+}
 enum Color {Black, White}
+interface MoveDefinition{
+	just?: number[][];
+	fly?: number[][];
+}
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 class Piece{
 	color: Color; // 先後
@@ -146,6 +211,31 @@ class Piece{
 			OU: "OU",
 		}[kind] || null;
 	}
+	static getMoveDef(kind: string): MoveDefinition{
+		switch(kind){
+			case "FU":
+				return {just:[[0,-1],]};
+			case "KY":
+				return {fly:[[0,-1],]};
+			case "KE":
+				return {just:[[-1,-2],[1,-2],]};
+			case "GI":
+				return {just:[[-1,-1],[0,-1],[1,-1],[-1,1],[1,1],]};
+			case "KI": case "TO": case "NY": case "NK": case "NG":
+				return {just:[[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[0,1]]};
+			case "KA":
+				return {fly:[[-1,-1],[1,-1],[-1,1],[1,1],]};
+			case "HI":
+				return {fly:[[0,-1],[-1,0],[1,0],[0,1]]};
+			case "OU":
+				return {just:[[-1,-1],[0,-1],[1,-1],[-1,0],[1,0],[-1,1],[0,1],[1,1]]};
+			case "KA":
+				return {fly:[[-1,-1],[1,-1],[-1,1],[1,1],],just:[[0,-1],[-1,0],[1,0],[0,1]]};
+			case "HI":
+				return {fly:[[0,-1],[-1,0],[1,0],[0,1]], just:[[-1,-1],[1,-1],[-1,1],[1,1],]};
+		}
+	}
+
 	// 以下private method
 
 	// 現在成っているかどうかを返す
