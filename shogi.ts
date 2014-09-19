@@ -12,6 +12,8 @@ class Shogi{
 	];
 	board: Piece[][]; // 盤面
 	hands: Piece[][]; // 持ち駒
+	turn: Color; // 次の手番
+	flagEditMode: boolean; // 編集モードかどうか
 	constructor(){
 		this.initialize();
 	}
@@ -26,20 +28,37 @@ class Shogi{
 			}
 		}
 		this.hands = [[], []];
+		this.turn = Color.Black;
+		this.flagEditMode = false;
 	}
+	// 編集モード切り替え
+	editMode(flag: boolean){
+		this.flagEditMode = flag;
+	}
+
 	// (fromx, fromy)から(tox, toy)へ移動し，適当な処理を行う．
 	move(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false){
-		if(this.get(tox, toy)!=null) this.capture(tox, toy);
 		var piece = this.get(fromx, fromy);
+		if(piece==null) throw "no piece found at "+fromx+", "+fromy;
+		this.checkTurn(piece.color);
+		if(!this.flagEditMode){
+			if(!this.getMovesFrom(fromx, fromy).some((move)=>{
+				return move.to.x==tox && move.to.y==toy;
+			})) throw "cannot move from "+fromx+", "+fromy+" to "+tox+", "+toy;
+		}
+		if(this.get(tox, toy)!=null) this.capture(tox, toy);
 		if(promote) piece.promote();
 		this.set(tox, toy, piece);
 		this.set(fromx, fromy, null);
+		this.nextTurn();
 	}
 	// (tox, toy)へcolorの持ち駒のkindを打つ．
 	drop(tox: number, toy: number, kind: string, color: Color){
+		this.checkTurn(color);
 		if(this.get(tox, toy)!=null) throw "there is a piece at "+tox+", "+toy;
 		var piece = this.popFromHand(kind, color);
 		this.set(tox, toy, piece);
+		this.nextTurn();
 	}
 	// CSAによる盤面表現の文字列を返す
 	toCSAString(){
@@ -149,6 +168,14 @@ class Shogi{
 			return piece;
 		}
 		throw color+" has no "+kind;
+	}
+	// 次の手番に行く
+	private nextTurn(){
+		this.turn = this.turn==Color.Black ? Color.White : Color.Black;
+	}
+	// colorの手番で問題ないか確認する．編集モードならok．
+	private checkTurn(color: Color){
+		if(!this.flagEditMode && color!=this.turn) throw "cannot move opposite piece";
 	}
 }
 interface Move{
