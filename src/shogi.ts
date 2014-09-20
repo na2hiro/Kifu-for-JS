@@ -53,7 +53,7 @@ class Shogi{
 		this.nextTurn();
 	}
 	// (tox, toy)へcolorの持ち駒のkindを打つ．
-	drop(tox: number, toy: number, kind: string, color: Color){
+	drop(tox: number, toy: number, kind: string, color: Color = this.turn){
 		this.checkTurn(color);
 		if(this.get(tox, toy)!=null) throw "there is a piece at "+tox+", "+toy;
 		var piece = this.popFromHand(kind, color);

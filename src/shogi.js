@@ -46,6 +46,7 @@ var Shogi = (function () {
 
     // (tox, toy)へcolorの持ち駒のkindを打つ．
     Shogi.prototype.drop = function (tox, toy, kind, color) {
+        if (typeof color === "undefined") { color = this.turn; }
         this.checkTurn(color);
         if (this.get(tox, toy) != null)
             throw "there is a piece at " + tox + ", " + toy;
