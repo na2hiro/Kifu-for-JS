@@ -65,6 +65,16 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
 * `normalizer.js`: type={KIF/KI2/CSA}であるJSONをtype=normalであるJSONに変換するプログラム
 
+## 必要条件
+### 使用に際して
+同梱予定です．
+
+* [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
+
+#### 開発に際して
+* [PEG.js](http://pegjs.majda.cz/): パーサコンビネータ
+
+
 ## TODO
 KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教えて下さい．
 
