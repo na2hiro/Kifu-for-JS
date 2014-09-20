@@ -50,10 +50,10 @@ KifParser = (function() {
         peg$c15 = { type: "literal", value: "\u624B\u6570----\u6307\u624B---------\u6D88\u8CBB\u6642\u9593--", description: "\"\\u624B\\u6570----\\u6307\\u624B---------\\u6D88\\u8CBB\\u6642\\u9593--\"" },
         peg$c16 = function(hd, tl) {tl.unshift(hd); return tl;},
         peg$c17 = function(c) {return {comments:c}},
-        peg$c18 = function(line, c) {return {comments: c, move: line.move, time: line.time}},
+        peg$c18 = function(line, c) {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;},
         peg$c19 = " ",
         peg$c20 = { type: "literal", value: " ", description: "\" \"" },
-        peg$c21 = function(fugou, from) {return {from: from, to: fugou.to, piece: fugou.piece, promote: fugou.promote}},
+        peg$c21 = function(fugou, from) {var ret = {from: from, piece: fugou.piece, promote: fugou.promote}; if(fugou.to){ret.to=fugou.to}else{ret.same=true}; return ret;},
         peg$c22 = "\u6295\u4E86",
         peg$c23 = { type: "literal", value: "\u6295\u4E86", description: "\"\\u6295\\u4E86\"" },
         peg$c24 = function(move, time) {return {move: move, time: time}},
@@ -61,11 +61,11 @@ KifParser = (function() {
         peg$c26 = { type: "class", value: "[0-9]", description: "[0-9]" },
         peg$c27 = "\u6210",
         peg$c28 = { type: "literal", value: "\u6210", description: "\"\\u6210\"" },
-        peg$c29 = function(pl, pi, pro) {return {to: pl, piece: pi,promote:!!pro}},
+        peg$c29 = function(pl, pi, pro) {return {to:pl, piece: pi,promote:!!pro};},
         peg$c30 = function(x, y) {return {x:x,y:y}},
         peg$c31 = "\u540C\u3000",
         peg$c32 = { type: "literal", value: "\u540C\u3000", description: "\"\\u540C\\u3000\"" },
-        peg$c33 = function() {return {same:true}},
+        peg$c33 = function() {return null},
         peg$c34 = /^[\uFF11\uFF12\uFF13\uFF14\uFF15\uFF16\uFF17\uFF18\uFF19]/,
         peg$c35 = { type: "class", value: "[\\uFF11\\uFF12\\uFF13\\uFF14\\uFF15\\uFF16\\uFF17\\uFF18\\uFF19]", description: "[\\uFF11\\uFF12\\uFF13\\uFF14\\uFF15\\uFF16\\uFF17\\uFF18\\uFF19]" },
         peg$c36 = function(n) {return zenToN(n);},
@@ -77,39 +77,38 @@ KifParser = (function() {
         peg$c42 = function(pro, p) {return kindToCSA((pro||"")+p);},
         peg$c43 = "\u6253",
         peg$c44 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
-        peg$c45 = function() {return null},
-        peg$c46 = "(",
-        peg$c47 = { type: "literal", value: "(", description: "\"(\"" },
-        peg$c48 = /^[1-9]/,
-        peg$c49 = { type: "class", value: "[1-9]", description: "[1-9]" },
-        peg$c50 = ")",
-        peg$c51 = { type: "literal", value: ")", description: "\")\"" },
-        peg$c52 = function(x, y) {return {x:parseInt(x),y:parseInt(y)}},
-        peg$c53 = "/",
-        peg$c54 = { type: "literal", value: "/", description: "\"/\"" },
-        peg$c55 = function(now, total) {return {now: now, total: total}},
-        peg$c56 = ":",
-        peg$c57 = { type: "literal", value: ":", description: "\":\"" },
-        peg$c58 = function(h, m, s) {return {h:toN(h),m:toN(m),s:toN(s)}},
-        peg$c59 = function(m, s) {return {m:toN(m),s:toN(s)}},
-        peg$c60 = "*",
-        peg$c61 = { type: "literal", value: "*", description: "\"*\"" },
-        peg$c62 = function(comm) {return comm.join("")},
-        peg$c63 = "\u307E\u3067",
-        peg$c64 = { type: "literal", value: "\u307E\u3067", description: "\"\\u307E\\u3067\"" },
-        peg$c65 = "\u624B\u3067",
-        peg$c66 = { type: "literal", value: "\u624B\u3067", description: "\"\\u624B\\u3067\"" },
-        peg$c67 = /^[\u5148\u5F8C]/,
-        peg$c68 = { type: "class", value: "[\\u5148\\u5F8C]", description: "[\\u5148\\u5F8C]" },
-        peg$c69 = "\u624B\u306E\u52DD\u3061",
-        peg$c70 = { type: "literal", value: "\u624B\u306E\u52DD\u3061", description: "\"\\u624B\\u306E\\u52DD\\u3061\"" },
-        peg$c71 = function(win) {return win[0]},
-        peg$c72 = "\r",
-        peg$c73 = { type: "literal", value: "\r", description: "\"\\r\"" },
-        peg$c74 = "\n",
-        peg$c75 = { type: "literal", value: "\n", description: "\"\\n\"" },
-        peg$c76 = /^[^\r\n]/,
-        peg$c77 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
+        peg$c45 = "(",
+        peg$c46 = { type: "literal", value: "(", description: "\"(\"" },
+        peg$c47 = /^[1-9]/,
+        peg$c48 = { type: "class", value: "[1-9]", description: "[1-9]" },
+        peg$c49 = ")",
+        peg$c50 = { type: "literal", value: ")", description: "\")\"" },
+        peg$c51 = function(x, y) {return {x:parseInt(x),y:parseInt(y)}},
+        peg$c52 = "/",
+        peg$c53 = { type: "literal", value: "/", description: "\"/\"" },
+        peg$c54 = function(now, total) {return {now: now, total: total}},
+        peg$c55 = ":",
+        peg$c56 = { type: "literal", value: ":", description: "\":\"" },
+        peg$c57 = function(h, m, s) {return {h:toN(h),m:toN(m),s:toN(s)}},
+        peg$c58 = function(m, s) {return {m:toN(m),s:toN(s)}},
+        peg$c59 = "*",
+        peg$c60 = { type: "literal", value: "*", description: "\"*\"" },
+        peg$c61 = function(comm) {return comm.join("")},
+        peg$c62 = "\u307E\u3067",
+        peg$c63 = { type: "literal", value: "\u307E\u3067", description: "\"\\u307E\\u3067\"" },
+        peg$c64 = "\u624B\u3067",
+        peg$c65 = { type: "literal", value: "\u624B\u3067", description: "\"\\u624B\\u3067\"" },
+        peg$c66 = /^[\u5148\u5F8C]/,
+        peg$c67 = { type: "class", value: "[\\u5148\\u5F8C]", description: "[\\u5148\\u5F8C]" },
+        peg$c68 = "\u624B\u306E\u52DD\u3061",
+        peg$c69 = { type: "literal", value: "\u624B\u306E\u52DD\u3061", description: "\"\\u624B\\u306E\\u52DD\\u3061\"" },
+        peg$c70 = function(win) {return win[0]},
+        peg$c71 = "\r",
+        peg$c72 = { type: "literal", value: "\r", description: "\"\\r\"" },
+        peg$c73 = "\n",
+        peg$c74 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c75 = /^[^\r\n]/,
+        peg$c76 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
 
         peg$currPos          = 0,
         peg$reportedPos      = 0,
@@ -892,45 +891,45 @@ KifParser = (function() {
       }
       if (s1 !== peg$FAILED) {
         peg$reportedPos = s0;
-        s1 = peg$c45();
+        s1 = peg$c33();
       }
       s0 = s1;
       if (s0 === peg$FAILED) {
         s0 = peg$currPos;
         if (input.charCodeAt(peg$currPos) === 40) {
-          s1 = peg$c46;
+          s1 = peg$c45;
           peg$currPos++;
         } else {
           s1 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c47); }
+          if (peg$silentFails === 0) { peg$fail(peg$c46); }
         }
         if (s1 !== peg$FAILED) {
-          if (peg$c48.test(input.charAt(peg$currPos))) {
+          if (peg$c47.test(input.charAt(peg$currPos))) {
             s2 = input.charAt(peg$currPos);
             peg$currPos++;
           } else {
             s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c49); }
+            if (peg$silentFails === 0) { peg$fail(peg$c48); }
           }
           if (s2 !== peg$FAILED) {
-            if (peg$c48.test(input.charAt(peg$currPos))) {
+            if (peg$c47.test(input.charAt(peg$currPos))) {
               s3 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s3 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c49); }
+              if (peg$silentFails === 0) { peg$fail(peg$c48); }
             }
             if (s3 !== peg$FAILED) {
               if (input.charCodeAt(peg$currPos) === 41) {
-                s4 = peg$c50;
+                s4 = peg$c49;
                 peg$currPos++;
               } else {
                 s4 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c51); }
+                if (peg$silentFails === 0) { peg$fail(peg$c50); }
               }
               if (s4 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c52(s2, s3);
+                s1 = peg$c51(s2, s3);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -958,11 +957,11 @@ KifParser = (function() {
 
       s0 = peg$currPos;
       if (input.charCodeAt(peg$currPos) === 40) {
-        s1 = peg$c46;
+        s1 = peg$c45;
         peg$currPos++;
       } else {
         s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c47); }
+        if (peg$silentFails === 0) { peg$fail(peg$c46); }
       }
       if (s1 !== peg$FAILED) {
         s2 = [];
@@ -987,25 +986,25 @@ KifParser = (function() {
           s3 = peg$parsems();
           if (s3 !== peg$FAILED) {
             if (input.charCodeAt(peg$currPos) === 47) {
-              s4 = peg$c53;
+              s4 = peg$c52;
               peg$currPos++;
             } else {
               s4 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c54); }
+              if (peg$silentFails === 0) { peg$fail(peg$c53); }
             }
             if (s4 !== peg$FAILED) {
               s5 = peg$parsehms();
               if (s5 !== peg$FAILED) {
                 if (input.charCodeAt(peg$currPos) === 41) {
-                  s6 = peg$c50;
+                  s6 = peg$c49;
                   peg$currPos++;
                 } else {
                   s6 = peg$FAILED;
-                  if (peg$silentFails === 0) { peg$fail(peg$c51); }
+                  if (peg$silentFails === 0) { peg$fail(peg$c50); }
                 }
                 if (s6 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c55(s3, s5);
+                  s1 = peg$c54(s3, s5);
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -1063,11 +1062,11 @@ KifParser = (function() {
       }
       if (s1 !== peg$FAILED) {
         if (input.charCodeAt(peg$currPos) === 58) {
-          s2 = peg$c56;
+          s2 = peg$c55;
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c57); }
+          if (peg$silentFails === 0) { peg$fail(peg$c56); }
         }
         if (s2 !== peg$FAILED) {
           s3 = [];
@@ -1094,11 +1093,11 @@ KifParser = (function() {
           }
           if (s3 !== peg$FAILED) {
             if (input.charCodeAt(peg$currPos) === 58) {
-              s4 = peg$c56;
+              s4 = peg$c55;
               peg$currPos++;
             } else {
               s4 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c57); }
+              if (peg$silentFails === 0) { peg$fail(peg$c56); }
             }
             if (s4 !== peg$FAILED) {
               s5 = [];
@@ -1125,7 +1124,7 @@ KifParser = (function() {
               }
               if (s5 !== peg$FAILED) {
                 peg$reportedPos = s0;
-                s1 = peg$c58(s1, s3, s5);
+                s1 = peg$c57(s1, s3, s5);
                 s0 = s1;
               } else {
                 peg$currPos = s0;
@@ -1179,11 +1178,11 @@ KifParser = (function() {
       }
       if (s1 !== peg$FAILED) {
         if (input.charCodeAt(peg$currPos) === 58) {
-          s2 = peg$c56;
+          s2 = peg$c55;
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c57); }
+          if (peg$silentFails === 0) { peg$fail(peg$c56); }
         }
         if (s2 !== peg$FAILED) {
           s3 = [];
@@ -1210,7 +1209,7 @@ KifParser = (function() {
           }
           if (s3 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c59(s1, s3);
+            s1 = peg$c58(s1, s3);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1233,11 +1232,11 @@ KifParser = (function() {
 
       s0 = peg$currPos;
       if (input.charCodeAt(peg$currPos) === 42) {
-        s1 = peg$c60;
+        s1 = peg$c59;
         peg$currPos++;
       } else {
         s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c61); }
+        if (peg$silentFails === 0) { peg$fail(peg$c60); }
       }
       if (s1 !== peg$FAILED) {
         s2 = [];
@@ -1250,7 +1249,7 @@ KifParser = (function() {
           s3 = peg$parsenl();
           if (s3 !== peg$FAILED) {
             peg$reportedPos = s0;
-            s1 = peg$c62(s2);
+            s1 = peg$c61(s2);
             s0 = s1;
           } else {
             peg$currPos = s0;
@@ -1272,12 +1271,12 @@ KifParser = (function() {
       var s0, s1, s2, s3, s4, s5, s6;
 
       s0 = peg$currPos;
-      if (input.substr(peg$currPos, 2) === peg$c63) {
-        s1 = peg$c63;
+      if (input.substr(peg$currPos, 2) === peg$c62) {
+        s1 = peg$c62;
         peg$currPos += 2;
       } else {
         s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c64); }
+        if (peg$silentFails === 0) { peg$fail(peg$c63); }
       }
       if (s1 !== peg$FAILED) {
         s2 = [];
@@ -1303,34 +1302,34 @@ KifParser = (function() {
           s2 = peg$c0;
         }
         if (s2 !== peg$FAILED) {
-          if (input.substr(peg$currPos, 2) === peg$c65) {
-            s3 = peg$c65;
+          if (input.substr(peg$currPos, 2) === peg$c64) {
+            s3 = peg$c64;
             peg$currPos += 2;
           } else {
             s3 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c66); }
+            if (peg$silentFails === 0) { peg$fail(peg$c65); }
           }
           if (s3 !== peg$FAILED) {
-            if (peg$c67.test(input.charAt(peg$currPos))) {
+            if (peg$c66.test(input.charAt(peg$currPos))) {
               s4 = input.charAt(peg$currPos);
               peg$currPos++;
             } else {
               s4 = peg$FAILED;
-              if (peg$silentFails === 0) { peg$fail(peg$c68); }
+              if (peg$silentFails === 0) { peg$fail(peg$c67); }
             }
             if (s4 !== peg$FAILED) {
-              if (input.substr(peg$currPos, 4) === peg$c69) {
-                s5 = peg$c69;
+              if (input.substr(peg$currPos, 4) === peg$c68) {
+                s5 = peg$c68;
                 peg$currPos += 4;
               } else {
                 s5 = peg$FAILED;
-                if (peg$silentFails === 0) { peg$fail(peg$c70); }
+                if (peg$silentFails === 0) { peg$fail(peg$c69); }
               }
               if (s5 !== peg$FAILED) {
                 s6 = peg$parsenl();
                 if (s6 !== peg$FAILED) {
                   peg$reportedPos = s0;
-                  s1 = peg$c71(s4);
+                  s1 = peg$c70(s4);
                   s0 = s1;
                 } else {
                   peg$currPos = s0;
@@ -1365,22 +1364,22 @@ KifParser = (function() {
 
       s0 = peg$currPos;
       if (input.charCodeAt(peg$currPos) === 13) {
-        s1 = peg$c72;
+        s1 = peg$c71;
         peg$currPos++;
       } else {
         s1 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c73); }
+        if (peg$silentFails === 0) { peg$fail(peg$c72); }
       }
       if (s1 === peg$FAILED) {
         s1 = peg$c1;
       }
       if (s1 !== peg$FAILED) {
         if (input.charCodeAt(peg$currPos) === 10) {
-          s2 = peg$c74;
+          s2 = peg$c73;
           peg$currPos++;
         } else {
           s2 = peg$FAILED;
-          if (peg$silentFails === 0) { peg$fail(peg$c75); }
+          if (peg$silentFails === 0) { peg$fail(peg$c74); }
         }
         if (s2 !== peg$FAILED) {
           s1 = [s1, s2];
@@ -1400,12 +1399,12 @@ KifParser = (function() {
     function peg$parsenonl() {
       var s0;
 
-      if (peg$c76.test(input.charAt(peg$currPos))) {
+      if (peg$c75.test(input.charAt(peg$currPos))) {
         s0 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s0 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c77); }
+        if (peg$silentFails === 0) { peg$fail(peg$c76); }
       }
 
       return s0;
@@ -1442,6 +1441,11 @@ KifParser = (function() {
     			"馬": "UM",
     			"龍": "RY"
     		}[kind];
+    	}
+    	function specialToCSA(str){
+    		return {
+    			"投了": "TORYO"
+    		}[str];
     	}
 
 
