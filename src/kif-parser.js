@@ -53,7 +53,7 @@ KifParser = (function() {
         peg$c18 = function(line, c) {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;},
         peg$c19 = " ",
         peg$c20 = { type: "literal", value: " ", description: "\" \"" },
-        peg$c21 = function(fugou, from) {var ret = {from: from, piece: fugou.piece, promote: fugou.promote}; if(fugou.to){ret.to=fugou.to}else{ret.same=true}; return ret;},
+        peg$c21 = function(fugou, from) {var ret = {from: from, piece: fugou.piece}; if(fugou.to){ret.to=fugou.to}else{ret.same=true};if(fugou.promote)ret.promote=true; return ret;},
         peg$c22 = "\u6295\u4E86",
         peg$c23 = { type: "literal", value: "\u6295\u4E86", description: "\"\\u6295\\u4E86\"" },
         peg$c24 = function(move, time) {return {move: move, time: time}},

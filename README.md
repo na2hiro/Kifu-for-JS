@@ -38,7 +38,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 			* to `place` 移動先
 			* piece `string` 駒の種類(`FU` `KY`等のCSA形式)
 			* same? `boolean` 直前と同じ場合
-			* promote? `Bool` 成るかどうか
+			* promote? `Bool` 成るかどうか true:成, false:不成, 無いかnull:どちらでもない
 			* capture? `string` 取った駒の種類
 		* time 消費時間
 			* now `time` 1手

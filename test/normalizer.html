@@ -1,0 +1,24 @@
+<script src="../src/kif-parser.js" charset="utf-8"></script>
+<script src="../Shogi.js/src/shogi.js"></script>
+<script src="../src/normalizer.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	$.ajax('../jt201409130101.kif', {
+		success: function(data) {
+			kifu=data;
+			parse(data);
+		},
+		beforeSend: function(xhr){
+			xhr.overrideMimeType("text/html;charset=Shift_JIS");
+		},
+	}, 'text');
+});
+
+function parse(data){
+	res=KifParser.parse(data);
+	console.log(res);
+	res2=normalizeKIF(res);
+}
+</script>
