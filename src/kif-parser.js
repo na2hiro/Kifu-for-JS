@@ -74,10 +74,10 @@ KifParser = (function() {
         peg$c39 = function(n) {return kanToN(n);},
         peg$c40 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u7ADC]/,
         peg$c41 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u7ADC]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u7ADC]" },
-        peg$c42 = function(pro, p) {return (pro||"")+p},
+        peg$c42 = function(pro, p) {return kindToCSA((pro||"")+p);},
         peg$c43 = "\u6253",
         peg$c44 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
-        peg$c45 = function() {return {da:true}},
+        peg$c45 = function() {return null},
         peg$c46 = "(",
         peg$c47 = { type: "literal", value: "(", description: "\"(\"" },
         peg$c48 = /^[1-9]/,
@@ -1421,6 +1421,28 @@ KifParser = (function() {
     	function kanToN(s){
     		// cannot use multibyte characters
     		return [0, 19968, 20108, 19977, 22235, 20116, 20845, 19971, 20843, 20061].indexOf(s.charCodeAt(0));
+    	}
+    	function kindToCSA(kind){
+    		if(kind[0]=="\u6210"/*成*/){
+    			return {
+    				"\u9999": "NY",
+    				"\u6842": "NK",
+    				"\u9280": "NG"
+    			}[kind[1]];
+    		}
+    		return {
+    			"\u6b69": "FU",
+    			"\u9999": "KY",
+    			"\u6842": "KE",
+    			"\u9280": "GI",
+    			"\u91d1": "KI",
+    			"\u89d2": "KA",
+    			"\u98db": "HI",
+    			"\u7389": "OU",
+    			"\u3068": "TO",
+    			"\u99ac": "UM",
+    			"\u7adc": "RY"
+    		}[kind];
     	}
 
 

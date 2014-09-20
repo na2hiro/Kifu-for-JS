@@ -9,6 +9,28 @@
 		// cannot use multibyte characters
 		return [0, 19968, 20108, 19977, 22235, 20116, 20845, 19971, 20843, 20061].indexOf(s.charCodeAt(0));
 	}
+	function kindToCSA(kind){
+		if(kind[0]=="\u6210"/*成*/){
+			return {
+				"\u9999": "NY",
+				"\u6842": "NK",
+				"\u9280": "NG"
+			}[kind[1]];
+		}
+		return {
+			"\u6b69": "FU",
+			"\u9999": "KY",
+			"\u6842": "KE",
+			"\u9280": "GI",
+			"\u91d1": "KI",
+			"\u89d2": "KA",
+			"\u98db": "HI",
+			"\u7389": "OU",
+			"\u3068": "TO",
+			"\u99ac": "UM",
+			"\u7adc": "RY"
+		}[kind];
+	}
 }
 
 kifu
@@ -41,9 +63,9 @@ place = x:num y:numkan {return {x:x,y:y}} / "同　" {return {same:true}}
 num = n:[１２３４５６７８９] {return zenToN(n);}
 numkan = n:[一二三四五六七八九] {return kanToN(n);}
 
-piece = pro:"成"? p:[歩香桂銀金角飛玉と馬竜] {return (pro||"")+p}
+piece = pro:"成"? p:[歩香桂銀金角飛玉と馬竜] {return kindToCSA((pro||"")+p);}
 
-from = "打" {return {da:true}} / "(" x:[1-9] y:[1-9] ")" {return {x:parseInt(x),y:parseInt(y)}}
+from = "打" {return null} / "(" x:[1-9] y:[1-9] ")" {return {x:parseInt(x),y:parseInt(y)}}
 
 time = "(" " "* now:ms "/" total:hms ")" {return {now: now, total: total}}
 

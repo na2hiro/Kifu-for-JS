@@ -7,7 +7,7 @@
 		return {h:remain, m:m, s:s};
 	}
 }
-kifu = p:players? s:startboard? ms:move* { return {players:p, start:s, moves:ms, type:"csa"} }
+kifu = p:players? s:startboard? ms:moves { return {players:p, start:s, moves:ms, type:"csa"} }
 
 players = comment* sen:("N+" n:nonl* nl { return n })? comment* go:("N-" n:nonl* nl { return n})? { return [sen.join(""), go.join("")] }
 
@@ -22,8 +22,11 @@ masu = teban piece / " * " { return [] }
 komabetsu = komabetsuline*
 komabetsuline = "P" teban (xypiece)+ nl
 
+moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
+firstboard = c:comment* {return {comments:c}}
+
 move = comment:comment* move:(normalmove / specialmove) time:time? { return {comment:comment, move:move, time:time} }
-normalmove = teban from:xy to:xy piece:piece nl { return {from:from, to:to, piece:piece}}
+normalmove = teban from:xy to:xy piece:piece nl { return {from:from.x==0?null:from, to:to, piece:piece}}
 specialmove = "%" m:[A-Z]+ nl { return {special: m.join("")}; }
 
 teban = "+"/"-"

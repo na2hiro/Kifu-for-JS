@@ -2,6 +2,8 @@
 JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存のKIF, KI2, CSA等との相互変換を行うライブラリを提供します．(予定)
 
 ##概要
+現在仕様策定と実装を進めつつあります．
+
 * 既存のKIF, KI2, CSAと一対一に対応するJSON形式を定義し，そのJSON棋譜のtypeとする．
 * 各形式のパーサを用意し，各typeのJSON棋譜へ変換できるようにする．
 * 各既存形式は互いに足りていない情報があるため，それら全ての情報を持ち，かつ棋譜再生や表示に必要な情報を持ったnormalというtypeを導入し，これを流通用のJSON棋譜形式とする．
@@ -26,14 +28,14 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 変更され得ます．
 
 * JKFの定義
-	* type `String` 形式のタイプ
-	* header `String=>String` ヘッダ情報
-	* moves `[以下]` n番目はn手目の棋譜
-		* comments `[String]` コメント
+	* type `string` 形式のタイプ
+	* header `string=>string` ヘッダ情報
+	* moves `[以下]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
+		* comments `[string]` コメント
 		* move 駒の動き
-			* from `place` 移動元
+			* from `place?` 移動元 打った場合はなし
 			* to `place` 移動先
-			* piece `String` 駒の種類
+			* piece `string` 駒の種類(`FU` `KY`等のCSA形式)
 			* promote `Bool` 成るかどうか
 		* time 消費時間
 			* now `time` 1手
