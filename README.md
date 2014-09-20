@@ -13,9 +13,9 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 | 0) 1) 元座標(from) | ○ | △(要相対逆算) | ○ | ○ |
 | 1) 取った駒(capture) | × | × | × | ○ |
 | 1) 2) 成り(promote) | ○ | ○ | △ | ○ |
-| 2) 相対情報 | △ | ○ | △ | ○ |
+| 2) 相対情報(relative) | △ | ○ | △ | ○ |
 | 2) 同〜(same) | ○ | ○ | × | ○ |
-| 消費時間 | ○ | × | ○ | ○ |
+| 消費時間(time) | ○ | × | ○ | ○ |
 
 △=現在の局面を見れば可能 ×=不可能か，以前の局面を見れば可能
 
@@ -34,33 +34,35 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 	* moves `[以下]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
 		* comments `[string]` コメント
 		* move? 駒の動き
-			* from `place?` 移動元 打った場合はなし
-			* to `place` 移動先
+			* from `PlaceFormat?` 移動元 打った場合はなし
+			* to `PlaceFormat` 移動先
 			* piece `string` 駒の種類(`FU` `KY`等のCSA形式)
 			* same? `boolean` 直前と同じ場合
 			* promote? `Bool` 成るかどうか true:成, false:不成, 無いかnull:どちらでもない
 			* capture? `string` 取った駒の種類
+			* relative? `RelativeString` 相対情報
 		* time 消費時間
-			* now `time` 1手
-			* total `time` 合計
+			* now `TimeFormat` 1手
+			* total `TimeFormat` 合計
 		* special? `string` 特殊棋譜(CSAのTORYO, CHUDAN等)
 	* result 文字列 結果(先手,後手,上手,下手,千日手,持将棋)
-* `time` 時間を表す
+* `TimeFormat` 時間を表す
 	* h `Integer` 時
 	* m `Integer` 分
 	* s `Integer` 秒
-* `place` 座標を表す
+* `PlaceFormat` 座標を表す
 	* x `Integer` 1から9
 	* y `Integer` 一から九
+* `RelativeString` 文字列で以下の情報を連結
+	* 左, 直, 右: それぞれL, C, R(Left, Center/Choku, Right)
+	* 上, 寄, 引: それぞれU, M, D(Up, Middle, Down)
+	* 打: H(Hit 何か違う気もする)
 
 ## プログラム
 
 * `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
 * `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
 * `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
-
-用意する予定のプログラム
-
 * `normalizer.js`: type={KIF/KI2/CSA}であるJSONをtype=normalであるJSONに変換するプログラム
 
 ## TODO
@@ -75,3 +77,4 @@ KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教�
 
 * [CSA標準棋譜ファイル形式](http://www.computer-shogi.org/protocol/record_v22.html)
 * [shogi-format](https://code.google.com/p/shogi-format/): こちらは昔自ら提案したもの．大風呂敷だったため挫折しました．今回はより小さく洗練された形式を目指しており，また実装を用意し実用第一で進めていきます．
+* [棋譜の表記方法](http://www.shogi.or.jp/faq/kihuhyouki.html): 相対情報の書き方
