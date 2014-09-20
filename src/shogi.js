@@ -144,12 +144,12 @@ var Shogi = (function () {
         return ret;
     };
 
-    // 以下private method
     // (x, y)の駒を得る
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
     };
 
+    // 以下private method
     // (x, y)に駒を置く
     Shogi.prototype.set = function (x, y, piece) {
         this.board[x - 1][y - 1] = piece;

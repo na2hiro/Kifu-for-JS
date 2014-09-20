@@ -135,13 +135,13 @@ class Shogi{
 		}
 		return ret;
 	}
+	// (x, y)の駒を得る
+	get(x: number, y: number){
+		return this.board[x-1][y-1];
+	}
 
 	// 以下private method
 
-	// (x, y)の駒を得る
-	private get(x: number, y: number){
-		return this.board[x-1][y-1];
-	}
 	// (x, y)に駒を置く
 	private set(x: number, y: number, piece: Piece){
 		this.board[x-1][y-1] = piece;
