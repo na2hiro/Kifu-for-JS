@@ -60,7 +60,7 @@ Ki2Parser = (function() {
         peg$c25 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
         peg$c26 = function(pl, pi, sou, dou, pro, da) {
         	var ret = {to: pl, piece: pi};
-        	if(pro)ret.promote=pro.charCodeAt(0)==25104 /* nari */;
+        	if(pro)ret.promote=pro=="成";
         	if(sou)ret.soutai=sou; if(dou)ret.dousa=dou; if(da)ret.da=!!da;
         	return ret;
         },
@@ -70,9 +70,9 @@ Ki2Parser = (function() {
         peg$c30 = "\u3000",
         peg$c31 = { type: "literal", value: "\u3000", description: "\"\\u3000\"" },
         peg$c32 = function() {return {same:true}},
-        peg$c33 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u7ADC]/,
-        peg$c34 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u7ADC]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u7ADC]" },
-        peg$c35 = function(pro, p) {return (pro||"")+p},
+        peg$c33 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u9F8D]/,
+        peg$c34 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]" },
+        peg$c35 = function(pro, p) {return kindToCSA((pro||"")+p)},
         peg$c36 = /^[\u5DE6\u76F4\u53F3]/,
         peg$c37 = { type: "class", value: "[\\u5DE6\\u76F4\\u53F3]", description: "[\\u5DE6\\u76F4\\u53F3]" },
         peg$c38 = /^[\u4E0A\u5BC4\u5F15]/,
@@ -1005,11 +1005,32 @@ Ki2Parser = (function() {
     		return parseInt(ss.join(""), 10);
     	}
     	function zenToN(s){
-    		return s.charCodeAt(0)-65296;
+    		return "０１２３４５６７８９".indexOf(s);
     	}
     	function kanToN(s){
-    		// cannot use multibyte characters
-    		return [0, 19968, 20108, 19977, 22235, 20116, 20845, 19971, 20843, 20061].indexOf(s.charCodeAt(0));
+    		return "〇一二三四五六七八九".indexOf(s);
+    	}
+    	function kindToCSA(kind){
+    		if(kind[0]=="成"){
+    			return {
+    				"香": "NY",
+    				"桂": "NK",
+    				"銀": "NG"
+    			}[kind[1]];
+    		}
+    		return {
+    			"歩": "FU",
+    			"香": "KY",
+    			"桂": "KE",
+    			"銀": "GI",
+    			"金": "KI",
+    			"角": "KA",
+    			"飛": "HI",
+    			"玉": "OU",
+    			"と": "TO",
+    			"馬": "UM",
+    			"龍": "RY"
+    		}[kind];
     	}
 
 

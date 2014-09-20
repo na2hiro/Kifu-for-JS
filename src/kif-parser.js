@@ -72,8 +72,8 @@ KifParser = (function() {
         peg$c37 = /^[\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D]/,
         peg$c38 = { type: "class", value: "[\\u4E00\\u4E8C\\u4E09\\u56DB\\u4E94\\u516D\\u4E03\\u516B\\u4E5D]", description: "[\\u4E00\\u4E8C\\u4E09\\u56DB\\u4E94\\u516D\\u4E03\\u516B\\u4E5D]" },
         peg$c39 = function(n) {return kanToN(n);},
-        peg$c40 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u7ADC]/,
-        peg$c41 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u7ADC]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u7ADC]" },
+        peg$c40 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u9F8D]/,
+        peg$c41 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]" },
         peg$c42 = function(pro, p) {return kindToCSA((pro||"")+p);},
         peg$c43 = "\u6253",
         peg$c44 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
@@ -1416,32 +1416,31 @@ KifParser = (function() {
     		return parseInt(ss.join(""), 10);
     	}
     	function zenToN(s){
-    		return s.charCodeAt(0)-65296;
+    		return "０１２３４５６７８９".indexOf(s);
     	}
     	function kanToN(s){
-    		// cannot use multibyte characters
-    		return [0, 19968, 20108, 19977, 22235, 20116, 20845, 19971, 20843, 20061].indexOf(s.charCodeAt(0));
+    		return "〇一二三四五六七八九".indexOf(s);
     	}
     	function kindToCSA(kind){
-    		if(kind[0]=="\u6210"/*成*/){
+    		if(kind[0]=="成"){
     			return {
-    				"\u9999": "NY",
-    				"\u6842": "NK",
-    				"\u9280": "NG"
+    				"香": "NY",
+    				"桂": "NK",
+    				"銀": "NG"
     			}[kind[1]];
     		}
     		return {
-    			"\u6b69": "FU",
-    			"\u9999": "KY",
-    			"\u6842": "KE",
-    			"\u9280": "GI",
-    			"\u91d1": "KI",
-    			"\u89d2": "KA",
-    			"\u98db": "HI",
-    			"\u7389": "OU",
-    			"\u3068": "TO",
-    			"\u99ac": "UM",
-    			"\u7adc": "RY"
+    			"歩": "FU",
+    			"香": "KY",
+    			"桂": "KE",
+    			"銀": "GI",
+    			"金": "KI",
+    			"角": "KA",
+    			"飛": "HI",
+    			"玉": "OU",
+    			"と": "TO",
+    			"馬": "UM",
+    			"龍": "RY"
     		}[kind];
     	}
 

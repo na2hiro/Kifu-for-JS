@@ -3,11 +3,32 @@
 		return parseInt(ss.join(""), 10);
 	}
 	function zenToN(s){
-		return s.charCodeAt(0)-65296;
+		return "０１２３４５６７８９".indexOf(s);
 	}
 	function kanToN(s){
-		// cannot use multibyte characters
-		return [0, 19968, 20108, 19977, 22235, 20116, 20845, 19971, 20843, 20061].indexOf(s.charCodeAt(0));
+		return "〇一二三四五六七八九".indexOf(s);
+	}
+	function kindToCSA(kind){
+		if(kind[0]=="成"){
+			return {
+				"香": "NY",
+				"桂": "NK",
+				"銀": "NG"
+			}[kind[1]];
+		}
+		return {
+			"歩": "FU",
+			"香": "KY",
+			"桂": "KE",
+			"銀": "GI",
+			"金": "KI",
+			"角": "KA",
+			"飛": "HI",
+			"玉": "OU",
+			"と": "TO",
+			"馬": "UM",
+			"龍": "RY"
+		}[kind];
 	}
 }
 
@@ -30,12 +51,12 @@ move = line:line c:comment* (nl / " ")* { return {comments:c, move: line } }
 line = [▲△] f:fugou (nl / " ")*  {return f}
 fugou = pl:place pi:piece sou:soutai? dou:dousa? pro:("成"/"不成")? da:"打"? {
 	var ret = {to: pl, piece: pi};
-	if(pro)ret.promote=pro.charCodeAt(0)==25104 /* nari */;
+	if(pro)ret.promote=pro=="成";
 	if(sou)ret.soutai=sou; if(dou)ret.dousa=dou; if(da)ret.da=!!da;
 	return ret;
 }
 place = x:num y:numkan {return {x:x,y:y}} / "同" "　"? {return {same:true}}
-piece = pro:"成"? p:[歩香桂銀金角飛玉と馬竜] {return (pro||"")+p}
+piece = pro:"成"? p:[歩香桂銀金角飛玉と馬龍] {return kindToCSA((pro||"")+p)}
 soutai = [左直右]
 dousa = [上寄引]
 
