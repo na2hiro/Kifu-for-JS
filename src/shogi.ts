@@ -262,11 +262,14 @@ class Piece{
 				return {fly:[[0,-1],[-1,0],[1,0],[0,1]], just:[[-1,-1],[1,-1],[-1,1],[1,1],]};
 		}
 	}
+	static isPromoted(kind: string){
+		return ["TO","NY","NK","NG","UM","RY"].indexOf(kind)>=0;
+	}
 
 	// 以下private method
 
 	// 現在成っているかどうかを返す
 	private isPromoted(){
-		return ["TO","NY","NK","NG","UM","RY"].indexOf(this.kind)>=0;
+		return Piece.isPromoted(this.kind);
 	}
 }
