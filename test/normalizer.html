@@ -1,3 +1,4 @@
+<script>var JKFPlayer = {}</script>
 <script src="../src/kif-parser.js" charset="utf-8"></script>
 <script src="../Shogi.js/src/shogi.js"></script>
 <script src="../src/normalizer.js"></script>
@@ -17,8 +18,8 @@ $(document).ready(function() {
 });
 
 function parse(data){
-	res=KifParser.parse(data);
+	res=JKFPlayer.kifParser.parse(data);
 	console.log(res);
-	res2=normalize(res);
+	res2=Normalizer.normalize(res);
 }
 </script>

@@ -1,3 +1,4 @@
+<script>JKFPlayer = {};</script>
 <script src="../src/csa-parser.js" charset="utf-8"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
@@ -15,7 +16,7 @@ $(document).ready(function() {
 });
 
 function parse(data){
-	res=CsaParser.parse(data);
+	res=JKFPlayer.csaParser.parse(data);
 	console.log(res);
 }
 </script>

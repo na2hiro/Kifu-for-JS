@@ -1,7 +1,8 @@
 /// <reference path="./JSONKifuFormat.d.ts" />
 /// <reference path="../Shogi.js/src/shogi.ts" />
+/// <reference path="./normalizer.ts" />
 
-class Player{
+class JKFPlayer{
 	shogi: Shogi;
 	kifu: JSONKifuFormat;
 	tesuu: number;
@@ -13,6 +14,22 @@ class Player{
 		this.kifu = kifu;
 		this.tesuu = 0;
 	}
+	static parseKIF(kifu: string){
+		if(!JKFPlayer.kifParser) throw "パーサが読み込まれていません";
+		return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
+	}
+	static parseKI2(kifu: string){
+		if(!JKFPlayer.ki2Parser) throw "パーサが読み込まれていません";
+		return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
+	}
+	static parseCSA(kifu: string){
+		if(!JKFPlayer.csaParser) throw "パーサが読み込まれていません";
+		return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
+	}
+	static kifParser: {parse: (kifu: string)=>JSONKifuFormat};
+	static ki2Parser: {parse: (kifu: string)=>JSONKifuFormat};
+	static csaParser: {parse: (kifu: string)=>JSONKifuFormat};
+
 	forward(){
 		if(this.tesuu+1>=this.kifu.moves.length) return false;
 		this.tesuu++;
