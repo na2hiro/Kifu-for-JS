@@ -20,6 +20,12 @@
 #### drop(tox: number, toy: number, kind: string, color: Color)
 (tox, toy)へcolorの持ち駒のkindを打つ．
 
+#### unmove(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean, capture?: string)
+moveの逆を行う．captureは取った駒の種類．
+
+#### undrop(tox: number, toy: number)
+dropの逆を行う．
+
 #### toCSAString()
 CSAによる盤面表現の文字列を返す
 
