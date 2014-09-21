@@ -60,6 +60,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 
 ## プログラム
 
+* `kifuplayer.js`: KIF/KI2/CSA/JKFから棋譜再生を行うライブラリ(下5つとshogi.jsを連結したもの．)
 * `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
 * `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
 * `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
