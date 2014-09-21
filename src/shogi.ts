@@ -61,7 +61,7 @@ class Shogi{
 		this.nextTurn();
 	}
 	// CSAによる盤面表現の文字列を返す
-	toCSAString(){
+	toCSAString(): string{
 		var ret=[];
 		for(var y=0; y<9; y++){
 			var line = "P"+(y+1);
@@ -82,7 +82,7 @@ class Shogi{
 	}
 	// (x, y)の駒の移動可能な動きをすべて得る
 	// 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
-	getMovesFrom(x: number, y: number):Move[]{
+	getMovesFrom(x: number, y: number): Move[]{
 		// 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
 		var legal = function(x: number, y: number, color: Color){
 			if(x<1 || 9<x || y<1 || 9<y) return false;
@@ -136,7 +136,7 @@ class Shogi{
 		return ret;
 	}
 	// (x, y)の駒を得る
-	get(x: number, y: number){
+	get(x: number, y: number): Piece{
 		return this.board[x-1][y-1];
 	}
 
@@ -159,7 +159,7 @@ class Shogi{
 		this.hands[piece.color].push(piece);
 	}
 	// color側のkindの駒を取って返す
-	private popFromHand(kind: string, color: Color){
+	private popFromHand(kind: string, color: Color): Piece{
 		var hand = this.hands[color];
 		for(var i=0; i<hand.length; i++){
 			if(hand[i].kind!=kind) continue;
@@ -211,11 +211,11 @@ class Piece{
 		this.color = this.color==Color.Black ? Color.White : Color.Black;
 	}
 	// CSAによる駒表現の文字列を返す
-	toCSAString(){
+	toCSAString(): string{
 		return (this.color==Color.Black ? "+" : "-")+this.kind;
 	}
 	// 成った時の種類を返す．なければnull．
-	static promote(kind: string){
+	static promote(kind: string): string{
 		return {
 			FU: "TO",
 			KY: "NY",
@@ -226,7 +226,7 @@ class Piece{
 		}[kind] || null;
 	}
 	// 成った時の種類を返す．なければnull．
-	static unpromote(kind: string){
+	static unpromote(kind: string): string{
 		return {
 			TO: "FU",
 			NY: "KY",
@@ -262,14 +262,14 @@ class Piece{
 				return {fly:[[0,-1],[-1,0],[1,0],[0,1]], just:[[-1,-1],[1,-1],[-1,1],[1,1],]};
 		}
 	}
-	static isPromoted(kind: string){
+	static isPromoted(kind: string): boolean{
 		return ["TO","NY","NK","NG","UM","RY"].indexOf(kind)>=0;
 	}
 
 	// 以下private method
 
 	// 現在成っているかどうかを返す
-	private isPromoted(){
+	private isPromoted(): boolean{
 		return Piece.isPromoted(this.kind);
 	}
 }
