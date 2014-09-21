@@ -36,7 +36,7 @@ class Shogi{
 		this.flagEditMode = flag;
 	}
 
-	// (fromx, fromy)から(tox, toy)へ移動し，適当な処理を行う．
+	// (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
 	move(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false){
 		var piece = this.get(fromx, fromy);
 		if(piece==null) throw "no piece found at "+fromx+", "+fromy;
@@ -52,6 +52,26 @@ class Shogi{
 		this.set(fromx, fromy, null);
 		this.nextTurn();
 	}
+	// moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
+	unmove(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false, capture?: string){
+		var piece = this.get(tox, toy);
+		if(piece==null) throw "no piece found at "+tox+", "+toy;
+		this.checkTurn(Piece.oppositeColor(piece.color));
+		var captured: Piece;
+		if(capture){
+			captured = this.popFromHand(Piece.unpromote(capture), piece.color);
+			captured.inverse();
+		}
+		this.editMode(true);
+		this.move(tox, toy, fromx, fromy);
+		if(promote) piece.unpromote();
+		if(capture){
+			if(Piece.isPromoted(capture)) captured.promote();
+			this.set(tox, toy, captured);
+		}
+		this.editMode(false);
+		this.prevTurn();
+	}
 	// (tox, toy)へcolorの持ち駒のkindを打つ．
 	drop(tox: number, toy: number, kind: string, color: Color = this.turn){
 		this.checkTurn(color);
@@ -59,6 +79,15 @@ class Shogi{
 		var piece = this.popFromHand(kind, color);
 		this.set(tox, toy, piece);
 		this.nextTurn();
+	}
+	// dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
+	undrop(tox: number, toy: number){
+		var piece = this.get(tox, toy);
+		this.checkTurn(Piece.oppositeColor(piece.color));
+		if(piece==null) throw "there is no piece at "+tox+", "+toy;
+		this.pushToHand(piece);
+		this.set(tox, toy, null);
+		this.prevTurn();
 	}
 	// CSAによる盤面表現の文字列を返す
 	toCSAString(): string{
@@ -78,6 +107,7 @@ class Shogi{
 			}
 			ret.push(line);
 		}
+		ret.push(this.turn==Color.Black ? "+" : "-");
 		return ret.join("\n");
 	}
 	// (x, y)の駒の移動可能な動きをすべて得る
@@ -171,7 +201,13 @@ class Shogi{
 	}
 	// 次の手番に行く
 	private nextTurn(){
+		if(this.flagEditMode) return;
 		this.turn = this.turn==Color.Black ? Color.White : Color.Black;
+	}
+	// 前の手番に行く
+	private prevTurn(){
+		if(this.flagEditMode) return;
+		this.nextTurn();
 	}
 	// colorの手番で問題ないか確認する．編集モードならok．
 	private checkTurn(color: Color){
@@ -199,12 +235,11 @@ class Piece{
 	}
 	// 成る
 	promote(){
-		var newKind = Piece.promote(this.kind);
-		if(newKind!=null) this.kind = newKind;
+		this.kind = Piece.promote(this.kind);
 	}
 	// 不成にする
 	unpromote(){
-		if(this.isPromoted()) this.kind = Piece.unpromote(this.kind);
+		this.kind = Piece.unpromote(this.kind);
 	}
 	// 駒の向きを反転する
 	inverse(){
@@ -223,7 +258,7 @@ class Piece{
 			GI: "NG",
 			KA: "UM",
 			HI: "RY",
-		}[kind] || null;
+		}[kind] || kind;
 	}
 	// 成った時の種類を返す．なければnull．
 	static unpromote(kind: string): string{
@@ -236,7 +271,7 @@ class Piece{
 			UM: "KA",
 			RY: "HI",
 			OU: "OU",
-		}[kind] || null;
+		}[kind] || kind;
 	}
 	static getMoveDef(kind: string): MoveDefinition{
 		switch(kind){
@@ -264,6 +299,9 @@ class Piece{
 	}
 	static isPromoted(kind: string): boolean{
 		return ["TO","NY","NK","NG","UM","RY"].indexOf(kind)>=0;
+	}
+	static oppositeColor(color: Color): Color{
+		return color==Color.Black ? Color.White : Color.Black;
 	}
 
 	// 以下private method

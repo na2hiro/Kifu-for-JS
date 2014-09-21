@@ -22,7 +22,7 @@ var Shogi = (function () {
         this.flagEditMode = flag;
     };
 
-    // (fromx, fromy)から(tox, toy)へ移動し，適当な処理を行う．
+    // (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
     Shogi.prototype.move = function (fromx, fromy, tox, toy, promote) {
         if (typeof promote === "undefined") { promote = false; }
         var piece = this.get(fromx, fromy);
@@ -44,6 +44,31 @@ var Shogi = (function () {
         this.nextTurn();
     };
 
+    // moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
+    Shogi.prototype.unmove = function (fromx, fromy, tox, toy, promote, capture) {
+        if (typeof promote === "undefined") { promote = false; }
+        var piece = this.get(tox, toy);
+        if (piece == null)
+            throw "no piece found at " + tox + ", " + toy;
+        this.checkTurn(Piece.oppositeColor(piece.color));
+        var captured;
+        if (capture) {
+            captured = this.popFromHand(Piece.unpromote(capture), piece.color);
+            captured.inverse();
+        }
+        this.editMode(true);
+        this.move(tox, toy, fromx, fromy);
+        if (promote)
+            piece.unpromote();
+        if (capture) {
+            if (Piece.isPromoted(capture))
+                captured.promote();
+            this.set(tox, toy, captured);
+        }
+        this.editMode(false);
+        this.prevTurn();
+    };
+
     // (tox, toy)へcolorの持ち駒のkindを打つ．
     Shogi.prototype.drop = function (tox, toy, kind, color) {
         if (typeof color === "undefined") { color = this.turn; }
@@ -53,6 +78,17 @@ var Shogi = (function () {
         var piece = this.popFromHand(kind, color);
         this.set(tox, toy, piece);
         this.nextTurn();
+    };
+
+    // dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
+    Shogi.prototype.undrop = function (tox, toy) {
+        var piece = this.get(tox, toy);
+        this.checkTurn(Piece.oppositeColor(piece.color));
+        if (piece == null)
+            throw "there is no piece at " + tox + ", " + toy;
+        this.pushToHand(piece);
+        this.set(tox, toy, null);
+        this.prevTurn();
     };
 
     // CSAによる盤面表現の文字列を返す
@@ -73,6 +109,7 @@ var Shogi = (function () {
             }
             ret.push(line);
         }
+        ret.push(this.turn == 0 /* Black */ ? "+" : "-");
         return ret.join("\n");
     };
 
@@ -184,7 +221,16 @@ var Shogi = (function () {
 
     // 次の手番に行く
     Shogi.prototype.nextTurn = function () {
+        if (this.flagEditMode)
+            return;
         this.turn = this.turn == 0 /* Black */ ? 1 /* White */ : 0 /* Black */;
+    };
+
+    // 前の手番に行く
+    Shogi.prototype.prevTurn = function () {
+        if (this.flagEditMode)
+            return;
+        this.nextTurn();
     };
 
     // colorの手番で問題ないか確認する．編集モードならok．
@@ -220,15 +266,12 @@ var Piece = (function () {
     }
     // 成る
     Piece.prototype.promote = function () {
-        var newKind = Piece.promote(this.kind);
-        if (newKind != null)
-            this.kind = newKind;
+        this.kind = Piece.promote(this.kind);
     };
 
     // 不成にする
     Piece.prototype.unpromote = function () {
-        if (this.isPromoted())
-            this.kind = Piece.unpromote(this.kind);
+        this.kind = Piece.unpromote(this.kind);
     };
 
     // 駒の向きを反転する
@@ -250,7 +293,7 @@ var Piece = (function () {
             GI: "NG",
             KA: "UM",
             HI: "RY"
-        }[kind] || null;
+        }[kind] || kind;
     };
 
     // 成った時の種類を返す．なければnull．
@@ -264,7 +307,7 @@ var Piece = (function () {
             UM: "KA",
             RY: "HI",
             OU: "OU"
-        }[kind] || null;
+        }[kind] || kind;
     };
     Piece.getMoveDef = function (kind) {
         switch (kind) {
@@ -296,6 +339,9 @@ var Piece = (function () {
     };
     Piece.isPromoted = function (kind) {
         return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
+    };
+    Piece.oppositeColor = function (color) {
+        return color == 0 /* Black */ ? 1 /* White */ : 0 /* Black */;
     };
 
     // 以下private method

@@ -14,6 +14,18 @@ shogi.drop(6, 5, "KA", Color.Black);
 console.log(shogi.toCSAString());
 shogi.drop(4, 5, "KA");
 console.log(shogi.toCSAString());
+shogi.undrop(4, 5, "KA");
+console.log(shogi.toCSAString());
+shogi.undrop(6, 5, "KA", Color.Black);
+console.log(shogi.toCSAString());
+shogi.unmove(8, 2, 2, 2, false, "UM");
+console.log(shogi.toCSAString());
+shogi.unmove(8, 8, 2, 2, true, "KA");
+console.log(shogi.toCSAString());
+shogi.unmove(3, 3, 3, 4);
+console.log(shogi.toCSAString());
+shogi.unmove(7, 7, 7, 6);
+console.log(shogi.toCSAString());
 
 shogi.initialize();
 var movable = 0;
