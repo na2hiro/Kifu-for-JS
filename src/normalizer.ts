@@ -1,38 +1,29 @@
+/// <reference path="./JSONKifuFormat.d.ts" />
 /// <reference path="../Shogi.js/src/shogi.ts" />
 
-interface JSONKifuFormat{
-	type: string;
-	header: {[index: string]: string;};
-	moves: MoveFormat[];
-	result: string;
-}
-interface MoveFormat{
-	comments: string[];
-	move: {
-		from?: PlaceFormat;
-		to?: PlaceFormat;
-		piece: string;
-		same?: boolean;
-		promote?: boolean;
-		capture?: string;
-	};
-	time: {
-		now: TimeFormat;
-		total: TimeFormat;
-	}
-}
-interface TimeFormat{
-	h?: number;
-	m: number;
-	s: number;
-}
-interface PlaceFormat{
-	x: number;
-	y: number;
-}
 
 function canPromote(place: PlaceFormat, color: Color){
 	return color==Color.Black ? place.y<=3 : place.y>=7;
+}
+
+function normalize(obj: JSONKifuFormat){
+	switch(obj.type){
+		case "normal":
+			break;
+		case "kif":
+			normalizeKIF(obj);
+			break;
+/*
+		case "ki2":
+			normalizeKI2(obj);
+			break;
+		case "csa":
+			normalizeCSA(obj);
+			break;
+*/
+		default:
+			throw "not supported";
+	}
 }
 
 function normalizeKIF(obj: JSONKifuFormat){

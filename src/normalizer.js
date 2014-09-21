@@ -1,7 +1,20 @@
+/// <reference path="./JSONKifuFormat.d.ts" />
 /// <reference path="../Shogi.js/src/shogi.ts" />
-
 function canPromote(place, color) {
     return color == 0 /* Black */ ? place.y <= 3 : place.y >= 7;
+}
+
+function normalize(obj) {
+    switch (obj.type) {
+        case "normal":
+            break;
+        case "kif":
+            normalizeKIF(obj);
+            break;
+
+        default:
+            throw "not supported";
+    }
 }
 
 function normalizeKIF(obj) {

@@ -26,7 +26,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * 相対逆算: 局面と座標と相対情報から，その位置に移動する駒を特定すること．
 
 ##形式の定義
-変更され得ます．
+`JSONKifuFormat.d.ts`にある内容です．変更され得ます．
 
 * JKFの定義
 	* type `string` 形式のタイプ
@@ -63,7 +63,8 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
 * `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
 * `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
-* `normalizer.js`: type={KIF/KI2/CSA}であるJSONをtype=normalであるJSONに変換するプログラム
+* `normalizer.{ts/js}`: type={KIF/KI2/CSA}であるJSONをtype=normalであるJSONに変換するプログラム
+* `player.{ts/js}`: JKFを扱う棋譜再生盤の例
 
 ## 必要条件
 ### 使用に際して
