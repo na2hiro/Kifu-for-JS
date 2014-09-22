@@ -3,7 +3,7 @@
 /// <reference path="../DefinitelyTyped/jquery/jquery.d.ts" />
 
 class Kifu{
-	static kifus: Kifu[];
+	static settings = {};
 	static load(filename: string, id?: string){
 		if(!id){
 			id = "kifuforjs_"+Math.random().toString(36).slice(2);
@@ -182,7 +182,7 @@ class Kifu{
 		var kifulist = $("select.kifulist", this.id);
 		kifulist.children().remove();
 		this.player.kifu.moves.forEach((obj, tesuu)=>{
-			$("<option value='"+tesuu+"'>"+tesuu+": "+this.player.getReadableKifu(tesuu)+(this.player.getComments(tesuu).length>0?"*":"")+"</option>").appendTo(kifulist);
+			$("<option value='"+tesuu+"'>"+(this.player.getComments(tesuu).length>0?"*":"&nbsp;")+Kifu.pad(tesuu.toString(),"&nbsp;", 3)+" "+this.player.getReadableKifu(tesuu)+"</option>").appendTo(kifulist);
 			i++;
 		});
 		
@@ -283,7 +283,7 @@ class Kifu{
 				: this.getPieceImage(null, null);
 	}
 	getPieceImage(kind: string, color: Color){
-		return "../images/"+(!kind?"___":color+kind)+".png";
+		return Kifu.settings["ImageDirectoryPath"]+"/"+(!kind?"___":color+kind)+".png";
 	}
 	goto(tesuu){
 		if(isNaN(tesuu)) return;
@@ -309,5 +309,13 @@ class Kifu{
 	}
 	static colorToMark(color: Color): string{
 		return color==Color.Black ? "☗" : "☖";
+	}
+	// length <= 10
+	static pad(str: string, space: string, length: number){
+		var ret = "";
+		for(var i=str.length; i<length; i++){
+			ret+=space;
+		}
+		return ret+str;
 	}
 }

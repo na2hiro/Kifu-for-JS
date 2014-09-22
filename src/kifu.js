@@ -167,7 +167,7 @@ var Kifu = (function () {
         var kifulist = $("select.kifulist", this.id);
         kifulist.children().remove();
         this.player.kifu.moves.forEach(function (obj, tesuu) {
-            $("<option value='" + tesuu + "'>" + tesuu + ": " + _this.player.getReadableKifu(tesuu) + (_this.player.getComments(tesuu).length > 0 ? "*" : "") + "</option>").appendTo(kifulist);
+            $("<option value='" + tesuu + "'>" + (_this.player.getComments(tesuu).length > 0 ? "*" : "&nbsp;") + Kifu.pad(tesuu.toString(), "&nbsp;", 3) + " " + _this.player.getReadableKifu(tesuu) + "</option>").appendTo(kifulist);
             i++;
         });
 
@@ -245,7 +245,7 @@ var Kifu = (function () {
         return piece ? this.getPieceImage(piece.kind, piece.color) : this.getPieceImage(null, null);
     };
     Kifu.prototype.getPieceImage = function (kind, color) {
-        return "../images/" + (!kind ? "___" : color + kind) + ".png";
+        return Kifu.settings["ImageDirectoryPath"] + "/" + (!kind ? "___" : color + kind) + ".png";
     };
     Kifu.prototype.goto = function (tesuu) {
         if (isNaN(tesuu))
@@ -274,5 +274,15 @@ var Kifu = (function () {
     Kifu.colorToMark = function (color) {
         return color == 0 /* Black */ ? "☗" : "☖";
     };
+
+    // length <= 10
+    Kifu.pad = function (str, space, length) {
+        var ret = "";
+        for (var i = str.length; i < length; i++) {
+            ret += space;
+        }
+        return ret + str;
+    };
+    Kifu.settings = {};
     return Kifu;
 })();

@@ -23,7 +23,12 @@
 	margin-left:20px;
 }
 
-.kifuforjs select.kifulist{font-size:12px;width:100%;height:100%}
+.kifuforjs select.kifulist{
+	font-size:12px;
+	width:100%;
+	height:100%;
+/*	font-family: Consolas, 'Courier New', Courier, Monaco, monospace;*/
+}
 .kifuforjs table.ban{border-collapse: collapse;}
 .kifuforjs table.ban th{white-space:nowrap;}
 .kifuforjs table.ban td{
@@ -85,4 +90,9 @@
 }
 .kifuforjs ul.inline li{
 	display:inline;
+}
+.kifuforjs ul.inline button, .kifuforjs ul.inline input{
+	height: 30px;
+	width: 50px;
+	font-size: 18px;
 }
