@@ -169,6 +169,21 @@ class Shogi{
 	get(x: number, y: number): Piece{
 		return this.board[x-1][y-1];
 	}
+	getHandsSummary(color: Color): {FU: number; KY: number;KE: number; GI: number; KI: number; KA: number; HI: number; }{
+		var ret = {
+			"FU": 0,
+			"KY": 0,
+			"KE": 0,
+			"GI": 0, 
+			"KI": 0, 
+			"KA": 0, 
+			"HI": 0, 
+		};
+		for(var i=0; i<this.hands[color].length; i++){
+			ret[this.hands[color][i].kind]++;
+		}
+		return ret;
+	}
 
 	// 以下private method
 

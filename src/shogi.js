@@ -185,6 +185,21 @@ var Shogi = (function () {
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
     };
+    Shogi.prototype.getHandsSummary = function (color) {
+        var ret = {
+            "FU": 0,
+            "KY": 0,
+            "KE": 0,
+            "GI": 0,
+            "KI": 0,
+            "KA": 0,
+            "HI": 0
+        };
+        for (var i = 0; i < this.hands[color].length; i++) {
+            ret[this.hands[color][i].kind]++;
+        }
+        return ret;
+    };
 
     // 以下private method
     // (x, y)に駒を置く
