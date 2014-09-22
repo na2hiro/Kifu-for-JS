@@ -491,7 +491,7 @@ var JKFPlayer = (function () {
         if (tesuu == 0)
             return "開始局面";
         if (this.kifu.moves[tesuu].special) {
-            return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special) + (this.getComments(tesuu).length > 0 ? "*" : "");
+            return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
         }
         var move = this.kifu.moves[tesuu].move;
         var ret = this.getMoveTurn(tesuu) == 0 /* Black */ ? "☗" : "☖";
@@ -507,7 +507,7 @@ var JKFPlayer = (function () {
         if (move.promote != null) {
             ret += move.promote ? "成" : "不成";
         }
-        return ret + (this.getComments().length > 0 ? "*" : "");
+        return ret;
     };
     JKFPlayer.prototype.getMoveTurn = function (tesuu) {
         return tesuu % 2 == 1 ? 0 /* Black */ : 1 /* White */;

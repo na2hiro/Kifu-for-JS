@@ -113,8 +113,7 @@ class JKFPlayer{
 	getReadableKifu(tesuu: number = this.tesuu){
 		if(tesuu==0) return "開始局面";
 		if(this.kifu.moves[tesuu].special){
-			return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special)+
-					(this.getComments(tesuu).length>0?"*":"");
+			return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
 		}
 		var move = this.kifu.moves[tesuu].move;
 		var ret = this.getMoveTurn(tesuu)==Color.Black ? "☗" : "☖";
@@ -130,7 +129,7 @@ class JKFPlayer{
 		if(move.promote!=null){
 			ret+=move.promote ? "成" : "不成";
 		}
-		return ret+(this.getComments().length>0?"*":"");	
+		return ret;
 	}
 	getMoveTurn(tesuu: number){
 		return tesuu%2==1 ? Color.Black : Color.White;
