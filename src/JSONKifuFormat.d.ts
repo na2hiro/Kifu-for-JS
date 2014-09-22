@@ -11,14 +11,16 @@ interface MoveMoveFormat {
 	same?: boolean;
 	promote?: boolean;
 	capture?: string;
+	relative?: string;
 }
 interface MoveFormat{
 	comments: string[];
-	move: MoveMoveFormat;
+	move?: MoveMoveFormat;
 	time: {
 		now: TimeFormat;
 		total: TimeFormat;
 	}
+	special?: string;
 }
 interface TimeFormat{
 	h?: number;
