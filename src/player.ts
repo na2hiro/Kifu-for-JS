@@ -49,6 +49,16 @@ class JKFPlayer{
 		return true;
 	}
 
+	// wrapper
+	getBoard(x: number, y: number){
+		return this.shogi.get(x, y);
+	}
+	getHandsSummary(color: Color){
+		return this.shogi.getHandsSummary(color);
+	}
+
+	// private
+
 	private doMove(move: MoveMoveFormat){
 		if(move.from){
 			this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);

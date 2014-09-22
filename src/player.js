@@ -51,6 +51,15 @@ var JKFPlayer = (function () {
         return true;
     };
 
+    // wrapper
+    JKFPlayer.prototype.getBoard = function (x, y) {
+        return this.shogi.get(x, y);
+    };
+    JKFPlayer.prototype.getHandsSummary = function (color) {
+        return this.shogi.getHandsSummary(color);
+    };
+
+    // private
     JKFPlayer.prototype.doMove = function (move) {
         if (move.from) {
             this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
