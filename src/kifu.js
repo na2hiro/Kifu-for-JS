@@ -4,6 +4,7 @@
 var Kifu = (function () {
     function Kifu(id) {
         this.id = id;
+        this.id = "#" + this.id;
     }
     Kifu.load = function (filename, id) {
         if (!id) {
@@ -11,10 +12,11 @@ var Kifu = (function () {
             document.write("<div id='" + id + "'></div>");
         }
         var player = new Kifu(id);
+        player.prepareDOM();
         $(document).ready(function () {
             $.ajax(filename, {
                 success: function (data) {
-                    player.initialize(new JKFPlayer(data));
+                    player.initialize(JKFPlayer.parseKIF(data));
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert("棋譜読み込みに失敗しました: " + textStatus);
@@ -29,8 +31,10 @@ var Kifu = (function () {
 
     Kifu.prototype.initialize = function (player) {
         this.player = player;
+        this.show();
     };
-    Kifu.prototype.makeDOM = function (show) {
+    Kifu.prototype.prepareDOM = function (show) {
+        if (typeof show === "undefined") { show = false; }
         var _this = this;
         $(function () {
             $(_this.id).append('<table class="kifuforjs">\
@@ -168,7 +172,7 @@ var Kifu = (function () {
         var kifulist = $("select.kifulist", this.id);
         kifulist.children().remove();
         this.player.kifu.moves.forEach(function (obj, tesuu) {
-            $("<option value='" + tesuu + "'>" + tesuu + ": " + _this.player.getReadableKifu(tesuu) + (_this.player.getComments(i).length > 0 ? "*" : "") + "</option>").appendTo(kifulist);
+            $("<option value='" + tesuu + "'>" + tesuu + ": " + _this.player.getReadableKifu(tesuu) + (_this.player.getComments(tesuu).length > 0 ? "*" : "") + "</option>").appendTo(kifulist);
             i++;
         });
 
@@ -238,13 +242,12 @@ var Kifu = (function () {
             span.append("<span class='maisuu'>" + Kifu.numToKanji(value) + "</span>");
         }
         span.appendTo(this.getHandDom(color));
-        console.log(span);
     };
     Kifu.prototype.getPieceImageByPiece = function (piece) {
         return piece ? this.getPieceImage(piece.kind, piece.color) : this.getPieceImage(null, null);
     };
     Kifu.prototype.getPieceImage = function (kind, color) {
-        return "rule/hirate/" + (!kind ? "___" : color + kind) + ".png";
+        return "../images/" + (!kind ? "___" : color + kind) + ".png";
     };
     Kifu.prototype.goto = function (tesuu) {
         if (isNaN(tesuu))

@@ -10,10 +10,11 @@ class Kifu{
 			document.write("<div id='"+id+"'></div>");
 		}
 		var player = new Kifu(id);
+		player.prepareDOM();
 		$(document).ready(()=>{
 			$.ajax(filename, {
 				success: (data)=>{
-					player.initialize(new JKFPlayer(data));
+					player.initialize(JKFPlayer.parseKIF(data));
 				},
 				error: (jqXHR, textStatus, errorThrown)=>{
 					alert("棋譜読み込みに失敗しました: "+textStatus);
@@ -30,11 +31,13 @@ class Kifu{
 	public player: JKFPlayer;
 	tds: JQuery[][];
 	constructor(public id: string){
+		this.id="#"+this.id;
 	}
 	initialize(player: JKFPlayer){
 		this.player = player;
+		this.show();
 	}
-	makeDOM(show){
+	prepareDOM(show = false){
 		$(()=>{
 			$(this.id).append('<table class="kifuforjs">\
 			<tbody>\
@@ -167,7 +170,7 @@ class Kifu{
 		var kifulist = $("select.kifulist", this.id);
 		kifulist.children().remove();
 		this.player.kifu.moves.forEach((obj, tesuu)=>{
-			$("<option value='"+tesuu+"'>"+tesuu+": "+this.player.getReadableKifu(tesuu)+(this.player.getComments(i).length>0?"*":"")+"</option>").appendTo(kifulist);
+			$("<option value='"+tesuu+"'>"+tesuu+": "+this.player.getReadableKifu(tesuu)+(this.player.getComments(tesuu).length>0?"*":"")+"</option>").appendTo(kifulist);
 			i++;
 		});
 		
@@ -259,7 +262,6 @@ class Kifu{
 			span.append("<span class='maisuu'>"+Kifu.numToKanji(value)+"</span>");
 		}
 		span.appendTo(this.getHandDom(color));
-		console.log(span);					
 	}
 	getPieceImageByPiece(piece: Piece){
 		return piece
@@ -267,7 +269,7 @@ class Kifu{
 				: this.getPieceImage(null, null);
 	}
 	getPieceImage(kind: string, color: Color){
-		return "rule/hirate/"+(!kind?"___":color+kind)+".png";
+		return "../images/"+(!kind?"___":color+kind)+".png";
 	}
 	goto(tesuu){
 		if(isNaN(tesuu)) return;
