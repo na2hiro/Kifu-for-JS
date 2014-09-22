@@ -29,7 +29,7 @@ dropの逆を行う．
 #### get(x: number, y: number): Piece
 (x, y)にある駒を返す
 
-#### getHandsSummary(color: Color): string=>number
+#### getHandsSummary(color: Color): {[index: string]: number}
 keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
 
 #### toCSAString()

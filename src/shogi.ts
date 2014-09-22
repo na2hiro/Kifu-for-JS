@@ -169,8 +169,8 @@ class Shogi{
 	get(x: number, y: number): Piece{
 		return this.board[x-1][y-1];
 	}
-	getHandsSummary(color: Color): {FU: number; KY: number;KE: number; GI: number; KI: number; KA: number; HI: number; }{
-		var ret = {
+	getHandsSummary(color: Color): {[index: string]: number}{
+		var ret: {[index: string]: number} = {
 			"FU": 0,
 			"KY": 0,
 			"KE": 0,
