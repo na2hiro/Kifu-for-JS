@@ -83,38 +83,33 @@ var Kifu = (function () {
 							<li><button data-go="10">&gt;&gt;</button></li>\
 							<li><button data-go="end">&gt;|</button></li>\
 						</ul>\
-						<ul class="inline panel" style="margin:0 auto;">\
-							<li><button class="dl" data-type="json">JSON</button></li>\
-							<li><button class="dl" data-type="kif">KIF</button></li>\
-						</ul>\
+' + '\
 						<textarea style="width:100%" rows=10 class="comment"></textarea>\
 					</td>\
 				</tr>\
 			</tbody>\
 		</table>');
 
-            /*
-            document.body.addEventListener("drop", (e)=>{
-            e.preventDefault();
-            console.log(e)
-            
-            var reader = new FileReader();
-            reader.onload = (e)=> {
-            //alert(e.target.result);
-            shogi.loadKif(e.target.result)
-            shogitter.show()
-            };
-            reader.readAsText(e.dataTransfer.files[0],"SJIS");
-            });
-            */
+            for (var c = 0 /* Black */; c <= 1 /* White */; c++) {
+                var handDom = $("div.mochi.mochi" + c + " div.mochimain", _this.id);
+                ["FU", "KY", "KE", "GI", "KI", "KA", "HI"].forEach(function (kind) {
+                    var span = $("<span class='mochigoma mochi_" + kind + " mai0'></span>");
+                    span.data("value", 0);
+                    span.append("<img src='" + _this.getPieceImage(kind, c) + "'>");
+                    span.append("<span class='maisuu'></span>");
+                    span.appendTo(handDom);
+                });
+            }
+
             _this.kifulist = $("select.kifulist", _this.id);
+            var that = _this;
             _this.kifulist.change(function () {
-                _this.goto($(_this).val());
-                _this.refresh();
+                that.goto($(this).val());
+                that.refresh();
             });
             $("ul.go", _this.id).on("click", "button", function () {
-                _this.go($(_this).attr("data-go"));
-                _this.refresh();
+                that.go($(this).attr("data-go"));
+                that.refresh();
             });
 
             /*
@@ -134,8 +129,8 @@ var Kifu = (function () {
             });
             */
             $("ul.go form", _this.id).submit(function () {
-                _this.goto($("input", _this).val());
-                _this.refresh();
+                that.goto($("input", this).val());
+                that.refresh();
                 return false;
             });
             if (show)
@@ -204,13 +199,10 @@ var Kifu = (function () {
             }
         }
 
-        for (var direction = 0; direction <= 1; direction++) {
-            this.getHandDom(direction).children().remove();
-            for (var color = 0 /* Black */; color <= 1 /* White */; color++) {
-                var obj = this.player.getHandsSummary(color);
-                for (var kind in obj) {
-                    this.setHand(color, kind, obj[kind]);
-                }
+        for (var color = 0 /* Black */; color <= 1 /* White */; color++) {
+            var obj = this.player.getHandsSummary(color);
+            for (var kind in obj) {
+                this.setHand(color, kind, obj[kind]);
             }
         }
 
@@ -223,7 +215,7 @@ var Kifu = (function () {
         ;
 
         //コメント描画
-        $("textarea.comment", this.id).val(this.player.getComments());
+        $("textarea.comment", this.id).val(this.player.getComments().join("\n"));
     };
     Kifu.prototype.setPiece = function (x, y, piece) {
         var dom = $("img", this.tds[x - 1][y - 1]);
@@ -232,16 +224,22 @@ var Kifu = (function () {
             dom.attr("src", src);
         }
     };
-    Kifu.prototype.getHandDom = function (direction) {
-        return $("div.mochi.mochi" + direction + " div.mochimain", this.id);
+    Kifu.prototype.getHandDom = function (color, kind) {
+        return $("div.mochi.mochi" + color + " div.mochimain span.mochigoma.mochi_" + kind, this.id);
     };
     Kifu.prototype.setHand = function (color, kind, value) {
-        var span = $("<span class='mochigoma'></span>");
-        span.append("<img src='" + this.getPieceImage(kind, color) + "'>");
-        if (value > 1) {
-            span.append("<span class='maisuu'>" + Kifu.numToKanji(value) + "</span>");
+        var dom = this.getHandDom(color, kind);
+        var val = dom.data("value");
+        if (val == value)
+            return;
+        dom.data("value", value);
+        if (value < 2) {
+            dom.removeClass("mai" + (1 - value));
+            dom.addClass("mai" + value);
+        } else {
+            $("span.maisuu", dom).text(Kifu.numToKanji(value));
+            dom.removeClass("mai0 mai1");
         }
-        span.appendTo(this.getHandDom(color));
     };
     Kifu.prototype.getPieceImageByPiece = function (piece) {
         return piece ? this.getPieceImage(piece.kind, piece.color) : this.getPieceImage(null, null);
@@ -253,7 +251,6 @@ var Kifu = (function () {
         if (isNaN(tesuu))
             return;
         this.player.goto(tesuu);
-        //		this.onMoveCallback(this.shogi.tesuu);
     };
     Kifu.prototype.go = function (tesuu) {
         if (tesuu == "start") {
@@ -266,15 +263,11 @@ var Kifu = (function () {
                 return;
             this.player.go(tesuu);
         }
-        //		this.onMoveCallback(this.shogi.tesuu);
     };
     Kifu.prototype.setPlayer = function (color, name) {
         $("div.mochi.mochi" + color + " .tebanname", this.id).text(Kifu.colorToMark(color) + name);
     };
 
-    /*	onMove(callback){
-    this.onMoveCallback = callback;
-    }*/
     Kifu.numToKanji = function (n) {
         return "〇一二三四五六七八九"[n];
     };

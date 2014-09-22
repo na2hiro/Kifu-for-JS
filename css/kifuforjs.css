@@ -23,7 +23,7 @@
 	margin-left:20px;
 }
 
-.kifuforjs select.kifulist{font-size:15px;width:100%;height:100%}
+.kifuforjs select.kifulist{font-size:12px;width:100%;height:100%}
 .kifuforjs table.ban{border-collapse: collapse;}
 .kifuforjs table.ban th{white-space:nowrap;}
 .kifuforjs table.ban td{
@@ -42,7 +42,7 @@
 .kifuforjs table.ban td.lastfrom{background-color: #FFCC00;}
 .kifuforjs table.ban td.movable{background-color: #AAAAFF;}
 .kifuforjs div.mochi{
-	height:50%;width:150px;
+	height:180;width:120px;
 }
 .kifuforjs div.mochi div.mochimain{
 	width:100%;height:100%;margin-bottom:0;margin-top:auto;
@@ -57,8 +57,13 @@
 	right: 0px;
 	color:blue;
 }
+.kifuforjs div.mochi div.mochimain span.mochigoma.mai0,
+.kifuforjs div.mochi div.mochimain span.mochigoma.mai0 span.maisuu,
+.kifuforjs div.mochi div.mochimain span.mochigoma.mai1 span.maisuu{
+	display: none;
+}
 .kifuforjs div.players{
-	height:100%;width:150px;
+	height:100%;width:120px;
 }
 .kifuforjs div.players div.mochi div.tebanname{
 	text-align: center;background-color: silver;

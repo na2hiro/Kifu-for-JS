@@ -85,10 +85,10 @@ class Kifu{
 							<li><button data-go="10">&gt;&gt;</button></li>\
 							<li><button data-go="end">&gt;|</button></li>\
 						</ul>\
-						<ul class="inline panel" style="margin:0 auto;">\
+'+/*						<ul class="inline panel" style="margin:0 auto;">\
 							<li><button class="dl" data-type="json">JSON</button></li>\
 							<li><button class="dl" data-type="kif">KIF</button></li>\
-						</ul>\
+						</ul>*/'\
 						<textarea style="width:100%" rows=10 class="comment"></textarea>\
 					</td>\
 				</tr>\
@@ -108,15 +108,27 @@ class Kifu{
                 reader.readAsText(e.dataTransfer.files[0],"SJIS");
 			});
 			*/
+
+			for(var c=Color.Black; c<=Color.White; c++){
+				var handDom = $("div.mochi.mochi"+c+" div.mochimain", this.id);
+				["FU","KY","KE","GI","KI","KA","HI"].forEach((kind)=>{
+					var span = $("<span class='mochigoma mochi_"+kind+" mai0'></span>");
+					span.data("value", 0);
+					span.append("<img src='"+this.getPieceImage(kind, c)+"'>");
+					span.append("<span class='maisuu'></span>");
+					span.appendTo(handDom);
+				});
+			}
 		
 			this.kifulist = $("select.kifulist", this.id);
-			this.kifulist.change(()=>{
-				this.goto($(this).val());
-				this.refresh();
+			var that = this;
+			this.kifulist.change(function(){
+				that.goto($(this).val());
+				that.refresh();
 			});
-			$("ul.go", this.id).on("click", "button", ()=>{
-				this.go($(this).attr("data-go"));
-				this.refresh();
+			$("ul.go", this.id).on("click", "button", function(){
+				that.go($(this).attr("data-go"));
+				that.refresh();
 			});
 			/*
 			$("ul.panel", this.id).on("click", "button.dl", ()=>{
@@ -134,9 +146,9 @@ class Kifu{
 				$("textarea.comment", this.id).val(str);
 			});
 			*/
-			$("ul.go form", this.id).submit(()=>{
-				this.goto($("input", this).val());
-				this.refresh();
+			$("ul.go form", this.id).submit(function(){
+				that.goto($("input", this).val());
+				that.refresh();
 				return false;
 			});
 			if(show) this.show();
@@ -229,13 +241,10 @@ class Kifu{
 			}
 		}
 		//持ち駒描画
-		for(var direction=0; direction<=1; direction++){
-			this.getHandDom(direction).children().remove();
-			for(var color=Color.Black; color<=Color.White; color++){
-				var obj = this.player.getHandsSummary(color);
-				for(var kind in obj){
-					this.setHand(color, kind, obj[kind]);
-				}
+		for(var color=Color.Black; color<=Color.White; color++){
+			var obj = this.player.getHandsSummary(color);
+			for(var kind in obj){
+				this.setHand(color, kind, obj[kind]);
 			}
 		}
 		
@@ -243,7 +252,7 @@ class Kifu{
 		$("ul.go form input", this.id).val(this.player.tesuu.toString());
 		try{(<HTMLOptionElement>$("select.kifulist option", this.id)[this.player.tesuu]).selected=true}catch(e){};
 		//コメント描画
-		$("textarea.comment", this.id).val(this.player.getComments());
+		$("textarea.comment", this.id).val(this.player.getComments().join("\n"));
 	}
 	setPiece(x: number, y: number, piece: Piece){
 		var dom = $("img", this.tds[x-1][y-1]);
@@ -252,16 +261,21 @@ class Kifu{
 			dom.attr("src",src);
 		}
 	}
-	getHandDom(direction){
-		return $("div.mochi.mochi"+direction+" div.mochimain", this.id);
+	getHandDom(color: Color, kind: string){
+		return $("div.mochi.mochi"+color+" div.mochimain span.mochigoma.mochi_"+kind, this.id);
 	}
 	setHand(color: Color, kind: string, value: number){
-		var span = $("<span class='mochigoma'></span>");
-		span.append("<img src='"+this.getPieceImage(kind, color)+"'>");
-		if(value>1){
-			span.append("<span class='maisuu'>"+Kifu.numToKanji(value)+"</span>");
+		var dom = this.getHandDom(color, kind);
+		var val = dom.data("value");
+		if(val == value) return;
+		dom.data("value", value);
+		if(value<2){
+			dom.removeClass("mai"+(1-value));
+			dom.addClass("mai"+value);
+		}else{
+			$("span.maisuu", dom).text(Kifu.numToKanji(value));
+			dom.removeClass("mai0 mai1");
 		}
-		span.appendTo(this.getHandDom(color));
 	}
 	getPieceImageByPiece(piece: Piece){
 		return piece
@@ -274,7 +288,6 @@ class Kifu{
 	goto(tesuu){
 		if(isNaN(tesuu)) return;
 		this.player.goto(tesuu);
-//		this.onMoveCallback(this.shogi.tesuu);
 	}
 	go(tesuu){
 		if(tesuu=="start"){
@@ -286,14 +299,10 @@ class Kifu{
 			if(isNaN(tesuu)) return;
 			this.player.go(tesuu);
 		}
-//		this.onMoveCallback(this.shogi.tesuu);
 	}
 	setPlayer(color, name){
 		$("div.mochi.mochi"+color+" .tebanname", this.id).text(Kifu.colorToMark(color)+name);
 	}
-/*	onMove(callback){
-		this.onMoveCallback = callback;
-	}*/
 
 	static numToKanji(n: number): string{
 		return "〇一二三四五六七八九"[n];
