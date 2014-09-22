@@ -51,10 +51,11 @@ class JKFPlayer{
 	goto(tesuu: number){
 		var limit = 10000; // for safe
 		if(this.tesuu<tesuu){
-			while(this.tesuu!=tesuu && limit-->0) this.forward();
+			while(this.tesuu!=tesuu && this.forward() && limit-->0);
 		}else{
-			while(this.tesuu!=tesuu && limit-->0) this.backward();
+			while(this.tesuu!=tesuu && this.backward() && limit-->0);
 		}
+		if(limit==0) throw "tesuu overflows";
 	}
 	// wrapper
 	getBoard(x: number, y: number){
