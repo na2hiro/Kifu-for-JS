@@ -34,8 +34,8 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 ### 使い方
 ブックマークレット本体は`src/bookmarklet.min.js`にあり
 
-1. [Kifu for JS](javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();
-) ←これをブックマークへ追加する
+1. 次のコードをブックマークへ追加する→
+`javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();`
 2. Kifu for FlashやKifu for Javaが使われているページを開く
 3. ブックマークをクリックする
 4. FlashやJava部分が置き換えられ，Kifu for JSの再生盤になる
