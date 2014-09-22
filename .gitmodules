@@ -1,0 +1,6 @@
+[submodule "json-kifu-format"]
+	path = json-kifu-format
+	url = https://github.com/na2hiro/json-kifu-format
+[submodule "DefinitelyTyped"]
+	path = DefinitelyTyped
+	url = https://github.com/borisyankov/DefinitelyTyped.git
