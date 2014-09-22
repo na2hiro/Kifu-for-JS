@@ -283,7 +283,7 @@ class Kifu{
 				: this.getPieceImage(null, null);
 	}
 	getPieceImage(kind: string, color: Color){
-		return Kifu.settings["ImageDirectoryPath"]+"/"+(!kind?"___":color+kind)+".png";
+		return Kifu.settings["ImageDirectoryPath"]+"/"+(!kind?"blank":color+kind)+".png";
 	}
 	goto(tesuu){
 		if(isNaN(tesuu)) return;
