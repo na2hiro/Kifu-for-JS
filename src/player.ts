@@ -57,6 +57,9 @@ class JKFPlayer{
 		}
 		if(limit==0) throw "tesuu overflows";
 	}
+	go(tesuu: number){
+		this.goto(this.tesuu+tesuu);
+	}
 	// wrapper
 	getBoard(x: number, y: number){
 		return this.shogi.get(x, y);

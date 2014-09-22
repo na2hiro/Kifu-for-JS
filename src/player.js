@@ -62,6 +62,9 @@ var JKFPlayer = (function () {
         if (limit == 0)
             throw "tesuu overflows";
     };
+    JKFPlayer.prototype.go = function (tesuu) {
+        this.goto(this.tesuu + tesuu);
+    };
 
     // wrapper
     JKFPlayer.prototype.getBoard = function (x, y) {
