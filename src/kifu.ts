@@ -10,12 +10,15 @@ class Kifu{
 			document.write("<div id='"+id+"'></div>");
 		}
 		var player = new Kifu(id);
-		$(document).ready(function() {
+		$(document).ready(()=>{
 			$.ajax(filename, {
-				success: function(data) {
+				success: (data)=>{
 					player.initialize(new JKFPlayer(data));
 				},
-				beforeSend: function(xhr){
+				error: (jqXHR, textStatus, errorThrown)=>{
+					alert("棋譜読み込みに失敗しました: "+textStatus);
+				},
+				beforeSend: (xhr)=>{
 					xhr.overrideMimeType("text/html;charset=Shift_JIS");
 				},
 			});
@@ -89,12 +92,12 @@ class Kifu{
 			</tbody>\
 		</table>');
 			/*
-			document.body.addEventListener("drop", function(e){
+			document.body.addEventListener("drop", (e)=>{
 				e.preventDefault();
 				console.log(e)
 				
                 var reader = new FileReader();
-                reader.onload = function(e) {
+                reader.onload = (e)=> {
                     //alert(e.target.result);
                     shogi.loadKif(e.target.result)
                     shogitter.show()
@@ -104,16 +107,16 @@ class Kifu{
 			*/
 		
 			this.kifulist = $("select.kifulist", this.id);
-			this.kifulist.change(function(){
+			this.kifulist.change(()=>{
 				this.goto($(this).val());
 				this.refresh();
 			});
-			$("ul.go", this.id).on("click", "button", function(){
+			$("ul.go", this.id).on("click", "button", ()=>{
 				this.go($(this).attr("data-go"));
 				this.refresh();
 			});
 			/*
-			$("ul.panel", this.id).on("click", "button.dl", function(){
+			$("ul.panel", this.id).on("click", "button.dl", ()=>{
 				var str;
 				switch($(this).attr("data-type")){
 					case "json":
@@ -128,7 +131,7 @@ class Kifu{
 				$("textarea.comment", this.id).val(str);
 			});
 			*/
-			$("ul.go form", this.id).submit(function(){
+			$("ul.go form", this.id).submit(()=>{
 				this.goto($("input", this).val());
 				this.refresh();
 				return false;
@@ -162,12 +165,11 @@ class Kifu{
 		
 		//棋譜用意
 		var kifulist = $("select.kifulist", this.id);
-		i=0;
 		kifulist.children().remove();
-		this.player.kifu.moves.forEach(function(obj){
-			$("<option value='"+i+"'>"+i+": "+(this.shogi.kifu.getReadable(i)||"初期局面")+(this.shogi.kifu.existsComment(i)?"*":"")+"</option>").appendTo(kifulist);
+		this.player.kifu.moves.forEach((obj, tesuu)=>{
+			$("<option value='"+tesuu+"'>"+tesuu+": "+this.player.getReadableKifu(tesuu)+(this.player.getComments(i).length>0?"*":"")+"</option>").appendTo(kifulist);
 			i++;
-		}.bind(this));
+		});
 		
 		
 		var data = this.player.kifu.header;
@@ -238,7 +240,7 @@ class Kifu{
 		$("ul.go form input", this.id).val(this.player.tesuu.toString());
 		try{(<HTMLOptionElement>$("select.kifulist option", this.id)[this.player.tesuu]).selected=true}catch(e){};
 		//コメント描画
-		$("textarea.comment", this.id).val(this.player.getNowComments());
+		$("textarea.comment", this.id).val(this.player.getComments());
 	}
 	setPiece(x: number, y: number, piece: Piece){
 		var dom = $("img", this.tds[x-1][y-1]);

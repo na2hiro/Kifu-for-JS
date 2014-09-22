@@ -16,6 +16,9 @@ var Kifu = (function () {
                 success: function (data) {
                     player.initialize(new JKFPlayer(data));
                 },
+                error: function (jqXHR, textStatus, errorThrown) {
+                    alert("棋譜読み込みに失敗しました: " + textStatus);
+                },
                 beforeSend: function (xhr) {
                     xhr.overrideMimeType("text/html;charset=Shift_JIS");
                 }
@@ -87,12 +90,12 @@ var Kifu = (function () {
 		</table>');
 
             /*
-            document.body.addEventListener("drop", function(e){
+            document.body.addEventListener("drop", (e)=>{
             e.preventDefault();
             console.log(e)
             
             var reader = new FileReader();
-            reader.onload = function(e) {
+            reader.onload = (e)=> {
             //alert(e.target.result);
             shogi.loadKif(e.target.result)
             shogitter.show()
@@ -102,16 +105,16 @@ var Kifu = (function () {
             */
             _this.kifulist = $("select.kifulist", _this.id);
             _this.kifulist.change(function () {
-                this.goto($(this).val());
-                this.refresh();
+                _this.goto($(_this).val());
+                _this.refresh();
             });
             $("ul.go", _this.id).on("click", "button", function () {
-                this.go($(this).attr("data-go"));
-                this.refresh();
+                _this.go($(_this).attr("data-go"));
+                _this.refresh();
             });
 
             /*
-            $("ul.panel", this.id).on("click", "button.dl", function(){
+            $("ul.panel", this.id).on("click", "button.dl", ()=>{
             var str;
             switch($(this).attr("data-type")){
             case "json":
@@ -127,8 +130,8 @@ var Kifu = (function () {
             });
             */
             $("ul.go form", _this.id).submit(function () {
-                this.goto($("input", this).val());
-                this.refresh();
+                _this.goto($("input", _this).val());
+                _this.refresh();
                 return false;
             });
             if (show)
@@ -138,6 +141,7 @@ var Kifu = (function () {
 
     //棋譜の読み込み後に吐き出す
     Kifu.prototype.show = function () {
+        var _this = this;
         //		var append =[{x:"prependTo", y:"appendTo"}, {x:"appendTo", y:"appendTo"}];
         //盤面用意
         var tbody = $("table.ban tbody", this.id);
@@ -162,12 +166,11 @@ var Kifu = (function () {
 
         //棋譜用意
         var kifulist = $("select.kifulist", this.id);
-        i = 0;
         kifulist.children().remove();
-        this.player.kifu.moves.forEach(function (obj) {
-            $("<option value='" + i + "'>" + i + ": " + (this.shogi.kifu.getReadable(i) || "初期局面") + (this.shogi.kifu.existsComment(i) ? "*" : "") + "</option>").appendTo(kifulist);
+        this.player.kifu.moves.forEach(function (obj, tesuu) {
+            $("<option value='" + tesuu + "'>" + tesuu + ": " + _this.player.getReadableKifu(tesuu) + (_this.player.getComments(i).length > 0 ? "*" : "") + "</option>").appendTo(kifulist);
             i++;
-        }.bind(this));
+        });
 
         var data = this.player.kifu.header;
         var dl = $("<dl></dl>");
@@ -216,7 +219,7 @@ var Kifu = (function () {
         ;
 
         //コメント描画
-        $("textarea.comment", this.id).val(this.player.getNowComments());
+        $("textarea.comment", this.id).val(this.player.getComments());
     };
     Kifu.prototype.setPiece = function (x, y, piece) {
         var dom = $("img", this.tds[x - 1][y - 1]);
