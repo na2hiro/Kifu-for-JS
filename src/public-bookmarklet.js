@@ -1,10 +1,7 @@
 (function() {
 	function start() {
 		Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
-		console.log($)
-		alert("a")
 		var target = $("#flashcontent");
-		console.log($.jquery, target.toString(), target.length);
 		var targetId, kifuPath;
 		if(target.length>0){
 			target.replaceWith("<div id='flashcontent'></div>");
@@ -19,7 +16,7 @@
 		Kifu.load(kifuPath, targetId);
     }
 	var cnt=0;
-	if(!$ || !$.fn || !$.fn.jquery){
+	if(typeof $=="undefined" || !$.fn || !$.fn.jquery){
 		cnt++;
 		var scr = document.createElement("script");
 		scr.src = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
