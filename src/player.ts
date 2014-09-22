@@ -56,6 +56,9 @@ class JKFPlayer{
 	getHandsSummary(color: Color){
 		return this.shogi.getHandsSummary(color);
 	}
+	getNowComments(){
+		return this.kifu.moves[this.tesuu].comments;
+	}
 
 	// private
 

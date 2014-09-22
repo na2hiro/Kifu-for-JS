@@ -185,6 +185,21 @@ var Shogi = (function () {
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
     };
+    Shogi.prototype.getHandsSummary = function (color) {
+        var ret = {
+            "FU": 0,
+            "KY": 0,
+            "KE": 0,
+            "GI": 0,
+            "KI": 0,
+            "KA": 0,
+            "HI": 0
+        };
+        for (var i = 0; i < this.hands[color].length; i++) {
+            ret[this.hands[color][i].kind]++;
+        }
+        return ret;
+    };
 
     // 以下private method
     // (x, y)に駒を置く
@@ -404,6 +419,18 @@ var JKFPlayer = (function () {
         return true;
     };
 
+    // wrapper
+    JKFPlayer.prototype.getBoard = function (x, y) {
+        return this.shogi.get(x, y);
+    };
+    JKFPlayer.prototype.getHandsSummary = function (color) {
+        return this.shogi.getHandsSummary(color);
+    };
+    JKFPlayer.prototype.getNowComments = function () {
+        return this.kifu.moves[this.tesuu].comments;
+    };
+
+    // private
     JKFPlayer.prototype.doMove = function (move) {
         if (move.from) {
             this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);

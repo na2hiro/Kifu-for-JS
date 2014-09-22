@@ -58,6 +58,9 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.getHandsSummary = function (color) {
         return this.shogi.getHandsSummary(color);
     };
+    JKFPlayer.prototype.getNowComments = function () {
+        return this.kifu.moves[this.tesuu].comments;
+    };
 
     // private
     JKFPlayer.prototype.doMove = function (move) {
