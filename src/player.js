@@ -50,6 +50,16 @@ var JKFPlayer = (function () {
         this.tesuu--;
         return true;
     };
+    JKFPlayer.prototype.goto = function (tesuu) {
+        var limit = 10000;
+        if (this.tesuu < tesuu) {
+            while (this.tesuu != tesuu && limit-- > 0)
+                this.forward();
+        } else {
+            while (this.tesuu != tesuu && limit-- > 0)
+                this.backward();
+        }
+    };
 
     // wrapper
     JKFPlayer.prototype.getBoard = function (x, y) {

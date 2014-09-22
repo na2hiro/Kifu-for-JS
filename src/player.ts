@@ -48,7 +48,14 @@ class JKFPlayer{
 		this.tesuu--;
 		return true;
 	}
-
+	goto(tesuu: number){
+		var limit = 10000; // for safe
+		if(this.tesuu<tesuu){
+			while(this.tesuu!=tesuu && limit-->0) this.forward();
+		}else{
+			while(this.tesuu!=tesuu && limit-->0) this.backward();
+		}
+	}
 	// wrapper
 	getBoard(x: number, y: number){
 		return this.shogi.get(x, y);

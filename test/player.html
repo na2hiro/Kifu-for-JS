@@ -21,5 +21,11 @@ function parse(data){
 	while(player.forward() && cnt++<1000){}
 	cnt=0;
 	while(player.backward() && cnt++<1000){}
+	player.goto(100);
+	console.log(player.shogi.toCSAString());
+	player.goto(10);
+	console.log(player.shogi.toCSAString());
+	player.goto(13);
+	console.log(player.shogi.toCSAString());
 }
 </script>
