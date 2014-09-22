@@ -4544,7 +4544,7 @@ var Kifu = (function () {
         return piece ? this.getPieceImage(piece.kind, piece.color) : this.getPieceImage(null, null);
     };
     Kifu.prototype.getPieceImage = function (kind, color) {
-        return Kifu.settings["ImageDirectoryPath"] + "/" + (!kind ? "___" : color + kind) + ".png";
+        return Kifu.settings["ImageDirectoryPath"] + "/" + (!kind ? "blank" : color + kind) + ".png";
     };
     Kifu.prototype.goto = function (tesuu) {
         if (isNaN(tesuu))
