@@ -48,7 +48,7 @@ headers
  / "" {return {}}
 
 header
- = key:[^：]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}}
+ = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}}
 
 split = "手数----指手---------消費時間--" nl
 

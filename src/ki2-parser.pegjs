@@ -41,7 +41,7 @@ headers
  / "" {return {}}
 
 header
- = key:[^：]+ "：" value:nonl* nl+ { return {k:key.join(""), v:value.join("")}}
+ = key:[^：\r\n]+ "：" value:nonl* nl+ { return {k:key.join(""), v:value.join("")}}
 
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
