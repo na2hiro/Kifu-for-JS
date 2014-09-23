@@ -46,7 +46,9 @@ header
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
 firstboard = c:comment* {return {comments:c}}
-move = line:line c:comment* (nl / " ")* { return {comments:c, move: line } }
+move = pointer? line:line c:comment* (nl / " ")* { return {comments:c, move: line } }
+
+pointer = "&" nonl* nl
 
 line = [▲△] f:fugou (nl / " ")*  {return f}
 fugou = pl:place pi:piece sou:soutai? dou:dousa? pro:("成"/"不成")? da:"打"? {

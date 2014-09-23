@@ -56,7 +56,9 @@ split = "手数----指手--" "-------消費時間--"? nl
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
 firstboard = c:comment* {return {comments:c}}
-move = line:line c:comment* {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;}
+move = pointer? line:line c:comment* {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;}
+
+pointer = "&" nonl* nl
 
 line = " "* te " "* move:(fugou:fugou from:from {var ret = {from: from, piece: fugou.piece}; if(fugou.to){ret.to=fugou.to}else{ret.same=true};if(fugou.promote)ret.promote=true; return ret;} / "投了") " "* time:time? nl {return {move: move, time: time}}
 
