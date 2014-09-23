@@ -50,14 +50,19 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 * Mac Chrome 37
 * Mac Firefox 32
 * Android Chrome 37
+* iOS 8 Safari
+
+以下はバグを確認．お待ちください．
+
+* Android Firefox 32
 
 以下は手元に確認環境がありません．情報を[@na2hiro](https://twitter.com)までお待ちしています．
 
-* iOS Safari
 * Internet Explorer
 
 ## TODO
-* 動作確認
+* より多くの環境で動作確認
+* 自動更新
 * 分岐への対応(JKF側)
 * 左右などの相対情報の付加(JKF側)
 * 文字コード切り替え
