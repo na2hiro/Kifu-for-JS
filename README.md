@@ -41,7 +41,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 			* promote? `Bool` 成るかどうか true:成, false:不成, 無いかnull:どちらでもない
 			* capture? `string` 取った駒の種類
 			* relative? `RelativeString` 相対情報
-		* time 消費時間
+		* time? 消費時間
 			* now `TimeFormat` 1手
 			* total `TimeFormat` 合計
 		* special? `string` 特殊棋譜(CSAのTORYO, CHUDAN等)
