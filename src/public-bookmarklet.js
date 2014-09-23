@@ -3,11 +3,14 @@
 		try{
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
 			var targetId, kifuPath;
-			var target = $("#flashcontent");
-			if(target.length>0){
-				target.replaceWith("<div id='flashcontent'></div>");
+			if($("applet param[name=KIFU]").length>0){
+				kifuPath = $("applet param[name=KIFU]").val();
+				$("applet param[name=KIFU]").parent().replaceWith("<div id='kifuforjs'></div>");
+				targetId = "kifuforjs";
+			}else if($("#flashcontent").length>0){
+				$("#flashcontent").replaceWith("<div id='flashcontent'></div>");
 				targetId="flashcontent";
-				kifuPath = so.variables.kifu.replace(/\.Z$/g, "");
+				kifuPath = so.variables.kifu;
 			}else if($("object param[name=FlashVars]").val()){
 				$("object param[name=FlashVars]").val().split("&&").map(function(kv){var s=kv.split("=");if(s[0]=="kifu")kifuPath=s[1]});
 				if($("#Kifu").length>0){
@@ -30,7 +33,7 @@
 			if(!targetId) throw "棋譜が見つかりませんでした";
 			console.log("load start");
 			try{
-				Kifu.load(kifuPath, targetId);
+				Kifu.load(kifuPath.replace(/\.(z|gz)$/ig, ""), targetId);
 			}catch(e){
 				throw "棋譜解析エラー"+e;
 			}
