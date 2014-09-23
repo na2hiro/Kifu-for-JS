@@ -8,7 +8,16 @@
 				target.replaceWith("<div id='flashcontent'></div>");
 				targetId="flashcontent";
 				kifuPath = so.variables.kifu.replace(/\.Z$/g, "");
-			}else if(typeof params!="undefined" && params.FlashVars){
+			}else if($("object param[name=FlashVars]").val()){
+				$("object param[name=FlashVars]").val().split("&&").map(function(kv){var s=kv.split("=");if(s[0]=="kifu")kifuPath=s[1]});
+				if($("#Kifu").length>0){
+					$("#Kifu").replaceWith("<div id='Kifu'></div>");
+				}else{
+					$("object param[name=FlashVars]").parent().replaceWith("<div id='Kifu'></div>");
+				}
+				targetId="Kifu";
+			}
+			if(!targetId && typeof params!="undefined" && params.FlashVars){
 				params.FlashVars.split("&").forEach(function(kv){var s=kv.split("=");if(s[0]=="kifu"){kifuPath=s[1]}});
 				if($("#so").length==0){
 					$(document.body).prepend("<div id='so'></div>");
