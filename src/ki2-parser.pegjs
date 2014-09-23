@@ -45,8 +45,8 @@ header
 
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
-firstboard = c:comment* {return {comments:c}}
-move = pointer? line:line c:comment* (nl / " ")* { return {comments:c, move: line } }
+firstboard = c:comment* pointer? {return {comments:c}}
+move = line:line c:comment* pointer? (nl / " ")* { return {comments:c, move: line } }
 
 pointer = "&" nonl* nl
 

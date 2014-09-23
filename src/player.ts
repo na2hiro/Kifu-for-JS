@@ -16,14 +16,17 @@ class JKFPlayer{
 	}
 	static parseKIF(kifu: string){
 		if(!JKFPlayer.kifParser) throw "パーサが読み込まれていません";
+		console.log("parseKIF", kifu);
 		return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
 	}
 	static parseKI2(kifu: string){
 		if(!JKFPlayer.ki2Parser) throw "パーサが読み込まれていません";
+		console.log("parseKI2", kifu);
 		return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
 	}
 	static parseCSA(kifu: string){
 		if(!JKFPlayer.csaParser) throw "パーサが読み込まれていません";
+		console.log("parseCSA", kifu);
 		return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
 	}
 	static kifParser: {parse: (kifu: string)=>JSONKifuFormat};

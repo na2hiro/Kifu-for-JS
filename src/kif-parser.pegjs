@@ -55,8 +55,8 @@ split = "手数----指手--" "-------消費時間--"? nl
 // 棋譜部分
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
-firstboard = c:comment* {return {comments:c}}
-move = pointer? line:line c:comment* {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;}
+firstboard = c:comment* pointer? {return {comments:c}}
+move = line:line c:comment* pointer? {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;}
 
 pointer = "&" nonl* nl
 

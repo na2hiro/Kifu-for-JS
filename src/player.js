@@ -13,16 +13,19 @@ var JKFPlayer = (function () {
     JKFPlayer.parseKIF = function (kifu) {
         if (!JKFPlayer.kifParser)
             throw "パーサが読み込まれていません";
+        console.log("parseKIF", kifu);
         return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
     };
     JKFPlayer.parseKI2 = function (kifu) {
         if (!JKFPlayer.ki2Parser)
             throw "パーサが読み込まれていません";
+        console.log("parseKI2", kifu);
         return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
     };
     JKFPlayer.parseCSA = function (kifu) {
         if (!JKFPlayer.csaParser)
             throw "パーサが読み込まれていません";
+        console.log("parseCSA", kifu);
         return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
     };
 
