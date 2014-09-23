@@ -4,6 +4,7 @@
 var Kifu = (function () {
     function Kifu(id) {
         this.id = id;
+        this.lastTo = null;
         this.id = "#" + this.id;
     }
     Kifu.load = function (filename, id) {
@@ -42,7 +43,7 @@ var Kifu = (function () {
 				<tr>\
 					<td>\
 						<div class="inlineblock players">\
-							<div class="mochi teban mochi1">\
+							<div class="mochi mochi1">\
 								<div class="tebanname">☖</div>\
 								<div class="mochimain"></div>\
 							</div>\
@@ -216,6 +217,17 @@ var Kifu = (function () {
 
         //コメント描画
         $("textarea.comment", this.id).val(this.player.getComments().join("\n"));
+
+        //最終手描画
+        if (this.lastTo) {
+            this.tds[this.lastTo.x - 1][this.lastTo.y - 1].removeClass("lastto");
+            this.lastTo = null;
+        }
+        var move = this.player.getMove();
+        if (move && move.to) {
+            this.lastTo = move.to;
+            this.tds[this.lastTo.x - 1][this.lastTo.y - 1].addClass("lastto");
+        }
     };
     Kifu.prototype.setPiece = function (x, y, piece) {
         var dom = $("img", this.tds[x - 1][y - 1]);

@@ -30,6 +30,7 @@ class Kifu{
 	kifulist;
 	public player: JKFPlayer;
 	tds: JQuery[][];
+	lastTo: {x: number; y: number;} = null;
 	constructor(public id: string){
 		this.id="#"+this.id;
 	}
@@ -44,7 +45,7 @@ class Kifu{
 				<tr>\
 					<td>\
 						<div class="inlineblock players">\
-							<div class="mochi teban mochi1">\
+							<div class="mochi mochi1">\
 								<div class="tebanname">☖</div>\
 								<div class="mochimain"></div>\
 							</div>\
@@ -253,6 +254,16 @@ class Kifu{
 		try{(<HTMLOptionElement>$("select.kifulist option", this.id)[this.player.tesuu]).selected=true}catch(e){};
 		//コメント描画
 		$("textarea.comment", this.id).val(this.player.getComments().join("\n"));
+		//最終手描画
+		if(this.lastTo){
+			this.tds[this.lastTo.x-1][this.lastTo.y-1].removeClass("lastto");
+			this.lastTo=null;
+		}
+		var move = this.player.getMove();
+		if(move && move.to){
+			this.lastTo = move.to;
+			this.tds[this.lastTo.x-1][this.lastTo.y-1].addClass("lastto");
+		}
 	}
 	setPiece(x: number, y: number, piece: Piece){
 		var dom = $("img", this.tds[x-1][y-1]);
