@@ -2,12 +2,21 @@
 	function start() {
 		try{
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
-			var target = $("#flashcontent");
 			var targetId, kifuPath;
+			var target = $("#flashcontent");
 			if(target.length>0){
 				target.replaceWith("<div id='flashcontent'></div>");
 				targetId="flashcontent";
 				kifuPath = so.variables.kifu.replace(/\.Z$/g, "");
+			}else if(typeof params!="undefined" && params.FlashVars){
+				params.FlashVars.split("&").forEach(function(kv){var s=kv.split("=");if(s[0]=="kifu"){kifuPath=s[1]}});
+				if($("#so").length==0){
+					$(document.body).prepend("<div id='so'></div>");
+				}else{
+					$("#so").replaceWith("<div id='so'></div>");
+				}
+				$("#so").css("visibility", "visible");
+				targetId="so";
 			}
 			if(!targetId) throw "棋譜が見つかりませんでした";
 			console.log("load start");
