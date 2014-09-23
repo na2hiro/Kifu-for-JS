@@ -49,7 +49,9 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 * Mac Chrome 37
 * Mac Firefox 32
+* Mac Safari
 * Android Chrome 37
+* Android Habit 1.1
 * iOS 8 Safari
 
 以下はバグを確認．お待ちください．
