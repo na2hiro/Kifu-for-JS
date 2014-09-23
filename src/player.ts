@@ -110,6 +110,9 @@ class JKFPlayer{
 	getComments(tesuu: number = this.tesuu){
 		return this.kifu.moves[tesuu].comments;
 	}
+	getMove(tesuu: number = this.tesuu){
+		return this.kifu.moves[tesuu].move;
+	}
 	getReadableKifu(tesuu: number = this.tesuu){
 		if(tesuu==0) return "開始局面";
 		if(this.kifu.moves[tesuu].special){

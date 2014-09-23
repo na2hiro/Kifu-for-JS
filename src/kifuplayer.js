@@ -486,6 +486,10 @@ var JKFPlayer = (function () {
         if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
         return this.kifu.moves[tesuu].comments;
     };
+    JKFPlayer.prototype.getMove = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        return this.kifu.moves[tesuu].move;
+    };
     JKFPlayer.prototype.getReadableKifu = function (tesuu) {
         if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
         if (tesuu == 0)
