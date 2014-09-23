@@ -1,3 +1,6 @@
+.kifuforjs{
+	width: 570px;
+}
 .kifuforjs .inlineblock{
 	display:inline-block;
 	*display: inline;
@@ -102,6 +105,6 @@
 }
 .kifuforjs ul.inline button, .kifuforjs ul.inline input{
 	height: 30px;
-	width: 50px;
+	width: 60px;
 	font-size: 18px;
 }

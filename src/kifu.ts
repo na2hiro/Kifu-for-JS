@@ -9,12 +9,13 @@ class Kifu{
 			id = "kifuforjs_"+Math.random().toString(36).slice(2);
 			document.write("<div id='"+id+"'></div>");
 		}
-		var player = new Kifu(id);
-		player.prepareDOM();
+		var kifu = new Kifu(id);
+		kifu.prepareDOM();
 		$(document).ready(()=>{
 			$.ajax(filename, {
 				success: (data)=>{
-					player.initialize(JKFPlayer.parseKIF(data));
+					kifu.filename = filename;
+					kifu.initialize(JKFPlayer.parseKIF(data));
 				},
 				error: (jqXHR, textStatus, errorThrown)=>{
 					alert("棋譜読み込みに失敗しました: "+textStatus);
@@ -24,13 +25,14 @@ class Kifu{
 				},
 			});
 		});
-		return player;
+		return kifu;
 	}
 
 	kifulist;
 	public player: JKFPlayer;
 	tds: JQuery[][];
 	lastTo: {x: number; y: number;} = null;
+	filename: string;
 	constructor(public id: string){
 		this.id="#"+this.id;
 	}
@@ -90,6 +92,9 @@ class Kifu{
 							<li><button class="dl" data-type="json">JSON</button></li>\
 							<li><button class="dl" data-type="kif">KIF</button></li>\
 						</ul>*/'\
+						<ul class="inline">\
+							<li><button class="dl">保存</button>\
+						</ul>\
 						<textarea style="width:100%" rows=10 class="comment"></textarea>\
 					</td>\
 				</tr>\
@@ -130,6 +135,11 @@ class Kifu{
 			$("ul.go", this.id).on("click", "button", function(){
 				that.go($(this).attr("data-go"));
 				that.refresh();
+			});
+			$("button.dl", this.id).on("click", ()=>{
+				if(this.filename){
+					window.open(this.filename, "kifufile");
+				}
 			});
 			/*
 			$("ul.panel", this.id).on("click", "button.dl", ()=>{

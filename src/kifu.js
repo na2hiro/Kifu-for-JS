@@ -12,12 +12,13 @@ var Kifu = (function () {
             id = "kifuforjs_" + Math.random().toString(36).slice(2);
             document.write("<div id='" + id + "'></div>");
         }
-        var player = new Kifu(id);
-        player.prepareDOM();
+        var kifu = new Kifu(id);
+        kifu.prepareDOM();
         $(document).ready(function () {
             $.ajax(filename, {
                 success: function (data) {
-                    player.initialize(JKFPlayer.parseKIF(data));
+                    kifu.filename = filename;
+                    kifu.initialize(JKFPlayer.parseKIF(data));
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert("棋譜読み込みに失敗しました: " + textStatus);
@@ -27,7 +28,7 @@ var Kifu = (function () {
                 }
             });
         });
-        return player;
+        return kifu;
     };
 
     Kifu.prototype.initialize = function (player) {
@@ -85,6 +86,9 @@ var Kifu = (function () {
 							<li><button data-go="end">&gt;|</button></li>\
 						</ul>\
 ' + '\
+						<ul class="inline">\
+							<li><button class="dl">保存</button>\
+						</ul>\
 						<textarea style="width:100%" rows=10 class="comment"></textarea>\
 					</td>\
 				</tr>\
@@ -111,6 +115,11 @@ var Kifu = (function () {
             $("ul.go", _this.id).on("click", "button", function () {
                 that.go($(this).attr("data-go"));
                 that.refresh();
+            });
+            $("button.dl", _this.id).on("click", function () {
+                if (_this.filename) {
+                    window.open(_this.filename, "kifufile");
+                }
             });
 
             /*
