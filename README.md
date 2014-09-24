@@ -65,3 +65,7 @@ CSAによる駒表現の文字列を返す
 ## TODO
 * 駒箱
 * テストを書く
+
+## license
+
+MIT License (see LICENSE.txt)
