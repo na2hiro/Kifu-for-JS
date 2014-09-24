@@ -68,3 +68,8 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 * 分岐への対応(JKF側)
 * 左右などの相対情報の付加(JKF側)
 * 文字コード切り替え
+
+## license
+[Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
+
+Other files are released under MIT license. See LICENSE.txt.

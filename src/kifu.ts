@@ -2,6 +2,13 @@
 /// <reference path="../json-kifu-format/src/normalizer.ts" />
 /// <reference path="../DefinitelyTyped/jquery/jquery.d.ts" />
 
+/** @license
+ * Kifu for JS
+ * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
+
 class Kifu{
 	static settings = {};
 	static load(filename: string, id?: string){
