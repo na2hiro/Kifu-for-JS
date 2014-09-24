@@ -71,15 +71,11 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * `normalizer.{ts/js}`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
 * `player.{ts/js}`: JKFを扱う棋譜再生盤の例
 
-## 必要条件
-### 使用に際して
-同梱予定です．
+## 依存ライブラリ
+使用に必要なものは同梱してあります．
 
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
-
-#### 開発に際して
-* [PEG.js](http://pegjs.majda.cz/): パーサコンビネータ
-
+* [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
 
 ## TODO
 KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教えて下さい．
@@ -95,3 +91,7 @@ KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教�
 * [CSA標準棋譜ファイル形式](http://www.computer-shogi.org/protocol/record_v22.html)
 * [shogi-format](https://code.google.com/p/shogi-format/): こちらは昔自ら提案したもの．大風呂敷だったため挫折しました．今回はより小さく洗練された形式を目指しており，また実装を用意し実用第一で進めていきます．
 * [棋譜の表記方法](http://www.shogi.or.jp/faq/kihuhyouki.html): 相対情報の書き方
+
+## license
+
+MIT License (see LICENSE.txt)
