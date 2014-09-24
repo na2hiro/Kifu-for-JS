@@ -1,3 +1,9 @@
+/** @license
+* Shogi.js
+* Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+* This software is released under the MIT License.
+* http://opensource.org/licenses/mit-license.php
+*/
 var Shogi = (function () {
     function Shogi() {
         this.initialize();
@@ -370,7 +376,7 @@ var Piece = (function () {
 /// <reference path="../Shogi.js/src/shogi.ts" />
 /// <reference path="./normalizer.ts" />
 /** @license
-* Shogi.js
+* JSON Kifu Format
 * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
 * This software is released under the MIT License.
 * http://opensource.org/licenses/mit-license.php
@@ -546,7 +552,7 @@ var JKFPlayer = (function () {
 /// <reference path="./JSONKifuFormat.d.ts" />
 /// <reference path="../Shogi.js/src/shogi.ts" />
 /** @license
-* Shogi.js
+* JSON Kifu Format
 * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
 * This software is released under the MIT License.
 * http://opensource.org/licenses/mit-license.php
