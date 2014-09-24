@@ -4,11 +4,16 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 ##概要
 現在仕様策定と実装を進めつつあります．
 
-* 既存のKIF, KI2, CSAと一対一に対応するJSON形式を定義し，そのJSON棋譜のtypeとする．
-* 各形式のパーサを用意し，各typeのJSON棋譜へ変換できるようにする．
-* 各既存形式は互いに足りていない情報があるため，それら全ての情報を持ち，かつ棋譜再生や表示に必要な情報を持ったnormalというtypeを導入し，これを流通用のJSON棋譜形式とする．
+* 現状の問題として，既存のKIF, KI2, CSA形式が持つ情報はバラバラであり，アプリケーション側の対応に手間がかかる．
+* 上記形式の情報に加え，棋譜再生や表示に必要な情報を持った形式をJSONで表し，これを流通用の**JSON棋譜フォーマット(JKF)**とする．
+	* JKFが一般的になれば，棋譜再生を行うアプリケーションの作成が容易になる．
+	* 一例として，JKFを元に棋譜再生を行うJKFPlayerクラス(JavaScript)を提供する．
+* KIF, KI2, CSA各形式のパーサ(JavaScript)を用意し，JKFへ変換できるようにする．
+	* これはパーサジェネレータによるパーサである．つまり，**KIF, KI2, CSA形式のEBNF表現**を提供している．これは将棋界において画期的である．
 
-| type | KIF | KI2 | CSA | normal |
+### 棋譜形式の比較
+
+| フォーマット | KIF | KI2 | CSA | JKF |
 | --- | --- | --- | --- | --- |
 | 0) 1) 元座標(from) | ○ | △(要相対逆算) | ○ | ○ |
 | 1) 取った駒(capture) | × | × | × | ○ |
@@ -29,7 +34,6 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 `JSONKifuFormat.d.ts`にある内容です．変更され得ます．
 
 * JKFの定義
-	* type `string` 形式のタイプ
 	* header `string=>string` ヘッダ情報
 	* moves `[以下]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
 		* comments `[string]` コメント
@@ -45,9 +49,9 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 			* now `TimeFormat` 1手
 			* total `TimeFormat` 合計
 		* special? `string` 特殊棋譜(CSAのTORYO, CHUDAN等)
-	* result 文字列 結果(先手,後手,上手,下手,千日手,持将棋)
+	* result 文字列 結果(先手,後手,上手,下手,千日手,持将棋) // フォーマット調査不足により未定
 * `TimeFormat` 時間を表す
-	* h `Integer` 時
+	* h? `Integer` 時
 	* m `Integer` 分
 	* s `Integer` 秒
 * `PlaceFormat` 座標を表す
@@ -64,7 +68,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
 * `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
 * `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
-* `normalizer.{ts/js}`: type={KIF/KI2/CSA}であるJSONをtype=normalであるJSONに変換するプログラム
+* `normalizer.{ts/js}`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
 * `player.{ts/js}`: JKFを扱う棋譜再生盤の例
 
 ## 必要条件
@@ -84,6 +88,7 @@ KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教�
 * 棋譜形式対応
 	* 初期局面
 	* 分岐
+	* resultの情報(例: "まで先手勝ち")をどう持つか
 
 ## reference
 
