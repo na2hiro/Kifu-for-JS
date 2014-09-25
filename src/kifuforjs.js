@@ -502,6 +502,27 @@ var Shogi = (function () {
         return ret;
     };
 
+    // (x, y)に行けるcolor側のkindの駒の動きを得る
+    Shogi.prototype.getMovesTo = function (x, y, kind, color) {
+        if (typeof color === "undefined") { color = this.turn; }
+        var to = { x: x, y: y };
+        var ret = [];
+        for (var i = 1; i <= 9; i++) {
+            for (var j = 1; j <= 9; j++) {
+                var piece = this.get(i, j);
+                if (!piece || piece.kind != kind || piece.color != color)
+                    continue;
+                var moves = this.getMovesFrom(i, j);
+                if (moves.some(function (move) {
+                    return move.to.x == x && move.to.y == y;
+                })) {
+                    ret.push({ from: { x: i, y: j }, to: to });
+                }
+            }
+        }
+        return ret;
+    };
+
     // (x, y)の駒を得る
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
@@ -911,6 +932,36 @@ var Normalizer;
                         move.promote = false;
                     }
                 }
+                var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map(function (mv) {
+                    return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from));
+                });
+                if (moveVectors.length >= 2) {
+                    var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
+                    move.relative = function () {
+                        // 上下方向唯一
+                        if (moveVectors.filter(function (mv) {
+                            return mv.y == realVector.y;
+                        }).length == 1)
+                            return YToUMD(realVector.y);
+
+                        // 左右方向唯一
+                        if (moveVectors.filter(function (mv) {
+                            return mv.x == realVector.x;
+                        }).length == 1) {
+                            if ((move.piece == "UM" || move.piece == "RY") && realVector.x == 0) {
+                                //直はだめ
+                                return XToLCR(moveVectors.filter(function (mv) {
+                                    return mv.x < 0;
+                                }).length == 0 ? -1 : 1);
+                            } else {
+                                return XToLCR(realVector.x);
+                            }
+                        }
+
+                        //上下も左右も他の駒がいる
+                        return XToLCR(realVector.x) + YToUMD(realVector.y);
+                    }();
+                }
 
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
@@ -919,6 +970,9 @@ var Normalizer;
                 }
             } else {
                 // drop
+                if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                    move.relative = "H";
+                }
                 shogi.drop(move.to.x, move.to.y, move.piece);
             }
         }
@@ -933,6 +987,25 @@ var Normalizer;
         throw "not implemented";
     }
     Normalizer.normalizeCSA = normalizeCSA;
+    function flipVector(color, vector) {
+        return color == 0 /* Black */ ? vector : { x: -vector.x, y: -vector.y };
+    }
+    function spaceship(a, b) {
+        return a == b ? 0 : (a > b ? 1 : -1);
+    }
+    function spaceshipVector(a, b) {
+        return { x: spaceship(a.x, b.x), y: spaceship(a.y, b.y) };
+    }
+
+    // yの段から移動した場合の相対情報
+    function YToUMD(y) {
+        return y == 0 ? "M" : (y > 0 ? "D" : "U");
+    }
+
+    // xの行から移動した場合の相対情報
+    function XToLCR(x) {
+        return x == 0 ? "C" : (x > 0 ? "R" : "L");
+    }
 })(Normalizer || (Normalizer = {}));
 JKFPlayer.kifParser = (function() {
   /*
