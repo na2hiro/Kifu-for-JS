@@ -4,7 +4,7 @@
 
 <script>
 $(document).ready(function() {
-	$.ajax('../oui201407080101.kif', {
+	$.ajax('../ryuou201409020101.kif', {
 		success: function(data) {
 			kifu=data;
 			parse(data);
@@ -24,7 +24,7 @@ function parse(data){
 	}
 	cnt=0;
 	while(player.backward() && cnt++<1000){}
-	player.goto(100);
+	player.goto(20);
 	console.log(player.shogi.toCSAString());
 	player.goto(10);
 	console.log(player.shogi.toCSAString());
