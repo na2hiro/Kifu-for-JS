@@ -187,6 +187,27 @@ var Shogi = (function () {
         return ret;
     };
 
+    // (x, y)に行けるcolor側のkindの駒の動きを得る
+    Shogi.prototype.getMovesTo = function (x, y, kind, color) {
+        if (typeof color === "undefined") { color = this.turn; }
+        var to = { x: x, y: y };
+        var ret = [];
+        for (var i = 1; i <= 9; i++) {
+            for (var j = 1; j <= 9; j++) {
+                var piece = this.get(i, j);
+                if (!piece || piece.kind != kind || piece.color != color)
+                    continue;
+                var moves = this.getMovesFrom(i, j);
+                if (moves.some(function (move) {
+                    return move.to.x == x && move.to.y == y;
+                })) {
+                    ret.push({ from: { x: i, y: j }, to: to });
+                }
+            }
+        }
+        return ret;
+    };
+
     // (x, y)の駒を得る
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];

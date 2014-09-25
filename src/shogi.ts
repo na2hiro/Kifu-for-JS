@@ -171,6 +171,22 @@ class Shogi{
 		}
 		return ret;
 	}
+	// (x, y)に行けるcolor側のkindの駒の動きを得る
+	getMovesTo(x: number, y: number, kind: string, color: Color = this.turn): Move[]{
+		var to = {x: x, y: y};
+		var ret = [];
+		for(var i=1; i<=9; i++){
+			for(var j=1; j<=9; j++){
+				var piece = this.get(i, j);
+				if(!piece || piece.kind!=kind || piece.color!=color) continue;
+				var moves = this.getMovesFrom(i, j);
+				if(moves.some((move)=>move.to.x==x&&move.to.y==y)){
+					ret.push({from: {x: i, y: j}, to: to});
+				}
+			}
+		}
+		return ret;
+	}
 	// (x, y)の駒を得る
 	get(x: number, y: number): Piece{
 		return this.board[x-1][y-1];
