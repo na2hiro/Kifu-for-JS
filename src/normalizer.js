@@ -53,6 +53,9 @@ var Normalizer;
                 }
             } else {
                 // drop
+                if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                    move.relative = "H";
+                }
                 shogi.drop(move.to.x, move.to.y, move.piece);
             }
         }
