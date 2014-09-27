@@ -85,7 +85,40 @@ module Normalizer{
 		return obj;
 	}
 	export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
-		throw "not implemented";
+		var shogi = new Shogi();
+		for(var i=0; i<obj.moves.length; i++){
+			var move = obj.moves[i].move;
+			if(!move) continue;
+			console.log(i, move);
+			if(move.same) move.to = obj.moves[i-1].move.to;
+			// from特定
+			var moves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
+			if(move.relative=="H" || moves.length==0){
+				// ok
+			}else if(moves.length==1){
+				move.from = moves[0].from;
+			}else{
+				// 相対逆算
+				var moveAns = filterMovesByRelatives(move.relative, shogi.turn, moves);
+				if(moveAns.length!=1) throw "相対情報が不完全で複数の候補があります";
+				move.from = moveAns[0].from;
+			}
+			if(move.from){
+				// move
+				var to = shogi.get(move.to.x, move.to.y);
+				if(to) move.capture = to.kind;
+
+				try{
+					shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+				}catch(e){
+					console.log(i, "手目で失敗しました", e);
+				}
+			}else{
+				// drop
+				shogi.drop(move.to.x, move.to.y, move.piece);
+			}
+		}
+		return obj;
 	}
 	export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
 		throw "not implemented";
@@ -106,5 +139,31 @@ module Normalizer{
 	// xの行から移動した場合の相対情報
 	function XToLCR(x: number){
 		return x==0 ? "C" : (x>0 ? "R" : "L");
+	}
+	function filterMovesByRelatives(relative: string, color: Color, moves: Move[]): Move[]{
+		var ret=[];
+		for(var i=0; i<moves.length; i++){
+			if(relative.split("").every((rel)=>moveSatisfiesRelative(rel, color, moves[i]))){
+				ret.push(moves[i]);
+			}
+		}
+		return ret;
+	}
+	function moveSatisfiesRelative(relative: string, color: Color, move: Move): boolean{
+		var vec = flipVector(color, {x: move.to.x-move.from.x, y: move.to.y-move.from.y});
+		switch(relative){
+			case "U":
+				return vec.y<0;
+			case "M":
+				return vec.y==0;
+			case "D":
+				return vec.y>0;
+			case "L":
+				return vec.x<0;
+			case "C":
+				return vec.x==0;
+			case "R":
+				return vec.x>0;
+		}
 	}
 }

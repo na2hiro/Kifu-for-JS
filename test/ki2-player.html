@@ -1,0 +1,41 @@
+<meta charset="utf-8">
+<script src="../src/kifuplayer.js" charset="utf-8"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	$.ajax('../denou3-1.ki2', {
+		success: function(data) {
+			kifu=data;
+			parse(data);
+		},
+		beforeSend: function(xhr){
+			xhr.overrideMimeType("text/html;charset=Shift_JIS");
+		},
+	}, 'text');
+});
+
+function parse(data){
+	player = JKFPlayer.parseKI2(data);
+	var cnt=0;
+	console.log(player.getReadableKifu());
+	while(player.forward() && cnt++<1000){
+		console.log(player.getReadableKifu());
+	}
+	cnt=0;
+	while(player.backward() && cnt++<1000){}
+	console.log(player.shogi.toCSAString());
+	player.goto(20);
+	console.log(player.shogi.toCSAString());
+	player.goto(10);
+	console.log(player.shogi.toCSAString());
+	player.goto(0);
+	console.log(player.shogi.toCSAString());
+	player.goto(Infinity);
+	console.log(player.shogi.toCSAString());
+	player.go(-5);
+	console.log(player.shogi.toCSAString());
+	player.go(5);
+	console.log(player.shogi.toCSAString());
+}
+</script>

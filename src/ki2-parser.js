@@ -61,9 +61,19 @@ JKFPlayer.ki2Parser = (function() {
         peg$c26 = "\u6253",
         peg$c27 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
         peg$c28 = function(pl, pi, sou, dou, pro, da) {
-        	var ret = {to: pl, piece: pi};
+        	var ret = {piece: pi};
+        	if(pl.same){
+        		ret.same = true;
+        	}else{
+        		ret.to = pl;
+        	}
         	if(pro)ret.promote=pro=="成";
-        	if(sou)ret.soutai=sou; if(dou)ret.dousa=dou; if(da)ret.da=!!da;
+        	if(da){
+        		ret.relative = "H";
+        	}else{
+        		var rel = soutaiToRelative(sou)+dousaToRelative(dou);
+        		if(rel!="") ret.relative=rel;
+        	}
         	return ret;
         },
         peg$c29 = function(x, y) {return {x:x,y:y}},
@@ -1093,6 +1103,20 @@ JKFPlayer.ki2Parser = (function() {
     			"馬": "UM",
     			"龍": "RY"
     		}[kind];
+    	}
+    	function soutaiToRelative(str){
+    		return {
+    			"左": "L",
+    			"直": "C",
+    			"右": "R",
+    		}[str] || "";
+    	}
+    	function dousaToRelative(str){
+    		return {
+    			"上": "U",
+    			"寄": "C",
+    			"引": "D",
+    		}[str] || "";
     	}
 
 
