@@ -31,14 +31,14 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * 相対逆算: 局面と座標と相対情報から，その位置に移動する駒を特定すること．
 
 ##形式の定義
-`JSONKifuFormat.d.ts`にある内容です．変更され得ます．
+`JSONKifuFormat.d.ts`にある内容です．変更され得ます．"?"はない場合があるという意味です．
 
 * JKFの定義
 	* header `string=>string` ヘッダ情報
 	* moves `[以下]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
 		* comments `[string]` コメント
 		* move? 駒の動き
-			* from `PlaceFormat?` 移動元 打った場合はなし
+			* from? `PlaceFormat` 移動元 打った場合はなし
 			* to `PlaceFormat` 移動先
 			* piece `string` 駒の種類(`FU` `KY`等のCSA形式)
 			* same? `boolean` 直前と同じ場合
