@@ -63,7 +63,7 @@
 	}
 	cnt++;
 	var scr = document.createElement("script");
-	scr.src = "https://na2hiro.github.io/Kifu-for-JS/src/kifuforjs.min.js";
+	scr.src = "https://na2hiro.github.io/Kifu-for-JS/src/kifuforjs.js";
 	scr.charset="utf-8";
 	scr.onload = function(){
 		console.log("Kifu for JS loaded");
