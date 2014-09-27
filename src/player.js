@@ -16,6 +16,36 @@ var JKFPlayer = (function () {
         this.kifu = kifu;
         this.tesuu = 0;
     };
+    JKFPlayer.parse = function (kifu, filename) {
+        if (filename) {
+            var tmp = filename.split("."), ext = tmp[tmp.length - 1].toLowerCase();
+            switch (ext) {
+                case "kif":
+                    return JKFPlayer.parseKIF(kifu);
+                case "ki2":
+                    return JKFPlayer.parseKI2(kifu);
+                case "csa":
+                    return JKFPlayer.parseCSA(kifu);
+            }
+        }
+
+        try  {
+            return JKFPlayer.parseKIF(kifu);
+        } catch (e) {
+            console.log("failed to parse as kif", e);
+        }
+        try  {
+            return JKFPlayer.parseKI2(kifu);
+        } catch (e) {
+            console.log("failed to parse as ki2", e);
+        }
+        try  {
+            return JKFPlayer.parseCSA(kifu);
+        } catch (e) {
+            console.log("failed to parse as csa", e);
+        }
+        throw "KIF, KI2, CSAいずれの形式でも失敗しました";
+    };
     JKFPlayer.parseKIF = function (kifu) {
         if (!JKFPlayer.kifParser)
             throw "パーサが読み込まれていません";
