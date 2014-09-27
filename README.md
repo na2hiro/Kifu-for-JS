@@ -2,7 +2,7 @@
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 ## 概要
 * Kifu for JSは，Kifu for FlashやJava同様，HTML内で棋譜を読み込み表示，再生を行う．
-	* **KIF**, **KI2**形式に対応．**CSA**, [**JKF**](https://github.com/na2hiro/json-kifu-format)形式はもうすぐ対応
+	* **KIF**, **KI2**, [**JKF**](https://github.com/na2hiro/json-kifu-format)形式に対応．**CSA**形式はもうすぐ対応
 * Kifu for JSブックマークレットは，1クリックでKifu for FlashやKifu for JavaをKifu for JSに置き換えて盤面を表示する．	
 * Flash, Javaなどを必要としないため，iOSやAndroidでも表示できる
 
@@ -67,7 +67,7 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 * 自動更新
 * 分岐への対応(JKF側)
 * ✓<s>左右などの相対情報の付加(JKF側)</s>
-* 文字コード切り替え
+* 文字コード自動判別
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).

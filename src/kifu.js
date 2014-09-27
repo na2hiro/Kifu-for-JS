@@ -18,6 +18,7 @@ var Kifu = (function () {
             id = "kifuforjs_" + Math.random().toString(36).slice(2);
             document.write("<div id='" + id + "'></div>");
         }
+        var tmp = filename.split("."), ext = tmp[tmp.length - 1];
         var kifu = new Kifu(id);
         kifu.prepareDOM();
         $(document).ready(function () {
@@ -30,7 +31,7 @@ var Kifu = (function () {
                     alert("棋譜読み込みに失敗しました: " + textStatus);
                 },
                 beforeSend: function (xhr) {
-                    xhr.overrideMimeType("text/html;charset=Shift_JIS");
+                    xhr.overrideMimeType("text/html;charset=" + (ext == "jkf" ? "UTF-8" : "Shift_JIS"));
                 }
             });
         });
