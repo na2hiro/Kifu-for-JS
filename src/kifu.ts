@@ -102,7 +102,7 @@ class Kifu{
 						<ul class="inline">\
 							<li><button class="dl">保存</button>\
 						</ul>\
-						<textarea style="width:100%" rows=10 class="comment"></textarea>\
+						<textarea rows="10" class="comment" disabled></textarea>\
 					</td>\
 				</tr>\
 			</tbody>\
