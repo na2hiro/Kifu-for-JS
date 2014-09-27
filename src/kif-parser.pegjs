@@ -25,8 +25,13 @@
 			"角": "KA",
 			"飛": "HI",
 			"玉": "OU",
+			"王": "OU",
 			"と": "TO",
+			"杏": "NY",
+			"圭": "NK",
+			"全": "NG",
 			"馬": "UM",
+			"竜": "RY",
 			"龍": "RY"
 		}[kind];
 	}
@@ -69,7 +74,7 @@ place = x:num y:numkan {return {x:x,y:y}} / "同　" {return null}
 num = n:[１２３４５６７８９] {return zenToN(n);}
 numkan = n:[一二三四五六七八九] {return kanToN(n);}
 
-piece = pro:"成"? p:[歩香桂銀金角飛玉と馬龍] {return kindToCSA((pro||"")+p);}
+piece = pro:"成"? p:[歩香桂銀金角飛王玉と杏圭全馬竜龍] {return kindToCSA((pro||"")+p);}
 
 from = "打" {return null} / "(" x:[1-9] y:[1-9] ")" {return {x:parseInt(x),y:parseInt(y)}}
 

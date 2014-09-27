@@ -880,8 +880,8 @@ JKFPlayer.kifParser = (function() {
         peg$c41 = /^[\u4E00\u4E8C\u4E09\u56DB\u4E94\u516D\u4E03\u516B\u4E5D]/,
         peg$c42 = { type: "class", value: "[\\u4E00\\u4E8C\\u4E09\\u56DB\\u4E94\\u516D\\u4E03\\u516B\\u4E5D]", description: "[\\u4E00\\u4E8C\\u4E09\\u56DB\\u4E94\\u516D\\u4E03\\u516B\\u4E5D]" },
         peg$c43 = function(n) {return kanToN(n);},
-        peg$c44 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u9F8D]/,
-        peg$c45 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]" },
+        peg$c44 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u738B\u7389\u3068\u674F\u572D\u5168\u99AC\u7ADC\u9F8D]/,
+        peg$c45 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u738B\\u7389\\u3068\\u674F\\u572D\\u5168\\u99AC\\u7ADC\\u9F8D]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u738B\\u7389\\u3068\\u674F\\u572D\\u5168\\u99AC\\u7ADC\\u9F8D]" },
         peg$c46 = function(pro, p) {return kindToCSA((pro||"")+p);},
         peg$c47 = "\u6253",
         peg$c48 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
@@ -2323,8 +2323,13 @@ JKFPlayer.kifParser = (function() {
     			"角": "KA",
     			"飛": "HI",
     			"玉": "OU",
+    			"王": "OU",
     			"と": "TO",
+    			"杏": "NY",
+    			"圭": "NK",
+    			"全": "NG",
     			"馬": "UM",
+    			"竜": "RY",
     			"龍": "RY"
     		}[kind];
     	}
@@ -2437,8 +2442,8 @@ JKFPlayer.ki2Parser = (function() {
         peg$c32 = "\u3000",
         peg$c33 = { type: "literal", value: "\u3000", description: "\"\\u3000\"" },
         peg$c34 = function() {return {same:true}},
-        peg$c35 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u7389\u3068\u99AC\u9F8D]/,
-        peg$c36 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u7389\\u3068\\u99AC\\u9F8D]" },
+        peg$c35 = /^[\u6B69\u9999\u6842\u9280\u91D1\u89D2\u98DB\u738B\u7389\u3068\u674F\u572D\u5168\u99AC\u7ADC\u9F8D]/,
+        peg$c36 = { type: "class", value: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u738B\\u7389\\u3068\\u674F\\u572D\\u5168\\u99AC\\u7ADC\\u9F8D]", description: "[\\u6B69\\u9999\\u6842\\u9280\\u91D1\\u89D2\\u98DB\\u738B\\u7389\\u3068\\u674F\\u572D\\u5168\\u99AC\\u7ADC\\u9F8D]" },
         peg$c37 = function(pro, p) {return kindToCSA((pro||"")+p)},
         peg$c38 = /^[\u5DE6\u76F4\u53F3]/,
         peg$c39 = { type: "class", value: "[\\u5DE6\\u76F4\\u53F3]", description: "[\\u5DE6\\u76F4\\u53F3]" },
@@ -3454,8 +3459,13 @@ JKFPlayer.ki2Parser = (function() {
     			"角": "KA",
     			"飛": "HI",
     			"玉": "OU",
+    			"王": "OU",
     			"と": "TO",
+    			"杏": "NY",
+    			"圭": "NK",
+    			"全": "NG",
     			"馬": "UM",
+    			"竜": "RY",
     			"龍": "RY"
     		}[kind];
     	}
