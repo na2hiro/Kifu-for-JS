@@ -87,6 +87,8 @@ KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教�
 * パーサテスト追加
 * 棋譜形式対応
 	* 初期局面
+		* フォーマット
+		* プリセット(平手, ~落ち等)
 	* 分岐
 	* resultの情報(例: "まで先手勝ち")をどう持つか
 
@@ -95,6 +97,7 @@ KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教�
 * [CSA標準棋譜ファイル形式](http://www.computer-shogi.org/protocol/record_v22.html)
 * [shogi-format](https://code.google.com/p/shogi-format/): こちらは昔自ら提案したもの．大風呂敷だったため挫折しました．今回はより小さく洗練された形式を目指しており，また実装を用意し実用第一で進めていきます．
 * [棋譜の表記方法](http://www.shogi.or.jp/faq/kihuhyouki.html): 相対情報の書き方
+* [棋譜の形式について - 将棋の棋譜でーたべーす](http://wiki.optus.nu/shogi/index.php?post=%B4%FD%C9%E8%A4%CE%B7%C1%BC%B0%A4%CB%A4%C4%A4%A4%A4%C6): 出回っている棋譜形式のまとめ
 
 ## license
 
