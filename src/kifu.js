@@ -24,7 +24,7 @@ var Kifu = (function () {
             $.ajax(filename, {
                 success: function (data) {
                     kifu.filename = filename;
-                    kifu.initialize(JKFPlayer.parseKIF(data));
+                    kifu.initialize(JKFPlayer.parse(data, filename));
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert("棋譜読み込みに失敗しました: " + textStatus);

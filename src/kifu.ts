@@ -22,7 +22,7 @@ class Kifu{
 			$.ajax(filename, {
 				success: (data)=>{
 					kifu.filename = filename;
-					kifu.initialize(JKFPlayer.parseKIF(data));
+					kifu.initialize(JKFPlayer.parse(data, filename));
 				},
 				error: (jqXHR, textStatus, errorThrown)=>{
 					alert("棋譜読み込みに失敗しました: "+textStatus);

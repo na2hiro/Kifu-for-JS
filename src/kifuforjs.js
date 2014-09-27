@@ -24,7 +24,7 @@ var Kifu = (function () {
             $.ajax(filename, {
                 success: function (data) {
                     kifu.filename = filename;
-                    kifu.initialize(JKFPlayer.parseKIF(data));
+                    kifu.initialize(JKFPlayer.parse(data, filename));
                 },
                 error: function (jqXHR, textStatus, errorThrown) {
                     alert("棋譜読み込みに失敗しました: " + textStatus);
@@ -726,6 +726,36 @@ var JKFPlayer = (function () {
         this.kifu = kifu;
         this.tesuu = 0;
     };
+    JKFPlayer.parse = function (kifu, filename) {
+        if (filename) {
+            var tmp = filename.split("."), ext = tmp[tmp.length - 1].toLowerCase();
+            switch (ext) {
+                case "kif":
+                    return JKFPlayer.parseKIF(kifu);
+                case "ki2":
+                    return JKFPlayer.parseKI2(kifu);
+                case "csa":
+                    return JKFPlayer.parseCSA(kifu);
+            }
+        }
+
+        try  {
+            return JKFPlayer.parseKIF(kifu);
+        } catch (e) {
+            console.log("failed to parse as kif", e);
+        }
+        try  {
+            return JKFPlayer.parseKI2(kifu);
+        } catch (e) {
+            console.log("failed to parse as ki2", e);
+        }
+        try  {
+            return JKFPlayer.parseCSA(kifu);
+        } catch (e) {
+            console.log("failed to parse as csa", e);
+        }
+        throw "KIF, KI2, CSAいずれの形式でも失敗しました";
+    };
     JKFPlayer.parseKIF = function (kifu) {
         if (!JKFPlayer.kifParser)
             throw "パーサが読み込まれていません";
@@ -980,7 +1010,45 @@ var Normalizer;
     }
     Normalizer.normalizeKIF = normalizeKIF;
     function normalizeKI2(obj) {
-        throw "not implemented";
+        var shogi = new Shogi();
+        for (var i = 0; i < obj.moves.length; i++) {
+            var move = obj.moves[i].move;
+            if (!move)
+                continue;
+            console.log(i, move);
+            if (move.same)
+                move.to = obj.moves[i - 1].move.to;
+
+            // from特定
+            var moves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
+            if (move.relative == "H" || moves.length == 0) {
+                // ok
+            } else if (moves.length == 1) {
+                move.from = moves[0].from;
+            } else {
+                // 相対逆算
+                var moveAns = filterMovesByRelatives(move.relative, shogi.turn, moves);
+                if (moveAns.length != 1)
+                    throw "相対情報が不完全で複数の候補があります";
+                move.from = moveAns[0].from;
+            }
+            if (move.from) {
+                // move
+                var to = shogi.get(move.to.x, move.to.y);
+                if (to)
+                    move.capture = to.kind;
+
+                try  {
+                    shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+                } catch (e) {
+                    console.log(i, "手目で失敗しました", e);
+                }
+            } else {
+                // drop
+                shogi.drop(move.to.x, move.to.y, move.piece);
+            }
+        }
+        return obj;
     }
     Normalizer.normalizeKI2 = normalizeKI2;
     function normalizeCSA(obj) {
@@ -1005,6 +1073,34 @@ var Normalizer;
     // xの行から移動した場合の相対情報
     function XToLCR(x) {
         return x == 0 ? "C" : (x > 0 ? "R" : "L");
+    }
+    function filterMovesByRelatives(relative, color, moves) {
+        var ret = [];
+        for (var i = 0; i < moves.length; i++) {
+            if (relative.split("").every(function (rel) {
+                return moveSatisfiesRelative(rel, color, moves[i]);
+            })) {
+                ret.push(moves[i]);
+            }
+        }
+        return ret;
+    }
+    function moveSatisfiesRelative(relative, color, move) {
+        var vec = flipVector(color, { x: move.to.x - move.from.x, y: move.to.y - move.from.y });
+        switch (relative) {
+            case "U":
+                return vec.y < 0;
+            case "M":
+                return vec.y == 0;
+            case "D":
+                return vec.y > 0;
+            case "L":
+                return vec.x < 0;
+            case "C":
+                return vec.x == 0;
+            case "R":
+                return vec.x > 0;
+        }
     }
 })(Normalizer || (Normalizer = {}));
 JKFPlayer.kifParser = (function() {
@@ -2621,9 +2717,19 @@ JKFPlayer.ki2Parser = (function() {
         peg$c26 = "\u6253",
         peg$c27 = { type: "literal", value: "\u6253", description: "\"\\u6253\"" },
         peg$c28 = function(pl, pi, sou, dou, pro, da) {
-        	var ret = {to: pl, piece: pi};
+        	var ret = {piece: pi};
+        	if(pl.same){
+        		ret.same = true;
+        	}else{
+        		ret.to = pl;
+        	}
         	if(pro)ret.promote=pro=="成";
-        	if(sou)ret.soutai=sou; if(dou)ret.dousa=dou; if(da)ret.da=!!da;
+        	if(da){
+        		ret.relative = "H";
+        	}else{
+        		var rel = soutaiToRelative(sou)+dousaToRelative(dou);
+        		if(rel!="") ret.relative=rel;
+        	}
         	return ret;
         },
         peg$c29 = function(x, y) {return {x:x,y:y}},
@@ -3653,6 +3759,20 @@ JKFPlayer.ki2Parser = (function() {
     			"馬": "UM",
     			"龍": "RY"
     		}[kind];
+    	}
+    	function soutaiToRelative(str){
+    		return {
+    			"左": "L",
+    			"直": "C",
+    			"右": "R",
+    		}[str] || "";
+    	}
+    	function dousaToRelative(str){
+    		return {
+    			"上": "U",
+    			"寄": "C",
+    			"引": "D",
+    		}[str] || "";
     	}
 
 
