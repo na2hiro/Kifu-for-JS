@@ -25,6 +25,8 @@ class JKFPlayer{
 		if(filename){
 			var tmp = filename.split("."), ext = tmp[tmp.length-1].toLowerCase();
 			switch(ext){
+				case "jkf":
+					return JKFPlayer.parseJKF(kifu);
 				case "kif":
 					return JKFPlayer.parseKIF(kifu);
 				case "ki2":
@@ -34,6 +36,11 @@ class JKFPlayer{
 			}
 		}
 		// 不明
+		try{
+			return JKFPlayer.parseJKF(kifu);
+		}catch(e){
+			console.log("failed to parse as kif", e);
+		}
 		try{
 			return JKFPlayer.parseKIF(kifu);
 		}catch(e){
@@ -50,6 +57,10 @@ class JKFPlayer{
 			console.log("failed to parse as csa", e);
 		}
 		throw "KIF, KI2, CSAいずれの形式でも失敗しました";
+	}
+	static parseJKF(kifu: string){
+		console.log("parseJKF", kifu);
+		return new JKFPlayer(JSON.parse(kifu));
 	}
 	static parseKIF(kifu: string){
 		if(!JKFPlayer.kifParser) throw "パーサが読み込まれていません";
@@ -176,6 +187,9 @@ class JKFPlayer{
 	}
 	getMoveTurn(tesuu: number){
 		return tesuu%2==1 ? Color.Black : Color.White;
+	}
+	toJKF(){
+		return JSON.stringify(this.kifu);
 	}
 
 	// private
