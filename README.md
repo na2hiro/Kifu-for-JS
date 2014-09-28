@@ -23,7 +23,7 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 ### 使い方
 `test/loadKif.html`に例
 
-ヘッダ中に次のコードを挿入する．ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．
+jQuery(2.1以降で動作確認), kifuforjs.js, kifuforjs.cssを読み込む．ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
@@ -42,6 +42,8 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 ```html
 <script>Kifu.load("../json-kifu-format/jt201409130101.kif", "board");</script>
+~~~
+<div id="board"></div>
 ```
 
 ## 動作確認
@@ -63,10 +65,10 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 * Internet Explorer
 
 ## TODO
+棋譜そのものへの対応については[json-kifu-formatのTODO](https://github.com/na2hiro/json-kifu-format)を参照
+
 * より多くの環境で動作確認
 * 自動更新
-* 分岐への対応(JKF側)
-* ✓<s>左右などの相対情報の付加(JKF側)</s>
 * 文字コード自動判別
 
 ## license
