@@ -1,4 +1,4 @@
-# Kifu for JS
+# Kifu for JS (ver. 1.0.0)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 ## 概要
 * Kifu for JSは，Kifu for FlashやJava同様，HTML内で棋譜を読み込み表示，再生を行う．
@@ -42,13 +42,9 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 ```html
 <script>Kifu.load("../json-kifu-format/jt201409130101.kif", "board");</script>
-~~~
+〜
 <div id="board"></div>
 ```
-
-## ダウンロード
-* 最新バージョン: 1.0.0
-* git clone，あるいは右のDownload ZIPで必要なファイル
 
 ## 動作環境
 以下は確認済み．
@@ -69,11 +65,9 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 * Internet Explorer
 
 ## TODO
-棋譜そのものへの対応については[json-kifu-formatのTODO](https://github.com/na2hiro/json-kifu-format)を参照
-
-* より多くの環境で動作確認
-* 自動更新
-* 文字コード自動判別
+* [issues](https://github.com/na2hiro/Kifu-for-JS/issues)参照．
+	* 要望やバグ報告もこちらへよろしくお願いします．
+* 棋譜形式そのものへの対応については[json-kifu-formatのissues](https://github.com/na2hiro/json-kifu-format)参照．
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
