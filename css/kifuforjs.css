@@ -105,8 +105,11 @@
 }
 .kifuforjs ul.inline button, .kifuforjs ul.inline input{
 	height: 30px;
-	width: 60px;
+	width: 55px;
 	font-size: 18px;
+}
+.kifuforjs ul.inline button.credit{
+	font-size: 15px;
 }
 .kifuforjs textarea{
 	color: black;

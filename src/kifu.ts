@@ -3,13 +3,14 @@
 /// <reference path="../DefinitelyTyped/jquery/jquery.d.ts" />
 
 /** @license
- * Kifu for JS (ver. 1.0.0)
+ * Kifu for JS
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
 
 class Kifu{
+	static version = "1.0.0";
 	static settings = {};
 	static load(filename: string, id?: string){
 		if(!id){
@@ -102,6 +103,7 @@ class Kifu{
 						</ul>*/'\
 						<ul class="inline">\
 							<li><button class="dl">保存</button>\
+							<li><button class="credit">credit</button>\
 						</ul>\
 						<textarea rows="10" class="comment" disabled></textarea>\
 					</td>\
@@ -147,6 +149,11 @@ class Kifu{
 			$("button.dl", this.id).on("click", ()=>{
 				if(this.filename){
 					window.open(this.filename, "kifufile");
+				}
+			});
+			$("button.credit", this.id).on("click", ()=>{
+				if(confirm("*** CREDIT ***\nKifu for JS (ver. "+Kifu.version+")\n    by na2hiro\n    under the MIT License\n\n公式サイトを開きますか？")){
+					window.open("https://github.com/na2hiro/Kifu-for-JS", "kifufile");
 				}
 			});
 			/*
