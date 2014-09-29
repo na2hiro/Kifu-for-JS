@@ -84,13 +84,8 @@ JSONで一般的なUTF-8を使用します．
 ## TODO
 KIF, KI2, CSAの詳しい仕様を知らないので，漏れがあったら教えて下さい．
 
-* パーサテスト追加
-* 棋譜形式対応
-	* 初期局面
-		* フォーマット
-		* プリセット(平手, ~落ち等)
-	* 分岐
-	* resultの情報(例: "まで先手勝ち")をどう持つか
+* [issues](https://github.com/na2hiro/json-kifu-format/issues)参照．
+
 
 ## reference
 
