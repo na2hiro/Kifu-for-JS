@@ -46,7 +46,11 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 <div id="board"></div>
 ```
 
-## 動作確認
+## ダウンロード
+* 最新バージョン: 1.0.0
+* git clone，あるいは右のDownload ZIPで必要なファイル
+
+## 動作環境
 以下は確認済み．
 
 * Mac Chrome 37

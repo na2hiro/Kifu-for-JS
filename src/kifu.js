@@ -2,7 +2,7 @@
 /// <reference path="../json-kifu-format/src/normalizer.ts" />
 /// <reference path="../DefinitelyTyped/jquery/jquery.d.ts" />
 /** @license
-* Kifu for JS
+* Kifu for JS (ver. 1.0.0)
 * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
 * This software is released under the MIT License.
 * http://opensource.org/licenses/mit-license.php
