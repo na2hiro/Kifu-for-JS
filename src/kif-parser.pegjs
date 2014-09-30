@@ -43,9 +43,7 @@
 }
 
 kifu
- = version headers:headers split? moves:moves res:result? {return {header:headers, moves:moves,result:res, type:"kif"}}
-
-version = "#" nonl* nl / ""
+ = skipline* headers:headers split? moves:moves res:result? {return {header:headers, moves:moves,result:res, type:"kif"}}
 
 // ヘッダ
 headers
@@ -87,5 +85,8 @@ comment = "*" comm:nonl* nl {return comm.join("")}
 
 result = "まで" [0-9]+ "手で" win:[先後] "手の勝ち" nl {return win[0]}
 
-nl = "\r"? "\n"
+
+nl = newline skipline*
+skipline = ("#" nonl* newline)
+newline = "\r"? "\n"
 nonl = [^\r\n]
