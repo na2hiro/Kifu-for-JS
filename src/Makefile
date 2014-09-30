@@ -7,5 +7,9 @@ ki2: ki2-parser.pegjs
 csa: csa-parser.pegjs
 	pegjs -e JKFPlayer.csaParser csa-parser.pegjs
 merge: kif ki2 csa
-	cat ../Shogi.js/src/shogi.js player.js normalizer.js kif-parser.js ki2-parser.js csa-parser.js > kifuplayer.js
+	cat ../Shogi.js/src/shogi.js player.js normalizer.js kif-parser.js ki2-parser.js csa-parser.js post-player.js > kifuplayer.js
+test: all
+	node ../test/kif-test.js
+	node ../test/ki2-test.js
+	node ../test/csa-test.js
 

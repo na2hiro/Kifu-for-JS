@@ -407,6 +407,18 @@ var JKFPlayer = (function () {
         this.shogi = new Shogi();
         this.initialize(kifu);
     }
+    JKFPlayer.log = function () {
+        var lg = [];
+        for (var _i = 0; _i < (arguments.length - 0); _i++) {
+            lg[_i] = arguments[_i + 0];
+        }
+        if (JKFPlayer.debug) {
+            console.log(lg);
+        } else {
+            JKFPlayer._log.push(lg);
+        }
+    };
+
     JKFPlayer.prototype.initialize = function (kifu) {
         this.kifu = kifu;
         this.tesuu = 0;
@@ -429,45 +441,40 @@ var JKFPlayer = (function () {
         try  {
             return JKFPlayer.parseJKF(kifu);
         } catch (e) {
-            console.log("failed to parse as kif", e);
-        }
-        try  {
-            return JKFPlayer.parseKIF(kifu);
-        } catch (e) {
-            console.log("failed to parse as kif", e);
+            JKFPlayer.log("failed to parse as kif", e);
         }
         try  {
             return JKFPlayer.parseKI2(kifu);
         } catch (e) {
-            console.log("failed to parse as ki2", e);
+            JKFPlayer.log("failed to parse as ki2", e);
         }
         try  {
             return JKFPlayer.parseCSA(kifu);
         } catch (e) {
-            console.log("failed to parse as csa", e);
+            JKFPlayer.log("failed to parse as csa", e);
         }
         throw "KIF, KI2, CSAいずれの形式でも失敗しました";
     };
     JKFPlayer.parseJKF = function (kifu) {
-        console.log("parseJKF", kifu);
+        JKFPlayer.log("parseJKF", kifu);
         return new JKFPlayer(JSON.parse(kifu));
     };
     JKFPlayer.parseKIF = function (kifu) {
         if (!JKFPlayer.kifParser)
             throw "パーサが読み込まれていません";
-        console.log("parseKIF", kifu);
+        JKFPlayer.log("parseKIF", kifu);
         return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
     };
     JKFPlayer.parseKI2 = function (kifu) {
         if (!JKFPlayer.ki2Parser)
             throw "パーサが読み込まれていません";
-        console.log("parseKI2", kifu);
+        JKFPlayer.log("parseKI2", kifu);
         return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
     };
     JKFPlayer.parseCSA = function (kifu) {
         if (!JKFPlayer.csaParser)
             throw "パーサが読み込まれていません";
-        console.log("parseCSA", kifu);
+        JKFPlayer.log("parseCSA", kifu);
         return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
     };
 
@@ -519,7 +526,7 @@ var JKFPlayer = (function () {
         var move = this.kifu.moves[this.tesuu].move;
         if (!move)
             return true;
-        console.log("forward", this.tesuu, move);
+        JKFPlayer.log("forward", this.tesuu, move);
         this.doMove(move);
         return true;
     };
@@ -531,7 +538,7 @@ var JKFPlayer = (function () {
             this.tesuu--;
             return true;
         }
-        console.log("backward", this.tesuu - 1, move);
+        JKFPlayer.log("backward", this.tesuu - 1, move);
         this.undoMove(move);
         this.tesuu--;
         return true;
@@ -612,6 +619,8 @@ var JKFPlayer = (function () {
             this.shogi.undrop(move.to.x, move.to.y);
         }
     };
+    JKFPlayer.debug = false;
+    JKFPlayer._log = [];
     return JKFPlayer;
 })();
 /// <reference path="./JSONKifuFormat.d.ts" />
@@ -647,7 +656,6 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
-            console.log(i, move);
             if (move.from) {
                 // move
                 if (move.same)
@@ -695,7 +703,7 @@ var Normalizer;
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
                 } catch (e) {
-                    console.log(i, "手目で失敗しました", e);
+                    throw i + "手目で失敗しました: " + e;
                 }
             } else {
                 // drop
@@ -714,7 +722,6 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
-            console.log(i, move);
             if (move.same)
                 move.to = obj.moves[i - 1].move.to;
 
@@ -740,7 +747,7 @@ var Normalizer;
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
                 } catch (e) {
-                    console.log(i, "手目で失敗しました", e);
+                    throw i + "手目で失敗しました: " + e;
                 }
             } else {
                 // drop
@@ -4683,3 +4690,5 @@ JKFPlayer.csaParser = (function() {
     parse:       parse
   };
 })();
+if(typeof module!="undefined"){module.exports = JKFPlayer;}
+

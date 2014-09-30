@@ -37,7 +37,6 @@ module Normalizer{
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;
-			console.log(i, move);
 			if(move.from){
 				// move
 				if(move.same) move.to = obj.moves[i-1].move.to;
@@ -72,7 +71,7 @@ module Normalizer{
 				try{
 					shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
 				}catch(e){
-					console.log(i, "手目で失敗しました", e);
+					throw i+"手目で失敗しました: "+e;
 				}
 			}else{
 				// drop
@@ -89,7 +88,6 @@ module Normalizer{
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;
-			console.log(i, move);
 			if(move.same) move.to = obj.moves[i-1].move.to;
 			// from特定
 			var moves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
@@ -111,7 +109,7 @@ module Normalizer{
 				try{
 					shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
 				}catch(e){
-					console.log(i, "手目で失敗しました", e);
+					throw i+"手目で失敗しました: "+e;
 				}
 			}else{
 				// drop

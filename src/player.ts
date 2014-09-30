@@ -13,6 +13,15 @@ class JKFPlayer{
 	shogi: Shogi;
 	kifu: JSONKifuFormat;
 	tesuu: number;
+	static debug = false;
+	static _log = [];
+	static log(...lg: any[]){
+		if(JKFPlayer.debug){
+			console.log(lg);
+		}else{
+			JKFPlayer._log.push(lg);
+		}
+	}
 	constructor(kifu: JSONKifuFormat){
 		this.shogi = new Shogi();
 		this.initialize(kifu);
@@ -39,42 +48,37 @@ class JKFPlayer{
 		try{
 			return JKFPlayer.parseJKF(kifu);
 		}catch(e){
-			console.log("failed to parse as kif", e);
-		}
-		try{
-			return JKFPlayer.parseKIF(kifu);
-		}catch(e){
-			console.log("failed to parse as kif", e);
+			JKFPlayer.log("failed to parse as kif", e);
 		}
 		try{
 			return JKFPlayer.parseKI2(kifu);
 		}catch(e){
-			console.log("failed to parse as ki2", e);
+			JKFPlayer.log("failed to parse as ki2", e);
 		}
 		try{
 			return JKFPlayer.parseCSA(kifu);
 		}catch(e){
-			console.log("failed to parse as csa", e);
+			JKFPlayer.log("failed to parse as csa", e);
 		}
 		throw "KIF, KI2, CSAいずれの形式でも失敗しました";
 	}
 	static parseJKF(kifu: string){
-		console.log("parseJKF", kifu);
+		JKFPlayer.log("parseJKF", kifu);
 		return new JKFPlayer(JSON.parse(kifu));
 	}
 	static parseKIF(kifu: string){
 		if(!JKFPlayer.kifParser) throw "パーサが読み込まれていません";
-		console.log("parseKIF", kifu);
+		JKFPlayer.log("parseKIF", kifu);
 		return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
 	}
 	static parseKI2(kifu: string){
 		if(!JKFPlayer.ki2Parser) throw "パーサが読み込まれていません";
-		console.log("parseKI2", kifu);
+		JKFPlayer.log("parseKI2", kifu);
 		return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
 	}
 	static parseCSA(kifu: string){
 		if(!JKFPlayer.csaParser) throw "パーサが読み込まれていません";
-		console.log("parseCSA", kifu);
+		JKFPlayer.log("parseCSA", kifu);
 		return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
 	}
 	static kifParser: {parse: (kifu: string)=>JSONKifuFormat};
@@ -126,7 +130,7 @@ class JKFPlayer{
 		this.tesuu++;
 		var move = this.kifu.moves[this.tesuu].move;
 		if(!move) return true;
-		console.log("forward", this.tesuu, move);
+		JKFPlayer.log("forward", this.tesuu, move);
 		this.doMove(move);
 		return true;
 	}
@@ -134,7 +138,7 @@ class JKFPlayer{
 		if(this.tesuu<=0) return false;
 		var move = this.kifu.moves[this.tesuu].move;
 		if(!move){ this.tesuu--; return true; }
-		console.log("backward", this.tesuu-1, move);
+		JKFPlayer.log("backward", this.tesuu-1, move);
 		this.undoMove(move);
 		this.tesuu--;
 		return true;

@@ -31,7 +31,6 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
-            console.log(i, move);
             if (move.from) {
                 // move
                 if (move.same)
@@ -79,7 +78,7 @@ var Normalizer;
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
                 } catch (e) {
-                    console.log(i, "手目で失敗しました", e);
+                    throw i + "手目で失敗しました: " + e;
                 }
             } else {
                 // drop
@@ -98,7 +97,6 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
-            console.log(i, move);
             if (move.same)
                 move.to = obj.moves[i - 1].move.to;
 
@@ -124,7 +122,7 @@ var Normalizer;
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
                 } catch (e) {
-                    console.log(i, "手目で失敗しました", e);
+                    throw i + "手目で失敗しました: " + e;
                 }
             } else {
                 // drop

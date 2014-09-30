@@ -18,7 +18,7 @@ $(document).ready(function() {
 function parse(data){
 	player = JKFPlayer.parseKIF(data);
 	var cnt=0;
-		console.log(player.getReadableKifu());
+	console.log(player.getReadableKifu());
 	while(player.forward() && cnt++<1000){
 		console.log(player.getReadableKifu());
 	}
