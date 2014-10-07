@@ -43,7 +43,7 @@
 }
 
 kifu
- = skipline* headers:headers split? moves:moves res:result? {return {header:headers, moves:moves,result:res, type:"kif"}}
+ = skipline* headers:headers split? moves:moves res:result? nl? {return {header:headers, moves:moves,result:res, type:"kif"}}
 
 // ヘッダ
 headers
