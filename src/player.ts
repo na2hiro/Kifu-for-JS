@@ -122,7 +122,20 @@ class JKFPlayer{
 	static specialToKan(special: string){
 		return {
 			"TORYO": "投了",
-		}[special];
+			"CHUDAN": "中断",
+			"SENNICHITE": "千日手",
+			"TIME_UP": "時間切れ",
+			"ILLEGAL_MOVE": "反則負け",
+			"+ILLEGAL_ACTION": "後手反則負け",
+			"-ILLEGAL_ACTION": "先手反則負け",
+			"JISHOGI": "持将棋",
+			"KACHI": "勝ち宣言",
+			"HIKIWAKE": "引き分け宣言",
+			"MATTA": "待った",
+			"TSUMI": "詰",
+			"FUZUMI": "不詰",
+			"ERROR": "エラー",
+		}[special] || special;
 	}
 
 	forward(){
