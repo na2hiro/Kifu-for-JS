@@ -17,24 +17,28 @@ class Kifu{
 			id = "kifuforjs_"+Math.random().toString(36).slice(2);
 			document.write("<div id='"+id+"'></div>");
 		}
-		var tmp = filename.split("."), ext = tmp[tmp.length-1];
 		var kifu = new Kifu(id);
 		kifu.prepareDOM();
 		$(document).ready(()=>{
-			$.ajax(filename, {
-				success: (data)=>{
-					kifu.filename = filename;
-					kifu.initialize(JKFPlayer.parse(data, filename));
-				},
-				error: (jqXHR, textStatus, errorThrown)=>{
-					alert("棋譜読み込みに失敗しました: "+textStatus);
-				},
-				beforeSend: (xhr)=>{
-					xhr.overrideMimeType("text/html;charset="+(ext=="jkf" ? "UTF-8" : "Shift_JIS"));
-				},
+			Kifu.ajax(filename, (data)=>{
+				kifu.filename = filename;
+				kifu.initialize(JKFPlayer.parse(data, filename));
 			});
 		});
 		return kifu;
+	}
+	static ajax(filename, onSuccess){
+		var tmp = filename.split("."), ext = tmp[tmp.length-1];
+		var encoding = ext=="jkf" ? "UTF-8" : "Shift_JIS";
+		$.ajax(filename, {
+			success: onSuccess,
+			error: (jqXHR, textStatus, errorThrown)=>{
+				alert("棋譜読み込みに失敗しました: "+textStatus);
+			},
+			beforeSend: (xhr)=>{
+				xhr.overrideMimeType("text/html;charset="+encoding);
+			},
+		});
 	}
 
 	kifulist;
@@ -42,6 +46,7 @@ class Kifu{
 	tds: JQuery[][];
 	lastTo: {x: number; y: number;} = null;
 	filename: string;
+	timerAutoload: number;
 	constructor(public id: string){
 		this.id="#"+this.id;
 	}
@@ -62,6 +67,17 @@ class Kifu{
 							</div>\
 							<div class="mochi">\
 								<select class="kifulist" size="7"></select>\
+								<ul class="lines">\
+									<li><button class="dl">棋譜保存</button>\
+									<li>\
+										<select class="autoload">\
+											<option value="0">自動更新しない\
+											<option value="30">自動更新30秒毎\
+											<option value="60">自動更新1分毎\
+											<option value="180">自動更新3分毎\
+										</select>\
+									</li>\
+								</ul>\
 							</div>\
 						</div>\
 					</td>\
@@ -97,14 +113,13 @@ class Kifu{
 							<li><button data-go="10">&gt;&gt;</button></li>\
 							<li><button data-go="end">&gt;|</button></li>\
 						</ul>\
+						<ul class="inline">\
+							<li><button class="credit">credit</button>\
+						</ul>\
 '+/*						<ul class="inline panel" style="margin:0 auto;">\
 							<li><button class="dl" data-type="json">JSON</button></li>\
 							<li><button class="dl" data-type="kif">KIF</button></li>\
 						</ul>*/'\
-						<ul class="inline">\
-							<li><button class="dl">保存</button>\
-							<li><button class="credit">credit</button>\
-						</ul>\
 						<textarea rows="10" class="comment" disabled></textarea>\
 					</td>\
 				</tr>\
@@ -146,9 +161,20 @@ class Kifu{
 				that.go($(this).attr("data-go"));
 				that.refresh();
 			});
+			$("select.autoload", this.id).change(function(){
+				if(that.timerAutoload){
+					clearInterval(that.timerAutoload);
+				}
+				var s = parseInt($(this).val());
+				if(!isNaN(s) && s>0){
+					that.timerAutoload = setInterval(()=>{
+						that.reload();
+					}, s*1000);
+				}
+			});
 			$("button.dl", this.id).on("click", ()=>{
 				if(this.filename){
-					window.open(this.filename, "kifufile");
+					window.open(this.filename);
 				}
 			});
 			$("button.credit", this.id).on("click", ()=>{
@@ -347,6 +373,15 @@ class Kifu{
 	}
 	setPlayer(color, name){
 		$("div.mochi.mochi"+color+" .tebanname", this.id).text(Kifu.colorToMark(color)+name);
+	}
+	reload(){
+		Kifu.ajax(this.filename, (data)=>{
+			JKFPlayer.log("reload");
+			var tesuu = this.player.tesuu == this.player.kifu.moves.length-1 ? Infinity : this.player.tesuu;
+			var player = JKFPlayer.parse(data, this.filename);
+			player.goto(tesuu);
+			this.initialize(player);
+		});
 	}
 
 	static numToKanji(n: number): string{
