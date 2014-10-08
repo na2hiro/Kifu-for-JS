@@ -31,13 +31,22 @@ class Kifu{
 		var tmp = filename.split("."), ext = tmp[tmp.length-1];
 		var encoding = ext=="jkf" ? "UTF-8" : "Shift_JIS";
 		$.ajax(filename, {
-			success: onSuccess,
+			success: (data, textStatus)=>{
+				if(textStatus=="notmodified"){
+					console.log("kifu not modified");
+					return;
+				}
+				onSuccess(data);
+			},
 			error: (jqXHR, textStatus, errorThrown)=>{
-				alert("棋譜読み込みに失敗しました: "+textStatus);
+				if(textStatus!="notmodified"){
+					alert("棋譜読み込みに失敗しました: "+textStatus);
+				}
 			},
 			beforeSend: (xhr)=>{
 				xhr.overrideMimeType("text/html;charset="+encoding);
 			},
+			ifModified: true,
 		});
 	}
 
