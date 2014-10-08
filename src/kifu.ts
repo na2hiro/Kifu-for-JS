@@ -277,16 +277,25 @@ class Kifu{
 		//手数描画
 		$("ul.go form input", this.id).val(this.player.tesuu.toString());
 		try{(<HTMLOptionElement>$("select.kifulist option", this.id)[this.player.tesuu]).selected=true}catch(e){};
-		//コメント描画
-		$("textarea.comment", this.id).val(this.player.getComments().join("\n"));
-		//最終手描画
+		//最終手描画戻す
 		if(this.lastTo){
 			this.tds[this.lastTo.x-1][this.lastTo.y-1].removeClass("lastto");
 			this.lastTo=null;
 		}
-		var move = this.player.getMove();
-		if(move && move.to){
-			this.lastTo = move.to;
+
+		var nowComments = this.player.getComments();
+		var nowMove = this.player.getMove();
+		if(this.player.tesuu==this.player.kifu.moves.length-1){
+			//最終手に動きがない(≒specialである)場合は直前の一手を採用
+			if(nowComments.length==0) nowComments = this.player.getComments(this.player.tesuu-1);
+			if(!nowMove) nowMove = this.player.getMove(this.player.tesuu-1);
+		}
+		//コメント描画
+		$("textarea.comment", this.id).val(nowComments.join("\n"));
+
+		//最終手描画
+		if(nowMove && nowMove.to){
+			this.lastTo = nowMove.to;
 			this.tds[this.lastTo.x-1][this.lastTo.y-1].addClass("lastto");
 		}
 	}
