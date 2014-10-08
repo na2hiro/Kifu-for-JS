@@ -44,36 +44,7 @@ var Normalizer;
                         move.promote = false;
                     }
                 }
-                var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map(function (mv) {
-                    return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from));
-                });
-                if (moveVectors.length >= 2) {
-                    var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
-                    move.relative = function () {
-                        // 上下方向唯一
-                        if (moveVectors.filter(function (mv) {
-                            return mv.y == realVector.y;
-                        }).length == 1)
-                            return YToUMD(realVector.y);
-
-                        // 左右方向唯一
-                        if (moveVectors.filter(function (mv) {
-                            return mv.x == realVector.x;
-                        }).length == 1) {
-                            if ((move.piece == "UM" || move.piece == "RY") && realVector.x == 0) {
-                                //直はだめ
-                                return XToLCR(moveVectors.filter(function (mv) {
-                                    return mv.x < 0;
-                                }).length == 0 ? -1 : 1);
-                            } else {
-                                return XToLCR(realVector.x);
-                            }
-                        }
-
-                        //上下も左右も他の駒がいる
-                        return XToLCR(realVector.x) + YToUMD(realVector.y);
-                    }();
-                }
+                addRelativeInformation(shogi, move);
 
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
@@ -133,9 +104,83 @@ var Normalizer;
     }
     Normalizer.normalizeKI2 = normalizeKI2;
     function normalizeCSA(obj) {
-        throw "not implemented";
+        var shogi = new Shogi();
+        for (var i = 0; i < obj.moves.length; i++) {
+            var move = obj.moves[i].move;
+            if (!move)
+                continue;
+            if (move.from) {
+                // move
+                // same復元
+                if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x == move.to.x && obj.moves[i - 1].move.to.y == move.to.y) {
+                    move.same = true;
+                }
+                var to = shogi.get(move.to.x, move.to.y);
+                if (to)
+                    move.capture = to.kind;
+                if (Piece.isPromoted(move.piece)) {
+                    // 成かも
+                    var from = shogi.get(move.from.x, move.from.y);
+                    if (from.kind != move.piece) {
+                        move.piece = from.kind;
+                        move.promote = true;
+                    }
+                } else {
+                    // 不成かも
+                    if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
+                        move.promote = false;
+                    }
+                }
+                addRelativeInformation(shogi, move);
+
+                try  {
+                    shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+                } catch (e) {
+                    throw i + "手目で失敗しました: " + e;
+                }
+            } else {
+                // drop
+                if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                    move.relative = "H";
+                }
+                shogi.drop(move.to.x, move.to.y, move.piece);
+            }
+        }
+        return obj;
     }
     Normalizer.normalizeCSA = normalizeCSA;
+    function addRelativeInformation(shogi, move) {
+        var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map(function (mv) {
+            return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from));
+        });
+        if (moveVectors.length >= 2) {
+            var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
+            move.relative = function () {
+                // 上下方向唯一
+                if (moveVectors.filter(function (mv) {
+                    return mv.y == realVector.y;
+                }).length == 1)
+                    return YToUMD(realVector.y);
+
+                // 左右方向唯一
+                if (moveVectors.filter(function (mv) {
+                    return mv.x == realVector.x;
+                }).length == 1) {
+                    if ((move.piece == "UM" || move.piece == "RY") && realVector.x == 0) {
+                        //直はだめ
+                        return XToLCR(moveVectors.filter(function (mv) {
+                            return mv.x < 0;
+                        }).length == 0 ? -1 : 1);
+                    } else {
+                        return XToLCR(realVector.x);
+                    }
+                }
+
+                //上下も左右も他の駒がいる
+                return XToLCR(realVector.x) + YToUMD(realVector.y);
+            }();
+        }
+    }
     function flipVector(color, vector) {
         return color == 0 /* Black */ ? vector : { x: -vector.x, y: -vector.y };
     }
