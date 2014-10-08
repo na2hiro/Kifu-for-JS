@@ -13,25 +13,6 @@ module Normalizer{
 		return color==Color.Black ? place.y<=3 : place.y>=7;
 	}
 
-	export function normalize(obj: JSONKifuFormat): JSONKifuFormat{
-		switch(obj.type){
-			case "normal":
-				return obj;
-			case "kif":
-				return normalizeKIF(obj);
-	/*
-			case "ki2":
-				normalizeKI2(obj);
-				break;
-			case "csa":
-				normalizeCSA(obj);
-				break;
-	*/
-			default:
-				throw "not supported";
-		}
-	}
-
 	export function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat{
 		var shogi = new Shogi();
 		for(var i=0; i<obj.moves.length; i++){

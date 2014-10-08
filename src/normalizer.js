@@ -12,19 +12,6 @@ var Normalizer;
         return color == 0 /* Black */ ? place.y <= 3 : place.y >= 7;
     }
 
-    function normalize(obj) {
-        switch (obj.type) {
-            case "normal":
-                return obj;
-            case "kif":
-                return normalizeKIF(obj);
-
-            default:
-                throw "not supported";
-        }
-    }
-    Normalizer.normalize = normalize;
-
     function normalizeKIF(obj) {
         var shogi = new Shogi();
         for (var i = 0; i < obj.moves.length; i++) {

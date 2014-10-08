@@ -5,7 +5,6 @@
  * http://opensource.org/licenses/mit-license.php
  */
 interface JSONKifuFormat{
-	type: string;
 	header: {[index: string]: string;};
 	moves: MoveFormat[];
 	result: string;
