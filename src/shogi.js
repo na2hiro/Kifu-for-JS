@@ -326,7 +326,7 @@ var Piece = (function () {
         return (this.color == 0 /* Black */ ? "+" : "-") + this.kind;
     };
 
-    // 成った時の種類を返す．なければnull．
+    // 成った時の種類を返す．なければそのまま．
     Piece.promote = function (kind) {
         return {
             FU: "TO",
@@ -338,7 +338,7 @@ var Piece = (function () {
         }[kind] || kind;
     };
 
-    // 成った時の種類を返す．なければnull．
+    // 表に返した時の種類を返す．表の場合はそのまま．
     Piece.unpromote = function (kind) {
         return {
             TO: "FU",
@@ -350,6 +350,11 @@ var Piece = (function () {
             RY: "HI",
             OU: "OU"
         }[kind] || kind;
+    };
+
+    // 成れる駒かどうかを返す
+    Piece.canPromote = function (kind) {
+        return Piece.promote(kind) != kind;
     };
     Piece.getMoveDef = function (kind) {
         switch (kind) {

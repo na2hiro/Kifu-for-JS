@@ -286,7 +286,7 @@ class Piece{
 	toCSAString(): string{
 		return (this.color==Color.Black ? "+" : "-")+this.kind;
 	}
-	// 成った時の種類を返す．なければnull．
+	// 成った時の種類を返す．なければそのまま．
 	static promote(kind: string): string{
 		return {
 			FU: "TO",
@@ -297,7 +297,7 @@ class Piece{
 			HI: "RY",
 		}[kind] || kind;
 	}
-	// 成った時の種類を返す．なければnull．
+	// 表に返した時の種類を返す．表の場合はそのまま．
 	static unpromote(kind: string): string{
 		return {
 			TO: "FU",
@@ -309,6 +309,10 @@ class Piece{
 			RY: "HI",
 			OU: "OU",
 		}[kind] || kind;
+	}
+	// 成れる駒かどうかを返す
+	static canPromote(kind: string): boolean{
+		return Piece.promote(kind)!=kind;
 	}
 	static getMoveDef(kind: string): MoveDefinition{
 		switch(kind){
