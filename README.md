@@ -17,12 +17,12 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 | --- | --- | --- | --- | --- |
 | 0) 1) 元座標(from) | ○ | △(要相対逆算) | ○ | ○ |
 | 1) 取った駒(capture) | × | × | × | ○ |
-| 1) 2) 成り(promote) | ○ | ○ | △ | ○ |
+| 1) 2) 成り(promote) | ○(不成なし) | ○ | △ | ○ |
 | 2) 相対情報(relative) | △ | ○ | △ | ○ |
 | 2) 同〜(same) | ○ | ○ | × | ○ |
 | 消費時間(time) | ○ | × | ○ | ○ |
 
-△=現在の局面を見れば可能 ×=不可能か，以前の局面を見れば可能
+○=棋譜だけで可能 △=現在の局面を見れば可能 ×=不可能か，以前の局面を見れば可能
 
 * 0) 局面を1手進めるために必要な情報
 * 1) 局面を1手戻すために必要な情報
@@ -69,11 +69,11 @@ JSONで一般的なUTF-8を使用します．
 ## プログラム
 
 * `kifuplayer.js`: KIF/KI2/CSA/JKFから棋譜再生を行うライブラリ(下5つとshogi.jsを連結したもの．)
-* `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
-* `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
-* `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
-* `normalizer.{ts/js}`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
-* `player.{ts/js}`: JKFを扱う棋譜再生盤の例
+	* `kif-parser.{pegjs/js}`: KIFをJSON形式に一対一変換するパーサ
+	* `ki2-parser.{pegjs/js}`: KI2をJSON形式に一対一変換するパーサ
+	* `csa-parser.{pegjs/js}`: CSAをJSON形式に一対一変換するパーサ
+	* `normalizer.{ts/js}`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
+	* `player.{ts/js}`: JKFを扱う棋譜再生盤の例
 
 ## 依存ライブラリ
 使用に必要なものは同梱してあります．

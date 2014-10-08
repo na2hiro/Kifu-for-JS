@@ -33,17 +33,22 @@ var Normalizer;
                 continue;
             if (move.from) {
                 // move
+                // sameからto復元
                 if (move.same)
                     move.to = obj.moves[i - 1].move.to;
-                var to = shogi.get(move.to.x, move.to.y);
-                if (to)
-                    move.capture = to.kind;
-                if (!move.promote && !Piece.isPromoted(move.piece)) {
+
+                // capture復元
+                addCaptureInformation(shogi, move);
+
+                // 不成復元
+                if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
                     // 成ってない
                     if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
                         move.promote = false;
                     }
                 }
+
+                // relative復元
                 addRelativeInformation(shogi, move);
 
                 try  {
@@ -68,10 +73,12 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 同からto復元
             if (move.same)
                 move.to = obj.moves[i - 1].move.to;
 
-            // from特定
+            // from復元
             var moves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
             if (move.relative == "H" || moves.length == 0) {
                 // ok
@@ -84,11 +91,11 @@ var Normalizer;
                     throw "相対情報が不完全で複数の候補があります";
                 move.from = moveAns[0].from;
             }
+
             if (move.from) {
                 // move
-                var to = shogi.get(move.to.x, move.to.y);
-                if (to)
-                    move.capture = to.kind;
+                // capture復元
+                addCaptureInformation(shogi, move);
 
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
@@ -115,9 +122,9 @@ var Normalizer;
                 if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x == move.to.x && obj.moves[i - 1].move.to.y == move.to.y) {
                     move.same = true;
                 }
-                var to = shogi.get(move.to.x, move.to.y);
-                if (to)
-                    move.capture = to.kind;
+
+                // capture復元
+                addCaptureInformation(shogi, move);
                 if (Piece.isPromoted(move.piece)) {
                     // 成かも
                     var from = shogi.get(move.from.x, move.from.y);
@@ -125,12 +132,14 @@ var Normalizer;
                         move.piece = from.kind;
                         move.promote = true;
                     }
-                } else {
+                } else if (Piece.canPromote(move.piece)) {
                     // 不成かも
                     if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
                         move.promote = false;
                     }
                 }
+
+                // relative復元
                 addRelativeInformation(shogi, move);
 
                 try  {
@@ -181,6 +190,12 @@ var Normalizer;
             }();
         }
     }
+    function addCaptureInformation(shogi, move) {
+        var to = shogi.get(move.to.x, move.to.y);
+        if (to)
+            move.capture = to.kind;
+    }
+
     function flipVector(color, vector) {
         return color == 0 /* Black */ ? vector : { x: -vector.x, y: -vector.y };
     }

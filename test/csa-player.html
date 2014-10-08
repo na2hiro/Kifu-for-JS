@@ -20,7 +20,7 @@ function parse(data){
 	var cnt=0;
 	console.log(player.getReadableKifu());
 	while(player.forward() && cnt++<1000){
-		console.log(player.getReadableKifu());
+		console.log(cnt, player.getReadableKifu());
 	}
 	cnt=0;
 	while(player.backward() && cnt++<1000){}
