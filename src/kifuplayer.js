@@ -3670,7 +3670,7 @@ JKFPlayer.csaParser = (function() {
         peg$c33 = function() { return [] },
         peg$c34 = function(hd, tl) {tl.unshift(hd); return tl;},
         peg$c35 = function(c) {return {comments:c}},
-        peg$c36 = function(comment, move, time) { var ret = {comments:comment}; if(time){ret.time=time;}if(move.special){ret.special=move.special}else{ret.move=move}; return ret; },
+        peg$c36 = function(move, time, comment) { var ret = {comments:comment}; if(time){ret.time=time;}if(move.special){ret.special=move.special}else{ret.move=move}; return ret; },
         peg$c37 = function(from, to, piece) { return {from:from.x==0?null:from, to:to, piece:piece}},
         peg$c38 = "%",
         peg$c39 = { type: "literal", value: "%", description: "\"%\"" },
@@ -4566,24 +4566,24 @@ JKFPlayer.csaParser = (function() {
     }
 
     function peg$parsemove() {
-      var s0, s1, s2, s3;
+      var s0, s1, s2, s3, s4;
 
       s0 = peg$currPos;
-      s1 = [];
-      s2 = peg$parsecomment();
-      while (s2 !== peg$FAILED) {
-        s1.push(s2);
-        s2 = peg$parsecomment();
+      s1 = peg$parsenormalmove();
+      if (s1 === peg$FAILED) {
+        s1 = peg$parsespecialmove();
       }
       if (s1 !== peg$FAILED) {
-        s2 = peg$parsenormalmove();
+        s2 = peg$parsetime();
         if (s2 === peg$FAILED) {
-          s2 = peg$parsespecialmove();
+          s2 = peg$c1;
         }
         if (s2 !== peg$FAILED) {
-          s3 = peg$parsetime();
-          if (s3 === peg$FAILED) {
-            s3 = peg$c1;
+          s3 = [];
+          s4 = peg$parsecomment();
+          while (s4 !== peg$FAILED) {
+            s3.push(s4);
+            s4 = peg$parsecomment();
           }
           if (s3 !== peg$FAILED) {
             peg$reportedPos = s0;
