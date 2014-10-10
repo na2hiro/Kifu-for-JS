@@ -29,7 +29,7 @@ class Kifu{
 	}
 	static ajax(filename, onSuccess){
 		var tmp = filename.split("."), ext = tmp[tmp.length-1];
-		var encoding = ext=="jkf" ? "UTF-8" : "Shift_JIS";
+		var encoding = ["jkf", "kifu", "ki2u"].indexOf(ext)>=0 ? "UTF-8" : "Shift_JIS";
 		$.ajax(filename, {
 			success: (data, textStatus)=>{
 				if(textStatus=="notmodified"){
