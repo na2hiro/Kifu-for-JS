@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 1.0.3)
+# Kifu for JS (ver. 1.0.4)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 ## 概要
 * Kifu for JSは，Kifu for FlashやJava同様，HTML内で棋譜を読み込み表示，再生を行う．
@@ -61,6 +61,11 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 以下は手元に確認環境がありません．情報を[@na2hiro](https://twitter.com)までお待ちしています．
 
 * Internet Explorer 10以下
+
+## お願い
+
+* まだ対応が不十分な棋譜があると思います．動作しない棋譜をna2hiroに教えていただければ対応しますので，Twitter等でご報告いただければ幸いです．
+* 動作テストを簡単に行えるページを作成予定ですので，それができると報告が簡単に行えるようになると思います．
 
 ## TODO
 * [issues](https://github.com/na2hiro/Kifu-for-JS/issues)参照．
