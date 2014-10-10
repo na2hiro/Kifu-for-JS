@@ -435,8 +435,10 @@ var JKFPlayer = (function () {
                 case "jkf":
                     return JKFPlayer.parseJKF(kifu);
                 case "kif":
+                case "kifu":
                     return JKFPlayer.parseKIF(kifu);
                 case "ki2":
+                case "ki2u":
                     return JKFPlayer.parseKI2(kifu);
                 case "csa":
                     return JKFPlayer.parseCSA(kifu);
