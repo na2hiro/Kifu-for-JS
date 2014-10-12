@@ -37,7 +37,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * JKFの定義
 	* header `string=>string` ヘッダ情報
 	* moves `[以下]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
-		* comments `[string]` コメント
+		* comments? `[string]` コメント
 		* move? 駒の動き
 			* from? `PlaceFormat` 移動元 打った場合はなし
 			* to `PlaceFormat` 移動先

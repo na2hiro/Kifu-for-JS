@@ -53,9 +53,13 @@ kifu
  = skipline* headers:headers split? moves:moves res:result? nl? {return {header:headers, moves:moves,result:res, type:"kif"}}
 
 // ヘッダ
-headers
- = h:header hs:headers { hs[h.k]=h.v; return hs;}
- / "" {return {}}
+headers = header:header* {
+	var ret = {};
+	for(var i=0; i<header.length; i++){
+		ret[header[i].k]=header[i].v;
+	}
+	return ret;
+}
 
 header
  = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}}
@@ -65,8 +69,17 @@ split = "手数----指手--" "-------消費時間--"? nl
 // 棋譜部分
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
-firstboard = c:comment* pointer? {return {comments:c}}
-move = line:line c:comment* pointer? {var ret = {comments: c, time: line.time}; if(typeof line.move=="object"){ret.move=line.move;}else{ret.special=specialToCSA(line.move)} return ret;}
+firstboard = c:comment* pointer? {return c.length==0 ? {} : {comments:c}}
+move = line:line c:comment* pointer? {
+	var ret = {time: line.time};
+	if(c.length>0) ret.comments = c;
+	if(typeof line.move=="object"){
+		ret.move=line.move;
+	}else{
+		ret.special=specialToCSA(line.move)
+	}
+	return ret;
+}
 
 pointer = "&" nonl* nl
 

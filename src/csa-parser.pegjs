@@ -15,7 +15,13 @@ version22 = comment* "V2.2" nl
 
 information = players:players? headers:headers {return {players:players, headers:headers}}
 
-headers = header:header* {var ret = {}; for(var i=0; i<header.length; i++){ret[header[i].k]=header[i].v}; return ret;}
+headers = header:header* {
+	var ret = {};
+	for(var i=0; i<header.length; i++){
+		ret[header[i].k]=header[i].v;
+	}
+	return ret;
+}
 header = comment* "$" k:[^:]+ ":" v:nonl* nl {return {k:k.join(""), v:v.join("")}}
 
 csa1 = p:players? s:startboard? ms:moves { return {players:p, start:s, moves:ms} }

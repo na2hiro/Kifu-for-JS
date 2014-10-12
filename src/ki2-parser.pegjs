@@ -55,17 +55,25 @@ kifu
  = headers:headers moves:moves res:result? { return {header:headers, moves:moves, result:res, type:"ki2"} }
 
 // ヘッダ
-headers
- = h:header hs:headers { hs[h.k]=h.v; return hs;}
- / "" {return {}}
+headers = header:header* {
+	var ret = {};
+	for(var i=0; i<header.length; i++){
+		ret[header[i].k]=header[i].v;
+	}
+	return ret;
+}
 
 header
  = key:[^：\r\n]+ "：" value:nonl* nl+ { return {k:key.join(""), v:value.join("")}}
 
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
-firstboard = c:comment* pointer? {return {comments:c}}
-move = line:line c:comment* pointer? (nl / " ")* { return {comments:c, move: line } }
+firstboard = c:comment* pointer? {return c.length==0 ? {} : {comments:c}}
+move = line:line c:comment* pointer? (nl / " ")* {
+	var ret = {move: line};
+	if(c.length>0) ret.comments=cl;
+	return ret;
+}
 
 pointer = "&" nonl* nl
 

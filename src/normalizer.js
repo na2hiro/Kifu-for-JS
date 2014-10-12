@@ -95,7 +95,7 @@ var Normalizer;
             }
         }
         if (obj.result == "中断") {
-            obj.moves.push({ special: "CHUDAN", comments: [] });
+            obj.moves.push({ special: "CHUDAN" });
         }
         return obj;
     }

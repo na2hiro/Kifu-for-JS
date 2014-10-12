@@ -39,7 +39,13 @@ JKFPlayer.csaParser = (function() {
         peg$c4 = "V2.2",
         peg$c5 = { type: "literal", value: "V2.2", description: "\"V2.2\"" },
         peg$c6 = function(players, headers) {return {players:players, headers:headers}},
-        peg$c7 = function(header) {var ret = {}; for(var i=0; i<header.length; i++){ret[header[i].k]=header[i].v}; return ret;},
+        peg$c7 = function(header) {
+        	var ret = {};
+        	for(var i=0; i<header.length; i++){
+        		ret[header[i].k]=header[i].v;
+        	}
+        	return ret;
+        },
         peg$c8 = "$",
         peg$c9 = { type: "literal", value: "$", description: "\"$\"" },
         peg$c10 = /^[^:]/,
