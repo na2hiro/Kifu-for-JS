@@ -21,7 +21,7 @@ interface MoveMoveFormat {
 interface MoveFormat{
 	comments: string[];
 	move?: MoveMoveFormat;
-	time: {
+	time?: {
 		now: TimeFormat;
 		total: TimeFormat;
 	}

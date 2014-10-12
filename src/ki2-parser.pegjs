@@ -96,7 +96,7 @@ numkan = n:[一二三四五六七八九] {return kanToN(n);}
 
 comment = "*" comm:nonl* nl {return comm.join("")}
 
-result = "まで" [0-9]+ "手で" win:[先後] "手の勝ち" nl? {return win[0]}
+result = "まで" [0-9]+ "手で" res:(win:[先後] "手の勝ち" {return win} / "中断" {return "中断"}) nl {return res}
 
 nl = "\r"? "\n"
 nonl = [^\r\n]

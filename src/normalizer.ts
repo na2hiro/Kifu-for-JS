@@ -90,6 +90,9 @@ module Normalizer{
 				shogi.drop(move.to.x, move.to.y, move.piece);
 			}
 		}
+		if(obj.result=="中断"){
+			obj.moves.push({special: "CHUDAN", comments:[]});
+		}
 		return obj;
 	}
 	export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{

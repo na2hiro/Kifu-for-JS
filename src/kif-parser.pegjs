@@ -37,7 +37,14 @@
 	}
 	function specialToCSA(str){
 		return {
-			"投了": "TORYO"
+			"中断": "CHUDAN",
+			"投了": "TORYO",
+			"持将棋": "JISHOGI",
+			"千日手": "SENNICHITE",
+			"詰み": "TSUMI",
+			"切れ負け": "TIME_UP",
+			"反則勝ち": "ILLEGAL_ACTION", // 直前の手が反則(先頭に+か-で反則した側の情報を含める必要が有る)
+			"反則負け": "ILLEGAL_MOVE" // ここで手番側が反則，反則の内容はコメントで表現
 		}[str];
 	}
 }
@@ -63,7 +70,7 @@ move = line:line c:comment* pointer? {var ret = {comments: c, time: line.time}; 
 
 pointer = "&" nonl* nl
 
-line = " "* te " "* move:(fugou:fugou from:from {var ret = {from: from, piece: fugou.piece}; if(fugou.to){ret.to=fugou.to}else{ret.same=true};if(fugou.promote)ret.promote=true; return ret;} / "投了") " "* time:time? nl {return {move: move, time: time}}
+line = " "* te " "* move:(fugou:fugou from:from {var ret = {from: from, piece: fugou.piece}; if(fugou.to){ret.to=fugou.to}else{ret.same=true};if(fugou.promote)ret.promote=true; return ret;} / spe:[^\r\n ]* {return spe.join("")}) " "* time:time? nl {return {move: move, time: time}}
 
 te = [0-9]+
 fugou = pl:place pi:piece pro:"成"? {return {to:pl, piece: pi,promote:!!pro};}
@@ -83,7 +90,7 @@ ms = m:[0-9]+ ":" s:[0-9]+ {return {m:toN(m),s:toN(s)}}
 
 comment = "*" comm:nonl* nl {return comm.join("")}
 
-result = "まで" [0-9]+ "手で" win:[先後] "手の勝ち" nl {return win[0]}
+result = "まで" [0-9]+ "手で" res:(win:[先後] "手の勝ち" {return win} / "中断" {return "中断"}) nl {return res}
 
 
 nl = newline skipline*
