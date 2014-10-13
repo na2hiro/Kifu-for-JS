@@ -232,7 +232,7 @@ class Shogi{
 				this.board[i]=[];
 				for(var j=0; j<9; j++){
 					var p = setting.data.board[i][j];
-					this.board[i][j] = p ? new Piece((p.color?"+":":")+p.kind) : null;
+					this.board[i][j] = p.kind ? new Piece((p.color?"+":":")+p.kind) : null;
 				}
 			}
 			this.turn = setting.data.color ? Color.Black : Color.White;
