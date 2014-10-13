@@ -12,7 +12,7 @@ var Shogi = (function () {
     Shogi.prototype.initialize = function (setting) {
         if (typeof setting === "undefined") { setting = { preset: "HIRATE" }; }
         this.board = [];
-        if (setting.preset) {
+        if (setting.preset != "OTHER") {
             for (var i = 0; i < 9; i++) {
                 this.board[i] = [];
                 for (var j = 0; j < 9; j++) {
@@ -21,16 +21,26 @@ var Shogi = (function () {
                 }
             }
             this.turn = Shogi.preset[setting.preset].turn;
+            this.hands = [[], []];
         } else {
             for (var i = 0; i < 9; i++) {
                 this.board[i] = [];
                 for (var j = 0; j < 9; j++) {
-                    this.board[i][j] = null;
+                    var p = setting.data.board[i][j];
+                    this.board[i][j] = p ? new Piece((p.color ? "+" : ":") + p.kind) : null;
                 }
             }
-            this.turn = 0 /* Black */;
+            this.turn = setting.data.color ? 0 /* Black */ : 1 /* White */;
+            this.hands = [[], []];
+            for (var c = 0; c < 2; c++) {
+                for (var k in setting.data.hands[c]) {
+                    var csa = (c == 0 ? "+" : "-") + p;
+                    for (var i = 0; i < setting.data.hands[c][k]; i++) {
+                        this.hands[c].push(new Piece(csa));
+                    }
+                }
+            }
         }
-        this.hands = [[], []];
         this.flagEditMode = false;
     };
 

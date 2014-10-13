@@ -211,27 +211,41 @@ class Shogi{
 		this.initialize(setting);
 	}
 	// 盤面を平手に初期化する
-	initialize(setting: {preset?: string} = {preset: "HIRATE"}){
+	initialize(setting: {preset: string; data?: {
+			color: boolean;
+			board: { color?: boolean; kind?: boolean; }[][];
+			hands: {[index:string]: number}[];
+		}} = {preset: "HIRATE"}){
 		this.board = [];
-		if(setting.preset){
+		if(setting.preset!="OTHER"){
 			for(var i=0; i<9; i++){
 				this.board[i]=[];
 				for(var j=0; j<9; j++){
-					var csa = Shogi.preset[setting.preset].board[j].slice(24-i*3, 24-i*3+3);
+					var csa: string = Shogi.preset[setting.preset].board[j].slice(24-i*3, 24-i*3+3);
 					this.board[i][j] = csa==" * " ? null : new Piece(csa);
 				}
 			}
 			this.turn = Shogi.preset[setting.preset].turn;
+			this.hands = [[], []];
 		}else{
 			for(var i=0; i<9; i++){
 				this.board[i]=[];
 				for(var j=0; j<9; j++){
-					this.board[i][j] = null;
+					var p = setting.data.board[i][j];
+					this.board[i][j] = p ? new Piece((p.color?"+":":")+p.kind) : null;
 				}
 			}
-			this.turn = Color.Black;
+			this.turn = setting.data.color ? Color.Black : Color.White;
+			this.hands = [[], []];
+			for(var c=0; c<2; c++){
+				for(var k in setting.data.hands[c]){
+					var csa = (c==0?"+":"-")+p;
+					for(var i=0; i<setting.data.hands[c][k]; i++){
+						this.hands[c].push(new Piece(csa));
+					}
+				}
+			}
 		}
-		this.hands = [[], []];
 		this.flagEditMode = false;
 	}
 	// 編集モード切り替え
