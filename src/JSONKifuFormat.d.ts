@@ -10,7 +10,8 @@ interface JSONKifuFormat{
 		preset: string;
 		data?: {
 			color: boolean;
-			boolean: { color?: boolean; kind?: boolean; }[][];
+			board: { color?: boolean; kind?: boolean; }[][];
+			hands: {[index:string]: number}[];
 		}
 	};
 	moves: MoveFormat[];

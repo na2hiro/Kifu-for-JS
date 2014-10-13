@@ -101,6 +101,7 @@ var Normalizer;
     }
     Normalizer.normalizeKI2 = normalizeKI2;
     function normalizeCSA(obj) {
+        restorePreset(obj);
         var shogi = new Shogi(obj.initial);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
@@ -232,5 +233,59 @@ var Normalizer;
             case "R":
                 return vec.x > 0;
         }
+    }
+
+    // CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
+    function restorePreset(obj) {
+        if (!obj.initial || obj.initial.preset != "OTHER")
+            return;
+        var hirate = [
+            [{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" }],
+            [{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" }],
+            [{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" }],
+            [{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" }],
+            [{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" }],
+            [{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" }],
+            [{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" }],
+            [{ color: false, kind: "KE" }, { color: false, kind: "HI" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" }],
+            [{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" }]
+        ];
+        var diff = [];
+        for (var i = 0; i < 9; i++) {
+            for (var j = 0; j < 9; j++) {
+                if (!samePiece(obj.initial.data.board[i][j], hirate[i][j]))
+                    diff.push("" + (i + 1) + (j + 1));
+            }
+        }
+
+        var presets = {};
+        presets[""] = "HIRATE";
+        presets["11"] = "KY";
+        presets["91"] = "KY_R";
+        presets["22"] = "KA";
+        presets["82"] = "HI";
+        presets["1182"] = "HIKY";
+        presets["2282"] = "2";
+        presets["228291"] = "3";
+        presets["11228291"] = "4";
+        presets["1122818291"] = "5";
+        presets["1121228291"] = "5_L";
+        presets["112122818291"] = "6";
+        presets["1121223171818291"] = "8";
+        presets["11212231416171818291"] = "10";
+
+        var preset = presets[diff.sort().join("")];
+        if (preset == "HIRATE") {
+            if (obj.initial.data.color == true) {
+                obj.initial.preset = "HIRATE";
+                delete obj.initial.data;
+            }
+        } else if (preset && obj.initial.data.color == false) {
+            obj.initial.preset = preset;
+            delete obj.initial.data;
+        }
+    }
+    function samePiece(p1, p2) {
+        return (typeof p1.color == "undefined" && typeof p2.color == "undefined") || (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
     }
 })(Normalizer || (Normalizer = {}));
