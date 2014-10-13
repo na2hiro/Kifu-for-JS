@@ -239,7 +239,7 @@ class Shogi{
 			this.hands = [[], []];
 			for(var c=0; c<2; c++){
 				for(var k in setting.data.hands[c]){
-					var csa = (c==0?"+":"-")+p;
+					var csa = (c==0?"+":"-")+k;
 					for(var i=0; i<setting.data.hands[c][k]; i++){
 						this.hands[c].push(new Piece(csa));
 					}
