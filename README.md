@@ -36,8 +36,16 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 
 * JKFの定義
 	* header `string=>string` ヘッダ情報
-	* moves `[以下]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
-		* comments? `[string]` コメント
+	* initial? 初期局面(なければ平手)
+		* preset `InitialPresetString` 手合名
+		* data? 初期局面データ(手合名がOTHERの時に使用)
+			* color: `Color` 初手が先手側ならtrue, 後手側ならfalse
+			* board: `以下[][]` board[x-1][y-1]に(x,y)の駒情報．駒がない場合は空オブジェクト`{}`
+				* color?: `Color` 先手/後手
+				* kind?: `string` 駒の種類
+			* hands: `(string=>number)[]` 駒種がkey, 枚数がvalueの連想配列．0番目が先手，1番目が後手の持駒
+	* moves `以下[]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
+		* comments? `string[]` コメント
 		* move? 駒の動き
 			* from? `PlaceFormat` 移動元 打った場合はなし
 			* to `PlaceFormat` 移動先
@@ -62,6 +70,23 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 	* 左, 直, 右: それぞれL, C, R(Left, Center/Choku, Right)
 	* 上, 寄, 引: それぞれU, M, D(Up, Middle, Down)
 	* 打: H(Hit 何か違う気もする)
+* `Color = boolean` 先手: true, 後手: false
+* `InitialPresetString` 平手，香落ち等KIFでサポートされている手合情報
+	* HIRATE: 平手
+	* KY: 香落ち
+	* KY_R: 右香落ち
+	* KA: 角落ち
+	* HI: 飛車落ち
+	* HIKY: 飛香落ち
+	* 2: 二枚落ち
+	* 3: 三枚落ち
+	* 4: 四枚落ち
+	* 5: 五枚落ち	
+	* 5_L: 左五枚落ち
+	* 6: 六枚落ち
+	* 8: 八枚落ち
+	* 10: 十枚落ち
+	* OTHER: その他
 
 ### 文字コード
 JSONで一般的なUTF-8を使用します．
@@ -78,6 +103,7 @@ JSONで一般的なUTF-8を使用します．
 ## 依存ライブラリ
 使用に必要なものは同梱してあります．
 
+* TypeScript 0.9.5.0
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
 * [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
 
