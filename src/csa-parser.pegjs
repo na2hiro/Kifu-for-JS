@@ -41,13 +41,18 @@ csa1 = p:players? ini:initialboard? ms:moves { return {players:p, initial:ini, m
 
 players = comment* sen:("N+" n:nonl* nl { return n })? comment* go:("N-" n:nonl* nl { return n})? { return [sen?sen.join(""):null, go?go.join(""):null] }
 
-initialboard = comment* data:(hirate / ikkatsu / komabetsu) comment* teban:teban nl {
+initialboard = comment* data:(hirate / ikkatsu / ""{return "NO"}) koma:komabetsu comment* teban:teban nl {
+	if(data=="NO"){
+		data = koma;
+	}else{
+		data.data.hands = koma.data.hands;
+	}
 	data.data.color=teban;
 	return data;
 }
 
 hirate = "PI" ps:(xypiece)* {
-	if(ps.length==0) return {preset: "HIRATE"};
+//	if(ps.length==0) return {preset: "HIRATE"};
 	var ret = {preset: "OTHER", data: {board: getHirate()}};
 	for(var i=0; i<ps.length; i++){
 		ret.data.board[ps[i].x-1][ps[i].y-1]={};

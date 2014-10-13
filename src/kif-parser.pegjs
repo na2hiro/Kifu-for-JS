@@ -69,21 +69,16 @@
 }
 
 kifu
- = skipline* headers:headers split? moves:moves res:result? nl? {
- 	var ret = {header:headers, moves:moves,result:res}
+ = skipline* headers:header* split? moves:moves res:result? nl? {
+ 	var ret = {header:{}, moves:moves,result:res}
+	for(var i=0; i<headers.length; i++){
+		ret.header[headers[i].k]=headers[i].v;
+	}
 	if(ret.header["手合割"]) ret.initial={preset: presetToString(ret.header["手合割"])};
 	return ret;
 }
 
 // ヘッダ
-headers = header:header* {
-	var ret = {};
-	for(var i=0; i<header.length; i++){
-		ret[header[i].k]=header[i].v;
-	}
-	return ret;
-}
-
 header
  = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}}
 
