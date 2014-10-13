@@ -18,6 +18,8 @@ module Normalizer{
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;
+			// 手番
+			move.color=shogi.turn==Color.Black;
 			if(move.from){
 				// move
 
@@ -58,6 +60,8 @@ module Normalizer{
 			var move = obj.moves[i].move;
 			if(!move) continue;
 
+			// 手番
+			move.color=shogi.turn==Color.Black;
 			// 同からto復元
 			if(move.same) move.to = obj.moves[i-1].move.to;
 
@@ -101,6 +105,8 @@ module Normalizer{
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;
+			// 手番
+			move.color=shogi.turn==Color.Black;
 			if(move.from){
 				// move
 

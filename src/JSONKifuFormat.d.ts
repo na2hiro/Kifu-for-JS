@@ -18,6 +18,7 @@ interface JSONKifuFormat{
 	result: string;
 }
 interface MoveMoveFormat {
+	color: boolean;
 	from?: PlaceFormat;
 	to?: PlaceFormat;
 	piece: string;

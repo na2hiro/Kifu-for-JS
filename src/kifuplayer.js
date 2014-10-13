@@ -810,7 +810,7 @@ var JKFPlayer = (function () {
             return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
         }
         var move = this.kifu.moves[tesuu].move;
-        var ret = this.getMoveTurn(tesuu) == 0 /* Black */ ? "☗" : "☖";
+        var ret = move.color ? "☗" : "☖";
         if (move.same) {
             ret += "同　";
         } else {
@@ -824,9 +824,6 @@ var JKFPlayer = (function () {
             ret += move.promote ? "成" : "不成";
         }
         return ret;
-    };
-    JKFPlayer.prototype.getMoveTurn = function (tesuu) {
-        return tesuu % 2 == 1 ? 0 /* Black */ : 1 /* White */;
     };
     JKFPlayer.prototype.toJKF = function () {
         return JSON.stringify(this.kifu);
@@ -871,6 +868,9 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
             if (move.from) {
                 // move
                 // sameからto復元
@@ -913,6 +913,9 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
 
             // 同からto復元
             if (move.same)
@@ -960,6 +963,9 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
             if (move.from) {
                 // move
                 // same復元

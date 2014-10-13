@@ -187,7 +187,7 @@ class JKFPlayer{
 			return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
 		}
 		var move = this.kifu.moves[tesuu].move;
-		var ret = this.getMoveTurn(tesuu)==Color.Black ? "☗" : "☖";
+		var ret = move.color ? "☗" : "☖";
 		if(move.same){
 			ret+="同　";
 		}else{
@@ -201,9 +201,6 @@ class JKFPlayer{
 			ret+=move.promote ? "成" : "不成";
 		}
 		return ret;
-	}
-	getMoveTurn(tesuu: number){
-		return tesuu%2==1 ? Color.Black : Color.White;
 	}
 	toJKF(){
 		return JSON.stringify(this.kifu);

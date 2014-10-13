@@ -18,6 +18,9 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
             if (move.from) {
                 // move
                 // sameからto復元
@@ -60,6 +63,9 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
 
             // 同からto復元
             if (move.same)
@@ -107,6 +113,9 @@ var Normalizer;
             var move = obj.moves[i].move;
             if (!move)
                 continue;
+
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
             if (move.from) {
                 // move
                 // same復元

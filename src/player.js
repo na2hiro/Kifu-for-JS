@@ -202,7 +202,7 @@ var JKFPlayer = (function () {
             return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
         }
         var move = this.kifu.moves[tesuu].move;
-        var ret = this.getMoveTurn(tesuu) == 0 /* Black */ ? "☗" : "☖";
+        var ret = move.color ? "☗" : "☖";
         if (move.same) {
             ret += "同　";
         } else {
@@ -216,9 +216,6 @@ var JKFPlayer = (function () {
             ret += move.promote ? "成" : "不成";
         }
         return ret;
-    };
-    JKFPlayer.prototype.getMoveTurn = function (tesuu) {
-        return tesuu % 2 == 1 ? 0 /* Black */ : 1 /* White */;
     };
     JKFPlayer.prototype.toJKF = function () {
         return JSON.stringify(this.kifu);
