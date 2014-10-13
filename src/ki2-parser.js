@@ -34,7 +34,7 @@ JKFPlayer.ki2Parser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res, type:"ki2"} },
+        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res} },
         peg$c3 = [],
         peg$c4 = function(header) {
         	var ret = {};

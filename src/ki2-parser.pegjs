@@ -52,7 +52,7 @@
 }
 
 kifu
- = headers:headers moves:moves res:result? { return {header:headers, moves:moves, result:res, type:"ki2"} }
+ = headers:headers moves:moves res:result? { return {header:headers, moves:moves, result:res} }
 
 // ヘッダ
 headers = header:header* {

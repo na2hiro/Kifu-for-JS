@@ -9,7 +9,6 @@ var ok=0, ng=0, ngs=[];
 files.forEach(function(file){
 	var f = fs.readFileSync(dir+file);
 	var kifu = /.*\.kifu$/.test(file) ? f.toString().replace(/^\ufeff/, "") : iconv.convert(f).toString();
-	console.log(file, ",", kifu.charCodeAt(0));
 	try{
 		JKFPlayer.parseKIF(kifu);
 		ok++;

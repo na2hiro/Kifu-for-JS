@@ -47,10 +47,33 @@
 			"反則負け": "ILLEGAL_MOVE" // ここで手番側が反則，反則の内容はコメントで表現
 		}[str];
 	}
+	function presetToString(preset){
+		return {
+			"平手": "HIRATE", 
+			"香落ち": "KY",
+			"右香落ち": "KY_R",
+			"角落ち": "KA",
+			"飛車落ち": "HI",
+			"飛香落ち": "HIKY",
+			"二枚落ち": "2",
+			"三枚落ち": "3",
+			"四枚落ち": "4",
+			"五枚落ち": "5	",
+			"左五枚落ち": "5_L",
+			"六枚落ち": "6",
+			"八枚落ち": "8",
+			"十枚落ち": "10",
+			"その他": "OTHER",
+		}[preset.replace(/\s/g, "")];
+	}
 }
 
 kifu
- = skipline* headers:headers split? moves:moves res:result? nl? {return {header:headers, moves:moves,result:res, type:"kif"}}
+ = skipline* headers:headers split? moves:moves res:result? nl? {
+ 	var ret = {header:headers, moves:moves,result:res}
+	if(ret.header["手合割"]) ret.initial={preset: presetToString(ret.header["手合割"])};
+	return ret;
+}
 
 // ヘッダ
 headers = header:header* {
@@ -103,10 +126,10 @@ ms = m:[0-9]+ ":" s:[0-9]+ {return {m:toN(m),s:toN(s)}}
 
 comment = "*" comm:nonl* nl {return comm.join("")}
 
-result = "まで" [0-9]+ "手で" res:(win:[先後] "手の勝ち" {return win} / "中断" {return "中断"}) nl {return res}
+result = "まで" [0-9]+ "手で" res:(win:[先後上下] "手の勝ち" {return win} / "中断" {return "中断"}) nl {return res}
 
 
-nl = newline skipline*
+nl = newline+ skipline*
 skipline = ("#" nonl* newline)
-newline = "\r"? "\n"
+newline = "\n" / "\r" "\n"?
 nonl = [^\r\n]

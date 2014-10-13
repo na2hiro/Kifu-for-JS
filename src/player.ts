@@ -23,7 +23,7 @@ class JKFPlayer{
 		}
 	}
 	constructor(kifu: JSONKifuFormat){
-		this.shogi = new Shogi();
+		this.shogi = new Shogi(kifu.initial);
 		this.initialize(kifu);
 	}
 	initialize(kifu: JSONKifuFormat){

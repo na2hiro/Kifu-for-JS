@@ -14,7 +14,7 @@ module Normalizer{
 	}
 
 	export function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat{
-		var shogi = new Shogi();
+		var shogi = new Shogi(obj.initial);
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;
@@ -53,7 +53,7 @@ module Normalizer{
 		return obj;
 	}
 	export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
-		var shogi = new Shogi();
+		var shogi = new Shogi(obj.initial);
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;
@@ -96,7 +96,7 @@ module Normalizer{
 		return obj;
 	}
 	export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
-		var shogi = new Shogi();
+		var shogi = new Shogi(obj.initial);
 		for(var i=0; i<obj.moves.length; i++){
 			var move = obj.moves[i].move;
 			if(!move) continue;

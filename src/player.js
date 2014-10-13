@@ -9,7 +9,7 @@
 */
 var JKFPlayer = (function () {
     function JKFPlayer(kifu) {
-        this.shogi = new Shogi();
+        this.shogi = new Shogi(kifu.initial);
         this.initialize(kifu);
     }
     JKFPlayer.log = function () {

@@ -35,7 +35,11 @@ JKFPlayer.kifParser = (function() {
         peg$c0 = peg$FAILED,
         peg$c1 = [],
         peg$c2 = null,
-        peg$c3 = function(headers, moves, res) {return {header:headers, moves:moves,result:res, type:"kif"}},
+        peg$c3 = function(headers, moves, res) {
+         	var ret = {header:headers, moves:moves,result:res}
+        	if(ret.header["手合割"]) ret.initial={preset: presetToString(ret.header["手合割"])};
+        	return ret;
+        },
         peg$c4 = function(header) {
         	var ret = {};
         	for(var i=0; i<header.length; i++){
@@ -114,8 +118,8 @@ JKFPlayer.kifParser = (function() {
         peg$c64 = { type: "literal", value: "\u307E\u3067", description: "\"\\u307E\\u3067\"" },
         peg$c65 = "\u624B\u3067",
         peg$c66 = { type: "literal", value: "\u624B\u3067", description: "\"\\u624B\\u3067\"" },
-        peg$c67 = /^[\u5148\u5F8C]/,
-        peg$c68 = { type: "class", value: "[\\u5148\\u5F8C]", description: "[\\u5148\\u5F8C]" },
+        peg$c67 = /^[\u5148\u5F8C\u4E0A\u4E0B]/,
+        peg$c68 = { type: "class", value: "[\\u5148\\u5F8C\\u4E0A\\u4E0B]", description: "[\\u5148\\u5F8C\\u4E0A\\u4E0B]" },
         peg$c69 = "\u624B\u306E\u52DD\u3061",
         peg$c70 = { type: "literal", value: "\u624B\u306E\u52DD\u3061", description: "\"\\u624B\\u306E\\u52DD\\u3061\"" },
         peg$c71 = function(win) {return win},
@@ -125,10 +129,10 @@ JKFPlayer.kifParser = (function() {
         peg$c75 = function(res) {return res},
         peg$c76 = "#",
         peg$c77 = { type: "literal", value: "#", description: "\"#\"" },
-        peg$c78 = "\r",
-        peg$c79 = { type: "literal", value: "\r", description: "\"\\r\"" },
-        peg$c80 = "\n",
-        peg$c81 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c78 = "\n",
+        peg$c79 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c80 = "\r",
+        peg$c81 = { type: "literal", value: "\r", description: "\"\\r\"" },
         peg$c82 = /^[^\r\n]/,
         peg$c83 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
 
@@ -1463,7 +1467,16 @@ JKFPlayer.kifParser = (function() {
       var s0, s1, s2, s3;
 
       s0 = peg$currPos;
-      s1 = peg$parsenewline();
+      s1 = [];
+      s2 = peg$parsenewline();
+      if (s2 !== peg$FAILED) {
+        while (s2 !== peg$FAILED) {
+          s1.push(s2);
+          s2 = peg$parsenewline();
+        }
+      } else {
+        s1 = peg$c0;
+      }
       if (s1 !== peg$FAILED) {
         s2 = [];
         s3 = peg$parseskipline();
@@ -1528,35 +1541,44 @@ JKFPlayer.kifParser = (function() {
     function peg$parsenewline() {
       var s0, s1, s2;
 
-      s0 = peg$currPos;
-      if (input.charCodeAt(peg$currPos) === 13) {
-        s1 = peg$c78;
+      if (input.charCodeAt(peg$currPos) === 10) {
+        s0 = peg$c78;
         peg$currPos++;
       } else {
-        s1 = peg$FAILED;
+        s0 = peg$FAILED;
         if (peg$silentFails === 0) { peg$fail(peg$c79); }
       }
-      if (s1 === peg$FAILED) {
-        s1 = peg$c2;
-      }
-      if (s1 !== peg$FAILED) {
-        if (input.charCodeAt(peg$currPos) === 10) {
-          s2 = peg$c80;
+      if (s0 === peg$FAILED) {
+        s0 = peg$currPos;
+        if (input.charCodeAt(peg$currPos) === 13) {
+          s1 = peg$c80;
           peg$currPos++;
         } else {
-          s2 = peg$FAILED;
+          s1 = peg$FAILED;
           if (peg$silentFails === 0) { peg$fail(peg$c81); }
         }
-        if (s2 !== peg$FAILED) {
-          s1 = [s1, s2];
-          s0 = s1;
+        if (s1 !== peg$FAILED) {
+          if (input.charCodeAt(peg$currPos) === 10) {
+            s2 = peg$c78;
+            peg$currPos++;
+          } else {
+            s2 = peg$FAILED;
+            if (peg$silentFails === 0) { peg$fail(peg$c79); }
+          }
+          if (s2 === peg$FAILED) {
+            s2 = peg$c2;
+          }
+          if (s2 !== peg$FAILED) {
+            s1 = [s1, s2];
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c0;
+          }
         } else {
           peg$currPos = s0;
           s0 = peg$c0;
         }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$c0;
       }
 
       return s0;
@@ -1624,6 +1646,25 @@ JKFPlayer.kifParser = (function() {
     			"反則勝ち": "ILLEGAL_ACTION", // 直前の手が反則(先頭に+か-で反則した側の情報を含める必要が有る)
     			"反則負け": "ILLEGAL_MOVE" // ここで手番側が反則，反則の内容はコメントで表現
     		}[str];
+    	}
+    	function presetToString(preset){
+    		return {
+    			"平手": "HIRATE", 
+    			"香落ち": "KY",
+    			"右香落ち": "KY_R",
+    			"角落ち": "KA",
+    			"飛車落ち": "HI",
+    			"飛香落ち": "HIKY",
+    			"二枚落ち": "2",
+    			"三枚落ち": "3",
+    			"四枚落ち": "4",
+    			"五枚落ち": "5	",
+    			"左五枚落ち": "5_L",
+    			"六枚落ち": "6",
+    			"八枚落ち": "8",
+    			"十枚落ち": "10",
+    			"その他": "OTHER",
+    		}[preset.replace(/\s/g, "")];
     	}
 
 

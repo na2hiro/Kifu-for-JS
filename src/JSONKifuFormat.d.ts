@@ -6,6 +6,13 @@
  */
 interface JSONKifuFormat{
 	header: {[index: string]: string;};
+	initial?: {
+		preset: string;
+		data?: {
+			color: boolean;
+			boolean: { color?: boolean; kind?: boolean; }[][];
+		}
+	};
 	moves: MoveFormat[];
 	result: string;
 }
@@ -19,7 +26,7 @@ interface MoveMoveFormat {
 	relative?: string;
 }
 interface MoveFormat{
-	comments: string[];
+	comments?: string[];
 	move?: MoveMoveFormat;
 	time?: {
 		now: TimeFormat;

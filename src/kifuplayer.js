@@ -5,21 +5,32 @@
 * http://opensource.org/licenses/mit-license.php
 */
 var Shogi = (function () {
-    function Shogi() {
-        this.initialize();
+    function Shogi(setting) {
+        this.initialize(setting);
     }
     // 盤面を平手に初期化する
-    Shogi.prototype.initialize = function () {
+    Shogi.prototype.initialize = function (setting) {
+        if (typeof setting === "undefined") { setting = { preset: "HIRATE" }; }
         this.board = [];
-        for (var i = 0; i < 9; i++) {
-            this.board[i] = [];
-            for (var j = 0; j < 9; j++) {
-                var csa = Shogi.initialBoard[j].slice(24 - i * 3, 24 - i * 3 + 3);
-                this.board[i][j] = csa == " * " ? null : new Piece(csa);
+        if (setting.preset) {
+            for (var i = 0; i < 9; i++) {
+                this.board[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    var csa = Shogi.preset[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
+                    this.board[i][j] = csa == " * " ? null : new Piece(csa);
+                }
             }
+            this.turn = Shogi.preset[setting.preset].turn;
+        } else {
+            for (var i = 0; i < 9; i++) {
+                this.board[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    this.board[i][j] = null;
+                }
+            }
+            this.turn = 0 /* Black */;
         }
         this.hands = [[], []];
-        this.turn = 0 /* Black */;
         this.flagEditMode = false;
     };
 
@@ -280,17 +291,204 @@ var Shogi = (function () {
         if (!this.flagEditMode && color != this.turn)
             throw "cannot move opposite piece";
     };
-    Shogi.initialBoard = [
-        "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-        " * -HI *  *  *  *  * -KA * ",
-        "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-        " *  *  *  *  *  *  *  *  * ",
-        " *  *  *  *  *  *  *  *  * ",
-        " *  *  *  *  *  *  *  *  * ",
-        "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-        " * +KA *  *  *  *  * +HI * ",
-        "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
-    ];
+    Shogi.preset = {
+        "HIRATE": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 0 /* Black */
+        },
+        "KY": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "KY_R": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "KA": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "HI": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " *  *  *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "HIKY": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "2": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "3": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "4": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "5": {
+            board: [
+                " *  * -GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "5_L": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "6": {
+            board: [
+                " *  * -GI-KI-OU-KI-GI *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "8": {
+            board: [
+                " *  *  * -KI-OU-KI *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "10": {
+            board: [
+                " *  *  *  * -OU *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        }
+    };
     return Shogi;
 })();
 
@@ -409,7 +607,7 @@ var Piece = (function () {
 */
 var JKFPlayer = (function () {
     function JKFPlayer(kifu) {
-        this.shogi = new Shogi();
+        this.shogi = new Shogi(kifu.initial);
         this.initialize(kifu);
     }
     JKFPlayer.log = function () {
@@ -658,7 +856,7 @@ var Normalizer;
     }
 
     function normalizeKIF(obj) {
-        var shogi = new Shogi();
+        var shogi = new Shogi(obj.initial);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
             if (!move)
@@ -700,7 +898,7 @@ var Normalizer;
     }
     Normalizer.normalizeKIF = normalizeKIF;
     function normalizeKI2(obj) {
-        var shogi = new Shogi();
+        var shogi = new Shogi(obj.initial);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
             if (!move)
@@ -746,7 +944,7 @@ var Normalizer;
     }
     Normalizer.normalizeKI2 = normalizeKI2;
     function normalizeCSA(obj) {
-        var shogi = new Shogi();
+        var shogi = new Shogi(obj.initial);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
             if (!move)
@@ -916,7 +1114,11 @@ JKFPlayer.kifParser = (function() {
         peg$c0 = peg$FAILED,
         peg$c1 = [],
         peg$c2 = null,
-        peg$c3 = function(headers, moves, res) {return {header:headers, moves:moves,result:res, type:"kif"}},
+        peg$c3 = function(headers, moves, res) {
+         	var ret = {header:headers, moves:moves,result:res}
+        	if(ret.header["手合割"]) ret.initial={preset: presetToString(ret.header["手合割"])};
+        	return ret;
+        },
         peg$c4 = function(header) {
         	var ret = {};
         	for(var i=0; i<header.length; i++){
@@ -995,8 +1197,8 @@ JKFPlayer.kifParser = (function() {
         peg$c64 = { type: "literal", value: "\u307E\u3067", description: "\"\\u307E\\u3067\"" },
         peg$c65 = "\u624B\u3067",
         peg$c66 = { type: "literal", value: "\u624B\u3067", description: "\"\\u624B\\u3067\"" },
-        peg$c67 = /^[\u5148\u5F8C]/,
-        peg$c68 = { type: "class", value: "[\\u5148\\u5F8C]", description: "[\\u5148\\u5F8C]" },
+        peg$c67 = /^[\u5148\u5F8C\u4E0A\u4E0B]/,
+        peg$c68 = { type: "class", value: "[\\u5148\\u5F8C\\u4E0A\\u4E0B]", description: "[\\u5148\\u5F8C\\u4E0A\\u4E0B]" },
         peg$c69 = "\u624B\u306E\u52DD\u3061",
         peg$c70 = { type: "literal", value: "\u624B\u306E\u52DD\u3061", description: "\"\\u624B\\u306E\\u52DD\\u3061\"" },
         peg$c71 = function(win) {return win},
@@ -1006,10 +1208,10 @@ JKFPlayer.kifParser = (function() {
         peg$c75 = function(res) {return res},
         peg$c76 = "#",
         peg$c77 = { type: "literal", value: "#", description: "\"#\"" },
-        peg$c78 = "\r",
-        peg$c79 = { type: "literal", value: "\r", description: "\"\\r\"" },
-        peg$c80 = "\n",
-        peg$c81 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c78 = "\n",
+        peg$c79 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c80 = "\r",
+        peg$c81 = { type: "literal", value: "\r", description: "\"\\r\"" },
         peg$c82 = /^[^\r\n]/,
         peg$c83 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
 
@@ -2344,7 +2546,16 @@ JKFPlayer.kifParser = (function() {
       var s0, s1, s2, s3;
 
       s0 = peg$currPos;
-      s1 = peg$parsenewline();
+      s1 = [];
+      s2 = peg$parsenewline();
+      if (s2 !== peg$FAILED) {
+        while (s2 !== peg$FAILED) {
+          s1.push(s2);
+          s2 = peg$parsenewline();
+        }
+      } else {
+        s1 = peg$c0;
+      }
       if (s1 !== peg$FAILED) {
         s2 = [];
         s3 = peg$parseskipline();
@@ -2409,35 +2620,44 @@ JKFPlayer.kifParser = (function() {
     function peg$parsenewline() {
       var s0, s1, s2;
 
-      s0 = peg$currPos;
-      if (input.charCodeAt(peg$currPos) === 13) {
-        s1 = peg$c78;
+      if (input.charCodeAt(peg$currPos) === 10) {
+        s0 = peg$c78;
         peg$currPos++;
       } else {
-        s1 = peg$FAILED;
+        s0 = peg$FAILED;
         if (peg$silentFails === 0) { peg$fail(peg$c79); }
       }
-      if (s1 === peg$FAILED) {
-        s1 = peg$c2;
-      }
-      if (s1 !== peg$FAILED) {
-        if (input.charCodeAt(peg$currPos) === 10) {
-          s2 = peg$c80;
+      if (s0 === peg$FAILED) {
+        s0 = peg$currPos;
+        if (input.charCodeAt(peg$currPos) === 13) {
+          s1 = peg$c80;
           peg$currPos++;
         } else {
-          s2 = peg$FAILED;
+          s1 = peg$FAILED;
           if (peg$silentFails === 0) { peg$fail(peg$c81); }
         }
-        if (s2 !== peg$FAILED) {
-          s1 = [s1, s2];
-          s0 = s1;
+        if (s1 !== peg$FAILED) {
+          if (input.charCodeAt(peg$currPos) === 10) {
+            s2 = peg$c78;
+            peg$currPos++;
+          } else {
+            s2 = peg$FAILED;
+            if (peg$silentFails === 0) { peg$fail(peg$c79); }
+          }
+          if (s2 === peg$FAILED) {
+            s2 = peg$c2;
+          }
+          if (s2 !== peg$FAILED) {
+            s1 = [s1, s2];
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c0;
+          }
         } else {
           peg$currPos = s0;
           s0 = peg$c0;
         }
-      } else {
-        peg$currPos = s0;
-        s0 = peg$c0;
       }
 
       return s0;
@@ -2506,6 +2726,25 @@ JKFPlayer.kifParser = (function() {
     			"反則負け": "ILLEGAL_MOVE" // ここで手番側が反則，反則の内容はコメントで表現
     		}[str];
     	}
+    	function presetToString(preset){
+    		return {
+    			"平手": "HIRATE", 
+    			"香落ち": "KY",
+    			"右香落ち": "KY_R",
+    			"角落ち": "KA",
+    			"飛車落ち": "HI",
+    			"飛香落ち": "HIKY",
+    			"二枚落ち": "2",
+    			"三枚落ち": "3",
+    			"四枚落ち": "4",
+    			"五枚落ち": "5	",
+    			"左五枚落ち": "5_L",
+    			"六枚落ち": "6",
+    			"八枚落ち": "8",
+    			"十枚落ち": "10",
+    			"その他": "OTHER",
+    		}[preset.replace(/\s/g, "")];
+    	}
 
 
     peg$result = peg$startRuleFunction();
@@ -2562,7 +2801,7 @@ JKFPlayer.ki2Parser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res, type:"ki2"} },
+        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res} },
         peg$c3 = [],
         peg$c4 = function(header) {
         	var ret = {};
