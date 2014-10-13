@@ -5,21 +5,32 @@
 * http://opensource.org/licenses/mit-license.php
 */
 var Shogi = (function () {
-    function Shogi() {
-        this.initialize();
+    function Shogi(setting) {
+        this.initialize(setting);
     }
     // 盤面を平手に初期化する
-    Shogi.prototype.initialize = function () {
+    Shogi.prototype.initialize = function (setting) {
+        if (typeof setting === "undefined") { setting = { preset: "HIRATE" }; }
         this.board = [];
-        for (var i = 0; i < 9; i++) {
-            this.board[i] = [];
-            for (var j = 0; j < 9; j++) {
-                var csa = Shogi.initialBoard[j].slice(24 - i * 3, 24 - i * 3 + 3);
-                this.board[i][j] = csa == " * " ? null : new Piece(csa);
+        if (setting.preset) {
+            for (var i = 0; i < 9; i++) {
+                this.board[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    var csa = Shogi.preset[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
+                    this.board[i][j] = csa == " * " ? null : new Piece(csa);
+                }
             }
+            this.turn = Shogi.preset[setting.preset].turn;
+        } else {
+            for (var i = 0; i < 9; i++) {
+                this.board[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    this.board[i][j] = null;
+                }
+            }
+            this.turn = 0 /* Black */;
         }
         this.hands = [[], []];
-        this.turn = 0 /* Black */;
         this.flagEditMode = false;
     };
 
@@ -280,17 +291,204 @@ var Shogi = (function () {
         if (!this.flagEditMode && color != this.turn)
             throw "cannot move opposite piece";
     };
-    Shogi.initialBoard = [
-        "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-        " * -HI *  *  *  *  * -KA * ",
-        "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-        " *  *  *  *  *  *  *  *  * ",
-        " *  *  *  *  *  *  *  *  * ",
-        " *  *  *  *  *  *  *  *  * ",
-        "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-        " * +KA *  *  *  *  * +HI * ",
-        "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
-    ];
+    Shogi.preset = {
+        "HIRATE": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 0 /* Black */
+        },
+        "KY": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "KY_R": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "KA": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "HI": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " *  *  *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "HIKY": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "2": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "3": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "4": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "5": {
+            board: [
+                " *  * -GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "5_L": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "6": {
+            board: [
+                " *  * -GI-KI-OU-KI-GI *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "8": {
+            board: [
+                " *  *  * -KI-OU-KI *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        },
+        "10": {
+            board: [
+                " *  *  *  * -OU *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+            ],
+            turn: 1 /* White */
+        }
+    };
     return Shogi;
 })();
 

@@ -5,36 +5,233 @@
  * http://opensource.org/licenses/mit-license.php
  */
 class Shogi{
-	static initialBoard = [
-		"-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-		" * -HI *  *  *  *  * -KA * ",
-		"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-		" *  *  *  *  *  *  *  *  * ",
-		" *  *  *  *  *  *  *  *  * ",
-		" *  *  *  *  *  *  *  *  * ",
-		"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-		" * +KA *  *  *  *  * +HI * ",
-		"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-	];
+	static preset = {
+		"HIRATE": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+				" * -HI *  *  *  *  * -KA * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.Black,
+		},
+		"KY": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE * ",
+				" * -HI *  *  *  *  * -KA * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"KY_R": {
+			board: [
+				" * -KE-GI-KI-OU-KI-GI-KE-KY",
+				" * -HI *  *  *  *  * -KA * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"KA": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+				" * -HI *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"HI": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+				" *  *  *  *  *  *  * -KA * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"HIKY": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE * ",
+				" *  *  *  *  *  *  * -KA * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"2": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"3": {
+			board: [
+				"-KY-KE-GI-KI-OU-KI-GI-KE * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"4": {
+			board: [
+				" * -KE-GI-KI-OU-KI-GI-KE * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"5": {
+			board: [
+				" *  * -GI-KI-OU-KI-GI-KE * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"5_L": {
+			board: [
+				" * -KE-GI-KI-OU-KI-GI *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"6": {
+			board: [
+				" *  * -GI-KI-OU-KI-GI *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"8": {
+			board: [
+				" *  *  * -KI-OU-KI *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+		"10": {
+			board: [
+				" *  *  *  * -OU *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				" *  *  *  *  *  *  *  *  * ",
+				"+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				" * +KA *  *  *  *  * +HI * ",
+				"+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+			],
+			turn: Color.White,
+		},
+	};
 	board: Piece[][]; // 盤面
 	hands: Piece[][]; // 持ち駒
 	turn: Color; // 次の手番
 	flagEditMode: boolean; // 編集モードかどうか
-	constructor(){
-		this.initialize();
+	constructor(setting?: {preset?: string}){
+		this.initialize(setting);
 	}
 	// 盤面を平手に初期化する
-	initialize(){
+	initialize(setting: {preset?: string} = {preset: "HIRATE"}){
 		this.board = [];
-		for(var i=0; i<9; i++){
-			this.board[i]=[];
-			for(var j=0; j<9; j++){
-				var csa = Shogi.initialBoard[j].slice(24-i*3, 24-i*3+3);
-				this.board[i][j] = csa==" * " ? null : new Piece(csa);
+		if(setting.preset){
+			for(var i=0; i<9; i++){
+				this.board[i]=[];
+				for(var j=0; j<9; j++){
+					var csa = Shogi.preset[setting.preset].board[j].slice(24-i*3, 24-i*3+3);
+					this.board[i][j] = csa==" * " ? null : new Piece(csa);
+				}
 			}
+			this.turn = Shogi.preset[setting.preset].turn;
+		}else{
+			for(var i=0; i<9; i++){
+				this.board[i]=[];
+				for(var j=0; j<9; j++){
+					this.board[i][j] = null;
+				}
+			}
+			this.turn = Color.Black;
 		}
 		this.hands = [[], []];
-		this.turn = Color.Black;
 		this.flagEditMode = false;
 	}
 	// 編集モード切り替え
