@@ -37,7 +37,6 @@ JKFPlayer.kifParser = (function() {
         peg$c2 = null,
         peg$c3 = function(headers, ini, headers2, moves, res) {
          	var ret = {header:{}, moves:moves,result:res,initial:ini}
-        	console.log(ini);
         	for(var i=0; i<headers.length; i++){
         		ret.header[headers[i].k]=headers[i].v;
         	}
@@ -48,7 +47,7 @@ JKFPlayer.kifParser = (function() {
         		var preset = presetToString(ret.header["手合割"]);
         		if(preset!="OTHER") ret.initial={preset: preset};
         	}
-        	if(ret.initial.data){
+        	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
         			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
         		}

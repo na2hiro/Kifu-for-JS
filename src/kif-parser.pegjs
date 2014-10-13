@@ -89,7 +89,6 @@
 kifu
  = skipline* headers:header* ini:initialboard? headers2:header* split? moves:moves res:result? nl? {
  	var ret = {header:{}, moves:moves,result:res,initial:ini}
-	console.log(ini);
 	for(var i=0; i<headers.length; i++){
 		ret.header[headers[i].k]=headers[i].v;
 	}
@@ -100,7 +99,7 @@ kifu
 		var preset = presetToString(ret.header["手合割"]);
 		if(preset!="OTHER") ret.initial={preset: preset};
 	}
-	if(ret.initial.data){
+	if(ret.initial && ret.initial.data){
 		if(ret.header["手番"]){
 			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
 		}

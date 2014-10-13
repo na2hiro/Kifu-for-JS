@@ -8,6 +8,16 @@
 	function kanToN(s){
 		return "〇一二三四五六七八九".indexOf(s);
 	}
+	function kanToN2(s){
+		switch(s.length){
+			case 1:
+				return "〇一二三四五六七八九十".indexOf(s);
+			case 2:
+				return "〇一二三四五六七八九十".indexOf(s[1])+10;
+			default:
+				throw "21以上の数値に対応していません";
+		}
+	}
 	function kindToCSA(kind){
 		if(kind[0]=="成"){
 			return {
@@ -68,26 +78,64 @@
 			"その他": "OTHER",
 		}[preset.replace(/\s/g, "")];
 	}
+	function makeHand(str){
+		var kinds = str.replace(/　$/, "").split("　");
+		var ret = {};
+		for(var i=0; i<kinds.length; i++){
+			ret[kindToCSA(kinds[i][0])] = kanToN2(kinds[i].slice(1));
+		}
+		return ret;
+	}
 }
 
 kifu
- = headers:headers moves:moves res:result? {
- 	var ret = {header:headers, moves:moves, result:res};
-	if(ret.header["手合割"]) ret.initial={preset: presetToString(ret.header["手合割"])};
-	return ret;
-}
-
-// ヘッダ
-headers = header:header* {
-	var ret = {};
-	for(var i=0; i<header.length; i++){
-		ret[header[i].k]=header[i].v;
+ = headers:header* ini:initialboard? headers2:header* moves:moves res:result? {
+ 	var ret = {header:{}, moves:moves, result:res, initial:ini};
+	for(var i=0; i<headers.length; i++){
+		ret.header[headers[i].k]=headers[i].v;
+	}
+	for(var i=0; i<headers2.length; i++){
+		ret.header[headers2[i].k]=headers2[i].v;
+	}
+	if(ret.header["手合割"]){
+		var preset = presetToString(ret.header["手合割"]);
+		if(preset!="OTHER") ret.initial={preset: preset};
+	}
+	if(ret.initial && ret.initial.data){
+		if(ret.header["手番"]){
+			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+		}
+		ret.initial.data.hands = [{}, {}];
+		if(ret.header["先手の持駒"] || ret.header["下手の持駒"]){
+			ret.initial.data.hands[0] = makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]);
+			delete ret.header["先手の持駒"];
+			delete ret.header["下手の持駒"];
+		}
+		if(ret.header["後手の持駒"] || ret.header["上手の持駒"]){
+			ret.initial.data.hands[1] = makeHand(ret.header["後手の持駒"] || ret.header["上手の持駒"]);
+			delete ret.header["先手の持駒"];
+			delete ret.header["下手の持駒"];
+		}
 	}
 	return ret;
 }
 
 header
- = key:[^：\r\n]+ "：" value:nonl* nl+ { return {k:key.join(""), v:value.join("")}}
+ = key:[^：\r\n]+ "：" value:nonl* nl+ {return {k:key.join(""), v:value.join("")}} / te:[先後上下] "手番" nl {return {k:"手番",v:te}}
+initialboard = (" " nonl* nl)? ("+" nonl* nl)? lines:ikkatsuline+ ("+" nonl* nl)? {
+	var ret = [];
+	for(var i=0; i<9; i++){
+		var line = [];
+		for(var j=0; j<9; j++){
+			line.push(lines[j][8-i]);
+		}
+		ret.push(line);
+	}
+	return {preset: "OTHER", data: {board:ret}};
+}
+ikkatsuline = "|" masu:masu+ "|" nonl+ nl { return masu; }
+masu = c:teban k:piece {return {color:c, kind:k}} / " ・" { return {} }
+teban = (" "/"+"/"^"){return true} / ("v"/"V"){return false}
 
 moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
 
@@ -127,7 +175,7 @@ numkan = n:[一二三四五六七八九] {return kanToN(n);}
 
 comment = "*" comm:nonl* nl {return comm.join("")}
 
-result = "まで" [0-9]+ "手で" res:(win:[先後] "手の勝ち" {return win} / "中断" {return "中断"}) nl {return res}
+result = "まで" [0-9]+ "手" res:("で" win:[先後上下] "手の勝ち" {return win} / "で中断" {return "中断"} / "詰") nl {return res}
 
 nl = "\r"? "\n"
 nonl = [^\r\n]

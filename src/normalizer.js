@@ -13,7 +13,7 @@ var Normalizer;
     }
 
     function normalizeKIF(obj) {
-        var shogi = new Shogi(obj.initial);
+        var shogi = new Shogi(obj.initial || undefined);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
             if (!move)
@@ -55,7 +55,7 @@ var Normalizer;
     }
     Normalizer.normalizeKIF = normalizeKIF;
     function normalizeKI2(obj) {
-        var shogi = new Shogi(obj.initial);
+        var shogi = new Shogi(obj.initial || undefined);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
             if (!move)
@@ -102,7 +102,7 @@ var Normalizer;
     Normalizer.normalizeKI2 = normalizeKI2;
     function normalizeCSA(obj) {
         restorePreset(obj);
-        var shogi = new Shogi(obj.initial);
+        var shogi = new Shogi(obj.initial || undefined);
         for (var i = 0; i < obj.moves.length; i++) {
             var move = obj.moves[i].move;
             if (!move)
