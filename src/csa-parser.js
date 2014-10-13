@@ -78,7 +78,7 @@ JKFPlayer.csaParser = (function() {
         //	if(ps.length==0) return {preset: "HIRATE"};
         	var ret = {preset: "OTHER", data: {board: getHirate()}};
         	for(var i=0; i<ps.length; i++){
-        		ret.data.board[ps[i].x-1][ps[i].y-1]={};
+        		ret.data.board[ps[i].xy.x-1][ps[i].xy.y-1]={};
         	}
         	return ret;
         },
@@ -796,9 +796,15 @@ JKFPlayer.csaParser = (function() {
           s3 = peg$parsexypiece();
         }
         if (s2 !== peg$FAILED) {
-          peg$reportedPos = s0;
-          s1 = peg$c28(s2);
-          s0 = s1;
+          s3 = peg$parsenl();
+          if (s3 !== peg$FAILED) {
+            peg$reportedPos = s0;
+            s1 = peg$c28(s2);
+            s0 = s1;
+          } else {
+            peg$currPos = s0;
+            s0 = peg$c0;
+          }
         } else {
           peg$currPos = s0;
           s0 = peg$c0;

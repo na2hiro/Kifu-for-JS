@@ -51,11 +51,11 @@ initialboard = comment* data:(hirate / ikkatsu / ""{return "NO"}) koma:komabetsu
 	return data;
 }
 
-hirate = "PI" ps:(xypiece)* {
+hirate = "PI" ps:(xypiece)* nl{
 //	if(ps.length==0) return {preset: "HIRATE"};
 	var ret = {preset: "OTHER", data: {board: getHirate()}};
 	for(var i=0; i<ps.length; i++){
-		ret.data.board[ps[i].x-1][ps[i].y-1]={};
+		ret.data.board[ps[i].xy.x-1][ps[i].xy.y-1]={};
 	}
 	return ret;
 }
