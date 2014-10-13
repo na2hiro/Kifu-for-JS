@@ -2801,7 +2801,11 @@ JKFPlayer.ki2Parser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(headers, moves, res) { return {header:headers, moves:moves, result:res} },
+        peg$c2 = function(headers, moves, res) {
+         	var ret = {header:headers, moves:moves, result:res};
+        	if(ret.header["手合割"]) ret.initial={preset: presetToString(ret.header["手合割"])};
+        	return ret;
+        },
         peg$c3 = [],
         peg$c4 = function(header) {
         	var ret = {};
@@ -3909,6 +3913,25 @@ JKFPlayer.ki2Parser = (function() {
     			"寄": "C",
     			"引": "D",
     		}[str] || "";
+    	}
+    	function presetToString(preset){
+    		return {
+    			"平手": "HIRATE", 
+    			"香落ち": "KY",
+    			"右香落ち": "KY_R",
+    			"角落ち": "KA",
+    			"飛車落ち": "HI",
+    			"飛香落ち": "HIKY",
+    			"二枚落ち": "2",
+    			"三枚落ち": "3",
+    			"四枚落ち": "4",
+    			"五枚落ち": "5	",
+    			"左五枚落ち": "5_L",
+    			"六枚落ち": "6",
+    			"八枚落ち": "8",
+    			"十枚落ち": "10",
+    			"その他": "OTHER",
+    		}[preset.replace(/\s/g, "")];
     	}
 
 
