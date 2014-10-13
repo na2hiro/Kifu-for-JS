@@ -176,7 +176,7 @@ class JKFPlayer{
 		return this.shogi.getHandsSummary(color);
 	}
 	getComments(tesuu: number = this.tesuu){
-		return this.kifu.moves[tesuu].comments;
+		return this.kifu.moves[tesuu].comments || [];
 	}
 	getMove(tesuu: number = this.tesuu){
 		return this.kifu.moves[tesuu].move;

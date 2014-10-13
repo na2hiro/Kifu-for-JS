@@ -188,7 +188,7 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.prototype.getComments = function (tesuu) {
         if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
-        return this.kifu.moves[tesuu].comments;
+        return this.kifu.moves[tesuu].comments || [];
     };
     JKFPlayer.prototype.getMove = function (tesuu) {
         if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
