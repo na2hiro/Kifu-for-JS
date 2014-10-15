@@ -33,7 +33,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 
 ##形式の定義
 ### JSONの形式
-`JSONKifuFormat.d.ts`にある内容です．変更され得ます．"?"はない場合があるという意味です．
+`JSONKifuFormat.d.ts`にある内容です．変更され得ます．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．
 
 * JKFが持つフィールドの定義
 	* header `string=>string` ヘッダ情報
@@ -48,7 +48,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 	* moves `MoveFormat[]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
 	* result 文字列 結果(先手,後手,上手,下手,千日手,持将棋) // フォーマット調査不足により未定
 
-上の定義で使う補助定義は次の通り．
+上の定義で使うオブジェクトの補助定義は次の通り．
 
 * `MoveFormat` 指し手を表す
 	* comments? `string[]` コメント
@@ -73,12 +73,15 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 * `PlaceFormat` 座標を表す
 	* x `Integer` 1から9
 	* y `Integer` 一から九
-* `RelativeString` 文字列で以下の情報を連結
+
+エイリアスは次の通り．
+
+* `Color = boolean` 陣営を表す． 先手: true, 後手: false
+* `RelativeString = string` 以下の文字列を連結したもの
 	* 左, 直, 右: それぞれL, C, R(Left, Center/Choku, Right)
 	* 上, 寄, 引: それぞれU, M, D(Up, Middle, Down)
 	* 打: H(Hit 何か違う気もする)
-* `Color = boolean` 先手: true, 後手: false
-* `InitialPresetString` 平手，香落ち等KIFでサポートされている手合情報
+* `InitialPresetString = string` 平手，香落ち等KIFでサポートされている手合情報
 	* HIRATE: 平手
 	* KY: 香落ち
 	* KY_R: 右香落ち
