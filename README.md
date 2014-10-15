@@ -35,7 +35,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 ### JSONの形式
 `JSONKifuFormat.d.ts`にある内容です．変更され得ます．"?"はない場合があるという意味です．
 
-* JKFの定義
+* JKFが持つフィールドの定義
 	* header `string=>string` ヘッダ情報
 	* initial? 初期局面(なければ平手)
 		* preset `InitialPresetString` 手合名
@@ -45,22 +45,27 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 				* color?: `Color` 先手/後手
 				* kind?: `string` 駒の種類
 			* hands: `(string=>number)[]` 駒種がkey, 枚数がvalueの連想配列．0番目が先手，1番目が後手の持駒
-	* moves `以下[]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
-		* comments? `string[]` コメント
-		* move? 駒の動き
-			* color `Color` 先手/後手
-			* from? `PlaceFormat` 移動元 打った場合はなし
-			* to `PlaceFormat` 移動先
-			* piece `string` 駒の種類(`FU` `KY`等のCSA形式)
-			* same? `boolean` 直前と同じ場合
-			* promote? `Bool` 成るかどうか true:成, false:不成, 無いかnull:どちらでもない
-			* capture? `string` 取った駒の種類
-			* relative? `RelativeString` 相対情報
-		* time? 消費時間
-			* now `TimeFormat` 1手
-			* total `TimeFormat` 合計
-		* special? `string` 特殊棋譜(CSAのTORYO, CHUDAN等)
+	* moves `MoveFormat[]` n番目はn手目の棋譜(0番目は初期局面のコメント用)
 	* result 文字列 結果(先手,後手,上手,下手,千日手,持将棋) // フォーマット調査不足により未定
+
+上の定義で使う補助定義は次の通り．
+
+* `MoveFormat` 指し手を表す
+	* comments? `string[]` コメント
+	* move? 駒の動き
+		* color `Color` 先手/後手
+		* from? `PlaceFormat` 移動元 打った場合はなし
+		* to `PlaceFormat` 移動先
+		* piece `string` 駒の種類(`FU` `KY`等のCSA形式)
+		* same? `boolean` 直前と同じ場合
+		* promote? `Bool` 成るかどうか true:成, false:不成, 無いかnull:どちらでもない
+		* capture? `string` 取った駒の種類
+		* relative? `RelativeString` 相対情報
+	* time? 消費時間
+		* now `TimeFormat` 1手
+		* total `TimeFormat` 合計
+	* special? `string` 特殊棋譜(CSAのTORYO, CHUDAN等)
+	* fork? `MoveFormat[][]` 任意の長さの分岐を任意個格納する
 * `TimeFormat` 時間を表す
 	* h? `Integer` 時
 	* m `Integer` 分
@@ -91,7 +96,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 	* OTHER: その他
 
 ### 文字コード
-JSONで一般的なUTF-8を使用します．
+JSONで一般的なUTF-8を使用するものとします．
 
 ## プログラム
 
