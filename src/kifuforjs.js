@@ -372,7 +372,7 @@ var Kifu = (function () {
         }
         return ret + str;
     };
-    Kifu.version = "1.0.4";
+    Kifu.version = "1.0.5";
     Kifu.settings = {};
     return Kifu;
 })();

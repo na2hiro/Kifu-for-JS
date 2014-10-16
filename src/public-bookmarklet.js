@@ -10,7 +10,7 @@
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
 			var targetId, kifuPath;
 			if($("applet param[name=KIFU]").length>0){
-				kifuPath = $("applet param[name=KIFU]").val();
+				kifuPath = ($("applet param[name=KIFU]").parent().attr("codebase")+"/" || "")+$("applet param[name=KIFU]").val();
 				$("applet param[name=KIFU]").parent().replaceWith("<div id='kifuforjs'></div>");
 				targetId = "kifuforjs";
 			}else if($("#flashcontent").length>0){
