@@ -48,6 +48,11 @@ var JKFPlayer = (function () {
         try  {
             return JKFPlayer.parseJKF(kifu);
         } catch (e) {
+            JKFPlayer.log("failed to parse as jkf", e);
+        }
+        try  {
+            return JKFPlayer.parseKIF(kifu);
+        } catch (e) {
             JKFPlayer.log("failed to parse as kif", e);
         }
         try  {
@@ -60,7 +65,7 @@ var JKFPlayer = (function () {
         } catch (e) {
             JKFPlayer.log("failed to parse as csa", e);
         }
-        throw "KIF, KI2, CSAいずれの形式でも失敗しました";
+        throw "JKF, KIF, KI2, CSAいずれの形式でも失敗しました";
     };
     JKFPlayer.parseJKF = function (kifu) {
         JKFPlayer.log("parseJKF", kifu);
