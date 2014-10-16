@@ -1034,6 +1034,11 @@ var JKFPlayer = (function () {
         try  {
             return JKFPlayer.parseJKF(kifu);
         } catch (e) {
+            JKFPlayer.log("failed to parse as jkf", e);
+        }
+        try  {
+            return JKFPlayer.parseKIF(kifu);
+        } catch (e) {
             JKFPlayer.log("failed to parse as kif", e);
         }
         try  {
@@ -1046,7 +1051,7 @@ var JKFPlayer = (function () {
         } catch (e) {
             JKFPlayer.log("failed to parse as csa", e);
         }
-        throw "KIF, KI2, CSAいずれの形式でも失敗しました";
+        throw "JKF, KIF, KI2, CSAいずれの形式でも失敗しました";
     };
     JKFPlayer.parseJKF = function (kifu) {
         JKFPlayer.log("parseJKF", kifu);
@@ -1564,20 +1569,24 @@ JKFPlayer.kifParser = (function() {
         peg$c1 = [],
         peg$c2 = null,
         peg$c3 = function(headers, ini, headers2, moves, res) {
-         	var ret = {header:{}, moves:moves,result:res,initial:ini}
+         	var ret = {header:{}, moves:moves,result:res}
         	for(var i=0; i<headers.length; i++){
         		ret.header[headers[i].k]=headers[i].v;
         	}
         	for(var i=0; i<headers2.length; i++){
         		ret.header[headers2[i].k]=headers2[i].v;
         	}
-        	if(ret.header["手合割"]){
+        	if(ini){
+        		ret.initial = ini;
+        	}else if(ret.header["手合割"]){
         		var preset = presetToString(ret.header["手合割"]);
         		if(preset!="OTHER") ret.initial={preset: preset};
         	}
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
         			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        		}else{
+        			ret.initial.data.color = true;
         		}
         		ret.initial.data.hands = [{}, {}];
         		if(ret.header["先手の持駒"] || ret.header["下手の持駒"]){
@@ -3641,7 +3650,7 @@ JKFPlayer.kifParser = (function() {
     		var kinds = str.replace(/　$/, "").split("　");
     		var ret = {};
     		for(var i=0; i<kinds.length; i++){
-    			ret[kindToCSA(kinds[i][0])] = kanToN2(kinds[i].slice(1));
+    			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
     		}
     		return ret;
     	}
@@ -3703,20 +3712,24 @@ JKFPlayer.ki2Parser = (function() {
         peg$c1 = [],
         peg$c2 = null,
         peg$c3 = function(headers, ini, headers2, moves, res) {
-         	var ret = {header:{}, moves:moves, result:res, initial:ini};
+         	var ret = {header:{}, moves:moves, result:res};
         	for(var i=0; i<headers.length; i++){
         		ret.header[headers[i].k]=headers[i].v;
         	}
         	for(var i=0; i<headers2.length; i++){
         		ret.header[headers2[i].k]=headers2[i].v;
         	}
-        	if(ret.header["手合割"]){
+        	if(ini){
+        		ret.initial = ini;
+        	}else if(ret.header["手合割"]){
         		var preset = presetToString(ret.header["手合割"]);
         		if(preset!="OTHER") ret.initial={preset: preset};
         	}
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
         			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        		}else{
+        			ret.initial.data.color = true;
         		}
         		ret.initial.data.hands = [{}, {}];
         		if(ret.header["先手の持駒"] || ret.header["下手の持駒"]){
@@ -5280,7 +5293,7 @@ JKFPlayer.ki2Parser = (function() {
     		var kinds = str.replace(/　$/, "").split("　");
     		var ret = {};
     		for(var i=0; i<kinds.length; i++){
-    			ret[kindToCSA(kinds[i][0])] = kanToN2(kinds[i].slice(1));
+    			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
     		}
     		return ret;
     	}
