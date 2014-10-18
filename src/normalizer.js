@@ -14,8 +14,14 @@ var Normalizer;
 
     function normalizeKIF(obj) {
         var shogi = new Shogi(obj.initial || undefined);
-        for (var i = 0; i < obj.moves.length; i++) {
-            var move = obj.moves[i].move;
+        normalizeKIFMoves(shogi, obj.moves);
+        return obj;
+    }
+    Normalizer.normalizeKIF = normalizeKIF;
+    function normalizeKIFMoves(shogi, moves, lastMove) {
+        for (var i = 0; i < moves.length; i++) {
+            var last = i <= 1 ? lastMove : moves[i - 1];
+            var move = moves[i].move;
             if (!move)
                 continue;
 
@@ -25,7 +31,7 @@ var Normalizer;
                 // move
                 // sameからto復元
                 if (move.same)
-                    move.to = obj.moves[i - 1].move.to;
+                    move.to = last.move.to;
 
                 // capture復元
                 addCaptureInformation(shogi, move);
@@ -44,7 +50,7 @@ var Normalizer;
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
                 } catch (e) {
-                    throw i + "手目で失敗しました: " + e;
+                    throw i + "手目で失敗しました: " + JSON.stringify(move.from) + JSON.stringify(move.to) + e;
                 }
             } else {
                 // drop
@@ -54,9 +60,23 @@ var Normalizer;
                 shogi.drop(move.to.x, move.to.y, move.piece);
             }
         }
-        return obj;
+        for (var i = moves.length - 1; i >= 0; i--) {
+            var move = moves[i].move;
+            if (!move)
+                continue;
+            if (move.from) {
+                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+            } else {
+                shogi.undrop(move.to.x, move.to.y);
+            }
+            last = i <= 1 ? lastMove : moves[i - 1];
+            if (moves[i].fork) {
+                for (var j = 0; j < moves[i].fork.length; j++) {
+                    normalizeKIFMoves(shogi, moves[i].fork[j], last);
+                }
+            }
+        }
     }
-    Normalizer.normalizeKIF = normalizeKIF;
     function normalizeKI2(obj) {
         var shogi = new Shogi(obj.initial || undefined);
         for (var i = 0; i < obj.moves.length; i++) {

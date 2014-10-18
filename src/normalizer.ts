@@ -15,8 +15,13 @@ module Normalizer{
 
 	export function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat{
 		var shogi = new Shogi(obj.initial || undefined);
-		for(var i=0; i<obj.moves.length; i++){
-			var move = obj.moves[i].move;
+		normalizeKIFMoves(shogi, obj.moves);
+		return obj;
+	}
+	function normalizeKIFMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
+		for(var i=0; i<moves.length; i++){
+			var last = i<=1 ? lastMove : moves[i-1];
+			var move = moves[i].move;
 			if(!move) continue;
 			// 手番
 			move.color=shogi.turn==Color.Black;
@@ -24,7 +29,7 @@ module Normalizer{
 				// move
 
 				// sameからto復元
-				if(move.same) move.to = obj.moves[i-1].move.to;
+				if(move.same) move.to = last.move.to;
 
 				// capture復元
 				addCaptureInformation(shogi, move);
@@ -42,7 +47,7 @@ module Normalizer{
 				try{
 					shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
 				}catch(e){
-					throw i+"手目で失敗しました: "+e;
+					throw i+"手目で失敗しました: "+JSON.stringify(move.from)+JSON.stringify(move.to)+e;
 				}
 			}else{
 				// drop
@@ -52,7 +57,21 @@ module Normalizer{
 				shogi.drop(move.to.x, move.to.y, move.piece);
 			}
 		}
-		return obj;
+		for(var i=moves.length-1; i>=0; i--){
+			var move = moves[i].move;
+			if(!move) continue;
+			if(move.from){
+				shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+			}else{
+				shogi.undrop(move.to.x, move.to.y);
+			}
+			last = i<=1 ? lastMove : moves[i-1];
+			if(moves[i].fork){
+				for(var j=0; j<moves[i].fork.length; j++){
+					normalizeKIFMoves(shogi, moves[i].fork[j], last);
+				}
+			}
+		}
 	}
 	export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
 		var shogi = new Shogi(obj.initial || undefined);

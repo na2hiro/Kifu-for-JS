@@ -87,8 +87,8 @@
 }
 
 kifu
- = skipline* headers:header* ini:initialboard? headers2:header* split? moves:moves res:result? nl? {
- 	var ret = {header:{}, moves:moves,result:res}
+ = skipline* headers:header* ini:initialboard? headers2:header* split? moves:moves forks:fork* nl? {
+ 	var ret = {header:{}, moves:moves}
 	for(var i=0; i<headers.length; i++){
 		ret.header[headers[i].k]=headers[i].v;
 	}
@@ -119,12 +119,25 @@ kifu
 			delete ret.header["下手の持駒"];
 		}
 	}
+	var forkStack = [{te:1, moves:moves}];
+	for(var i=0; i<forks.length; i++){
+		var nowFork = forks[i];
+		var fork = forkStack.pop();
+		while(fork.te>nowFork.te){fork = forkStack.pop();}
+		var move = fork.moves[nowFork.te-fork.te+1];
+		move.fork = move.fork || [];
+		move.fork.push(nowFork.moves);
+		forkStack.push(fork);
+		forkStack.push(nowFork);
+	}
 	return ret;
 }
 
 // ヘッダ
 header
- = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}} / te:[先後上下] "手番" nl {return {k:"手番",v:te}}
+ = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}} / te:turn "手番" nl {return {k:"手番",v:te}}
+
+turn = [先後上下]
 
 initialboard = (" " nonl* nl)? ("+" nonl* nl)? lines:ikkatsuline+ ("+" nonl* nl)? {
 	var ret = [];
@@ -144,7 +157,7 @@ teban = (" "/"+"/"^"){return true} / ("v"/"V"){return false}
 split = "手数----指手--" "-------消費時間--"? nl
 
 // 棋譜部分
-moves = hd:firstboard tl:move* {tl.unshift(hd); return tl;}
+moves = hd:firstboard tl:move* result? {tl.unshift(hd); return tl;}
 
 firstboard = c:comment* pointer? {return c.length==0 ? {} : {comments:c}}
 move = line:line c:comment* pointer? {
@@ -160,7 +173,12 @@ move = line:line c:comment* pointer? {
 
 pointer = "&" nonl* nl
 
-line = " "* te " "* move:(fugou:fugou from:from {var ret = {from: from, piece: fugou.piece}; if(fugou.to){ret.to=fugou.to}else{ret.same=true};if(fugou.promote)ret.promote=true; return ret;} / spe:[^\r\n ]* {return spe.join("")}) " "* time:time? nl {return {move: move, time: time}}
+line = " "* te " "* move:(fugou:fugou from:from {
+	var ret = {from: from, piece: fugou.piece};
+	if(fugou.to){ret.to=fugou.to}else{ret.same=true};
+	if(fugou.promote) ret.promote=true;
+	return ret;
+} / spe:[^\r\n ]* {return spe.join("")}) " "* time:time? "+"? nl {return {move: move, time: time}}
 
 te = [0-9]+
 fugou = pl:place pi:piece pro:"成"? {return {to:pl, piece: pi,promote:!!pro};}
@@ -180,7 +198,18 @@ ms = m:[0-9]+ ":" s:[0-9]+ {return {m:toN(m),s:toN(s)}}
 
 comment = "*" comm:nonl* nl {return comm.join("")}
 
-result = "まで" [0-9]+ "手" res:("で" win:[先後上下] "手の勝ち" {return win} / "で中断" {return "中断"} / "詰") nl {return res}
+result = "まで" [0-9]+ "手" res:(
+	"で" win:turn "手の勝ち" {return {win:win}}
+	/ "で時間切れにより" win:turn "手の勝ち" {return {win:win, result:"時間切れ"}}
+	/ "で" win:turn "手の反則勝ち" {return {win:win, result:"反則"}}
+	/ "で中断" {return {result: "中断"}}
+	/ "で持将棋" {return {result: "持将棋"}}
+	/ "で千日手" {return {result:"千日手"}}
+	/ "で"? "詰" {return "詰"}
+	/ "で不詰" {return "不詰"}
+) nl {return res}
+
+fork = "変化：" te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves}}
 
 
 nl = newline+ skipline*
