@@ -209,7 +209,7 @@ result = "まで" [0-9]+ "手" res:(
 	/ "で不詰" {return "不詰"}
 ) nl {return res}
 
-fork = "変化：" te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves}}
+fork = "変化：" " "* te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves}}
 
 
 nl = newline+ skipline*

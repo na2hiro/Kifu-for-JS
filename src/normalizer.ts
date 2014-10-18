@@ -75,24 +75,29 @@ module Normalizer{
 	}
 	export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
 		var shogi = new Shogi(obj.initial || undefined);
-		for(var i=0; i<obj.moves.length; i++){
-			var move = obj.moves[i].move;
+		normalizeKI2Moves(shogi, obj.moves);
+		return obj;
+	}
+	function normalizeKI2Moves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
+		for(var i=0; i<moves.length; i++){
+			var last = i<=1 ? lastMove : moves[i-1];
+			var move = moves[i].move;
 			if(!move) continue;
 
 			// 手番
 			move.color=shogi.turn==Color.Black;
 			// 同からto復元
-			if(move.same) move.to = obj.moves[i-1].move.to;
+			if(move.same) move.to = last.move.to;
 
 			// from復元
-			var moves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
-			if(move.relative=="H" || moves.length==0){
+			var candMoves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
+			if(move.relative=="H" || candMoves.length==0){
 				// ok
-			}else if(moves.length==1){
-				move.from = moves[0].from;
+			}else if(candMoves.length==1){
+				move.from = candMoves[0].from;
 			}else{
 				// 相対逆算
-				var moveAns = filterMovesByRelatives(move.relative, shogi.turn, moves);
+				var moveAns = filterMovesByRelatives(move.relative, shogi.turn, candMoves);
 				if(moveAns.length!=1) throw "相対情報が不完全で複数の候補があります";
 				move.from = moveAns[0].from;
 			}
@@ -113,10 +118,21 @@ module Normalizer{
 				shogi.drop(move.to.x, move.to.y, move.piece);
 			}
 		}
-		if(obj.result=="中断"){
-			obj.moves.push({special: "CHUDAN"});
+		for(var i=moves.length-1; i>=0; i--){
+			var move = moves[i].move;
+			if(!move) continue;
+			if(move.from){
+				shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+			}else{
+				shogi.undrop(move.to.x, move.to.y);
+			}
+			last = i<=1 ? lastMove : moves[i-1];
+			if(moves[i].fork){
+				for(var j=0; j<moves[i].fork.length; j++){
+					normalizeKI2Moves(shogi, moves[i].fork[j], last);
+				}
+			}
 		}
-		return obj;
 	}
 	export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
 		restorePreset(obj);
