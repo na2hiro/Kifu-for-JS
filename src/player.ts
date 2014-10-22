@@ -224,6 +224,10 @@ class JKFPlayer{
 	getReadableForkKifu(tesuu: number = this.tesuu): string[]{
 		return this.getNextFork(tesuu).map((fork)=>JKFPlayer.moveToReadableKifu(fork[0]));
 	}
+	getMaxTesuu(){
+		var nearestFork = this.forks[this.forks.length-1];
+		return nearestFork.te+nearestFork.moves.length-1;
+	}
 	toJKF(){
 		return JSON.stringify(this.kifu);
 	}

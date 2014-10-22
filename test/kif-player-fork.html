@@ -1,6 +1,14 @@
 <meta charset="utf-8">
 <script src="../src/kifuplayer.js" charset="utf-8"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<pre>
+76FU
+34FU	84FU
+26FU	68GI
+____	34FU	85FU
+____	66FU
+____	42GI
+</pre>
 
 <script>
 $(document).ready(function() {
@@ -23,7 +31,10 @@ function parse(data){
 }
 function traverse(){
 	var te = 0;
-	while(player.forward()){
+	var max = player.getMaxTesuu();
+	console.log("max", max);
+	while(player.tesuu < max){
+		player.forward();
 		te++;
 		console.log("+", player.tesuu, player.getReadableKifu(), player.shogi.toCSAString());
 	}

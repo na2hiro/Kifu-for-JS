@@ -857,6 +857,10 @@ var JKFPlayer = (function () {
             return JKFPlayer.moveToReadableKifu(fork[0]);
         });
     };
+    JKFPlayer.prototype.getMaxTesuu = function () {
+        var nearestFork = this.forks[this.forks.length - 1];
+        return nearestFork.te + nearestFork.moves.length - 1;
+    };
     JKFPlayer.prototype.toJKF = function () {
         return JSON.stringify(this.kifu);
     };
