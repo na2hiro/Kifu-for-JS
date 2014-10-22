@@ -22,11 +22,18 @@
 }
 kifu = csa2 / csa1
 
-csa2 = version22 i:information? ini:initialboard ms:moves? {return {headers:i.headers, players: i.players, initial:ini, moves:ms}}
+csa2 = version22 i:information? ini:initialboard ms:moves? {
+	var ret = {header:i.header, initial:ini, moves:ms}
+	if(i && i.players){
+		if(i.players[0]) ret.header["先手"]=i.players[0];
+		if(i.players[1]) ret.header["後手"]=i.players[1];
+	}
+	return ret;
+}
 
 version22 = comment* "V2.2" nl
 
-information = players:players? headers:headers {return {players:players, headers:headers}}
+information = players:players? header:headers {return {players:players, header:header}}
 
 headers = header:header* {
 	var ret = {};

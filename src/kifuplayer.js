@@ -5828,11 +5828,18 @@ JKFPlayer.csaParser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(i, ini, ms) {return {headers:i.headers, players: i.players, initial:ini, moves:ms}},
+        peg$c2 = function(i, ini, ms) {
+        	var ret = {header:i.header, initial:ini, moves:ms}
+        	if(i && i.players){
+        		if(i.players[0]) ret.header["先手"]=i.players[0];
+        		if(i.players[1]) ret.header["後手"]=i.players[1];
+        	}
+        	return ret;
+        },
         peg$c3 = [],
         peg$c4 = "V2.2",
         peg$c5 = { type: "literal", value: "V2.2", description: "\"V2.2\"" },
-        peg$c6 = function(players, headers) {return {players:players, headers:headers}},
+        peg$c6 = function(players, header) {return {players:players, header:header}},
         peg$c7 = function(header) {
         	var ret = {};
         	for(var i=0; i<header.length; i++){

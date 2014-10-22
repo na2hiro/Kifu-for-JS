@@ -1,6 +1,8 @@
 'encoding=Shift_JIS
 ' ---- Kifu for Windows V7 V7.08 CSA形式棋譜ファイル ----
 V2.2
+N+sent0
+N-gote
 $START_TIME:2014/10/22 12:36:56
 $END_TIME:2014/10/22 12:37:03
 P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
