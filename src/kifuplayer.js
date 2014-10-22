@@ -931,6 +931,7 @@ var Normalizer;
                 }
             }
         }
+        restoreColorOfIllegalAction(moves);
     }
     function normalizeKI2(obj) {
         var shogi = new Shogi(obj.initial || undefined);
@@ -997,6 +998,7 @@ var Normalizer;
                 }
             }
         }
+        restoreColorOfIllegalAction(moves);
     }
     function normalizeCSA(obj) {
         restorePreset(obj);
@@ -1189,6 +1191,11 @@ var Normalizer;
     function samePiece(p1, p2) {
         return (typeof p1.color == "undefined" && typeof p2.color == "undefined") || (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
     }
+    function restoreColorOfIllegalAction(moves) {
+        if (moves[moves.length - 1].special == "ILLEGAL_ACTION") {
+            moves[moves.length - 1].special = (moves[moves.length - 2] && moves[moves.length - 2].move && moves[moves.length - 2].move.color == false ? "-" : "+") + "ILLEGAL_ACTION";
+        }
+    }
 })(Normalizer || (Normalizer = {}));
 JKFPlayer.kifParser = (function() {
   /*
@@ -1259,11 +1266,9 @@ JKFPlayer.kifParser = (function() {
         			delete ret.header["下手の持駒"];
         		}
         	}
-        	restoreColorOfIllegalAction(moves);
         	var forkStack = [{te:0, moves:moves}];
         	for(var i=0; i<forks.length; i++){
         		var nowFork = forks[i];
-        		restoreColorOfIllegalAction(nowFork.moves);
         		var fork = forkStack.pop();
         		while(fork.te>nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
@@ -3657,11 +3662,6 @@ JKFPlayer.kifParser = (function() {
     		}
     		return ret;
     	}
-    	function restoreColorOfIllegalAction(moves){
-    		if(moves[moves.length-1].special == "ILLEGAL_ACTION"){
-    			moves[moves.length-1].special = (moves[moves.length-2] && moves[moves.length-2].color=="-" ? "-" : "+")+"ILLEGAL_ACTION";
-    		}
-    	}
 
 
     peg$result = peg$startRuleFunction();
@@ -3751,11 +3751,9 @@ JKFPlayer.ki2Parser = (function() {
         			delete ret.header["下手の持駒"];
         		}
         	}
-        	restoreColorOfIllegalAction(moves);
         	var forkStack = [{te:0, moves:moves}];
         	for(var i=0; i<forks.length; i++){
         		var nowFork = forks[i];
-        		restoreColorOfIllegalAction(nowFork.moves);
         		var fork = forkStack.pop();
         		while(fork.te>nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
@@ -5727,11 +5725,6 @@ JKFPlayer.ki2Parser = (function() {
     		}
     		return ret;
     	}
-    	function restoreColorOfIllegalAction(moves){
-    		if(moves[moves.length-1].special == "ILLEGAL_ACTION"){
-    			moves[moves.length-1].special = (moves[moves.length-2] && moves[moves.length-2].color=="-" ? "-" : "+")+"ILLEGAL_ACTION";
-    		}
-    	}
 
 
     peg$result = peg$startRuleFunction();
@@ -5889,8 +5882,8 @@ JKFPlayer.csaParser = (function() {
         peg$c44 = function(from, to, piece) { return {from:from.x==0?null:from, to:to, piece:piece}},
         peg$c45 = "%",
         peg$c46 = { type: "literal", value: "%", description: "\"%\"" },
-        peg$c47 = /^[+-_A-Z]/,
-        peg$c48 = { type: "class", value: "[+-_A-Z]", description: "[+-_A-Z]" },
+        peg$c47 = /^[\-+_A-Z]/,
+        peg$c48 = { type: "class", value: "[\\-+_A-Z]", description: "[\\-+_A-Z]" },
         peg$c49 = function(m) { return {special: m.join("")}; },
         peg$c50 = "+",
         peg$c51 = { type: "literal", value: "+", description: "\"+\"" },

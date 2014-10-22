@@ -76,6 +76,7 @@ var Normalizer;
                 }
             }
         }
+        restoreColorOfIllegalAction(moves);
     }
     function normalizeKI2(obj) {
         var shogi = new Shogi(obj.initial || undefined);
@@ -142,6 +143,7 @@ var Normalizer;
                 }
             }
         }
+        restoreColorOfIllegalAction(moves);
     }
     function normalizeCSA(obj) {
         restorePreset(obj);
@@ -333,5 +335,10 @@ var Normalizer;
     }
     function samePiece(p1, p2) {
         return (typeof p1.color == "undefined" && typeof p2.color == "undefined") || (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
+    }
+    function restoreColorOfIllegalAction(moves) {
+        if (moves[moves.length - 1].special == "ILLEGAL_ACTION") {
+            moves[moves.length - 1].special = (moves[moves.length - 2] && moves[moves.length - 2].move && moves[moves.length - 2].move.color == false ? "-" : "+") + "ILLEGAL_ACTION";
+        }
     }
 })(Normalizer || (Normalizer = {}));

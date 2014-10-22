@@ -67,11 +67,9 @@ JKFPlayer.kifParser = (function() {
         			delete ret.header["下手の持駒"];
         		}
         	}
-        	restoreColorOfIllegalAction(moves);
         	var forkStack = [{te:0, moves:moves}];
         	for(var i=0; i<forks.length; i++){
         		var nowFork = forks[i];
-        		restoreColorOfIllegalAction(nowFork.moves);
         		var fork = forkStack.pop();
         		while(fork.te>nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
@@ -2464,11 +2462,6 @@ JKFPlayer.kifParser = (function() {
     			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
     		}
     		return ret;
-    	}
-    	function restoreColorOfIllegalAction(moves){
-    		if(moves[moves.length-1].special == "ILLEGAL_ACTION"){
-    			moves[moves.length-1].special = (moves[moves.length-2] && moves[moves.length-2].color=="-" ? "-" : "+")+"ILLEGAL_ACTION";
-    		}
     	}
 
 

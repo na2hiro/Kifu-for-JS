@@ -72,6 +72,7 @@ module Normalizer{
 				}
 			}
 		}
+		restoreColorOfIllegalAction(moves);
 	}
 	export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
 		var shogi = new Shogi(obj.initial || undefined);
@@ -133,6 +134,7 @@ module Normalizer{
 				}
 			}
 		}
+		restoreColorOfIllegalAction(moves);
 	}
 	export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
 		restorePreset(obj);
@@ -303,5 +305,10 @@ module Normalizer{
 	function samePiece(p1, p2){
 		return (typeof p1.color=="undefined" && typeof p2.color=="undefined") ||
 			(typeof p1.color!="undefined" && typeof p2.color!="undefined" && p1.color==p2.color && p1.kind==p2.kind);
+	}
+	function restoreColorOfIllegalAction(moves: MoveFormat[]){
+		if(moves[moves.length-1].special == "ILLEGAL_ACTION"){
+			moves[moves.length-1].special = (moves[moves.length-2] && moves[moves.length-2].move && moves[moves.length-2].move.color==false ? "-" : "+")+"ILLEGAL_ACTION";
+		}
 	}
 }
