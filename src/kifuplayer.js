@@ -1315,8 +1315,8 @@ JKFPlayer.kifParser = (function() {
         		var fork = forkStack.pop();
         		while(fork.te>nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
-        		move.fork = move.fork || [];
-        		move.fork.push(nowFork.moves);
+        		move.forks = move.forks || [];
+        		move.forks.push(nowFork.moves);
         		forkStack.push(fork);
         		forkStack.push(nowFork);
         	}
@@ -3800,8 +3800,8 @@ JKFPlayer.ki2Parser = (function() {
         		var fork = forkStack.pop();
         		while(fork.te>nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
-        		move.fork = move.fork || [];
-        		move.fork.push(nowFork.moves);
+        		move.forks = move.forks || [];
+        		move.forks.push(nowFork.moves);
         		forkStack.push(fork);
         		forkStack.push(nowFork);
         	}
