@@ -60,7 +60,14 @@ JKFPlayer.csaParser = (function() {
         peg$c12 = ":",
         peg$c13 = { type: "literal", value: ":", description: "\":\"" },
         peg$c14 = function(k, v) {return {k:k.join(""), v:v.join("")}},
-        peg$c15 = function(p, ini, ms) { return {players:p, initial:ini, moves:ms} },
+        peg$c15 = function(p, ini, ms) {
+        	var ret = {header: {}, initial:ini, moves:ms}
+        	if(p){
+        		if(p[0]) ret.header["先手"] = p[0];
+        		if(p[1]) ret.header["後手"] = p[1];
+        	}
+        	return ret;
+        },
         peg$c16 = "N+",
         peg$c17 = { type: "literal", value: "N+", description: "\"N+\"" },
         peg$c18 = function(n) { return n },

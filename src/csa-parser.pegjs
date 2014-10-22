@@ -44,7 +44,14 @@ headers = header:header* {
 }
 header = comment* "$" k:[^:]+ ":" v:nonl* nl {return {k:k.join(""), v:v.join("")}}
 
-csa1 = p:players? ini:initialboard? ms:moves { return {players:p, initial:ini, moves:ms} }
+csa1 = p:players? ini:initialboard? ms:moves {
+	var ret = {header: {}, initial:ini, moves:ms}
+	if(p){
+		if(p[0]) ret.header["先手"] = p[0];
+		if(p[1]) ret.header["後手"] = p[1];
+	}
+	return ret;
+}
 
 players = comment* sen:("N+" n:nonl* nl { return n })? comment* go:("N-" n:nonl* nl { return n})? { return [sen?sen.join(""):null, go?go.join(""):null] }
 
