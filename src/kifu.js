@@ -430,7 +430,7 @@ var Kifu = (function () {
         }
         return ret + str;
     };
-    Kifu.version = "1.0.5";
+    Kifu.version = "1.0.6";
     Kifu.settings = {};
     return Kifu;
 })();

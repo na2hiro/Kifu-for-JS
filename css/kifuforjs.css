@@ -46,6 +46,7 @@
 	margin: 0px;
 	padding-left: 0;
 	padding-top: 2px;
+	list-style:none;
 }
 .kifuforjs ul.lines li{
 	padding: 1px;

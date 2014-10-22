@@ -10,7 +10,7 @@
  */
 
 class Kifu{
-	static version = "1.0.5";
+	static version = "1.0.6";
 	static settings = {};
 	static load(filename: string, id?: string){
 		if(!id){

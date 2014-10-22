@@ -1,5 +1,6 @@
-# Kifu for JS (ver. 1.0.5)
+# Kifu for JS (ver. 1.0.6)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
+
 ## 概要
 * Kifu for JSは，Kifu for FlashやJava同様，HTML内で棋譜を読み込み表示，再生を行う．
 	* **KIF**, **KI2**, **CSA**, [**JKF**](https://github.com/na2hiro/json-kifu-format)形式に対応．
@@ -20,7 +21,16 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 ![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/3.png)
 
 ## Kifu for JS
-### 使い方
+### 機能
+既にKifu for Flashとほぼ同等以上の機能を備えています．
+
+* 対応棋譜形式: **kif**, **ki2**, kifu, ki2u, **csa**, jkf
+* 駒落ちや詰将棋等の初期局面指定にも対応
+* 変化手順の再生が可能
+* 棋譜中継のための自動更新機能
+* 棋譜クリックやキーボードでの再生
+
+### 設置方法
 `test/loadKif.html`に例
 
 jQuery(2.1以降で動作確認), kifuforjs.js, kifuforjs.cssを読み込む．ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．
@@ -38,7 +48,7 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 <script>Kifu.load("../json-kifu-format/jt201409130101.kif");</script>
 ```
 
-第二引数にidを渡すと，このコードがある場所ではなく，そのidを持つ要素の子の位置に盤面を挿入する．この方法の場合，ひと通り読み込みが済んでから挿入されるため，head内などにあってもよい．
+第二引数にidを渡すと，このコードがある場所ではなく，そのidを持つ要素の子の位置に盤面を挿入する．この方法の場合，ひと通り読み込みが済んでから挿入されるため，scriptはhead内などにあってもよい．
 
 ```html
 <script>Kifu.load("../json-kifu-format/jt201409130101.kif", "board");</script>
