@@ -22,7 +22,11 @@ class Kifu{
 		$(document).ready(()=>{
 			Kifu.ajax(filename, (data)=>{
 				kifu.filename = filename;
-				kifu.initialize(JKFPlayer.parse(data, filename));
+				try{
+					kifu.initialize(JKFPlayer.parse(data, filename));
+				}catch(e){
+					alert("棋譜ファイルが異常です: "+e);
+				}
 			});
 		});
 		return kifu;
@@ -40,7 +44,7 @@ class Kifu{
 			},
 			error: (jqXHR, textStatus, errorThrown)=>{
 				if(textStatus!="notmodified"){
-					alert("棋譜読み込みに失敗しました: "+textStatus);
+					alert("棋譜の取得に失敗しました: "+filename);
 				}
 			},
 			beforeSend: (xhr)=>{
