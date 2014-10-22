@@ -120,7 +120,14 @@ JKFPlayer.ki2Parser = (function() {
         peg$c31 = "V",
         peg$c32 = { type: "literal", value: "V", description: "\"V\"" },
         peg$c33 = function() {return false},
-        peg$c34 = function(hd, tl, res) {tl.unshift(hd); return tl;},
+        peg$c34 = function(hd, tl, res) {
+        	tl.unshift(hd);
+        	console.log(res);
+        	if(res && res.special && !tl[tl.length-1].special){
+        		tl.push({special: res.special});
+        	}
+        	return tl;
+        },
         peg$c35 = function(c) {return c.length==0 ? {} : {comments:c}},
         peg$c36 = function(line, c) {
         	var ret = {move: line};
@@ -186,28 +193,28 @@ JKFPlayer.ki2Parser = (function() {
         peg$c78 = { type: "literal", value: "\u3067", description: "\"\\u3067\"" },
         peg$c79 = "\u624B\u306E\u52DD\u3061",
         peg$c80 = { type: "literal", value: "\u624B\u306E\u52DD\u3061", description: "\"\\u624B\\u306E\\u52DD\\u3061\"" },
-        peg$c81 = function(win) {return {win:win}},
+        peg$c81 = function(win) {return {win:win, special: "TORYO"}},
         peg$c82 = "\u3067\u6642\u9593\u5207\u308C\u306B\u3088\u308A",
         peg$c83 = { type: "literal", value: "\u3067\u6642\u9593\u5207\u308C\u306B\u3088\u308A", description: "\"\\u3067\\u6642\\u9593\\u5207\\u308C\\u306B\\u3088\\u308A\"" },
-        peg$c84 = function(win) {return {win:win, result:"時間切れ"}},
+        peg$c84 = function(win) {return {win:win, special:"TIME_UP"}},
         peg$c85 = "\u624B\u306E\u53CD\u5247\u52DD\u3061",
         peg$c86 = { type: "literal", value: "\u624B\u306E\u53CD\u5247\u52DD\u3061", description: "\"\\u624B\\u306E\\u53CD\\u5247\\u52DD\\u3061\"" },
-        peg$c87 = function(win) {return {win:win, result:"反則"}},
+        peg$c87 = function(win) {return {win:win, special:"ILLEGAL_MOVE"}},
         peg$c88 = "\u3067\u4E2D\u65AD",
         peg$c89 = { type: "literal", value: "\u3067\u4E2D\u65AD", description: "\"\\u3067\\u4E2D\\u65AD\"" },
-        peg$c90 = function() {return {result: "中断"}},
+        peg$c90 = function() {return {special: "CHUDAN"}},
         peg$c91 = "\u3067\u6301\u5C06\u68CB",
         peg$c92 = { type: "literal", value: "\u3067\u6301\u5C06\u68CB", description: "\"\\u3067\\u6301\\u5C06\\u68CB\"" },
-        peg$c93 = function() {return {result: "持将棋"}},
+        peg$c93 = function() {return {special: "JISHOGI"}},
         peg$c94 = "\u3067\u5343\u65E5\u624B",
         peg$c95 = { type: "literal", value: "\u3067\u5343\u65E5\u624B", description: "\"\\u3067\\u5343\\u65E5\\u624B\"" },
-        peg$c96 = function() {return {result:"千日手"}},
+        peg$c96 = function() {return {special: "SENNICHITE"}},
         peg$c97 = "\u8A70",
         peg$c98 = { type: "literal", value: "\u8A70", description: "\"\\u8A70\"" },
-        peg$c99 = function() {return "詰"},
+        peg$c99 = function() {return {special: "TSUMI"}},
         peg$c100 = "\u3067\u4E0D\u8A70",
         peg$c101 = { type: "literal", value: "\u3067\u4E0D\u8A70", description: "\"\\u3067\\u4E0D\\u8A70\"" },
-        peg$c102 = function() {return "不詰"},
+        peg$c102 = function() {return {special: "FUZUMI"}},
         peg$c103 = function(res) {return res},
         peg$c104 = "\u5909\u5316\uFF1A",
         peg$c105 = { type: "literal", value: "\u5909\u5316\uFF1A", description: "\"\\u5909\\u5316\\uFF1A\"" },

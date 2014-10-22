@@ -152,7 +152,13 @@ ikkatsuline = "|" masu:masu+ "|" nonl+ nl { return masu; }
 masu = c:teban k:piece {return {color:c, kind:k}} / " ・" { return {} }
 teban = (" "/"+"/"^"){return true} / ("v"/"V"){return false}
 
-moves = hd:firstboard tl:move* res:result? {tl.unshift(hd); return tl;}
+moves = hd:firstboard tl:move* res:result? {
+	tl.unshift(hd);
+	if(res && res.special && !tl[tl.length-1].special){
+		tl.push({special: res.special});
+	}
+	return tl;
+}
 
 firstboard = c:comment* pointer? {return c.length==0 ? {} : {comments:c}}
 move = line:line c:comment* pointer? (nl / " ")* {
@@ -191,14 +197,14 @@ numkan = n:[一二三四五六七八九] {return kanToN(n);}
 comment = "*" comm:nonl* nl {return comm.join("")}
 
 result = "まで" [0-9]+ "手" res:(
-	"で" win:turn "手の勝ち" {return {win:win}}
-	/ "で時間切れにより" win:turn "手の勝ち" {return {win:win, result:"時間切れ"}}
-	/ "で" win:turn "手の反則勝ち" {return {win:win, result:"反則"}}
-	/ "で中断" {return {result: "中断"}}
-	/ "で持将棋" {return {result: "持将棋"}}
-	/ "で千日手" {return {result:"千日手"}}
-	/ "で"? "詰" {return "詰"}
-	/ "で不詰" {return "不詰"}
+	"で" win:turn "手の勝ち" {return {win:win, special: "TORYO"}}
+	/ "で時間切れにより" win:turn "手の勝ち" {return {win:win, special:"TIME_UP"}}
+	/ "で" win:turn "手の反則勝ち" {return {win:win, special:"ILLEGAL_MOVE"}}
+	/ "で中断" {return {special: "CHUDAN"}}
+	/ "で持将棋" {return {special: "JISHOGI"}}
+	/ "で千日手" {return {special: "SENNICHITE"}}
+	/ "で"? "詰" {return {special: "TSUMI"}}
+	/ "で不詰" {return {special: "FUZUMI"}}
 ) nl {return res}
 
 fork = "変化：" " "* te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves.slice(1)}}
