@@ -107,7 +107,7 @@ firstboard = c:comment* {return {comments:c}}
 
 move = move:(normalmove / specialmove) time:time? comment:comment* { var ret = {comments:comment}; if(time){ret.time=time;}if(move.special){ret.special=move.special}else{ret.move=move}; return ret; }
 normalmove = teban from:xy to:xy piece:piece nl { return {from:from.x==0?null:from, to:to, piece:piece}}
-specialmove = "%" m:[A-Z]+ nl { return {special: m.join("")}; }
+specialmove = "%" m:[+-_A-Z]+ nl { return {special: m.join("")}; }
 
 teban = "+"{return true}/"-"{return false}
 

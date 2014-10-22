@@ -84,6 +84,11 @@
 		}
 		return ret;
 	}
+	function restoreColorOfIllegalAction(moves){
+		if(moves[moves.length-1].special == "ILLEGAL_ACTION"){
+			moves[moves.length-1].special = (moves[moves.length-2] && moves[moves.length-2].color=="-" ? "-" : "+")+"ILLEGAL_ACTION";
+		}
+	}
 }
 
 kifu
@@ -119,9 +124,11 @@ kifu
 			delete ret.header["下手の持駒"];
 		}
 	}
+	restoreColorOfIllegalAction(moves);
 	var forkStack = [{te:0, moves:moves}];
 	for(var i=0; i<forks.length; i++){
 		var nowFork = forks[i];
+		restoreColorOfIllegalAction(nowFork.moves);
 		var fork = forkStack.pop();
 		while(fork.te>nowFork.te){fork = forkStack.pop();}
 		var move = fork.moves[nowFork.te-fork.te];
@@ -199,14 +206,15 @@ ms = m:[0-9]+ ":" s:[0-9]+ {return {m:toN(m),s:toN(s)}}
 comment = "*" comm:nonl* nl {return comm.join("")}
 
 result = "まで" [0-9]+ "手" res:(
-	"で" win:turn "手の勝ち" {return {win:win}}
-	/ "で時間切れにより" win:turn "手の勝ち" {return {win:win, result:"時間切れ"}}
-	/ "で" win:turn "手の反則勝ち" {return {win:win, result:"反則"}}
-	/ "で中断" {return {result: "中断"}}
-	/ "で持将棋" {return {result: "持将棋"}}
-	/ "で千日手" {return {result:"千日手"}}
-	/ "で"? "詰" {return "詰"}
-	/ "で不詰" {return "不詰"}
+	"で" win:turn "手の" res:("勝ち" {return "TORYO"}
+		/ "反則" res:("勝ち" {return "ILLEGAL_ACTION"}
+			/ "負け" {return "ILLEGAL_MOVE"}) {return res}) {return res}
+	/ "で時間切れにより" win:turn "手の勝ち" {return "TIME_UP"}
+	/ "で中断" {return "CHUDAN"}
+	/ "で持将棋" {return "JISHOGI"}
+	/ "で千日手" {return "SENNICHITE"}
+	/ "で"? "詰" {return "TSUMI"}
+	/ "で不詰" {return "FUZUMI"}
 ) nl {return res}
 
 fork = "変化：" " "* te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves.slice(1)}}
