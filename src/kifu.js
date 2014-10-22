@@ -217,7 +217,6 @@ var Kifu = (function () {
                 elem = $("<option>").val(tesuu.toString());
                 elem.appendTo(this.kifulist);
             }
-            console.log("readable", this.player.getReadableKifu(tesuu));
             var forks = this.player.getReadableForkKifu(tesuu - 1);
             if (forks.length > 0)
                 forkFlag = true;
@@ -265,7 +264,9 @@ var Kifu = (function () {
             switch (key) {
                 case "先手":
                 case "後手":
-                    this.setPlayer(key == "先手" ? 0 : 1, data[key]);
+                case "上手":
+                case "下手":
+                    this.setPlayer("先下".indexOf(key[0]) >= 0 ? 0 : 1, data[key]);
 
                 default:
                     dl.append($("<dt></dt>").text(key));
@@ -311,7 +312,7 @@ var Kifu = (function () {
 
         var nowComments = this.player.getComments();
         var nowMove = this.player.getMove();
-        if (this.player.tesuu == this.player.kifu.moves.length - 1) {
+        if (this.player.tesuu == this.player.getMaxTesuu()) {
             //最終手に動きがない(≒specialである)場合は直前の一手を採用
             if (nowComments.length == 0)
                 nowComments = this.player.getComments(this.player.tesuu - 1);
@@ -335,7 +336,6 @@ var Kifu = (function () {
             this.forklist.attr("disabled", false);
             this.forklist.append($("<option>").val("NaN").text(this.player.getReadableKifu(this.player.tesuu + 1)));
             forks.forEach(function (fork, i) {
-                console.log("fork", fork, i);
                 _this.forklist.append($("<option>").val(i.toString()).text(fork));
             });
         } else {
@@ -404,7 +404,7 @@ var Kifu = (function () {
         var _this = this;
         Kifu.ajax(this.filename, function (data) {
             JKFPlayer.log("reload");
-            var tesuu = _this.player.tesuu == _this.player.kifu.moves.length - 1 ? Infinity : _this.player.tesuu;
+            var tesuu = _this.player.tesuu == _this.player.getMaxTesuu() ? Infinity : _this.player.tesuu;
             var player = JKFPlayer.parse(data, _this.filename);
             player.goto(tesuu);
             _this.initialize(player);

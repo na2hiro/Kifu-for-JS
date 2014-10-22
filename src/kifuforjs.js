@@ -265,7 +265,9 @@ var Kifu = (function () {
             switch (key) {
                 case "先手":
                 case "後手":
-                    this.setPlayer(key == "先手" ? 0 : 1, data[key]);
+                case "上手":
+                case "下手":
+                    this.setPlayer("先下".indexOf(key[0]) >= 0 ? 0 : 1, data[key]);
 
                 default:
                     dl.append($("<dt></dt>").text(key));
