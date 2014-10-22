@@ -121,12 +121,12 @@ kifu
 			delete ret.header["下手の持駒"];
 		}
 	}
-	var forkStack = [{te:1, moves:moves}];
+	var forkStack = [{te:0, moves:moves}];
 	for(var i=0; i<forks.length; i++){
 		var nowFork = forks[i];
 		var fork = forkStack.pop();
 		while(fork.te>nowFork.te){fork = forkStack.pop();}
-		var move = fork.moves[nowFork.te-fork.te+1];
+		var move = fork.moves[nowFork.te-fork.te];
 		move.fork = move.fork || [];
 		move.fork.push(nowFork.moves);
 		forkStack.push(fork);
@@ -201,7 +201,7 @@ result = "まで" [0-9]+ "手" res:(
 	/ "で不詰" {return "不詰"}
 ) nl {return res}
 
-fork = "変化：" " "* te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves}}
+fork = "変化：" " "* te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te), moves:moves.slice(1)}}
 
 turn = [先後上下]
 nl = newline+ skipline*

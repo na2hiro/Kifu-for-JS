@@ -67,12 +67,12 @@ JKFPlayer.kifParser = (function() {
         			delete ret.header["下手の持駒"];
         		}
         	}
-        	var forkStack = [{te:1, moves:moves}];
+        	var forkStack = [{te:0, moves:moves}];
         	for(var i=0; i<forks.length; i++){
         		var nowFork = forks[i];
         		var fork = forkStack.pop();
         		while(fork.te>nowFork.te){fork = forkStack.pop();}
-        		var move = fork.moves[nowFork.te-fork.te+1];
+        		var move = fork.moves[nowFork.te-fork.te];
         		move.fork = move.fork || [];
         		move.fork.push(nowFork.moves);
         		forkStack.push(fork);
@@ -218,7 +218,7 @@ JKFPlayer.kifParser = (function() {
         peg$c115 = function(res) {return res},
         peg$c116 = "\u5909\u5316\uFF1A",
         peg$c117 = { type: "literal", value: "\u5909\u5316\uFF1A", description: "\"\\u5909\\u5316\\uFF1A\"" },
-        peg$c118 = function(te, moves) {return {te:parseInt(te), moves:moves}},
+        peg$c118 = function(te, moves) {return {te:parseInt(te), moves:moves.slice(1)}},
         peg$c119 = "#",
         peg$c120 = { type: "literal", value: "#", description: "\"#\"" },
         peg$c121 = "\n",
