@@ -144,7 +144,7 @@ class JKFPlayer{
 			"ERROR": "エラー",
 		}[special] || special;
 	}
-	static moveToReadableKifu(mv: MoveFormat){
+	static moveToReadableKifu(mv: MoveFormat): String{
 		if(mv.special){
 			return JKFPlayer.specialToKan(mv.special);
 		}
@@ -217,11 +217,11 @@ class JKFPlayer{
 	getMove(tesuu: number = this.tesuu){
 		return this.getMoveFormat(tesuu).move;
 	}
-	getReadableKifu(tesuu: number = this.tesuu){
+	getReadableKifu(tesuu: number = this.tesuu): String{
 		if(tesuu==0) return "開始局面";
 		return JKFPlayer.moveToReadableKifu(this.getMoveFormat(tesuu));
 	}
-	getReadableForkKifu(tesuu: number = this.tesuu){
+	getReadableForkKifu(tesuu: number = this.tesuu): String[]{
 		return this.getNextFork(tesuu).map((fork)=>JKFPlayer.moveToReadableKifu(fork[0]));
 	}
 	toJKF(){
