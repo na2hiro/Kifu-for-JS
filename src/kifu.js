@@ -11,6 +11,7 @@ var Kifu = (function () {
     function Kifu(id) {
         this.id = id;
         this.lastTo = null;
+        this.lastForkDepth = 0;
         this.id = "#" + this.id;
     }
     Kifu.load = function (filename, id) {
@@ -71,6 +72,11 @@ var Kifu = (function () {
 							<div class="mochi">\
 								<select class="kifulist" size="7"></select>\
 								<ul class="lines">\
+									<li class="fork">\
+										<select class="forklist">\
+											<option value="0">変化なし\
+										</select>\
+									</li>\
 									<li><button class="dl">棋譜保存</button>\
 									<li>\
 										<select class="autoload">\
@@ -143,6 +149,11 @@ var Kifu = (function () {
                 that.goto($(this).val());
                 that.refresh();
             });
+            _this.forklist = $("select.forklist", _this.id);
+            _this.forklist.change(function () {
+                that.forkAndForward(parseInt($(this).val()));
+                that.refresh();
+            });
             $("ul.go", _this.id).on("click", "button", function () {
                 that.go($(this).attr("data-go"));
                 that.refresh();
@@ -194,10 +205,36 @@ var Kifu = (function () {
                 _this.show();
         });
     };
+    Kifu.prototype.showKifuList = function () {
+        var forkFlag = false;
+        var children = this.kifulist.children();
+        var max = this.player.getMaxTesuu();
+        for (var tesuu = 0; tesuu <= max; tesuu++) {
+            var elem;
+            if (children[tesuu]) {
+                elem = $(children[tesuu]);
+            } else {
+                elem = $("<option>").val(tesuu.toString());
+                elem.appendTo(this.kifulist);
+            }
+            console.log("readable", this.player.getReadableKifu(tesuu));
+            var forks = this.player.getReadableForkKifu(tesuu - 1);
+            if (forks.length > 0)
+                forkFlag = true;
+            elem.text((this.player.getComments(tesuu).length > 0 ? "*" : "\xa0") + Kifu.pad(tesuu.toString(), "\xa0", 3) + " " + this.player.getReadableKifu(tesuu) + " " + forks.join(" "));
+        }
+        for (var tesuu = children.length - 1; tesuu > max; tesuu--) {
+            children[tesuu].remove();
+        }
+        if (forkFlag) {
+            $("div.players", this.id).addClass("withfork");
+        } else {
+            $("div.players", this.id).removeClass("withfork");
+        }
+    };
 
     //棋譜の読み込み後に吐き出す
     Kifu.prototype.show = function () {
-        var _this = this;
         //		var append =[{x:"prependTo", y:"appendTo"}, {x:"appendTo", y:"appendTo"}];
         //盤面用意
         var tbody = $("table.ban tbody", this.id);
@@ -220,13 +257,7 @@ var Kifu = (function () {
             }
         }
 
-        //棋譜用意
-        var kifulist = $("select.kifulist", this.id);
-        kifulist.children().remove();
-        this.player.kifu.moves.forEach(function (obj, tesuu) {
-            $("<option value='" + tesuu + "'>" + (_this.player.getComments(tesuu).length > 0 ? "*" : "&nbsp;") + Kifu.pad(tesuu.toString(), "&nbsp;", 3) + " " + _this.player.getReadableKifu(tesuu) + "</option>").appendTo(kifulist);
-            i++;
-        });
+        this.showKifuList();
 
         var data = this.player.kifu.header;
         var dl = $("<dl></dl>");
@@ -250,6 +281,7 @@ var Kifu = (function () {
 
     //盤面を再生した後に吐き出す
     Kifu.prototype.refresh = function () {
+        var _this = this;
         for (var i = 1; i <= 9; i++) {
             for (var j = 1; j <= 9; j++) {
                 this.setPiece(i, j, this.player.getBoard(i, j));
@@ -295,6 +327,25 @@ var Kifu = (function () {
             this.lastTo = nowMove.to;
             this.tds[this.lastTo.x - 1][this.lastTo.y - 1].addClass("lastto");
         }
+
+        // 分岐
+        var forks = this.player.getReadableForkKifu();
+        this.forklist.empty();
+        if (forks.length > 0) {
+            this.forklist.attr("disabled", false);
+            this.forklist.append($("<option>").val("NaN").text(this.player.getReadableKifu(this.player.tesuu + 1)));
+            forks.forEach(function (fork, i) {
+                console.log("fork", fork, i);
+                _this.forklist.append($("<option>").val(i.toString()).text(fork));
+            });
+        } else {
+            this.forklist.attr("disabled", true);
+            this.forklist.append($("<option>").text("変化なし"));
+        }
+        if (this.lastForkDepth != this.player.forks.length) {
+            this.lastForkDepth = this.player.forks.length;
+            this.showKifuList();
+        }
     };
     Kifu.prototype.setPiece = function (x, y, piece) {
         var dom = $("img", this.tds[x - 1][y - 1]);
@@ -325,6 +376,9 @@ var Kifu = (function () {
     };
     Kifu.prototype.getPieceImage = function (kind, color) {
         return Kifu.settings["ImageDirectoryPath"] + "/" + (!kind ? "blank" : color + kind) + ".png";
+    };
+    Kifu.prototype.forkAndForward = function (num) {
+        this.player.forkAndForward(num);
     };
     Kifu.prototype.goto = function (tesuu) {
         if (isNaN(tesuu))

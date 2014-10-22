@@ -26,19 +26,34 @@
 	margin-left:20px;
 }
 
-.kifuforjs select.kifulist{
+.kifuforjs div.players select.kifulist{
 	font-size:12px;
 	width:100%;
 	height:70%;
+	overflow: scroll;
 /*	font-family: Consolas, 'Courier New', Courier, Monaco, monospace;*/
+}
+.kifuforjs div.players.withfork select.kifulist{
+	height: 60%;
+}
+.kifuforjs div.players li.fork{
+	display: none;
+}
+.kifuforjs div.players.withfork li.fork{
+	display: block;
 }
 .kifuforjs ul.lines{
 	margin: 0px;
 	padding-left: 0;
+	padding-top: 2px;
+}
+.kifuforjs ul.lines li{
+	padding: 1px;
 }
 .kifuforjs ul.lines button, .kifuforjs ul.lines select{
 	width: 100%;
-	height: 14%;
+	height: 12%;
+	padding: 1px;
 }
 .kifuforjs table.ban{border-collapse: collapse;}
 .kifuforjs table.ban th{

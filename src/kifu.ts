@@ -51,9 +51,11 @@ class Kifu{
 	}
 
 	kifulist;
+	forklist;
 	public player: JKFPlayer;
 	tds: JQuery[][];
 	lastTo: {x: number; y: number;} = null;
+	lastForkDepth = 0;
 	filename: string;
 	timerAutoload: number;
 	constructor(public id: string){
@@ -77,6 +79,11 @@ class Kifu{
 							<div class="mochi">\
 								<select class="kifulist" size="7"></select>\
 								<ul class="lines">\
+									<li class="fork">\
+										<select class="forklist">\
+											<option value="0">変化なし\
+										</select>\
+									</li>\
 									<li><button class="dl">棋譜保存</button>\
 									<li>\
 										<select class="autoload">\
@@ -166,6 +173,11 @@ class Kifu{
 				that.goto($(this).val());
 				that.refresh();
 			});
+			this.forklist = $("select.forklist", this.id);
+			this.forklist.change(function(){
+				that.forkAndForward(parseInt($(this).val()));
+				that.refresh();
+			});
 			$("ul.go", this.id).on("click", "button", function(){
 				that.go($(this).attr("data-go"));
 				that.refresh();
@@ -215,6 +227,32 @@ class Kifu{
 			if(show) this.show();
 		});
 	}
+	showKifuList(){
+		var forkFlag = false;
+		var children = this.kifulist.children();
+		var max = this.player.getMaxTesuu();
+		for(var tesuu=0; tesuu<=max; tesuu++){
+			var elem;
+			if(children[tesuu]){
+				elem = $(children[tesuu]);
+			}else{
+				elem = $("<option>").val(tesuu.toString());
+				elem.appendTo(this.kifulist);
+			}
+			console.log("readable", this.player.getReadableKifu(tesuu));
+			var forks = this.player.getReadableForkKifu(tesuu-1);
+			if(forks.length>0) forkFlag=true;
+			elem.text((this.player.getComments(tesuu).length>0?"*":"\xa0")+Kifu.pad(tesuu.toString(),"\xa0", 3)+" "+this.player.getReadableKifu(tesuu)+" "+forks.join(" "));
+		}
+		for(var tesuu=<number>children.length-1; tesuu>max; tesuu--){
+			children[tesuu].remove();
+		}
+		if(forkFlag){
+			$("div.players", this.id).addClass("withfork");
+		}else{
+			$("div.players", this.id).removeClass("withfork");
+		}
+	}
 	//棋譜の読み込み後に吐き出す
 	show(){
 //		var append =[{x:"prependTo", y:"appendTo"}, {x:"appendTo", y:"appendTo"}];
@@ -239,13 +277,7 @@ class Kifu{
 			}
 		}
 		
-		//棋譜用意
-		var kifulist = $("select.kifulist", this.id);
-		kifulist.children().remove();
-		this.player.kifu.moves.forEach((obj, tesuu)=>{
-			$("<option value='"+tesuu+"'>"+(this.player.getComments(tesuu).length>0?"*":"&nbsp;")+Kifu.pad(tesuu.toString(),"&nbsp;", 3)+" "+this.player.getReadableKifu(tesuu)+"</option>").appendTo(kifulist);
-			i++;
-		});
+		this.showKifuList();
 		
 		
 		var data = this.player.kifu.header;
@@ -333,6 +365,24 @@ class Kifu{
 			this.lastTo = nowMove.to;
 			this.tds[this.lastTo.x-1][this.lastTo.y-1].addClass("lastto");
 		}
+		// 分岐
+		var forks = this.player.getReadableForkKifu();
+		this.forklist.empty();
+		if(forks.length>0){
+			this.forklist.attr("disabled", false);
+			this.forklist.append($("<option>").val("NaN").text(this.player.getReadableKifu(this.player.tesuu+1)));
+			forks.forEach((fork, i)=>{
+				console.log("fork", fork, i);
+				this.forklist.append($("<option>").val(i.toString()).text(fork));
+			});
+		}else{
+			this.forklist.attr("disabled", true);
+			this.forklist.append($("<option>").text("変化なし"));
+		}
+		if(this.lastForkDepth != this.player.forks.length){
+			this.lastForkDepth = this.player.forks.length;
+			this.showKifuList();
+		}
 	}
 	setPiece(x: number, y: number, piece: Piece){
 		var dom = $("img", this.tds[x-1][y-1]);
@@ -364,6 +414,9 @@ class Kifu{
 	}
 	getPieceImage(kind: string, color: Color){
 		return Kifu.settings["ImageDirectoryPath"]+"/"+(!kind?"blank":color+kind)+".png";
+	}
+	forkAndForward(num: number){
+		this.player.forkAndForward(num);
 	}
 	goto(tesuu){
 		if(isNaN(tesuu)) return;
