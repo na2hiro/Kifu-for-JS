@@ -13,6 +13,7 @@ class JKFPlayer{
 	shogi: Shogi;
 	kifu: JSONKifuFormat;
 	tesuu: number;
+	forks: {te: number; moves: MoveFormat[]}[];
 	static debug = false;
 	static _log = [];
 	static log(...lg: any[]){
@@ -29,6 +30,7 @@ class JKFPlayer{
 	initialize(kifu: JSONKifuFormat){
 		this.kifu = kifu;
 		this.tesuu = 0;
+		this.forks = [{te: 0, moves: this.kifu.moves}];
 	}
 	static parse(kifu: string, filename?: string){
 		if(filename){
@@ -142,56 +144,11 @@ class JKFPlayer{
 			"ERROR": "エラー",
 		}[special] || special;
 	}
-
-	forward(){
-		if(this.tesuu+1>=this.kifu.moves.length) return false;
-		this.tesuu++;
-		var move = this.kifu.moves[this.tesuu].move;
-		if(!move) return true;
-		JKFPlayer.log("forward", this.tesuu, move);
-		this.doMove(move);
-		return true;
-	}
-	backward(){
-		if(this.tesuu<=0) return false;
-		var move = this.kifu.moves[this.tesuu].move;
-		if(!move){ this.tesuu--; return true; }
-		JKFPlayer.log("backward", this.tesuu-1, move);
-		this.undoMove(move);
-		this.tesuu--;
-		return true;
-	}
-	goto(tesuu: number){
-		var limit = 10000; // for safe
-		if(this.tesuu<tesuu){
-			while(this.tesuu!=tesuu && this.forward() && limit-->0);
-		}else{
-			while(this.tesuu!=tesuu && this.backward() && limit-->0);
+	static moveToReadableKifu(mv: MoveFormat){
+		if(mv.special){
+			return JKFPlayer.specialToKan(mv.special);
 		}
-		if(limit==0) throw "tesuu overflows";
-	}
-	go(tesuu: number){
-		this.goto(this.tesuu+tesuu);
-	}
-	// wrapper
-	getBoard(x: number, y: number){
-		return this.shogi.get(x, y);
-	}
-	getHandsSummary(color: Color){
-		return this.shogi.getHandsSummary(color);
-	}
-	getComments(tesuu: number = this.tesuu){
-		return this.kifu.moves[tesuu].comments || [];
-	}
-	getMove(tesuu: number = this.tesuu){
-		return this.kifu.moves[tesuu].move;
-	}
-	getReadableKifu(tesuu: number = this.tesuu){
-		if(tesuu==0) return "開始局面";
-		if(this.kifu.moves[tesuu].special){
-			return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
-		}
-		var move = this.kifu.moves[tesuu].move;
+		var move = mv.move;
 		var ret = move.color ? "☗" : "☖";
 		if(move.same){
 			ret+="同　";
@@ -207,12 +164,86 @@ class JKFPlayer{
 		}
 		return ret;
 	}
+	// 1手進める
+	forward(){
+		if(!this.getMoveFormat(this.tesuu+1)) return false;
+		this.tesuu++;
+		var move = this.getMoveFormat(this.tesuu).move;
+		if(!move) return true;
+		JKFPlayer.log("forward", this.tesuu, move);
+		this.doMove(move);
+		return true;
+	}
+	// 1手戻す
+	backward(){
+		if(this.tesuu<=0) return false;
+		var move = this.getMoveFormat(this.tesuu).move;
+		if(!move){ this.tesuu--; return true; }
+		JKFPlayer.log("backward", this.tesuu-1, move);
+		this.undoMove(move);
+		this.tesuu--;
+		this.forks.filter((fork)=>fork.te<=this.tesuu);
+		return true;
+	}
+	// tesuu手目へ行く
+	goto(tesuu: number){
+		var limit = 10000; // for safe
+		if(this.tesuu<tesuu){
+			while(this.tesuu!=tesuu && this.forward() && limit-->0);
+		}else{
+			while(this.tesuu!=tesuu && this.backward() && limit-->0);
+		}
+		if(limit==0) throw "tesuu overflows";
+	}
+	// tesuu手前後に移動する
+	go(tesuu: number){
+		this.goto(this.tesuu+tesuu);
+	}
+	// 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
+	forkAndForward(num: number){
+		this.forks.push({te: this.tesuu+1, moves: this.getMoveFormat(this.tesuu+1).fork[num]});
+		this.forward();
+	}
+	// wrapper
+	getBoard(x: number, y: number){
+		return this.shogi.get(x, y);
+	}
+	getHandsSummary(color: Color){
+		return this.shogi.getHandsSummary(color);
+	}
+	getComments(tesuu: number = this.tesuu){
+		return this.getMoveFormat(tesuu).comments || [];
+	}
+	getMove(tesuu: number = this.tesuu){
+		return this.getMoveFormat(tesuu).move;
+	}
+	getReadableKifu(tesuu: number = this.tesuu){
+		if(tesuu==0) return "開始局面";
+		return JKFPlayer.moveToReadableKifu(this.getMoveFormat(tesuu));
+	}
+	getReadableForkKifu(tesuu: number = this.tesuu){
+		return this.getNextFork(tesuu).map((fork)=>JKFPlayer.moveToReadableKifu(fork[0]));
+	}
 	toJKF(){
 		return JSON.stringify(this.kifu);
 	}
 
 	// private
 
+	// 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る
+	private getMoveFormat(tesuu: number = this.tesuu){
+		for(var i=this.forks.length-1; i>=0; i--){
+			var fork = this.forks[i];
+			if(fork.te<=tesuu){
+				return fork.moves[tesuu-fork.te];
+			}
+		}
+		throw "指定した手数が異常です";
+	}
+	private getNextFork(tesuu: number = this.tesuu){
+		var next = this.getMoveFormat(tesuu+1);
+		return (next && next.fork) ? next.fork : [];
+	}
 	private doMove(move: MoveMoveFormat){
 		if(move.from){
 			this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);

@@ -635,6 +635,7 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.initialize = function (kifu) {
         this.kifu = kifu;
         this.tesuu = 0;
+        this.forks = [{ te: 0, moves: this.kifu.moves }];
     };
     JKFPlayer.parse = function (kifu, filename) {
         if (filename) {
@@ -751,70 +752,11 @@ var JKFPlayer = (function () {
             "ERROR": "エラー"
         }[special] || special;
     };
-
-    JKFPlayer.prototype.forward = function () {
-        if (this.tesuu + 1 >= this.kifu.moves.length)
-            return false;
-        this.tesuu++;
-        var move = this.kifu.moves[this.tesuu].move;
-        if (!move)
-            return true;
-        JKFPlayer.log("forward", this.tesuu, move);
-        this.doMove(move);
-        return true;
-    };
-    JKFPlayer.prototype.backward = function () {
-        if (this.tesuu <= 0)
-            return false;
-        var move = this.kifu.moves[this.tesuu].move;
-        if (!move) {
-            this.tesuu--;
-            return true;
+    JKFPlayer.moveToReadableKifu = function (mv) {
+        if (mv.special) {
+            return JKFPlayer.specialToKan(mv.special);
         }
-        JKFPlayer.log("backward", this.tesuu - 1, move);
-        this.undoMove(move);
-        this.tesuu--;
-        return true;
-    };
-    JKFPlayer.prototype.goto = function (tesuu) {
-        var limit = 10000;
-        if (this.tesuu < tesuu) {
-            while (this.tesuu != tesuu && this.forward() && limit-- > 0)
-                ;
-        } else {
-            while (this.tesuu != tesuu && this.backward() && limit-- > 0)
-                ;
-        }
-        if (limit == 0)
-            throw "tesuu overflows";
-    };
-    JKFPlayer.prototype.go = function (tesuu) {
-        this.goto(this.tesuu + tesuu);
-    };
-
-    // wrapper
-    JKFPlayer.prototype.getBoard = function (x, y) {
-        return this.shogi.get(x, y);
-    };
-    JKFPlayer.prototype.getHandsSummary = function (color) {
-        return this.shogi.getHandsSummary(color);
-    };
-    JKFPlayer.prototype.getComments = function (tesuu) {
-        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
-        return this.kifu.moves[tesuu].comments || [];
-    };
-    JKFPlayer.prototype.getMove = function (tesuu) {
-        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
-        return this.kifu.moves[tesuu].move;
-    };
-    JKFPlayer.prototype.getReadableKifu = function (tesuu) {
-        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
-        if (tesuu == 0)
-            return "開始局面";
-        if (this.kifu.moves[tesuu].special) {
-            return JKFPlayer.specialToKan(this.kifu.moves[tesuu].special);
-        }
-        var move = this.kifu.moves[tesuu].move;
+        var move = mv.move;
         var ret = move.color ? "☗" : "☖";
         if (move.same) {
             ret += "同　";
@@ -830,11 +772,112 @@ var JKFPlayer = (function () {
         }
         return ret;
     };
+
+    // 1手進める
+    JKFPlayer.prototype.forward = function () {
+        if (!this.getMoveFormat(this.tesuu + 1))
+            return false;
+        this.tesuu++;
+        var move = this.getMoveFormat(this.tesuu).move;
+        if (!move)
+            return true;
+        JKFPlayer.log("forward", this.tesuu, move);
+        this.doMove(move);
+        return true;
+    };
+
+    // 1手戻す
+    JKFPlayer.prototype.backward = function () {
+        var _this = this;
+        if (this.tesuu <= 0)
+            return false;
+        var move = this.getMoveFormat(this.tesuu).move;
+        if (!move) {
+            this.tesuu--;
+            return true;
+        }
+        JKFPlayer.log("backward", this.tesuu - 1, move);
+        this.undoMove(move);
+        this.tesuu--;
+        this.forks.filter(function (fork) {
+            return fork.te <= _this.tesuu;
+        });
+        return true;
+    };
+
+    // tesuu手目へ行く
+    JKFPlayer.prototype.goto = function (tesuu) {
+        var limit = 10000;
+        if (this.tesuu < tesuu) {
+            while (this.tesuu != tesuu && this.forward() && limit-- > 0)
+                ;
+        } else {
+            while (this.tesuu != tesuu && this.backward() && limit-- > 0)
+                ;
+        }
+        if (limit == 0)
+            throw "tesuu overflows";
+    };
+
+    // tesuu手前後に移動する
+    JKFPlayer.prototype.go = function (tesuu) {
+        this.goto(this.tesuu + tesuu);
+    };
+
+    // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
+    JKFPlayer.prototype.forkAndForward = function (num) {
+        this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).fork[num] });
+        this.forward();
+    };
+
+    // wrapper
+    JKFPlayer.prototype.getBoard = function (x, y) {
+        return this.shogi.get(x, y);
+    };
+    JKFPlayer.prototype.getHandsSummary = function (color) {
+        return this.shogi.getHandsSummary(color);
+    };
+    JKFPlayer.prototype.getComments = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        return this.getMoveFormat(tesuu).comments || [];
+    };
+    JKFPlayer.prototype.getMove = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        return this.getMoveFormat(tesuu).move;
+    };
+    JKFPlayer.prototype.getReadableKifu = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        if (tesuu == 0)
+            return "開始局面";
+        return JKFPlayer.moveToReadableKifu(this.getMoveFormat(tesuu));
+    };
+    JKFPlayer.prototype.getReadableForkKifu = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        return this.getNextFork(tesuu).map(function (fork) {
+            return JKFPlayer.moveToReadableKifu(fork[0]);
+        });
+    };
     JKFPlayer.prototype.toJKF = function () {
         return JSON.stringify(this.kifu);
     };
 
     // private
+    // 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る
+    JKFPlayer.prototype.getMoveFormat = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        for (var i = this.forks.length - 1; i >= 0; i--) {
+            var fork = this.forks[i];
+            if (fork.te <= tesuu) {
+                return fork.moves[tesuu - fork.te];
+            }
+        }
+        throw "指定した手数が異常です";
+    };
+    JKFPlayer.prototype.getNextFork = function (tesuu) {
+        if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
+        var next = this.getMoveFormat(tesuu + 1);
+        return (next && next.fork) ? next.fork : [];
+    };
     JKFPlayer.prototype.doMove = function (move) {
         if (move.from) {
             this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
