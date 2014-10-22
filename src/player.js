@@ -191,7 +191,7 @@ var JKFPlayer = (function () {
         JKFPlayer.log("backward", this.tesuu - 1, move);
         this.undoMove(move);
         this.tesuu--;
-        this.forks.filter(function (fork) {
+        this.forks = this.forks.filter(function (fork) {
             return fork.te <= _this.tesuu;
         });
         return true;

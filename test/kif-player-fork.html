@@ -19,6 +19,7 @@ function parse(data){
 	player = JKFPlayer.parseKIF(data);
 	var cnt=0;
 	traverse();
+	while(player.forward()) console.log(player.getReadableKifu(), player.shogi.toCSAString());
 }
 function traverse(){
 	var te = 0;

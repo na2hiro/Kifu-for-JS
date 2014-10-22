@@ -182,7 +182,7 @@ class JKFPlayer{
 		JKFPlayer.log("backward", this.tesuu-1, move);
 		this.undoMove(move);
 		this.tesuu--;
-		this.forks.filter((fork)=>fork.te<=this.tesuu);
+		this.forks = this.forks.filter((fork)=>fork.te<=this.tesuu);
 		return true;
 	}
 	// tesuu手目へ行く
