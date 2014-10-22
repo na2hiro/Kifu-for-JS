@@ -952,7 +952,7 @@ var Normalizer;
                 try  {
                     shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
                 } catch (e) {
-                    throw i + "手目で失敗しました: " + JSON.stringify(move.from) + JSON.stringify(move.to) + e;
+                    throw i + "手目で失敗しました: " + e;
                 }
             } else {
                 // drop
