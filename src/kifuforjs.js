@@ -217,7 +217,6 @@ var Kifu = (function () {
                 elem = $("<option>").val(tesuu.toString());
                 elem.appendTo(this.kifulist);
             }
-            console.log("readable", this.player.getReadableKifu(tesuu));
             var forks = this.player.getReadableForkKifu(tesuu - 1);
             if (forks.length > 0)
                 forkFlag = true;
@@ -313,7 +312,7 @@ var Kifu = (function () {
 
         var nowComments = this.player.getComments();
         var nowMove = this.player.getMove();
-        if (this.player.tesuu == this.player.kifu.moves.length - 1) {
+        if (this.player.tesuu == this.player.getMaxTesuu()) {
             //最終手に動きがない(≒specialである)場合は直前の一手を採用
             if (nowComments.length == 0)
                 nowComments = this.player.getComments(this.player.tesuu - 1);
@@ -337,7 +336,6 @@ var Kifu = (function () {
             this.forklist.attr("disabled", false);
             this.forklist.append($("<option>").val("NaN").text(this.player.getReadableKifu(this.player.tesuu + 1)));
             forks.forEach(function (fork, i) {
-                console.log("fork", fork, i);
                 _this.forklist.append($("<option>").val(i.toString()).text(fork));
             });
         } else {
@@ -406,7 +404,7 @@ var Kifu = (function () {
         var _this = this;
         Kifu.ajax(this.filename, function (data) {
             JKFPlayer.log("reload");
-            var tesuu = _this.player.tesuu == _this.player.kifu.moves.length - 1 ? Infinity : _this.player.tesuu;
+            var tesuu = _this.player.tesuu == _this.player.getMaxTesuu() ? Infinity : _this.player.tesuu;
             var player = JKFPlayer.parse(data, _this.filename);
             player.goto(tesuu);
             _this.initialize(player);
@@ -6262,11 +6260,18 @@ JKFPlayer.csaParser = (function() {
 
         peg$c0 = peg$FAILED,
         peg$c1 = null,
-        peg$c2 = function(i, ini, ms) {return {headers:i.headers, players: i.players, initial:ini, moves:ms}},
+        peg$c2 = function(i, ini, ms) {
+        	var ret = {header:i.header, initial:ini, moves:ms}
+        	if(i && i.players){
+        		if(i.players[0]) ret.header["先手"]=i.players[0];
+        		if(i.players[1]) ret.header["後手"]=i.players[1];
+        	}
+        	return ret;
+        },
         peg$c3 = [],
         peg$c4 = "V2.2",
         peg$c5 = { type: "literal", value: "V2.2", description: "\"V2.2\"" },
-        peg$c6 = function(players, headers) {return {players:players, headers:headers}},
+        peg$c6 = function(players, header) {return {players:players, header:header}},
         peg$c7 = function(header) {
         	var ret = {};
         	for(var i=0; i<header.length; i++){
@@ -6281,7 +6286,14 @@ JKFPlayer.csaParser = (function() {
         peg$c12 = ":",
         peg$c13 = { type: "literal", value: ":", description: "\":\"" },
         peg$c14 = function(k, v) {return {k:k.join(""), v:v.join("")}},
-        peg$c15 = function(p, ini, ms) { return {players:p, initial:ini, moves:ms} },
+        peg$c15 = function(p, ini, ms) {
+        	var ret = {header: {}, initial:ini, moves:ms}
+        	if(p){
+        		if(p[0]) ret.header["先手"] = p[0];
+        		if(p[1]) ret.header["後手"] = p[1];
+        	}
+        	return ret;
+        },
         peg$c16 = "N+",
         peg$c17 = { type: "literal", value: "N+", description: "\"N+\"" },
         peg$c18 = function(n) { return n },
