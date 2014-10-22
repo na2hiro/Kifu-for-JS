@@ -145,6 +145,27 @@ class Kifu{
 				</tr>\
 			</tbody>\
 		</table>');
+
+//		var append =[{x:"prependTo", y:"appendTo"}, {x:"appendTo", y:"appendTo"}];
+		//盤面用意
+		var tbody = $("table.ban tbody", this.id);
+		tbody.children().remove();
+		var tr= $("<tr><th></th></tr>").appendTo(tbody);
+		this.tds=[];
+		for(var i=1; i<=9; i++){
+			this.tds.push([]);
+//			$("<th>"+i+"</th>")[append[0].x](tr);
+			$("<th>"+i+"</th>").prependTo(tr);
+		}
+		for(var j=1; j<=9; j++){
+//			var tr = $("<tr></tr>")[append[0].y](tbody);
+			var tr = $("<tr></tr>").appendTo(tbody);
+			$("<th>"+Kifu.numToKanji(j)+"</th>").appendTo(tr);
+			for(var i=1; i<=9; i++){
+//				this.tds[i-1][j-1]=$("<td><img></td>")[append[0].x](tr);
+				this.tds[i-1][j-1]=$("<td><img></td>").prependTo(tr);
+			}
+		}
 			/*
 			document.body.addEventListener("drop", (e)=>{
 				e.preventDefault();
@@ -258,30 +279,8 @@ class Kifu{
 	}
 	//棋譜の読み込み後に吐き出す
 	show(){
-//		var append =[{x:"prependTo", y:"appendTo"}, {x:"appendTo", y:"appendTo"}];
-		
-		//盤面用意
-		var tbody = $("table.ban tbody", this.id);
-		tbody.children().remove();
-		var tr= $("<tr><th></th></tr>").appendTo(tbody);
-		this.tds=[];
-		for(var i=1; i<=9; i++){
-			this.tds.push([]);
-//			$("<th>"+i+"</th>")[append[0].x](tr);
-			$("<th>"+i+"</th>").prependTo(tr);
-		}
-		for(var j=1; j<=9; j++){
-//			var tr = $("<tr></tr>")[append[0].y](tbody);
-			var tr = $("<tr></tr>").appendTo(tbody);
-			$("<th>"+Kifu.numToKanji(j)+"</th>").appendTo(tr);
-			for(var i=1; i<=9; i++){
-//				this.tds[i-1][j-1]=$("<td><img></td>")[append[0].x](tr);
-				this.tds[i-1][j-1]=$("<td><img></td>").prependTo(tr);
-			}
-		}
 		
 		this.showKifuList();
-		
 		
 		var data = this.player.kifu.header;
 		var dl = $("<dl></dl>");
