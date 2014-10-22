@@ -34,7 +34,7 @@ interface MoveFormat{
 		total: TimeFormat;
 	}
 	special?: string;
-	fork?: MoveFormat[][];
+	forks?: MoveFormat[][];
 }
 interface TimeFormat{
 	h?: number;

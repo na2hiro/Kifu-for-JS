@@ -64,7 +64,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義し，また既存�
 		* now `TimeFormat` 1手
 		* total `TimeFormat` 合計
 	* special? `string` 特殊棋譜(CSAのTORYO, CHUDAN等)
-	* fork? `MoveFormat[][]` 任意の長さの分岐を任意個格納する
+	* forks? `MoveFormat[][]` 任意の長さの分岐を任意個格納する
 * `TimeFormat` 時間を表す
 	* h? `Integer` 時
 	* m `Integer` 分

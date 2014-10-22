@@ -826,7 +826,7 @@ var JKFPlayer = (function () {
 
     // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
     JKFPlayer.prototype.forkAndForward = function (num) {
-        this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).fork[num] });
+        this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).forks[num] });
         this.forward();
     };
 
@@ -876,7 +876,7 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.getNextFork = function (tesuu) {
         if (typeof tesuu === "undefined") { tesuu = this.tesuu; }
         var next = this.getMoveFormat(tesuu + 1);
-        return (next && next.fork) ? next.fork : [];
+        return (next && next.forks) ? next.forks : [];
     };
     JKFPlayer.prototype.doMove = function (move) {
         if (move.from) {
@@ -968,9 +968,9 @@ var Normalizer;
                 shogi.undrop(move.to.x, move.to.y);
             }
             last = i <= 1 ? lastMove : moves[i - 1];
-            if (moves[i].fork) {
-                for (var j = 0; j < moves[i].fork.length; j++) {
-                    normalizeKIFMoves(shogi, moves[i].fork[j], last);
+            if (moves[i].forks) {
+                for (var j = 0; j < moves[i].forks.length; j++) {
+                    normalizeKIFMoves(shogi, moves[i].forks[j], last);
                 }
             }
         }
@@ -1035,9 +1035,9 @@ var Normalizer;
                 shogi.undrop(move.to.x, move.to.y);
             }
             last = i <= 1 ? lastMove : moves[i - 1];
-            if (moves[i].fork) {
-                for (var j = 0; j < moves[i].fork.length; j++) {
-                    normalizeKI2Moves(shogi, moves[i].fork[j], last);
+            if (moves[i].forks) {
+                for (var j = 0; j < moves[i].forks.length; j++) {
+                    normalizeKI2Moves(shogi, moves[i].forks[j], last);
                 }
             }
         }

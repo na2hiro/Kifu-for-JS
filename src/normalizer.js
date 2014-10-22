@@ -70,9 +70,9 @@ var Normalizer;
                 shogi.undrop(move.to.x, move.to.y);
             }
             last = i <= 1 ? lastMove : moves[i - 1];
-            if (moves[i].fork) {
-                for (var j = 0; j < moves[i].fork.length; j++) {
-                    normalizeKIFMoves(shogi, moves[i].fork[j], last);
+            if (moves[i].forks) {
+                for (var j = 0; j < moves[i].forks.length; j++) {
+                    normalizeKIFMoves(shogi, moves[i].forks[j], last);
                 }
             }
         }
@@ -137,9 +137,9 @@ var Normalizer;
                 shogi.undrop(move.to.x, move.to.y);
             }
             last = i <= 1 ? lastMove : moves[i - 1];
-            if (moves[i].fork) {
-                for (var j = 0; j < moves[i].fork.length; j++) {
-                    normalizeKI2Moves(shogi, moves[i].fork[j], last);
+            if (moves[i].forks) {
+                for (var j = 0; j < moves[i].forks.length; j++) {
+                    normalizeKI2Moves(shogi, moves[i].forks[j], last);
                 }
             }
         }

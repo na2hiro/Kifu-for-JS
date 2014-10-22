@@ -201,7 +201,7 @@ class JKFPlayer{
 	}
 	// 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
 	forkAndForward(num: number){
-		this.forks.push({te: this.tesuu+1, moves: this.getMoveFormat(this.tesuu+1).fork[num]});
+		this.forks.push({te: this.tesuu+1, moves: this.getMoveFormat(this.tesuu+1).forks[num]});
 		this.forward();
 	}
 	// wrapper
@@ -242,7 +242,7 @@ class JKFPlayer{
 	}
 	private getNextFork(tesuu: number = this.tesuu){
 		var next = this.getMoveFormat(tesuu+1);
-		return (next && next.fork) ? next.fork : [];
+		return (next && next.forks) ? next.forks : [];
 	}
 	private doMove(move: MoveMoveFormat){
 		if(move.from){
