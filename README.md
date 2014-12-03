@@ -112,7 +112,7 @@ JSONで一般的なUTF-8を使用するものとします．
 ## 依存ライブラリ
 使用に必要なものは同梱してあります．
 
-* TypeScript 0.9.5.0
+* TypeScript 1.3
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
 * [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
 
