@@ -2,11 +2,11 @@
 /// <reference path="../json-kifu-format/src/normalizer.ts" />
 /// <reference path="../DefinitelyTyped/jquery/jquery.d.ts" />
 /** @license
-* Kifu for JS
-* Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
-* This software is released under the MIT License.
-* http://opensource.org/licenses/mit-license.php
-*/
+ * Kifu for JS
+ * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
 var Kifu = (function () {
     function Kifu(id) {
         this.id = id;
@@ -24,9 +24,10 @@ var Kifu = (function () {
         $(document).ready(function () {
             Kifu.ajax(filename, function (data) {
                 kifu.filename = filename;
-                try  {
+                try {
                     kifu.initialize(JKFPlayer.parse(data, filename));
-                } catch (e) {
+                }
+                catch (e) {
                     alert("棋譜ファイルが異常です: " + e);
                 }
             });
@@ -55,14 +56,13 @@ var Kifu = (function () {
             ifModified: true
         });
     };
-
     Kifu.prototype.initialize = function (player) {
         this.player = player;
         this.show();
     };
     Kifu.prototype.prepareDOM = function (show) {
-        if (typeof show === "undefined") { show = false; }
         var _this = this;
+        if (show === void 0) { show = false; }
         $(function () {
             $(_this.id).append('<table class="kifuforjs">\
 			<tbody>\
@@ -135,7 +135,6 @@ var Kifu = (function () {
 				</tr>\
 			</tbody>\
 		</table>');
-
             //		var append =[{x:"prependTo", y:"appendTo"}, {x:"appendTo", y:"appendTo"}];
             //盤面用意
             var tbody = $("table.ban tbody", _this.id);
@@ -144,7 +143,6 @@ var Kifu = (function () {
             _this.tds = [];
             for (var i = 1; i <= 9; i++) {
                 _this.tds.push([]);
-
                 //			$("<th>"+i+"</th>")[append[0].x](tr);
                 $("<th>" + i + "</th>").prependTo(tr);
             }
@@ -157,7 +155,6 @@ var Kifu = (function () {
                     _this.tds[i - 1][j - 1] = $("<td><img></td>").prependTo(tr);
                 }
             }
-
             for (var c = 0 /* Black */; c <= 1 /* White */; c++) {
                 var handDom = $("div.mochi.mochi" + c + " div.mochimain", _this.id);
                 ["FU", "KY", "KE", "GI", "KI", "KA", "HI"].forEach(function (kind) {
@@ -168,7 +165,6 @@ var Kifu = (function () {
                     span.appendTo(handDom);
                 });
             }
-
             _this.kifulist = $("select.kifulist", _this.id);
             var that = _this;
             _this.kifulist.change(function () {
@@ -205,21 +201,20 @@ var Kifu = (function () {
                     window.open("https://github.com/na2hiro/Kifu-for-JS", "kifufile");
                 }
             });
-
             /*
             $("ul.panel", this.id).on("click", "button.dl", ()=>{
-            var str;
-            switch($(this).attr("data-type")){
-            case "json":
-            str=shogi.toJSON();
-            break;
-            case "kif":
-            str=shogi.toKIF();
-            break;
-            default:
-            throw "未対応";
-            }
-            $("textarea.comment", this.id).val(str);
+                var str;
+                switch($(this).attr("data-type")){
+                    case "json":
+                        str=shogi.toJSON();
+                        break;
+                    case "kif":
+                        str=shogi.toKIF();
+                        break;
+                    default:
+                        throw "未対応";
+                }
+                $("textarea.comment", this.id).val(str);
             });
             */
             $("ul.go form", _this.id).submit(function () {
@@ -239,7 +234,8 @@ var Kifu = (function () {
             var elem;
             if (children[tesuu]) {
                 elem = $(children[tesuu]);
-            } else {
+            }
+            else {
                 elem = $("<option>").val(tesuu.toString());
                 elem.appendTo(this.kifulist);
             }
@@ -253,15 +249,14 @@ var Kifu = (function () {
         }
         if (forkFlag) {
             $("div.players", this.id).addClass("withfork");
-        } else {
+        }
+        else {
             $("div.players", this.id).removeClass("withfork");
         }
     };
-
     //棋譜の読み込み後に吐き出す
     Kifu.prototype.show = function () {
         this.showKifuList();
-
         var data = this.player.kifu.header;
         var dl = $("<dl></dl>");
         for (var key in data) {
@@ -271,7 +266,6 @@ var Kifu = (function () {
                 case "上手":
                 case "下手":
                     this.setPlayer("先下".indexOf(key[0]) >= 0 ? 0 : 1, data[key]);
-
                 default:
                     dl.append($("<dt></dt>").text(key));
                     dl.append($("<dd></dd>").text(data[key]));
@@ -280,10 +274,8 @@ var Kifu = (function () {
         var dom = $("div.info", this.id);
         dom.children().remove();
         dom.append(dl);
-
         this.refresh();
     };
-
     //盤面を再生した後に吐き出す
     Kifu.prototype.refresh = function () {
         var _this = this;
@@ -292,28 +284,25 @@ var Kifu = (function () {
                 this.setPiece(i, j, this.player.getBoard(i, j));
             }
         }
-
         for (var color = 0 /* Black */; color <= 1 /* White */; color++) {
             var obj = this.player.getHandsSummary(color);
             for (var kind in obj) {
                 this.setHand(color, kind, obj[kind]);
             }
         }
-
         //手数描画
         $("ul.go form input", this.id).val(this.player.tesuu.toString());
-        try  {
+        try {
             $("select.kifulist option", this.id)[this.player.tesuu].selected = true;
-        } catch (e) {
+        }
+        catch (e) {
         }
         ;
-
         //最終手描画戻す
         if (this.lastTo) {
             this.tds[this.lastTo.x - 1][this.lastTo.y - 1].removeClass("lastto");
             this.lastTo = null;
         }
-
         var nowComments = this.player.getComments();
         var nowMove = this.player.getMove();
         if (this.player.tesuu == this.player.getMaxTesuu()) {
@@ -323,16 +312,13 @@ var Kifu = (function () {
             if (!nowMove)
                 nowMove = this.player.getMove(this.player.tesuu - 1);
         }
-
         //コメント描画
         $("textarea.comment", this.id).val(nowComments.join("\n"));
-
         //最終手描画
         if (nowMove && nowMove.to) {
             this.lastTo = nowMove.to;
             this.tds[this.lastTo.x - 1][this.lastTo.y - 1].addClass("lastto");
         }
-
         // 分岐
         var forks = this.player.getReadableForkKifu();
         this.forklist.empty();
@@ -342,7 +328,8 @@ var Kifu = (function () {
             forks.forEach(function (fork, i) {
                 _this.forklist.append($("<option>").val(i.toString()).text(fork));
             });
-        } else {
+        }
+        else {
             this.forklist.attr("disabled", true);
             this.forklist.append($("<option>").text("変化なし"));
         }
@@ -370,7 +357,8 @@ var Kifu = (function () {
         if (value < 2) {
             dom.removeClass("mai" + (1 - value));
             dom.addClass("mai" + value);
-        } else {
+        }
+        else {
             $("span.maisuu", dom).text(Kifu.numToKanji(value));
             dom.removeClass("mai0 mai1");
         }
@@ -392,9 +380,11 @@ var Kifu = (function () {
     Kifu.prototype.go = function (tesuu) {
         if (tesuu == "start") {
             this.player.goto(0);
-        } else if (tesuu == "end") {
+        }
+        else if (tesuu == "end") {
             this.player.goto(Infinity);
-        } else {
+        }
+        else {
             tesuu = parseInt(tesuu);
             if (isNaN(tesuu))
                 return;
@@ -414,14 +404,12 @@ var Kifu = (function () {
             _this.initialize(player);
         });
     };
-
     Kifu.numToKanji = function (n) {
         return "〇一二三四五六七八九"[n];
     };
     Kifu.colorToMark = function (color) {
         return color == 0 /* Black */ ? "☗" : "☖";
     };
-
     // length <= 10
     Kifu.pad = function (str, space, length) {
         var ret = "";
