@@ -1,16 +1,17 @@
 /** @license
-* Shogi.js
-* Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
-* This software is released under the MIT License.
-* http://opensource.org/licenses/mit-license.php
-*/
+ * Shogi.js
+ * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
 var Shogi = (function () {
     function Shogi(setting) {
         this.initialize(setting);
     }
     // 盤面を平手に初期化する
     Shogi.prototype.initialize = function (setting) {
-        if (typeof setting === "undefined") { setting = { preset: "HIRATE" }; }
+        if (!setting.preset)
+            setting.preset = "HIRATE";
         this.board = [];
         if (setting.preset != "OTHER") {
             for (var i = 0; i < 9; i++) {
@@ -22,7 +23,8 @@ var Shogi = (function () {
             }
             this.turn = Shogi.preset[setting.preset].turn;
             this.hands = [[], []];
-        } else {
+        }
+        else {
             for (var i = 0; i < 9; i++) {
                 this.board[i] = [];
                 for (var j = 0; j < 9; j++) {
@@ -43,15 +45,13 @@ var Shogi = (function () {
         }
         this.flagEditMode = false;
     };
-
     // 編集モード切り替え
     Shogi.prototype.editMode = function (flag) {
         this.flagEditMode = flag;
     };
-
     // (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
     Shogi.prototype.move = function (fromx, fromy, tox, toy, promote) {
-        if (typeof promote === "undefined") { promote = false; }
+        if (promote === void 0) { promote = false; }
         var piece = this.get(fromx, fromy);
         if (piece == null)
             throw "no piece found at " + fromx + ", " + fromy;
@@ -70,10 +70,9 @@ var Shogi = (function () {
         this.set(fromx, fromy, null);
         this.nextTurn();
     };
-
     // moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
     Shogi.prototype.unmove = function (fromx, fromy, tox, toy, promote, capture) {
-        if (typeof promote === "undefined") { promote = false; }
+        if (promote === void 0) { promote = false; }
         var piece = this.get(tox, toy);
         if (piece == null)
             throw "no piece found at " + tox + ", " + toy;
@@ -95,10 +94,9 @@ var Shogi = (function () {
         this.editMode(false);
         this.prevTurn();
     };
-
     // (tox, toy)へcolorの持ち駒のkindを打つ．
     Shogi.prototype.drop = function (tox, toy, kind, color) {
-        if (typeof color === "undefined") { color = this.turn; }
+        if (color === void 0) { color = this.turn; }
         this.checkTurn(color);
         if (this.get(tox, toy) != null)
             throw "there is a piece at " + tox + ", " + toy;
@@ -106,7 +104,6 @@ var Shogi = (function () {
         this.set(tox, toy, piece);
         this.nextTurn();
     };
-
     // dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
     Shogi.prototype.undrop = function (tox, toy) {
         var piece = this.get(tox, toy);
@@ -117,7 +114,6 @@ var Shogi = (function () {
         this.set(tox, toy, null);
         this.prevTurn();
     };
-
     // CSAによる盤面表現の文字列を返す
     Shogi.prototype.toCSAString = function () {
         var ret = [];
@@ -139,7 +135,6 @@ var Shogi = (function () {
         ret.push(this.turn == 0 /* Black */ ? "+" : "-");
         return ret.join("\n");
     };
-
     // (x, y)の駒の移動可能な動きをすべて得る
     // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
     Shogi.prototype.getMovesFrom = function (x, y) {
@@ -184,7 +179,6 @@ var Shogi = (function () {
         }
         return ret;
     };
-
     // colorが打てる動きを全て得る
     Shogi.prototype.getDropsBy = function (color) {
         var ret = [];
@@ -207,10 +201,9 @@ var Shogi = (function () {
         }
         return ret;
     };
-
     // (x, y)に行けるcolor側のkindの駒の動きを得る
     Shogi.prototype.getMovesTo = function (x, y, kind, color) {
-        if (typeof color === "undefined") { color = this.turn; }
+        if (color === void 0) { color = this.turn; }
         var to = { x: x, y: y };
         var ret = [];
         for (var i = 1; i <= 9; i++) {
@@ -219,16 +212,13 @@ var Shogi = (function () {
                 if (!piece || piece.kind != kind || piece.color != color)
                     continue;
                 var moves = this.getMovesFrom(i, j);
-                if (moves.some(function (move) {
-                    return move.to.x == x && move.to.y == y;
-                })) {
+                if (moves.some(function (move) { return move.to.x == x && move.to.y == y; })) {
                     ret.push({ from: { x: i, y: j }, to: to });
                 }
             }
         }
         return ret;
     };
-
     // (x, y)の駒を得る
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
@@ -248,13 +238,11 @@ var Shogi = (function () {
         }
         return ret;
     };
-
     // 以下private method
     // (x, y)に駒を置く
     Shogi.prototype.set = function (x, y, piece) {
         this.board[x - 1][y - 1] = piece;
     };
-
     // (x, y)の駒を取って反対側の持ち駒に加える
     Shogi.prototype.capture = function (x, y) {
         var piece = this.get(x, y);
@@ -263,12 +251,10 @@ var Shogi = (function () {
         piece.inverse();
         this.pushToHand(piece);
     };
-
     // 駒pieceを持ち駒に加える
     Shogi.prototype.pushToHand = function (piece) {
         this.hands[piece.color].push(piece);
     };
-
     // color側のkindの駒を取って返す
     Shogi.prototype.popFromHand = function (kind, color) {
         var hand = this.hands[color];
@@ -281,21 +267,18 @@ var Shogi = (function () {
         }
         throw color + " has no " + kind;
     };
-
     // 次の手番に行く
     Shogi.prototype.nextTurn = function () {
         if (this.flagEditMode)
             return;
         this.turn = this.turn == 0 /* Black */ ? 1 /* White */ : 0 /* Black */;
     };
-
     // 前の手番に行く
     Shogi.prototype.prevTurn = function () {
         if (this.flagEditMode)
             return;
         this.nextTurn();
     };
-
     // colorの手番で問題ないか確認する．編集モードならok．
     Shogi.prototype.checkTurn = function (color) {
         if (!this.flagEditMode && color != this.turn)
@@ -312,7 +295,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 0 /* Black */
         },
@@ -326,7 +309,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -340,7 +323,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -354,7 +337,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -368,7 +351,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -382,7 +365,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -396,7 +379,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -410,7 +393,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -424,7 +407,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -438,7 +421,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -452,7 +435,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -466,7 +449,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -480,7 +463,7 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         },
@@ -494,20 +477,18 @@ var Shogi = (function () {
                 " *  *  *  *  *  *  *  *  * ",
                 "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
                 " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY"
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
             turn: 1 /* White */
         }
     };
     return Shogi;
 })();
-
 var Color;
 (function (Color) {
     Color[Color["Black"] = 0] = "Black";
     Color[Color["White"] = 1] = "White";
 })(Color || (Color = {}));
-
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 var Piece = (function () {
     function Piece(csa) {
@@ -518,22 +499,18 @@ var Piece = (function () {
     Piece.prototype.promote = function () {
         this.kind = Piece.promote(this.kind);
     };
-
     // 不成にする
     Piece.prototype.unpromote = function () {
         this.kind = Piece.unpromote(this.kind);
     };
-
     // 駒の向きを反転する
     Piece.prototype.inverse = function () {
         this.color = this.color == 0 /* Black */ ? 1 /* White */ : 0 /* Black */;
     };
-
     // CSAによる駒表現の文字列を返す
     Piece.prototype.toCSAString = function () {
         return (this.color == 0 /* Black */ ? "+" : "-") + this.kind;
     };
-
     // 成った時の種類を返す．なければそのまま．
     Piece.promote = function (kind) {
         return {
@@ -545,7 +522,6 @@ var Piece = (function () {
             HI: "RY"
         }[kind] || kind;
     };
-
     // 表に返した時の種類を返す．表の場合はそのまま．
     Piece.unpromote = function (kind) {
         return {
@@ -559,7 +535,6 @@ var Piece = (function () {
             OU: "OU"
         }[kind] || kind;
     };
-
     // 成れる駒かどうかを返す
     Piece.canPromote = function (kind) {
         return Piece.promote(kind) != kind;
@@ -567,13 +542,13 @@ var Piece = (function () {
     Piece.getMoveDef = function (kind) {
         switch (kind) {
             case "FU":
-                return { just: [[0, -1]] };
+                return { just: [[0, -1],] };
             case "KY":
-                return { fly: [[0, -1]] };
+                return { fly: [[0, -1],] };
             case "KE":
-                return { just: [[-1, -2], [1, -2]] };
+                return { just: [[-1, -2], [1, -2],] };
             case "GI":
-                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1]] };
+                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1],] };
             case "KI":
             case "TO":
             case "NY":
@@ -581,15 +556,15 @@ var Piece = (function () {
             case "NG":
                 return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]] };
             case "KA":
-                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1]] };
+                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
             case "HI":
                 return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
             case "OU":
                 return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]] };
             case "UM":
-                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1]], just: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
+                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],], just: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
             case "RY":
-                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1]] };
+                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
         }
     };
     Piece.isPromoted = function (kind) {
@@ -598,7 +573,6 @@ var Piece = (function () {
     Piece.oppositeColor = function (color) {
         return color == 0 /* Black */ ? 1 /* White */ : 0 /* Black */;
     };
-
     // 以下private method
     // 現在成っているかどうかを返す
     Piece.prototype.isPromoted = function () {

@@ -211,11 +211,12 @@ class Shogi{
 		this.initialize(setting);
 	}
 	// 盤面を平手に初期化する
-	initialize(setting: {preset: string; data?: {
+	initialize(setting: {preset?: string; data?: {
 			color: boolean;
 			board: { color?: boolean; kind?: boolean; }[][];
 			hands: {[index:string]: number}[];
-		}} = {preset: "HIRATE"}){
+		}}){
+		if(!setting.preset) setting.preset = "HIRATE";
 		this.board = [];
 		if(setting.preset!="OTHER"){
 			for(var i=0; i<9; i++){

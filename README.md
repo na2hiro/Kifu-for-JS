@@ -66,6 +66,10 @@ CSAによる駒表現の文字列を返す
 * 駒箱
 * テストを書く
 
+## 開発環境
+
+* TypeScript 1.3
+
 ## license
 
 MIT License (see LICENSE.txt)
