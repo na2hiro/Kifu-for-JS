@@ -6,6 +6,7 @@
  */
 var Shogi = (function () {
     function Shogi(setting) {
+        if (setting === void 0) { setting = {}; }
         this.initialize(setting);
     }
     // 盤面を平手に初期化する

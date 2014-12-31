@@ -207,7 +207,7 @@ class Shogi{
 	hands: Piece[][]; // 持ち駒
 	turn: Color; // 次の手番
 	flagEditMode: boolean; // 編集モードかどうか
-	constructor(setting?: {preset?: string}){
+	constructor(setting: {preset?: string} = {}){
 		this.initialize(setting);
 	}
 	// 盤面を平手に初期化する
