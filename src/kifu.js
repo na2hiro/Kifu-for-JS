@@ -284,10 +284,12 @@ var Kifu = (function () {
                 this.setPiece(i, j, this.player.getBoard(i, j));
             }
         }
+        //持ち駒描画
+        var obj = this.player.getHandsState();
         for (var color = 0 /* Black */; color <= 1 /* White */; color++) {
-            var obj = this.player.getHandsSummary(color);
+            var hand = obj[color];
             for (var kind in obj) {
-                this.setHand(color, kind, obj[kind]);
+                this.setHand(color, kind, hand[kind]);
             }
         }
         //手数描画

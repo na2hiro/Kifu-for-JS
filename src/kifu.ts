@@ -338,10 +338,11 @@ class Kifu{
 			}
 		}
 		//持ち駒描画
+		var obj = this.player.getHandsState();
 		for(var color=Color.Black; color<=Color.White; color++){
-			var obj = this.player.getHandsSummary(color);
+			var hand = obj[color];
 			for(var kind in obj){
-				this.setHand(color, kind, obj[kind]);
+				this.setHand(color, kind, hand[kind]);
 			}
 		}
 		
