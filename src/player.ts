@@ -208,9 +208,6 @@ class JKFPlayer{
 	getBoard(x: number, y: number){
 		return this.shogi.get(x, y);
 	}
-	getHandsSummary(color: Color){
-		return this.shogi.getHandsSummary(color);
-	}
 	getComments(tesuu: number = this.tesuu){
 		return this.getMoveFormat(tesuu).comments || [];
 	}
@@ -230,6 +227,32 @@ class JKFPlayer{
 	}
 	toJKF(){
 		return JSON.stringify(this.kifu);
+	}
+	// jkf.initial.dataの形式を得る
+	getState(){
+		return {
+			color: this.shogi.turn,
+			board: this.getBoardState(),
+			hands: this.getHandsState(),
+		};
+	}
+	getBoardState(){
+		var ret = [];
+		for(var i=0; i<9; i++){
+			var arr = [];
+			for(var j=0; j<9; j++){
+				var piece = this.shogi.get(i, j);
+				arr.push(piece ? {color: piece.color, kind: piece.kind} : {});
+			}
+			ret.push(arr);
+		}
+		return ret;
+	}
+	getHandsState(){
+		return [
+			this.shogi.getHandsSummary(Color.Black),
+			this.shogi.getHandsSummary(Color.White),
+		];
 	}
 
 	// private

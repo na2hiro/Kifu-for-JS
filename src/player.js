@@ -222,9 +222,6 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.getBoard = function (x, y) {
         return this.shogi.get(x, y);
     };
-    JKFPlayer.prototype.getHandsSummary = function (color) {
-        return this.shogi.getHandsSummary(color);
-    };
     JKFPlayer.prototype.getComments = function (tesuu) {
         if (tesuu === void 0) { tesuu = this.tesuu; }
         return this.getMoveFormat(tesuu).comments || [];
@@ -249,6 +246,32 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.prototype.toJKF = function () {
         return JSON.stringify(this.kifu);
+    };
+    // jkf.initial.dataの形式を得る
+    JKFPlayer.prototype.getState = function () {
+        return {
+            color: this.shogi.turn,
+            board: this.getBoardState(),
+            hands: this.getHandsState()
+        };
+    };
+    JKFPlayer.prototype.getBoardState = function () {
+        var ret = [];
+        for (var i = 0; i < 9; i++) {
+            var arr = [];
+            for (var j = 0; j < 9; j++) {
+                var piece = this.shogi.get(i, j);
+                arr.push(piece ? { color: piece.color, kind: piece.kind } : {});
+            }
+            ret.push(arr);
+        }
+        return ret;
+    };
+    JKFPlayer.prototype.getHandsState = function () {
+        return [
+            this.shogi.getHandsSummary(0 /* Black */),
+            this.shogi.getHandsSummary(1 /* White */),
+        ];
     };
     // private
     // 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る
