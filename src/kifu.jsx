@@ -116,7 +116,7 @@ var Kifu = React.createClass({
 			var player = JKFPlayer.parse(data, this.filename);
 			player.goto(tesuu);
 			this.setState({player: player});
-		});
+		}.bind(this));
 	},
 	getInitialState: function(){
 		return {player: new JKFPlayer({header: {}, moves: [{}]})};
@@ -184,7 +184,17 @@ var Kifu = React.createClass({
 										<li><button className="dl" onClick={this.onClickDl}>棋譜保存</button></li>
 
 										<li>
-											<select className="autoload">
+											<select className="autoload" onChange={function(e){
+												if(this.timerAutoload){
+													clearInterval(this.timerAutoload);
+												}
+												var s = parseInt(e.target.value);
+												if(!isNaN(s) && s>0){
+													this.timerAutoload = setInterval(function(){
+														this.reload();
+													}.bind(this), s*1000);
+												}
+											}.bind(this)}>
 												<option value="0">自動更新しない</option>
 												<option value="30">自動更新30秒毎</option>
 												<option value="60">自動更新1分毎</option>
@@ -237,17 +247,7 @@ var Kifu = React.createClass({
 			</table>
 		);
 	
-		$("select.autoload", this.id).change(function(){
-			if(that.timerAutoload){
-				clearInterval(that.timerAutoload);
-			}
-			var s = parseInt($(this).val());
-			if(!isNaN(s) && s>0){
-				that.timerAutoload = setInterval(function(){
-					that.reload();
-				}, s*1000);
-			}
-		});
+		$("select.autoload", this.id).change();
 		
 		if(show) this.show();
 	}
@@ -290,9 +290,6 @@ function ajax(filename, onSuccess){
 		ifModified: true,
 	});
 };
-
-var lastForkDepth = 0;
-var timerAutoload;
 	//盤面を再生した後に吐き出す
 		/*
 		var nowComments = this.player.getComments();

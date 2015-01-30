@@ -11,11 +11,16 @@
 
 <body>
 	<div id="kifu"></div>
+	<div id="kifu2"></div>
 	<script type="text/jsx" src="../src/kifu.jsx"></script>
 <script type="text/jsx">
 React.render(
 	<KifuForJS filename="../json-kifu-format/test/files/kif/fork.kif" ImageDirectoryPath="../images"/>,
 	document.getElementById("kifu")
+);
+React.render(
+	<KifuForJS filename="../json-kifu-format/test/files/kif/jt201409130101.kif" ImageDirectoryPath="../images"/>,
+	document.getElementById("kifu2")
 );
 </script>
 </body>
