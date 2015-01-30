@@ -1,0 +1,22 @@
+<html>
+<head>
+<title>Kifu for JS example</title>
+<meta charset="utf-8">
+<script src="http://fb.me/react-0.12.2.js"></script>
+<script src="http://fb.me/JSXTransformer-0.12.2.js"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../json-kifu-format/src/kifuplayer.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
+</head>
+
+<body>
+	<div id="kifu"></div>
+	<script type="text/jsx" src="../src/kifu.jsx"></script>
+<script type="text/jsx">
+React.render(
+	<Kifu filename="../json-kifu-format/test/files/jkf/ryuou201409020101.jkf" ImageDirectoryPath="../images"/>,
+	document.getElementById("kifu")
+);
+</script>
+</body>
+</html>
