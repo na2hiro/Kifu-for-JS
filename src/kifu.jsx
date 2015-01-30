@@ -1,3 +1,4 @@
+var KifuForJS = (function(){
 var Board = React.createClass({
 	render: function(){
 		var trs = [];
@@ -25,11 +26,11 @@ var Board = React.createClass({
 var Hand = React.createClass({
 	render: function(){
 		var doms = ["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
-			return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.player}} ImageDirectoryPath={this.props.ImageDirectoryPath} />;
+			return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} />;
 		}.bind(this));
 		return (
-			<div className={"mochi mochi"+this.props.player}>
-				<div className="tebanname">{colorToMark(this.props.player)}</div>
+			<div className={"mochi mochi"+this.props.color}>
+				<div className="tebanname">{colorToMark(this.props.color)}</div>
 				<div className="mochimain">{doms}</div>
 			</div>
 		);
@@ -144,11 +145,6 @@ var Kifu = React.createClass({
 			window.open("https://github.com/na2hiro/Kifu-for-JS", "kifufile");
 		}
 	},
-	onSubmit: function(e){
-		e.preventDefault();
-		this.goto(this.refs.tesuu.getDOMNode().value);
-		this.refresh();
-		return false;
 	},
 	onChangeKifuList: function(e){
 
@@ -190,14 +186,13 @@ var Kifu = React.createClass({
 		var state = this.state.player.getState();
 
 		window.player = (this.state.player);
-console.log(this.state.player.kifu);
 		return (
 			<table className="kifuforjs">
 				<tbody>
 					<tr>
 						<td>
 							<div className="inlineblock players">
-								<Hand player={1} data={state.hands[1]} playerName={this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<Hand color={1} data={state.hands[1]} playerName={this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
 								<div className="mochi">
 									<KifuList onChange={this.onChangeKifuList} />
 									<ul className="lines">
@@ -226,20 +221,25 @@ console.log(this.state.player.kifu);
 								<div className="mochi info">
 									{info}
 								</div>
-								<Hand player={0} data={state.hands[0]} playerName={this.state.player.kifu.header["先手"] || this.state.player.kifu.header["下手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<Hand color={0} data={state.hands[0]} playerName={this.state.player.kifu.header["先手"] || this.state.player.kifu.header["下手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
 							</div>
 						</td>
 					</tr>
 					<tr>
 						<td colSpan="3" style={{textAlign:"center"}}>
-							<ul className="inline go" style={{margin:"0 auto"}}>
+							<ul className="inline go" style={{margin:"0 auto"}} onClick={function(e){
+										if(e.target.tagName!="BUTTON") return;
+										this.go(e.target.dataset.go);
+										this.setState(this.state);
+									}.bind(this)}>
 								<li><button data-go="start">|&lt;</button></li>
 								<li><button data-go="-10">&lt;&lt;</button></li>
 								<li><button data-go="-1">&lt;</button></li>
 								<li>
-									<form action="?" style={{display:"inline"}}>
-										<input type="text" name="tesuu" size="3" style={{textAlign:"center"}} ref="tesuu" value={this.state.player.tesuu} />
-									</form>
+									<input type="text" name="tesuu" size="3" style={{textAlign:"center"}} ref="tesuu" value={this.state.player.tesuu} onChange={function(e){
+											this.goto(e.target.value);
+											this.setState(this.state);
+										}.bind(this)} />
 								</li>
 								<li><button data-go="1">&gt;</button></li>
 								<li><button data-go="10">&gt;&gt;</button></li>
@@ -255,10 +255,6 @@ console.log(this.state.player.kifu);
 			</table>
 		);
 	
-		$("ul.go", this.id).on("click", "button", function(){
-			that.go($(this).attr("data-go"));
-			that.refresh();
-		});
 		$("select.autoload", this.id).change(function(){
 			if(that.timerAutoload){
 				clearInterval(that.timerAutoload);
@@ -341,3 +337,5 @@ function pad(str, space, length){
 	}
 	return ret+str;
 }
+return Kifu;
+})();
