@@ -1,4 +1,4 @@
-var KifuForJS = (function(){
+var Kifu= (function(){
 var Board = React.createClass({
 	render: function(){
 		var trs = [];
@@ -101,11 +101,9 @@ var Kifu = React.createClass({
 	componentDidMount: function(){
 		ajax(this.props.filename, function(data){
 			try{
-				console.log(this.props.filename)
 				this.setState({player: JKFPlayer.parse(data, this.props.filename)});
 			}catch(e){
-				alert("棋譜ファイルが異常です: "+e);
-				throw e;
+				alert("棋譜ファイルが壊れています: "+e);
 			}
 		}.bind(this));
 	},
@@ -125,7 +123,7 @@ var Kifu = React.createClass({
 		if(this.props.filename) window.open(this.props.filename);
 	},
 	onClickCredit: function(){
-		if(confirm("*** CREDIT ***\nKifu for JS (ver. "+Kifu.version+")\n    by na2hiro\n    under the MIT License\n\n公式サイトを開きますか？")){
+		if(confirm("*** CREDIT ***\nKifu for JS (ver. "+version+")\n    by na2hiro\n    under the MIT License\n\n公式サイトを開きますか？")){
 			window.open("https://github.com/na2hiro/Kifu-for-JS", "kifufile");
 		}
 	},
@@ -167,7 +165,6 @@ var Kifu = React.createClass({
 
 		var state = this.state.player.getState();
 
-		window.player = (this.state.player);
 		return (
 			<table className="kifuforjs">
 				<tbody>
@@ -246,27 +243,21 @@ var Kifu = React.createClass({
 				</tbody>
 			</table>
 		);
-	
-		$("select.autoload", this.id).change();
-		
-		if(show) this.show();
 	}
 });
 
-/*function Kifu(id){
-	this.id="#"+id;
-}*/
 var version = "1.0.6";
-var settings = {};
 function load(filename, id){
 	if(!id){
 		id = "kifuforjs_"+Math.random().toString(36).slice(2);
 		document.write("<div id='"+id+"'></div>");
 	}
-/*	var kifu = new Kifu(id);
 	$(document).ready(function(){
+		React.render(
+			<Kifu filename={filename} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
+			document.getElementById(id)
+		);
 	});
-	return kifu;*/
 };
 function ajax(filename, onSuccess){
 	var tmp = filename.split("."), ext = tmp[tmp.length-1];
@@ -290,17 +281,6 @@ function ajax(filename, onSuccess){
 		ifModified: true,
 	});
 };
-	//盤面を再生した後に吐き出す
-		/*
-		var nowComments = this.player.getComments();
-		var nowMove = this.player.getMove();
-		if(this.player.tesuu==this.player.getMaxTesuu()){
-			//最終手に動きがない(≒specialである)場合は直前の一手を採用
-			if(nowComments.length==0) nowComments = this.player.getComments(this.player.tesuu-1);
-			if(!nowMove) nowMove = this.player.getMove(this.player.tesuu-1);
-		}
-		// Modelへ移動
-		*/
 
 function numToKanji(n){
 	return "〇一二三四五六七八九"[n];
@@ -316,5 +296,6 @@ function pad(str, space, length){
 	}
 	return ret+str;
 }
+Kifu.load=load;
 return Kifu;
 })();
