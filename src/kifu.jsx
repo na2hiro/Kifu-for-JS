@@ -63,36 +63,17 @@ var Piece = React.createClass({
 	},
 });
 var KifuList = React.createClass({
-	showKifuList: function(){
-		var forkFlag = false;
-		var max = this.player.getMaxTesuu();
-		for(var tesuu=0; tesuu<=max; tesuu++){
-			var elem;
-			if(children[tesuu]){
-				elem = $(children[tesuu]);
-			}else{
-				elem = $("<option>").val(tesuu.toString());
-				elem.appendTo(this.kifulist);
-			}
-			var forks = this.player.getReadableForkKifu(tesuu-1);
-			if(forks.length>0) forkFlag=true;
-			elem.text((this.player.getComments(tesuu).length>0?"*":"\xa0")+pad(tesuu.toString(),"\xa0", 3)+" "+this.player.getReadableKifu(tesuu)+" "+forks.join(" "));
-		}
-		for(var tesuu=children.length-1; tesuu>max; tesuu--){
-			children[tesuu].remove();
-		}
-		//手数描画
-		try{$("select.kifulist option", this.id)[this.player.tesuu].selected=true}catch(e){};
-
-		if(forkFlag){
-			$("div.players", this.id).addClass("withfork");
-		}else{
-			$("div.players", this.id).removeClass("withfork");
-		}
-	},
 	render: function(){
-		return <select className="kifulist" size="7" onChange={this.props.onChange}></select>;
-	}
+		var options = [];
+		for(var i=0; i<this.props.kifu.length; i++){
+			var kifu = this.props.kifu[i];
+			options.push(<option value={i}>{(kifu.comments.length>0?"*":"\xa0")+pad(i.toString(),"\xa0", 3)+" "+kifu.kifu+" "+kifu.forks.join(" ")}</option>);
+		}
+		return <select className="kifulist" size="7" onChange={this.onChange} value={this.props.tesuu}>{options}</select>;
+	},
+	onChange: function(e){
+		this.props.onChange(e.target.value);
+	},
 });
 var ForkList = React.createClass({
 	render: function(){
@@ -100,15 +81,17 @@ var ForkList = React.createClass({
 		var forks = this.props.forks;
 		var options = [];
 		if(forks.length>0){
-			options.push($("<option>").val("NaN").text(this.state.player.getReadableKifu(this.state.player.tesuu+1)));
+			options.push(<option value="NaN">{this.props.nowMove}</option>);
 			forks.forEach(function(fork, i){
-				options.push(<option value={i}>fork</option>);
+				options.push(<option value={i}>{fork}</option>);
 			});
 		}else{
 			options.push(<option>変化なし</option>);
 		}
 		return (
-			<select className="forklist" onChange={function(){this.props.onChange(this.refs.select.getDOMNode().value)}.bind(this)} ref="select" disabled={forks.length==0}>
+			<select className="forklist" onChange={function(){
+				this.props.onChange(this.refs.select.getDOMNode().value)
+			}.bind(this)} ref="select" disabled={forks.length==0}>
 				{options}
 			</select>
 		);
@@ -118,6 +101,7 @@ var Kifu = React.createClass({
 	componentDidMount: function(){
 		ajax(this.props.filename, function(data){
 			try{
+				console.log(this.props.filename)
 				this.setState({player: JKFPlayer.parse(data, this.props.filename)});
 			}catch(e){
 				alert("棋譜ファイルが異常です: "+e);
@@ -145,13 +129,11 @@ var Kifu = React.createClass({
 			window.open("https://github.com/na2hiro/Kifu-for-JS", "kifufile");
 		}
 	},
+	onChangeKifuList: function(n){
+		this.goto(n);
 	},
-	onChangeKifuList: function(e){
-
-	},
-	onChangeForkList: function(){
-		this.forkAndForward(parseInt($(this).val()));
-		this.refresh();
+	onChangeForkList: function(n){
+		this.forkAndForward(n);
 	},
 	forkAndForward: function(num){
 		this.state.player.forkAndForward(num);
@@ -171,8 +153,8 @@ var Kifu = React.createClass({
 			tesuu = parseInt(tesuu);
 			if(isNaN(tesuu)) return;
 			this.state.player.go(tesuu);
+			this.setState(this.state);
 		}
-		this.setState(this.state);
 	},
 	render: function(){
 		var data = this.state.player.kifu.header;
@@ -191,13 +173,13 @@ var Kifu = React.createClass({
 				<tbody>
 					<tr>
 						<td>
-							<div className="inlineblock players">
+							<div className={"inlineblock players "+(this.state.player.kifu.moves.some(function(move){return move.forks&&move.forks.length>0;})?"withfork":"")}>
 								<Hand color={1} data={state.hands[1]} playerName={this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
 								<div className="mochi">
-									<KifuList onChange={this.onChangeKifuList} />
+									<KifuList onChange={this.onChangeKifuList} kifu={this.state.player.getReadableKifuState()} tesuu={this.state.player.tesuu} />
 									<ul className="lines">
 										<li className="fork">
-											<ForkList onChange={this.onChangeForkList} forks={this.state.player.getReadableForkKifu()} />
+											<ForkList onChange={this.onChangeForkList} forks={this.state.player.getReadableForkKifu()} nowMove={this.state.player.tesuu<this.state.player.getMaxTesuu() ? this.state.player.getReadableKifu(this.state.player.tesuu+1) : null} />
 										</li>
 										<li><button className="dl" onClick={this.onClickDl}>棋譜保存</button></li>
 
