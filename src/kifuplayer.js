@@ -856,6 +856,13 @@ var JKFPlayer = (function () {
             this.shogi.getHandsSummary(1 /* White */),
         ];
     };
+    JKFPlayer.prototype.getReadableKifuState = function () {
+        var ret = [];
+        for (var i = 0; i <= this.getMaxTesuu(); i++) {
+            ret.push({ kifu: this.getReadableKifu(i), forks: this.getReadableForkKifu(i - 1), comments: this.getComments(i) });
+        }
+        return ret;
+    };
     // private
     // 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る
     JKFPlayer.prototype.getMoveFormat = function (tesuu) {

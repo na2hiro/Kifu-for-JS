@@ -254,6 +254,13 @@ class JKFPlayer{
 			this.shogi.getHandsSummary(Color.White),
 		];
 	}
+	getReadableKifuState(): {kifu:string; forks:string[]}[]{
+		var ret = [];
+		for(var i=0; i<=this.getMaxTesuu(); i++){
+			ret.push({kifu: this.getReadableKifu(i), forks: this.getReadableForkKifu(i-1), comments: this.getComments(i)});
+		}
+		return ret;
+	}
 
 	// private
 
