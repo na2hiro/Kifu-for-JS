@@ -81,15 +81,15 @@ var ForkList = React.createClass({
 		var forks = this.props.forks;
 		var options = [];
 		if(forks.length>0){
-			options.push(<option value="NaN">{this.props.nowMove}</option>);
+			options.push(<option value="top">{this.props.nowMove}</option>);
 			forks.forEach(function(fork, i){
 				options.push(<option value={i}>{fork}</option>);
 			});
 		}else{
-			options.push(<option>変化なし</option>);
+			options.push(<option value="top">変化なし</option>);
 		}
 		return (
-			<select className="forklist" onChange={function(){
+			<select className="forklist" value="top" onChange={function(){
 				this.props.onChange(this.refs.select.getDOMNode().value)
 			}.bind(this)} ref="select" disabled={forks.length==0}>
 				{options}
