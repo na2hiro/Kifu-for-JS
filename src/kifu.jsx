@@ -122,7 +122,7 @@ var Kifu = React.createClass({
 		return {player: new JKFPlayer({header: {}, moves: [{}]})};
 	},
 	onClickDl: function(){
-		if(this.filename) window.open(this.filename);
+		if(this.props.filename) window.open(this.props.filename);
 	},
 	onClickCredit: function(){
 		if(confirm("*** CREDIT ***\nKifu for JS (ver. "+Kifu.version+")\n    by na2hiro\n    under the MIT License\n\n公式サイトを開きますか？")){
