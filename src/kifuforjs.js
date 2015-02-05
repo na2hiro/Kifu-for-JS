@@ -420,7 +420,7 @@ var Kifu = (function () {
         }
         return ret + str;
     };
-    Kifu.version = "1.0.6";
+    Kifu.version = "1.0.7";
     Kifu.settings = {};
     return Kifu;
 })();
