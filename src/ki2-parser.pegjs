@@ -204,7 +204,7 @@ result = "まで" [0-9]+ "手" res:(
 	/ "で中断" {return "CHUDAN"}
 	/ "で持将棋" {return "JISHOGI"}
 	/ "で千日手" {return "SENNICHITE"}
-	/ "で"? "詰" {return "TSUMI"}
+	/ "で"? "詰" "み"? {return "TSUMI"}
 	/ "で不詰" {return "FUZUMI"}
 ) nl {return res}
 
