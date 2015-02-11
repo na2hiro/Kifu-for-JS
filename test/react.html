@@ -6,11 +6,13 @@
 <script src="../out/kifuforjs.js" charset="utf-8"></script>
 <script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
 <link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
+<script>
+Kifu.load("../json-kifu-format/test/files/kif/fork.kif", "kifu");
+Kifu.load("../json-kifu-format/test/files/kif/jt201409130101.kif");
+</script>
 </head>
 
 <body>
-<script>
-var kifu = Kifu.load("./illegal_move.kif");
-</script>
+	<div id="kifu"></div>
 </body>
 </html>

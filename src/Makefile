@@ -1,6 +1,7 @@
 all: uglify
-	cat ./kifu.js ../json-kifu-format/src/kifuplayer.js > kifuforjs.js
+	jsx kifu.jsx > ../out/kifu.js
+	cat ./copyright.txt ../json-kifu-format/src/kifuplayer.js ../lib/react.min.js ../out/kifu.js > ../out/kifuforjs.js
 #	uglifyjs -comments -c -o kifuforjs.min.js kifuforjs.js
 uglify:
-	uglifyjs -comments -c -o bookmarklet.min.js bookmarklet.js
+	uglifyjs -comments -c -o ../out/bookmarklet.min.js bookmarklet.js
 	uglifyjs -comments -c -o public-bookmarklet.min.js public-bookmarklet.js

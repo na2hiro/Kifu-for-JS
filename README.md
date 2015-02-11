@@ -9,7 +9,7 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS ブックマークレット
 ### 使い方
-ブックマークレット本体は`src/bookmarklet.min.js`にあり
+ブックマークレット本体は`out/bookmarklet.min.js`にあり
 
 1. 次のコードをブックマークへ追加する→
 `javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
@@ -35,10 +35,12 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 jQuery(2.1以降で動作確認), kifuforjs.js, kifuforjs.cssを読み込む．ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．
 
+(ver. 1.0.8よりkifuforjs.jsの所在がsrcからoutへ変更されました)
+
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
-<script src="../src/kifuforjs.js" charset="utf-8"></script>
+<script src="../out/kifuforjs.js" charset="utf-8"></script>
 <script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
 ```
 
