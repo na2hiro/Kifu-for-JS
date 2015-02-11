@@ -9,7 +9,7 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS ブックマークレット
 ### 使い方
-ブックマークレット本体は`src/bookmarklet.min.js`にあり
+ブックマークレット本体は`out/bookmarklet.min.js`にあり
 
 1. 次のコードをブックマークへ追加する→
 `javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
