@@ -37,11 +37,23 @@ var Hand = React.createClass({
 	},
 });
 var PieceHand = React.createClass({
+	mixins: [DragDropMixin],
+	statics: {
+		configureDragDrop: function(registerType) {
+			registerType("piecehand", {
+				dragSource: {
+					beginDrag: function(component) {
+						return {item: {piece: component.props.data.kind}};
+					}
+				},
+			});
+		}
+	},
 	render: function(){
 		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""].join(" ");
 		return (
 			<span className={classNames}>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} />
+				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piecehand")}/>
 				<span className='maisuu'>{numToKanji(this.props.value)}</span>
 			</span>
 		);
@@ -66,12 +78,19 @@ var Piece = React.createClass({
 					}
 				},
 			});
+			registerType("piecehand", {
+				dropTarget: {
+					acceptDrop: function(component, item) {
+						component.props.onInputMove({piece: item.piece, to: {x: component.props.x, y: component.props.y}});
+					}
+				},
+			});
 		}
 	},
 	render: function(){
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piece")} {...this.dropTargetFor("piece")} style={{visibility: this.getDragState("piece").isDragging?"hidden":""}} />
+				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piece")} {...this.dropTargetFor("piece","piecehand")} style={{visibility: this.getDragState("piece").isDragging?"hidden":""}} />
 			</td>
 		);
 	},
@@ -147,7 +166,10 @@ var Kifu = React.createClass({
 	},
 	onInputMove: function(move){
 		try{
-			this.state.player.inputMove(move);
+			if(!this.state.player.inputMove(move)){
+				move.promote = confirm("成りますか？");
+				this.state.player.inputMove(move);
+			}
 		}catch(e){
 			alert("動かせません ("+e+")");
 		}
