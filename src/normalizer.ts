@@ -34,6 +34,11 @@ module Normalizer{
 				// capture復元
 				addCaptureInformation(shogi, move);
 
+				// piece復元(KIF以外の最低限形式で使用)
+				if(!move.piece){
+					move.piece = shogi.get(move.from.x, move.from.y).kind;
+				}
+
 				// 不成復元
 				if(!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)){
 					// 成ってない
