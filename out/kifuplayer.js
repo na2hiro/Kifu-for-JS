@@ -1124,6 +1124,32 @@ var JKFPlayer = (function () {
         this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).forks[num] });
         this.forward();
     };
+    // 現在の局面から1手入力する．
+    // 必要フィールドは，指し: from, to, promote．打ち: to, piece
+    // 最終手であれば手を追加，そうでなければ分岐を追加
+    JKFPlayer.prototype.inputMove = function (move) {
+        this.doMove(move); //動かしてみる(throwされうる)
+        var newMove = { move: move };
+        var addToFork = this.tesuu < this.getMaxTesuu();
+        if (addToFork) {
+            // 最終手でなければ分岐に追加
+            var next = this.getMoveFormat(this.tesuu + 1);
+            next.forks.push([newMove]);
+        }
+        else {
+            // 最終手に追加
+            this.forks[this.forks.length - 1].moves.push(newMove);
+        }
+        Normalizer.normalizeKIF(this.kifu); // 復元
+        this.undoMove(move);
+        // 考え改めて再生
+        if (addToFork) {
+            this.forkAndForward(next.forks.length - 1);
+        }
+        else {
+            this.forward();
+        }
+    };
     // wrapper
     JKFPlayer.prototype.getBoard = function (x, y) {
         return this.shogi.get(x, y);

@@ -1,0 +1,26 @@
+<script src="../out/kifuplayer.js" charset="utf-8"></script>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+
+<script>
+$(document).ready(function() {
+	$.ajax('./files/ki2/fork.ki2', {
+		success: function(data) {
+			kifu=data;
+			parse(data);
+		},
+		beforeSend: function(xhr){
+			xhr.overrideMimeType("text/html;charset=Shift_JIS");
+		},
+	}, 'text');
+});
+
+function parse(data){
+	res = JKFPlayer.parseKI2(data);
+	res.inputMove({from: {x: 7, y: 7}, to: {x: 7, y: 6}});
+	res.inputMove({from: {x: 3, y: 3}, to: {x: 3, y: 4}});
+	res.inputMove({from: {x: 8, y: 8}, to: {x: 2, y: 2}, promote: true});
+	res.inputMove({from: {x: 3, y: 1}, to: {x: 2, y: 2}});
+	res.inputMove({to: {x: 6, y: 5}, piece: "KA"});
+	res.inputMove({to: {x: 4, y: 5}, piece: "KA"});
+}
+</script>
