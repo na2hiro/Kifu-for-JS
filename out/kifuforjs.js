@@ -7689,5 +7689,6 @@ function pad(str, space, length){
 	return ret+str;
 }
 Kifu.load=load;
+Kifu.settings = {};
 return Kifu;
 })();
