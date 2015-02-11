@@ -22,5 +22,7 @@ function parse(data){
 	res.inputMove({from: {x: 3, y: 1}, to: {x: 2, y: 2}});
 	res.inputMove({to: {x: 6, y: 5}, piece: "KA"});
 	res.inputMove({to: {x: 4, y: 5}, piece: "KA"});
+	res.backward();
+	res.inputMove({to: {x: 5, y: 5}, piece: "KA"});
 }
 </script>

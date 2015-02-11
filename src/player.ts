@@ -214,6 +214,7 @@ class JKFPlayer{
 		if(addToFork){
 			// 最終手でなければ分岐に追加
 			var next = this.getMoveFormat(this.tesuu+1);
+			if(!next.forks) next.forks = [];
 			next.forks.push([newMove]);
 		}else{
 			// 最終手に追加
