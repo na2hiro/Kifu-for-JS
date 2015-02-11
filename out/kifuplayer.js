@@ -594,6 +594,7 @@ var Normalizer;
     function canPromote(place, color) {
         return color == 0 /* Black */ ? place.y <= 3 : place.y >= 7;
     }
+    Normalizer.canPromote = canPromote;
     function normalizeKIF(obj) {
         var shogi = new Shogi(obj.initial || undefined);
         normalizeKIFMoves(shogi, obj.moves);
@@ -1131,7 +1132,14 @@ var JKFPlayer = (function () {
     // 現在の局面から1手入力する．
     // 必要フィールドは，指し: from, to, promote．打ち: to, piece
     // 最終手であれば手を追加，そうでなければ分岐を追加
+    // 成功すればtrueを返す．もしpromoteの可能性があればfalseを返して何もしない
     JKFPlayer.prototype.inputMove = function (move) {
+        if (move.from != null && move.promote == null) {
+            var piece = this.shogi.get(move.from.x, move.from.y);
+            console.log(piece, Piece.isPromoted(piece.kind), Piece.canPromote(piece.kind));
+            if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color)))
+                return false;
+        }
         this.doMove(move); //動かしてみる(throwされうる)
         var newMove = { move: move };
         var addToFork = this.tesuu < this.getMaxTesuu();
@@ -1155,6 +1163,7 @@ var JKFPlayer = (function () {
         else {
             this.forward();
         }
+        return true;
     };
     // wrapper
     JKFPlayer.prototype.getBoard = function (x, y) {

@@ -9,7 +9,7 @@
  */
 
 module Normalizer{
-	function canPromote(place: PlaceFormat, color: Color){
+	export function canPromote(place: PlaceFormat, color: Color){
 		return color==Color.Black ? place.y<=3 : place.y>=7;
 	}
 

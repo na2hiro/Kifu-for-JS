@@ -207,7 +207,14 @@ class JKFPlayer{
 	// 現在の局面から1手入力する．
 	// 必要フィールドは，指し: from, to, promote．打ち: to, piece
 	// 最終手であれば手を追加，そうでなければ分岐を追加
+	// もしpromoteの可能性があればfalseを返して何もしない
+	// 成功すればtrueを返す．
 	inputMove(move: MoveMoveFormat){
+		if(move.from!=null && move.promote==null){
+			var piece = this.shogi.get(move.from.x, move.from.y);
+			console.log(piece, Piece.isPromoted(piece.kind), Piece.canPromote(piece.kind))
+			if(!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color))) return false;
+		}
 		this.doMove(move); //動かしてみる(throwされうる)
 		var newMove = {move: move};
 		var addToFork = this.tesuu < this.getMaxTesuu();
@@ -228,6 +235,7 @@ class JKFPlayer{
 		}else{
 			this.forward();
 		}
+		return true;
 	}
 	// wrapper
 	getBoard(x: number, y: number){
