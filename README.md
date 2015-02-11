@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 1.0.7)
+# Kifu for JS (ver. 1.0.8)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -81,7 +81,7 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 ## 開発環境
 
-* TypeScript 1.3
+* JSX 0.12.2 ([react-tools](http://facebook.github.io/react/docs/getting-started.html#offline-transform))
 
 ## TODO
 * [issues](https://github.com/na2hiro/Kifu-for-JS/issues)参照．

@@ -1,4 +1,5 @@
 var Kifu= (function(){
+var version = "1.0.8";
 var Board = React.createClass({
 	render: function(){
 		var nineY = [1,2,3,4,5,6,7,8,9];
@@ -239,7 +240,6 @@ var Kifu = React.createClass({
 	}
 });
 
-var version = "1.0.6";
 function load(filename, id){
 	if(!id){
 		id = "kifuforjs_"+Math.random().toString(36).slice(2);
