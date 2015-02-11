@@ -1,5 +1,6 @@
 var Kifu= (function(){
 var version = "1.0.8";
+var DragDropMixin = ReactDND.DragDropMixin;
 var Board = React.createClass({
 	render: function(){
 		var nineY = [1,2,3,4,5,6,7,8,9];
@@ -11,7 +12,7 @@ var Board = React.createClass({
 					{nineY.map(function(y){
 						return <tr>
 							{nineX.map(function(x){
-								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} />
+								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} />
 							}.bind(this))}
 							<th>{numToKanji(y)}</th>
 						</tr>;
@@ -50,10 +51,27 @@ var PieceHand = React.createClass({
 	},
 });
 var Piece = React.createClass({
+	mixins: [DragDropMixin],
+	statics: {
+		configureDragDrop: function(registerType) {
+			registerType("piece", {
+				dragSource: {
+					beginDrag: function(component) {
+						return {item: {x: component.props.x, y: component.props.y}};
+					}
+				},
+				dropTarget: {
+					acceptDrop: function(component, item) {
+						component.props.onInputMove({from: item, to: {x: component.props.x, y: component.props.y}});
+					}
+				},
+			});
+		}
+	},
 	render: function(){
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} />
+				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piece")} {...this.dropTargetFor("piece")} style={{visibility: this.getDragState("piece").isDragging?"hidden":""}} />
 			</td>
 		);
 	},
@@ -127,6 +145,14 @@ var Kifu = React.createClass({
 	onChangeForkList: function(n){
 		this.forkAndForward(n);
 	},
+	onInputMove: function(move){
+		try{
+			this.state.player.inputMove(move);
+		}catch(e){
+			alert("動かせません ("+e+")");
+		}
+		this.setState(this.state);
+	},
 	forkAndForward: function(num){
 		this.state.player.forkAndForward(num);
 		this.setState(this.state);
@@ -197,7 +223,7 @@ var Kifu = React.createClass({
 							</div>
 						</td>
 						<td style={{textAlign:"center"}}>
-							<Board board={this.state.player.getBoardState()} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} />
+							<Board board={this.state.player.getBoardState()} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} />
 						</td>
 						<td>
 							<div className="inlineblock players">
