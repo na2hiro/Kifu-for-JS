@@ -7366,46 +7366,44 @@ if(r.instancePool.length){var o=r.instancePool.pop();return r.call(o,e,t,n),o}re
 var n=e.firstChild;1===n.data.length?e.removeChild(n):n.deleteData(0,1)}else e.innerHTML=t})}t.exports=a},{"./ExecutionEnvironment":22}],137:[function(e,t){"use strict";function n(e,t){if(e===t)return!0;var n;for(n in e)if(e.hasOwnProperty(n)&&(!t.hasOwnProperty(n)||e[n]!==t[n]))return!1;for(n in t)if(t.hasOwnProperty(n)&&!e.hasOwnProperty(n))return!1;return!0}t.exports=n},{}],138:[function(e,t){"use strict";function n(e,t){return e&&t&&e.type===t.type&&e.key===t.key&&e._owner===t._owner?!0:!1}t.exports=n},{}],139:[function(e,t){function n(e){var t=e.length;if(r(!Array.isArray(e)&&("object"==typeof e||"function"==typeof e)),r("number"==typeof t),r(0===t||t-1 in e),e.hasOwnProperty)try{return Array.prototype.slice.call(e)}catch(n){}for(var o=Array(t),a=0;t>a;a++)o[a]=e[a];return o}var r=e("./invariant");t.exports=n},{"./invariant":124}],140:[function(e,t){"use strict";function n(e){return d[e]}function r(e,t){return e&&null!=e.key?a(e.key):t.toString(36)}function o(e){return(""+e).replace(f,n)}function a(e){return"$"+o(e)}function i(e,t,n){return null==e?0:h(e,"",0,t,n)}var s=e("./ReactElement"),u=e("./ReactInstanceHandles"),c=e("./invariant"),l=u.SEPARATOR,p=":",d={"=":"=0",".":"=1",":":"=2"},f=/[=.:]/g,h=function(e,t,n,o,i){var u,d,f=0;if(Array.isArray(e))for(var m=0;m<e.length;m++){var v=e[m];u=t+(t?p:l)+r(v,m),d=n+f,f+=h(v,u,d,o,i)}else{var g=typeof e,y=""===t,E=y?l+r(e,0):t;if(null==e||"boolean"===g)o(i,null,E,n),f=1;else if("string"===g||"number"===g||s.isValidElement(e))o(i,e,E,n),f=1;else if("object"===g){c(!e||1!==e.nodeType);for(var C in e)e.hasOwnProperty(C)&&(u=t+(t?p:l)+a(C)+p+r(e[C],0),d=n+f,f+=h(e[C],u,d,o,i))}}return f};t.exports=i},{"./ReactElement":50,"./ReactInstanceHandles":58,"./invariant":124}],141:[function(e,t){"use strict";var n=e("./emptyFunction"),r=n;t.exports=r},{"./emptyFunction":105}]},{},[1])(1)});var Kifu= (function(){
 var Board = React.createClass({displayName: "Board",
 	render: function(){
-		var trs = [];
-		var tds = [React.createElement("th", null)];
-		for(var i=1; i<=9; i++){
-			tds.unshift(React.createElement("th", null, i));
-		}
-		trs.push(tds);
-		var lastTo = this.props.lastMove ? this.props.lastMove.to : {};
-		for(var j=1; j<=9; j++){
-			var tds = [];
-			tds.push(React.createElement("th", null, numToKanji(j)));
-			for(var i=1; i<=9; i++){
-				tds.unshift(React.createElement(Piece, {data: this.props.board[i-1][j-1], lastFlag: lastTo.x==i&&lastTo.y==j, ImageDirectoryPath: this.props.ImageDirectoryPath}));
-			}
-			trs.push(React.createElement("tr", null, tds));
-		}
+		var nineY = [1,2,3,4,5,6,7,8,9];
+		var nineX = nineY.slice().reverse();
 		return (
 			React.createElement("table", {className: "ban"}, 
-				React.createElement("tbody", null, trs)
+				React.createElement("tbody", null, 
+					React.createElement("tr", null, nineX.map(function(x){return React.createElement("th", null, x);})), 
+					nineY.map(function(y){
+						return React.createElement("tr", null, 
+							nineX.map(function(x){
+								return React.createElement(Piece, {data: this.props.board[x-1][y-1], x: x, y: y, lastMove: this.props.lastMove, ImageDirectoryPath: this.props.ImageDirectoryPath})
+							}.bind(this)), 
+							React.createElement("th", null, numToKanji(y))
+						);
+					}.bind(this))
+				)
 			)
 		);
 	},
 });
 var Hand = React.createClass({displayName: "Hand",
 	render: function(){
-		var doms = ["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
-			return React.createElement(PieceHand, {value: this.props.data[kind], data: {kind: kind, color: this.props.color}, ImageDirectoryPath: this.props.ImageDirectoryPath});
-		}.bind(this));
 		return (
 			React.createElement("div", {className: "mochi mochi"+this.props.color}, 
 				React.createElement("div", {className: "tebanname"}, colorToMark(this.props.color)), 
-				React.createElement("div", {className: "mochimain"}, doms)
+				React.createElement("div", {className: "mochimain"}, 
+					["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
+						return React.createElement(PieceHand, {value: this.props.data[kind], data: {kind: kind, color: this.props.color}, ImageDirectoryPath: this.props.ImageDirectoryPath});
+					}.bind(this))
+				)
 			)
 		);
 	},
 });
 var PieceHand = React.createClass({displayName: "PieceHand",
 	render: function(){
-		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""];
+		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""].join(" ");
 		return (
-			React.createElement("span", {className: classNames.join(" ")}, 
+			React.createElement("span", {className: classNames}, 
 				React.createElement("img", {src: this.getPieceImage(this.props.data.kind, this.props.data.color)}), 
 				React.createElement("span", {className: "maisuu"}, numToKanji(this.props.value))
 			)
@@ -7418,7 +7416,7 @@ var PieceHand = React.createClass({displayName: "PieceHand",
 var Piece = React.createClass({displayName: "Piece",
 	render: function(){
 		return (
-			React.createElement("td", {className: this.props.lastFlag?"lastto":""}, 
+			React.createElement("td", {className: this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : ""}, 
 				React.createElement("img", {src: this.getPieceImage(this.props.data.kind, this.props.data.color)})
 			)
 		);
@@ -7444,20 +7442,15 @@ var ForkList = React.createClass({displayName: "ForkList",
 	render: function(){
 		// 分岐
 		var forks = this.props.forks;
-		var options = [];
-		if(forks.length>0){
-			options.push(React.createElement("option", {value: "top"}, this.props.nowMove));
-			forks.forEach(function(fork, i){
-				options.push(React.createElement("option", {value: i}, fork));
-			});
-		}else{
-			options.push(React.createElement("option", {value: "top"}, "変化なし"));
-		}
 		return (
 			React.createElement("select", {className: "forklist", value: "top", onChange: function(){
 				this.props.onChange(this.refs.select.getDOMNode().value)
 			}.bind(this), ref: "select", disabled: forks.length==0}, 
-				options
+				forks.length>0
+					? [React.createElement("option", {value: "top"}, this.props.nowMove)].concat(forks.map(function(fork, i){
+							return React.createElement("option", {value: i}, fork);
+						}))
+					: React.createElement("option", {value: "top"}, "変化なし")
 			)
 		);
 	}

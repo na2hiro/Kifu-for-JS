@@ -1,46 +1,44 @@
 var Kifu= (function(){
 var Board = React.createClass({
 	render: function(){
-		var trs = [];
-		var tds = [<th></th>];
-		for(var i=1; i<=9; i++){
-			tds.unshift(<th>{i}</th>);
-		}
-		trs.push(tds);
-		var lastTo = this.props.lastMove ? this.props.lastMove.to : {};
-		for(var j=1; j<=9; j++){
-			var tds = [];
-			tds.push(<th>{numToKanji(j)}</th>);
-			for(var i=1; i<=9; i++){
-				tds.unshift(<Piece data={this.props.board[i-1][j-1]} lastFlag={lastTo.x==i&&lastTo.y==j} ImageDirectoryPath={this.props.ImageDirectoryPath} />);
-			}
-			trs.push(<tr>{tds}</tr>);
-		}
+		var nineY = [1,2,3,4,5,6,7,8,9];
+		var nineX = nineY.slice().reverse();
 		return (
 			<table className="ban">
-				<tbody>{trs}</tbody>
+				<tbody>
+					<tr>{nineX.map(function(x){return <th>{x}</th>;})}</tr>
+					{nineY.map(function(y){
+						return <tr>
+							{nineX.map(function(x){
+								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} />
+							}.bind(this))}
+							<th>{numToKanji(y)}</th>
+						</tr>;
+					}.bind(this))}
+				</tbody>
 			</table>
 		);
 	},
 });
 var Hand = React.createClass({
 	render: function(){
-		var doms = ["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
-			return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} />;
-		}.bind(this));
 		return (
 			<div className={"mochi mochi"+this.props.color}>
 				<div className="tebanname">{colorToMark(this.props.color)}</div>
-				<div className="mochimain">{doms}</div>
+				<div className="mochimain">
+					{["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
+						return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} />;
+					}.bind(this))}
+				</div>
 			</div>
 		);
 	},
 });
 var PieceHand = React.createClass({
 	render: function(){
-		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""];
+		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""].join(" ");
 		return (
-			<span className={classNames.join(" ")}>
+			<span className={classNames}>
 				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} />
 				<span className='maisuu'>{numToKanji(this.props.value)}</span>
 			</span>
@@ -53,7 +51,7 @@ var PieceHand = React.createClass({
 var Piece = React.createClass({
 	render: function(){
 		return (
-			<td className={this.props.lastFlag?"lastto":""}>
+			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
 				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} />
 			</td>
 		);
@@ -79,20 +77,15 @@ var ForkList = React.createClass({
 	render: function(){
 		// 分岐
 		var forks = this.props.forks;
-		var options = [];
-		if(forks.length>0){
-			options.push(<option value="top">{this.props.nowMove}</option>);
-			forks.forEach(function(fork, i){
-				options.push(<option value={i}>{fork}</option>);
-			});
-		}else{
-			options.push(<option value="top">変化なし</option>);
-		}
 		return (
 			<select className="forklist" value="top" onChange={function(){
 				this.props.onChange(this.refs.select.getDOMNode().value)
 			}.bind(this)} ref="select" disabled={forks.length==0}>
-				{options}
+				{forks.length>0
+					? [<option value="top">{this.props.nowMove}</option>].concat(forks.map(function(fork, i){
+							return <option value={i}>{fork}</option>;
+						}))
+					: <option value="top">変化なし</option>}
 			</select>
 		);
 	}
