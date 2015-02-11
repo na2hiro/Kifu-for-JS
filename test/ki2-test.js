@@ -1,4 +1,4 @@
-var JKFPlayer = require("../src/kifuplayer");
+var JKFPlayer = require("../out/kifuplayer");
 var fs = require('fs');
 var iconv = new (require("iconv").Iconv)("cp932", "utf-8");
 var dir = __dirname+'/files/ki2/';

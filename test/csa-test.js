@@ -1,4 +1,4 @@
-var JKFPlayer = require("../src/kifuplayer");
+var JKFPlayer = require("../out/kifuplayer");
 var fs = require('fs');
 var iconvs = ["cp932", "EUC-JISX0213"].map(function(enc){return new (require("iconv").Iconv)(enc, "utf-8")});
 
