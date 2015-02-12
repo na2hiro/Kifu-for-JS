@@ -7,6 +7,8 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 * Kifu for JSブックマークレットは，1クリックでKifu for FlashやKifu for JavaをKifu for JSに置き換えて盤面を表示する．	
 * Flash, Javaなどを必要としないため，iOSやAndroidでも表示できる
 
+[**動作例はこちら**](http://na2hiro.github.io/Kifu-for-JS/test/example.html)
+
 ## Kifu for JS ブックマークレット
 ### 使い方
 ブックマークレット本体は`out/bookmarklet.min.js`にあり
