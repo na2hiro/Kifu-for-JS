@@ -212,7 +212,6 @@ class JKFPlayer{
 	inputMove(move: MoveMoveFormat){
 		if(move.from!=null && move.promote==null){
 			var piece = this.shogi.get(move.from.x, move.from.y);
-			console.log(piece, Piece.isPromoted(piece.kind), Piece.canPromote(piece.kind))
 			if(!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color))) return false;
 		}
 		this.doMove(move); //動かしてみる(throwされうる)
