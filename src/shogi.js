@@ -239,6 +239,37 @@ var Shogi = (function () {
         }
         return ret;
     };
+    // 以下editModeでの関数
+    // (x, y)の駒を取ってcolorの持ち駒に加える
+    Shogi.prototype.captureByColor = function (x, y, color) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        this.set(x, y, null);
+        piece.unpromote();
+        if (piece.color != color)
+            piece.inverse();
+        this.pushToHand(piece);
+    };
+    // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
+    Shogi.prototype.flip = function (x, y) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        if (Piece.isPromoted(piece.kind)) {
+            piece.unpromote();
+            piece.inverse();
+        }
+        else {
+            piece.promote();
+        }
+    };
+    // 手番を設定する
+    Shogi.prototype.setTurn = function (color) {
+        if (!this.flagEditMode)
+            throw "cannot set turn without editMode";
+        this.turn = color;
+    };
     // 以下private method
     // (x, y)に駒を置く
     Shogi.prototype.set = function (x, y, piece) {
