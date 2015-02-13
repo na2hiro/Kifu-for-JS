@@ -206,10 +206,9 @@ var Kifu = React.createClass({
 		var info = <dl>{dds}</dl>;
 
 		var state = this.state.player.getState();
-		console.log(this.getDropState(ReactDND.NativeDragItemTypes.FILE));
 
 		return (
-			<table className="kifuforjs" {...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)}>
+			<table className="kifuforjs" {...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(ReactDND.NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}>
 				<tbody>
 					<tr>
 						<td>
@@ -298,7 +297,7 @@ var Kifu = React.createClass({
 						// Do something with files
 						if(item.files[0]){
 							loadFile(item.files[0], function(data, name){
-								component.setState({player: JKFPlayer.parse(data)});
+								component.setState({player: JKFPlayer.parse(data, name)});
 							});
 						}
 					}
