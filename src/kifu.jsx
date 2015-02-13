@@ -26,7 +26,7 @@ var Hand = React.createClass({
 	render: function(){
 		return (
 			<div className={"mochi mochi"+this.props.color}>
-				<div className="tebanname">{colorToMark(this.props.color)}</div>
+				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
 				<div className="mochimain">
 					{["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
 						return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} />;

@@ -7466,7 +7466,7 @@ var Hand = React.createClass({displayName: "Hand",
 	render: function(){
 		return (
 			React.createElement("div", {className: "mochi mochi"+this.props.color}, 
-				React.createElement("div", {className: "tebanname"}, colorToMark(this.props.color)), 
+				React.createElement("div", {className: "tebanname"}, colorToMark(this.props.color)+(this.props.playerName||"")), 
 				React.createElement("div", {className: "mochimain"}, 
 					["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
 						return React.createElement(PieceHand, {value: this.props.data[kind], data: {kind: kind, color: this.props.color}, ImageDirectoryPath: this.props.ImageDirectoryPath});
