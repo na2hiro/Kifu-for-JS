@@ -206,9 +206,10 @@ var Kifu = React.createClass({
 		var info = <dl>{dds}</dl>;
 
 		var state = this.state.player.getState();
+		console.log(this.getDropState(ReactDND.NativeDragItemTypes.FILE));
 
 		return (
-			<table className="kifuforjs">
+			<table className="kifuforjs" {...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)}>
 				<tbody>
 					<tr>
 						<td>
@@ -285,8 +286,43 @@ var Kifu = React.createClass({
 				</tbody>
 			</table>
 		);
-	}
+	},
+
+	mixins: [DragDropMixin],
+
+	statics: {
+		configureDragDrop: function (registerType) {
+			registerType(ReactDND.NativeDragItemTypes.FILE, {
+				dropTarget: {
+					acceptDrop: function(component, item) {
+						// Do something with files
+						if(item.files[0]){
+							loadFile(item.files[0], function(data, name){
+								component.setState({player: JKFPlayer.parse(data)});
+							});
+						}
+					}
+				}
+			});
+		}
+	},
 });
+
+// ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
+// 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
+function loadFile(file, callback){
+	var reader = new FileReader();
+	var encoding = getEncodingFromFileName(file.name);
+	reader.onload = function(){
+		callback(reader.result, file.name);
+	};
+	reader.readAsText(file, encoding);
+}
+
+function getEncodingFromFileName(filename){
+	var tmp = filename.split("."), ext = tmp[tmp.length-1];
+	return ["jkf", "kifu", "ki2u"].indexOf(ext)>=0 ? "UTF-8" : "Shift_JIS";
+}
 
 function load(filename, id){
 	if(!id){
@@ -301,8 +337,7 @@ function load(filename, id){
 	});
 };
 function ajax(filename, onSuccess){
-	var tmp = filename.split("."), ext = tmp[tmp.length-1];
-	var encoding = ["jkf", "kifu", "ki2u"].indexOf(ext)>=0 ? "UTF-8" : "Shift_JIS";
+	var encoding = getEncodingFromFileName(filename);
 	$.ajax(filename, {
 		success: function(data, textStatus){
 			if(textStatus=="notmodified"){

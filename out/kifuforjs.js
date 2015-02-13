@@ -1138,11 +1138,11 @@ var JKFPlayer = (function () {
     // 現在の局面から1手入力する．
     // 必要フィールドは，指し: from, to, promote．打ち: to, piece
     // 最終手であれば手を追加，そうでなければ分岐を追加
-    // 成功すればtrueを返す．もしpromoteの可能性があればfalseを返して何もしない
+    // もしpromoteの可能性があればfalseを返して何もしない
+    // 成功すればtrueを返す．
     JKFPlayer.prototype.inputMove = function (move) {
         if (move.from != null && move.promote == null) {
             var piece = this.shogi.get(move.from.x, move.from.y);
-            console.log(piece, Piece.isPromoted(piece.kind), Piece.canPromote(piece.kind));
             if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color)))
                 return false;
         }
@@ -7646,9 +7646,10 @@ var Kifu = React.createClass({displayName: "Kifu",
 		var info = React.createElement("dl", null, dds);
 
 		var state = this.state.player.getState();
+		console.log(this.getDropState(ReactDND.NativeDragItemTypes.FILE));
 
 		return (
-			React.createElement("table", {className: "kifuforjs"}, 
+			React.createElement("table", React.__spread({className: "kifuforjs"},  this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)), 
 				React.createElement("tbody", null, 
 					React.createElement("tr", null, 
 						React.createElement("td", null, 
@@ -7725,8 +7726,43 @@ var Kifu = React.createClass({displayName: "Kifu",
 				)
 			)
 		);
-	}
+	},
+
+	mixins: [DragDropMixin],
+
+	statics: {
+		configureDragDrop: function (registerType) {
+			registerType(ReactDND.NativeDragItemTypes.FILE, {
+				dropTarget: {
+					acceptDrop: function(component, item) {
+						// Do something with files
+						if(item.files[0]){
+							loadFile(item.files[0], function(data, name){
+								component.setState({player: JKFPlayer.parse(data)});
+							});
+						}
+					}
+				}
+			});
+		}
+	},
 });
+
+// ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
+// 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
+function loadFile(file, callback){
+	var reader = new FileReader();
+	var encoding = getEncodingFromFileName(file.name);
+	reader.onload = function(){
+		callback(reader.result, file.name);
+	};
+	reader.readAsText(file, encoding);
+}
+
+function getEncodingFromFileName(filename){
+	var tmp = filename.split("."), ext = tmp[tmp.length-1];
+	return ["jkf", "kifu", "ki2u"].indexOf(ext)>=0 ? "UTF-8" : "Shift_JIS";
+}
 
 function load(filename, id){
 	if(!id){
@@ -7741,8 +7777,7 @@ function load(filename, id){
 	});
 };
 function ajax(filename, onSuccess){
-	var tmp = filename.split("."), ext = tmp[tmp.length-1];
-	var encoding = ["jkf", "kifu", "ki2u"].indexOf(ext)>=0 ? "UTF-8" : "Shift_JIS";
+	var encoding = getEncodingFromFileName(filename);
 	$.ajax(filename, {
 		success: function(data, textStatus){
 			if(textStatus=="notmodified"){
