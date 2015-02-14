@@ -7570,16 +7570,29 @@ var ForkList = React.createClass({displayName: "ForkList",
 });
 var Kifu = React.createClass({displayName: "Kifu",
 	componentDidMount: function(){
-		ajax(this.props.filename, function(data){
+		ajax(this.props.filename, function(data, err){
+			if(err){
+				this.logError(err);
+				return;
+			}
 			try{
 				this.setState({player: JKFPlayer.parse(data, this.props.filename)});
 			}catch(e){
-				alert("棋譜ファイルが壊れています: "+e);
+				this.logError("棋譜ファイルが壊れています: "+e);
 			}
 		}.bind(this));
 	},
+	logError: function(errs){
+		var move = this.state.player.kifu.moves[0];
+		if(move.comments){
+			move.comments = errs.split("\n").concat(move.comments);
+		}else{
+			move.comments = errs.split("\n");
+		}
+		this.setState(this.state);
+	},
 	reload: function(){
-		ajax(this.props.filename, function(data){
+		ajax(this.props.filename, function(data, err){
 			JKFPlayer.log("reload");
 			var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
 			var player = JKFPlayer.parse(data, this.filename);
@@ -7787,7 +7800,11 @@ function ajax(filename, onSuccess){
 		},
 		error: function(jqXHR, textStatus, errorThrown){
 			if(textStatus!="notmodified"){
-				alert("棋譜の取得に失敗しました: "+filename);
+				var message = "棋譜の取得に失敗しました: "+filename;
+				if(document.location.protocol=="file:"){
+					message+="\n\n【備考】\nAjaxのセキュリティ制約により，ローカルの棋譜の読み込みが制限されている可能性があります．\nサーバ上にアップロードして動作をご確認下さい．\nもしくは，棋譜ファイルのドラッグ&ドロップによる読み込み機能をお試し下さい．";
+				}
+				onSuccess(null, message);
 			}
 		},
 		beforeSend: function(xhr){
