@@ -9,8 +9,9 @@ var Shogi = (function () {
         if (setting === void 0) { setting = {}; }
         this.initialize(setting);
     }
-    // 盤面を平手に初期化する
+    // 盤面を初期化する
     Shogi.prototype.initialize = function (setting) {
+        if (setting === void 0) { setting = {}; }
         if (!setting.preset)
             setting.preset = "HIRATE";
         this.board = [];

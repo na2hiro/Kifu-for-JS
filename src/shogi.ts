@@ -210,12 +210,12 @@ class Shogi{
 	constructor(setting: {preset?: string} = {}){
 		this.initialize(setting);
 	}
-	// 盤面を平手に初期化する
+	// 盤面を初期化する
 	initialize(setting: {preset?: string; data?: {
 			color: boolean;
 			board: { color?: boolean; kind?: boolean; }[][];
 			hands: {[index:string]: number}[];
-		}}){
+		}} = {}){
 		if(!setting.preset) setting.preset = "HIRATE";
 		this.board = [];
 		if(setting.preset!="OTHER"){
