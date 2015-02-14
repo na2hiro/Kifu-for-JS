@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 1.0.8)
+# Kifu for JS (ver. 1.0.9)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -7,11 +7,13 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 * Kifu for JSブックマークレットは，1クリックでKifu for FlashやKifu for JavaをKifu for JSに置き換えて盤面を表示する．	
 * Flash, Javaなどを必要としないため，iOSやAndroidでも表示できる
 
-[**動作例はこちら**](http://na2hiro.github.io/Kifu-for-JS/test/example.html)
+## 動作例
+[**こちら**](http://na2hiro.github.io/Kifu-for-JS/test/example.html)
 
 ## Kifu for JS ブックマークレット
+1クリックでKifu for {Flash/Java}をKifu for JSに置き換えて盤面を表示します．
+
 ### 使い方
-ブックマークレット本体は`out/bookmarklet.min.js`にあり
 
 1. 次のコードをブックマークへ追加する→
 `javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
@@ -31,11 +33,17 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 * 変化手順の再生が可能
 * 棋譜中継のための自動更新機能
 * 棋譜クリックやキーボードでの再生
+* 棋譜入力機能
+	* 再生中に本譜以外の手を進めることができる
+	* 進めた手は変化手順(分岐)として格納
+* 棋譜読み込み機能
+	* 棋譜ファイルをドラッグ&ドロップで読み込み
 
 ### 設置方法
-`test/loadKif.html`に例
+右の"Download ZIP"よりダウンロード
 
-jQuery(2.1以降で動作確認), kifuforjs.js, kifuforjs.cssを読み込む．ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．
+jQuery(2.1以降で動作確認), kifuforjs.js, kifuforjs.cssを読み込む．
+ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．(`test/loadKif.html`にコード例)
 
 (ver. 1.0.8よりkifuforjs.jsの所在がsrcからoutへ変更されました)
 
@@ -65,30 +73,26 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 * Mac Chrome 37
 * Mac Firefox 32
-* Mac Safari
+* Mac Safari 8
 * Windows Internet Explorer 11
 * Android Chrome 37
 * Android Firefox 32
 * Android Habit 1.1
 * iOS 8 Safari
 
-以下は手元に確認環境がありません．情報を[@na2hiro](https://twitter.com)までお待ちしています．
+以下は手元に確認環境がありません．情報を[@na2hiro](https://twitter.com/na2hiro)までお待ちしています．
 
 * Internet Explorer 10以下
 
 ## お願い
 
-* まだ対応が不十分な棋譜があると思います．動作しない棋譜をna2hiroに教えていただければ対応しますので，Twitter等でご報告いただければ幸いです．
-* 動作テストを簡単に行えるページを作成予定ですので，それができると報告が簡単に行えるようになると思います．
+* 棋譜形式の対応には注意を払っていますが，もし動作しない棋譜がありましたら対応しますので，Twitterやissuesでご報告いただければ幸いです．
+* 要望やバグ報告は[issues](https://github.com/na2hiro/Kifu-for-JS/issues)へよろしくお願いします．
+* 棋譜形式そのものについては[JSON棋譜フォーマット](https://github.com/na2hiro/json-kifu-format)もご参照ください．
 
 ## 開発環境
 
 * JSX 0.12.2 ([react-tools](http://facebook.github.io/react/docs/getting-started.html#offline-transform))
-
-## TODO
-* [issues](https://github.com/na2hiro/Kifu-for-JS/issues)参照．
-	* 要望やバグ報告もこちらへよろしくお願いします．
-* 棋譜形式そのものへの対応については[json-kifu-formatのissues](https://github.com/na2hiro/json-kifu-format)参照．
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).

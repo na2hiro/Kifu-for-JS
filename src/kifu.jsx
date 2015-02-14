@@ -1,5 +1,5 @@
 var Kifu= (function(){
-var version = "1.0.8";
+var version = "1.0.9";
 var DragDropMixin = ReactDND.DragDropMixin;
 var Board = React.createClass({
 	render: function(){
