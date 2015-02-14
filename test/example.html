@@ -11,8 +11,25 @@
 <body>
 <h1>Kifu for JS 動作例</h1>
 JavaもFlashも使わない，JavaScriptだけで動く<a href="https://github.com/na2hiro/Kifu-for-JS">Kifu for JS</a>の動作例です．
+
+<h2>主な機能</h2>
+<ul>
+	<li>対応棋譜形式: <b>kif</b>, <b>ki2</b>, kifu, ki2u, <b>csa</b>, jkf
+	<li>駒落ちや詰将棋等の初期局面指定にも対応
+	<li>変化手順の再生が可能
+	<li>棋譜中継のための自動更新機能
+	<li>棋譜クリックや矢印キーでの再生
+	<li>棋譜入力機能
+		<ul>
+			<li>再生中に本譜以外の手を進めることができる
+			<li>進めた手は変化手順(分岐)として格納
+		</ul>
+	<li>棋譜読み込み機能
+		<ul>
+			<li>棋譜ファイルをドラッグ&ドロップで読み込み
+		</ul>
+</ul>
 <h2>KIFファイル読み込み</h2>
-棋譜ファイルをドラッグ&ドロップして読み込むこともできます．
 <script>Kifu.load("../json-kifu-format/test/files/kif/jt201409130101.kif");</script>
 <h3>分岐棋譜</h3>
 <script>Kifu.load("../json-kifu-format/test/files/kif/fork.kif");</script>
