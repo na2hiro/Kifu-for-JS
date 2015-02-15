@@ -646,13 +646,13 @@ var Normalizer;
         }
         for (var i = moves.length - 1; i >= 0; i--) {
             var move = moves[i].move;
-            if (!move)
-                continue;
-            if (move.from) {
-                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-            }
-            else {
-                shogi.undrop(move.to.x, move.to.y);
+            if (move) {
+                if (move.from) {
+                    shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                }
+                else {
+                    shogi.undrop(move.to.x, move.to.y);
+                }
             }
             last = i <= 1 ? lastMove : moves[i - 1];
             if (moves[i].forks) {

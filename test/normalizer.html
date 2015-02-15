@@ -17,7 +17,9 @@ $(document).ready(function() {
 
 function parse(data){
 	res=JKFPlayer.kifParser.parse(data);
-	console.log(res);
+	res.moves[res.moves.length-1].forks = [[{move: {from: {x:5,y:4},to:{x:5,y:5}}}]]
+	console.log(JSON.stringify(res.moves[res.moves.length-1]));
 	res2=Normalizer.normalizeKIF(res);
+	console.log(JSON.stringify(res.moves[res.moves.length-1]));
 }
 </script>
