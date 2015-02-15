@@ -1129,16 +1129,34 @@ var JKFPlayer = (function () {
         this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).forks[num] });
         this.forward();
     };
-    // 現在の局面から1手入力する．
-    // 必要フィールドは，指し: from, to, promote．打ち: to, piece
-    // 最終手であれば手を追加，そうでなければ分岐を追加
+    // 現在の局面から新しいかもしれない手を1手動かす．
+    // 必要フィールドは，指し: from, to, promote(成れる場合のみ)．打ち: to, piece
+    // 新しい手の場合，最終手であれば手を追加，そうでなければ分岐を追加
     // もしpromoteの可能性があればfalseを返して何もしない
-    // 成功すればtrueを返す．
+    // 成功すればその局面に移動してtrueを返す．
     JKFPlayer.prototype.inputMove = function (move) {
         if (move.from != null && move.promote == null) {
             var piece = this.shogi.get(move.from.x, move.from.y);
             if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color)))
                 return false;
+        }
+        var nextMove = this.getMoveFormat(this.tesuu + 1);
+        if (nextMove) {
+            if (JKFPlayer.sameMoveMinimal(nextMove.move, move)) {
+                // 次の一手と一致
+                this.forward();
+                return true;
+            }
+            if (nextMove.forks) {
+                for (var i = 0; i < nextMove.forks.length; i++) {
+                    var forkCand = nextMove.forks[i][0];
+                    if (forkCand && forkCand.move && JKFPlayer.sameMoveMinimal(forkCand.move, move)) {
+                        // 分岐と一致
+                        this.forkAndForward(i);
+                        return true;
+                    }
+                }
+            }
         }
         this.doMove(move); //動かしてみる(throwされうる)
         var newMove = { move: move };
@@ -1259,6 +1277,9 @@ var JKFPlayer = (function () {
         else {
             this.shogi.undrop(move.to.x, move.to.y);
         }
+    };
+    JKFPlayer.sameMoveMinimal = function (move1, move2) {
+        return (move1.to.x == move2.to.x && move1.to.y == move2.to.y && (move1.from ? move1.from.x == move2.from.x && move1.from.y == move2.from.y && move1.promote == move2.promote : move1.piece == move2.piece));
     };
     JKFPlayer.debug = false;
     JKFPlayer._log = [];

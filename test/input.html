@@ -28,5 +28,13 @@ function parse(data){
 	res.backward();
 	res.inputMove({to: {x: 5, y: 5}, piece: "KA"});
 	console.log(res.shogi.toCSAString());
+	res.backward();
+	console.log(res.getMoveFormat(res.tesuu+1))
+	res.inputMove({to: {x: 5, y: 5}, piece: "KA"});
+	res.backward();
+	console.log(res.getMoveFormat(res.tesuu+1))
+	res.inputMove({to: {x: 4, y: 5}, piece: "KA"});
+	res.backward();
+	console.log(res.getMoveFormat(res.tesuu+1))
 }
 </script>
