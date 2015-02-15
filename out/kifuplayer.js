@@ -627,6 +627,77 @@ var Normalizer;
         return color == 0 /* Black */ ? place.y <= 3 : place.y >= 7;
     }
     Normalizer.canPromote = canPromote;
+    // 最小形式の棋譜をnormalizeする
+    // 最小形式: (指し) from, to, promote; (打ち) piece, to
+    function normalizeMinimal(obj) {
+        var shogi = new Shogi(obj.initial || undefined);
+        normalizeMinimalMoves(shogi, obj.moves);
+        return obj;
+    }
+    Normalizer.normalizeMinimal = normalizeMinimal;
+    function normalizeMinimalMoves(shogi, moves, lastMove) {
+        for (var i = 0; i < moves.length; i++) {
+            var last = i <= 1 ? lastMove : moves[i - 1];
+            var move = moves[i].move;
+            if (!move)
+                continue;
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
+            if (move.from) {
+                // move
+                // toからsame復元
+                if (last && last.move && move.to.x == last.move.to.x && move.to.y == last.move.to.y) {
+                    move.same = true;
+                }
+                // capture復元
+                addCaptureInformation(shogi, move);
+                // piece復元
+                if (!move.piece) {
+                    move.piece = shogi.get(move.from.x, move.from.y).kind;
+                }
+                // 不成復元
+                if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
+                    // 成ってない
+                    if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
+                        move.promote = false;
+                    }
+                }
+                // relative復元
+                addRelativeInformation(shogi, move);
+                try {
+                    shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+                }
+                catch (e) {
+                    throw i + "手目で失敗しました: " + e;
+                }
+            }
+            else {
+                // drop
+                if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                    move.relative = "H";
+                }
+                shogi.drop(move.to.x, move.to.y, move.piece);
+            }
+        }
+        for (var i = moves.length - 1; i >= 0; i--) {
+            var move = moves[i].move;
+            if (move) {
+                if (move.from) {
+                    shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                }
+                else {
+                    shogi.undrop(move.to.x, move.to.y);
+                }
+            }
+            last = i <= 1 ? lastMove : moves[i - 1];
+            if (moves[i].forks) {
+                for (var j = 0; j < moves[i].forks.length; j++) {
+                    normalizeMinimalMoves(shogi, moves[i].forks[j], last);
+                }
+            }
+        }
+        restoreColorOfIllegalAction(moves);
+    }
     function normalizeKIF(obj) {
         var shogi = new Shogi(obj.initial || undefined);
         normalizeKIFMoves(shogi, obj.moves);
@@ -648,10 +719,6 @@ var Normalizer;
                     move.to = last.move.to;
                 // capture復元
                 addCaptureInformation(shogi, move);
-                // piece復元(KIF以外の最低限形式で使用)
-                if (!move.piece) {
-                    move.piece = shogi.get(move.from.x, move.from.y).kind;
-                }
                 // 不成復元
                 if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
                     // 成ってない

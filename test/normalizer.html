@@ -17,9 +17,14 @@ $(document).ready(function() {
 
 function parse(data){
 	res=JKFPlayer.kifParser.parse(data);
+	Normalizer.normalizeKIF(res);
 	res.moves[res.moves.length-1].forks = [[{move: {from: {x:5,y:4},to:{x:5,y:5}}}]]
 	console.log(JSON.stringify(res.moves[res.moves.length-1]));
-	res2=Normalizer.normalizeKIF(res);
+	Normalizer.normalizeMinimal(res);
+	console.log(JSON.stringify(res.moves[res.moves.length-1]));
+	res.moves[res.moves.length-1].forks[0].push({move: {from: {x:6,y:7},to:{x:7,y:7}}})
+	console.log(JSON.stringify(res.moves[res.moves.length-1]));
+	Normalizer.normalizeMinimal(res);
 	console.log(JSON.stringify(res.moves[res.moves.length-1]));
 }
 </script>
