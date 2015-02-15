@@ -245,7 +245,7 @@ class JKFPlayer{
 			// 最終手に追加
 			this.forks[this.forks.length-1].moves.push(newMove);
 		}
-		Normalizer.normalizeKIF(this.kifu); // 復元
+		Normalizer.normalizeMinimal(this.kifu); // 復元
 		this.undoMove(move);
 		// 考え改めて再生
 		if(addToFork){
