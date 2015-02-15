@@ -15,8 +15,9 @@ var Shogi = (function () {
         if (setting === void 0) { setting = {}; }
         this.initialize(setting);
     }
-    // 盤面を平手に初期化する
+    // 盤面を初期化する
     Shogi.prototype.initialize = function (setting) {
+        if (setting === void 0) { setting = {}; }
         if (!setting.preset)
             setting.preset = "HIRATE";
         this.board = [];
@@ -244,6 +245,37 @@ var Shogi = (function () {
             ret[this.hands[color][i].kind]++;
         }
         return ret;
+    };
+    // 以下editModeでの関数
+    // (x, y)の駒を取ってcolorの持ち駒に加える
+    Shogi.prototype.captureByColor = function (x, y, color) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        this.set(x, y, null);
+        piece.unpromote();
+        if (piece.color != color)
+            piece.inverse();
+        this.pushToHand(piece);
+    };
+    // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
+    Shogi.prototype.flip = function (x, y) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        if (Piece.isPromoted(piece.kind)) {
+            piece.unpromote();
+            piece.inverse();
+        }
+        else {
+            piece.promote();
+        }
+    };
+    // 手番を設定する
+    Shogi.prototype.setTurn = function (color) {
+        if (!this.flagEditMode)
+            throw "cannot set turn without editMode";
+        this.turn = color;
     };
     // 以下private method
     // (x, y)に駒を置く
@@ -601,13 +633,15 @@ var Normalizer;
         return color == 0 /* Black */ ? place.y <= 3 : place.y >= 7;
     }
     Normalizer.canPromote = canPromote;
-    function normalizeKIF(obj) {
+    // 最小形式の棋譜をnormalizeする
+    // 最小形式: (指し) from, to, promote; (打ち) piece, to
+    function normalizeMinimal(obj) {
         var shogi = new Shogi(obj.initial || undefined);
-        normalizeKIFMoves(shogi, obj.moves);
+        normalizeMinimalMoves(shogi, obj.moves);
         return obj;
     }
-    Normalizer.normalizeKIF = normalizeKIF;
-    function normalizeKIFMoves(shogi, moves, lastMove) {
+    Normalizer.normalizeMinimal = normalizeMinimal;
+    function normalizeMinimalMoves(shogi, moves, lastMove) {
         for (var i = 0; i < moves.length; i++) {
             var last = i <= 1 ? lastMove : moves[i - 1];
             var move = moves[i].move;
@@ -617,12 +651,13 @@ var Normalizer;
             move.color = shogi.turn == 0 /* Black */;
             if (move.from) {
                 // move
-                // sameからto復元
-                if (move.same)
-                    move.to = last.move.to;
+                // toからsame復元
+                if (last && last.move && move.to.x == last.move.to.x && move.to.y == last.move.to.y) {
+                    move.same = true;
+                }
                 // capture復元
                 addCaptureInformation(shogi, move);
-                // piece復元(KIF以外の最低限形式で使用)
+                // piece復元
                 if (!move.piece) {
                     move.piece = shogi.get(move.from.x, move.from.y).kind;
                 }
@@ -652,13 +687,77 @@ var Normalizer;
         }
         for (var i = moves.length - 1; i >= 0; i--) {
             var move = moves[i].move;
+            if (move) {
+                if (move.from) {
+                    shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                }
+                else {
+                    shogi.undrop(move.to.x, move.to.y);
+                }
+            }
+            last = i <= 1 ? lastMove : moves[i - 1];
+            if (moves[i].forks) {
+                for (var j = 0; j < moves[i].forks.length; j++) {
+                    normalizeMinimalMoves(shogi, moves[i].forks[j], last);
+                }
+            }
+        }
+        restoreColorOfIllegalAction(moves);
+    }
+    function normalizeKIF(obj) {
+        var shogi = new Shogi(obj.initial || undefined);
+        normalizeKIFMoves(shogi, obj.moves);
+        return obj;
+    }
+    Normalizer.normalizeKIF = normalizeKIF;
+    function normalizeKIFMoves(shogi, moves, lastMove) {
+        for (var i = 0; i < moves.length; i++) {
+            var last = i <= 1 ? lastMove : moves[i - 1];
+            var move = moves[i].move;
             if (!move)
                 continue;
+            // 手番
+            move.color = shogi.turn == 0 /* Black */;
             if (move.from) {
-                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                // move
+                // sameからto復元
+                if (move.same)
+                    move.to = last.move.to;
+                // capture復元
+                addCaptureInformation(shogi, move);
+                // 不成復元
+                if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
+                    // 成ってない
+                    if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
+                        move.promote = false;
+                    }
+                }
+                // relative復元
+                addRelativeInformation(shogi, move);
+                try {
+                    shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+                }
+                catch (e) {
+                    throw i + "手目で失敗しました: " + e;
+                }
             }
             else {
-                shogi.undrop(move.to.x, move.to.y);
+                // drop
+                if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                    move.relative = "H";
+                }
+                shogi.drop(move.to.x, move.to.y, move.piece);
+            }
+        }
+        for (var i = moves.length - 1; i >= 0; i--) {
+            var move = moves[i].move;
+            if (move) {
+                if (move.from) {
+                    shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                }
+                else {
+                    shogi.undrop(move.to.x, move.to.y);
+                }
             }
             last = i <= 1 ? lastMove : moves[i - 1];
             if (moves[i].forks) {
@@ -1135,16 +1234,36 @@ var JKFPlayer = (function () {
         this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).forks[num] });
         this.forward();
     };
-    // 現在の局面から1手入力する．
-    // 必要フィールドは，指し: from, to, promote．打ち: to, piece
-    // 最終手であれば手を追加，そうでなければ分岐を追加
+    // 現在の局面から新しいかもしれない手を1手動かす．
+    // 必要フィールドは，指し: from, to, promote(成れる場合のみ)．打ち: to, piece
+    // 新しい手の場合，最終手であれば手を追加，そうでなければ分岐を追加
     // もしpromoteの可能性があればfalseを返して何もしない
-    // 成功すればtrueを返す．
+    // 成功すればその局面に移動してtrueを返す．
     JKFPlayer.prototype.inputMove = function (move) {
+        if (this.getMoveFormat().special)
+            throw "終了局面へ棋譜を追加することは出来ません";
         if (move.from != null && move.promote == null) {
             var piece = this.shogi.get(move.from.x, move.from.y);
             if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color)))
                 return false;
+        }
+        var nextMove = this.getMoveFormat(this.tesuu + 1);
+        if (nextMove) {
+            if (nextMove.move && JKFPlayer.sameMoveMinimal(nextMove.move, move)) {
+                // 次の一手と一致
+                this.forward();
+                return true;
+            }
+            if (nextMove.forks) {
+                for (var i = 0; i < nextMove.forks.length; i++) {
+                    var forkCand = nextMove.forks[i][0];
+                    if (forkCand && forkCand.move && JKFPlayer.sameMoveMinimal(forkCand.move, move)) {
+                        // 分岐と一致
+                        this.forkAndForward(i);
+                        return true;
+                    }
+                }
+            }
         }
         this.doMove(move); //動かしてみる(throwされうる)
         var newMove = { move: move };
@@ -1160,7 +1279,7 @@ var JKFPlayer = (function () {
             // 最終手に追加
             this.forks[this.forks.length - 1].moves.push(newMove);
         }
-        Normalizer.normalizeKIF(this.kifu); // 復元
+        Normalizer.normalizeMinimal(this.kifu); // 復元
         this.undoMove(move);
         // 考え改めて再生
         if (addToFork) {
@@ -1265,6 +1384,9 @@ var JKFPlayer = (function () {
         else {
             this.shogi.undrop(move.to.x, move.to.y);
         }
+    };
+    JKFPlayer.sameMoveMinimal = function (move1, move2) {
+        return (move1.to.x == move2.to.x && move1.to.y == move2.to.y && (move1.from ? move1.from.x == move2.from.x && move1.from.y == move2.from.y && move1.promote == move2.promote : move1.piece == move2.piece));
     };
     JKFPlayer.debug = false;
     JKFPlayer._log = [];
