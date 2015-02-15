@@ -36,5 +36,18 @@ function parse(data){
 	res.inputMove({to: {x: 4, y: 5}, piece: "KA"});
 	res.backward();
 	console.log(res.getMoveFormat(res.tesuu+1))
+
+	// special棋譜への追加失敗テスト
+	res.goto(0);
+	res.goto(4);
+	console.log(res.shogi.toCSAString());
+	try{
+		res.inputMove({from: {x: 4, y: 3}, to: {x: 4, y: 4}});
+	}catch(e){
+		console.log("nice throwing", e);
+	}
+	res.goto(3);
+	res.inputMove({from: {x: 4, y: 3}, to: {x: 4, y: 4}});
+	console.log(res.shogi.toCSAString());
 }
 </script>

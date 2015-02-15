@@ -9,8 +9,9 @@ var Shogi = (function () {
         if (setting === void 0) { setting = {}; }
         this.initialize(setting);
     }
-    // 盤面を平手に初期化する
+    // 盤面を初期化する
     Shogi.prototype.initialize = function (setting) {
+        if (setting === void 0) { setting = {}; }
         if (!setting.preset)
             setting.preset = "HIRATE";
         this.board = [];
@@ -238,6 +239,37 @@ var Shogi = (function () {
             ret[this.hands[color][i].kind]++;
         }
         return ret;
+    };
+    // 以下editModeでの関数
+    // (x, y)の駒を取ってcolorの持ち駒に加える
+    Shogi.prototype.captureByColor = function (x, y, color) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        this.set(x, y, null);
+        piece.unpromote();
+        if (piece.color != color)
+            piece.inverse();
+        this.pushToHand(piece);
+    };
+    // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
+    Shogi.prototype.flip = function (x, y) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        if (Piece.isPromoted(piece.kind)) {
+            piece.unpromote();
+            piece.inverse();
+        }
+        else {
+            piece.promote();
+        }
+    };
+    // 手番を設定する
+    Shogi.prototype.setTurn = function (color) {
+        if (!this.flagEditMode)
+            throw "cannot set turn without editMode";
+        this.turn = color;
     };
     // 以下private method
     // (x, y)に駒を置く
@@ -1135,6 +1167,8 @@ var JKFPlayer = (function () {
     // もしpromoteの可能性があればfalseを返して何もしない
     // 成功すればその局面に移動してtrueを返す．
     JKFPlayer.prototype.inputMove = function (move) {
+        if (this.getMoveFormat().special)
+            throw "終了局面へ棋譜を追加することは出来ません";
         if (move.from != null && move.promote == null) {
             var piece = this.shogi.get(move.from.x, move.from.y);
             if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color)))
@@ -1142,7 +1176,7 @@ var JKFPlayer = (function () {
         }
         var nextMove = this.getMoveFormat(this.tesuu + 1);
         if (nextMove) {
-            if (JKFPlayer.sameMoveMinimal(nextMove.move, move)) {
+            if (nextMove.move && JKFPlayer.sameMoveMinimal(nextMove.move, move)) {
                 // 次の一手と一致
                 this.forward();
                 return true;

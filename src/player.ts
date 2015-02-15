@@ -210,13 +210,14 @@ class JKFPlayer{
 	// もしpromoteの可能性があればfalseを返して何もしない
 	// 成功すればその局面に移動してtrueを返す．
 	inputMove(move: MoveMoveFormat){
+		if(this.getMoveFormat().special) throw "終了局面へ棋譜を追加することは出来ません";
 		if(move.from!=null && move.promote==null){
 			var piece = this.shogi.get(move.from.x, move.from.y);
 			if(!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color))) return false;
 		}
 		var nextMove = this.getMoveFormat(this.tesuu+1);
 		if(nextMove){
-			if(JKFPlayer.sameMoveMinimal(nextMove.move, move)){
+			if(nextMove.move && JKFPlayer.sameMoveMinimal(nextMove.move, move)){
 				// 次の一手と一致
 				this.forward();
 				return true;
