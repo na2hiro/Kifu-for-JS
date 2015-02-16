@@ -8,14 +8,17 @@ interface JSONKifuFormat{
 	header: {[index: string]: string;};
 	initial?: {
 		preset: string;
-		data?: {
-			color: boolean;
-			board: { color?: boolean; kind?: boolean; }[][];
-			hands: {[index:string]: number}[];
-		}
+		data?: StateFormat;
 	};
 	moves: MoveFormat[];
 }
+// 盤面
+interface StateFormat{
+	color: boolean;
+	board: { color?: boolean; kind?: boolean; }[][];
+	hands: {[index:string]: number}[];
+}
+// 動作
 interface MoveMoveFormat {
 	color: boolean;
 	from?: PlaceFormat;
@@ -26,6 +29,7 @@ interface MoveMoveFormat {
 	capture?: string;
 	relative?: string;
 }
+// 棋譜(一手)
 interface MoveFormat{
 	comments?: string[];
 	move?: MoveMoveFormat;
@@ -36,11 +40,13 @@ interface MoveFormat{
 	special?: string;
 	forks?: MoveFormat[][];
 }
+// 時間
 interface TimeFormat{
 	h?: number;
 	m: number;
 	s: number;
 }
+// 座標
 interface PlaceFormat{
 	x: number;
 	y: number;

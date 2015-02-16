@@ -178,6 +178,13 @@ class JKFPlayer{
 			shogi.undrop(move.to.x, move.to.y);
 		}
 	}
+	static getState(shogi: Shogi): StateFormat{
+		return {
+			color: shogi.turn==0,
+			board: JKFPlayer.getBoardState(shogi),
+			hands: JKFPlayer.getHandsState(shogi),
+		};
+	}
 	// 1手進める
 	forward(){
 		if(!this.getMoveFormat(this.tesuu+1)) return false;
@@ -295,29 +302,7 @@ class JKFPlayer{
 	}
 	// jkf.initial.dataの形式を得る
 	getState(){
-		return {
-			color: this.shogi.turn,
-			board: this.getBoardState(),
-			hands: this.getHandsState(),
-		};
-	}
-	getBoardState(){
-		var ret = [];
-		for(var i=1; i<=9; i++){
-			var arr = [];
-			for(var j=1; j<=9; j++){
-				var piece = this.shogi.get(i, j);
-				arr.push(piece ? {color: piece.color, kind: piece.kind} : {});
-			}
-			ret.push(arr);
-		}
-		return ret;
-	}
-	getHandsState(){
-		return [
-			this.shogi.getHandsSummary(Color.Black),
-			this.shogi.getHandsSummary(Color.White),
-		];
+		return JKFPlayer.getState(this.shogi);
 	}
 	getReadableKifuState(): {kifu:string; forks:string[]}[]{
 		var ret = [];
@@ -354,5 +339,23 @@ class JKFPlayer{
 						&& (move1.from
 							? move1.from.x==move2.from.x && move1.from.y==move2.from.y && move1.promote==move2.promote
 							: move1.piece==move2.piece ));
+	}
+	private static getBoardState(shogi: Shogi){
+		var ret = [];
+		for(var i=1; i<=9; i++){
+			var arr = [];
+			for(var j=1; j<=9; j++){
+				var piece = shogi.get(i, j);
+				arr.push(piece ? {color: piece.color, kind: piece.kind} : {});
+			}
+			ret.push(arr);
 		}
+		return ret;
+	}
+	private static getHandsState(shogi: Shogi){
+		return [
+			shogi.getHandsSummary(Color.Black),
+			shogi.getHandsSummary(Color.White),
+		];
+	}
 }
