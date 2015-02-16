@@ -1177,6 +1177,22 @@ var JKFPlayer = (function () {
         }
         return ret;
     };
+    JKFPlayer.doMove = function (shogi, move) {
+        if (move.from) {
+            shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+        }
+        else {
+            shogi.drop(move.to.x, move.to.y, move.piece);
+        }
+    };
+    JKFPlayer.undoMove = function (shogi, move) {
+        if (move.from) {
+            shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+        }
+        else {
+            shogi.undrop(move.to.x, move.to.y);
+        }
+    };
     // 1手進める
     JKFPlayer.prototype.forward = function () {
         if (!this.getMoveFormat(this.tesuu + 1))
@@ -1364,20 +1380,10 @@ var JKFPlayer = (function () {
         return (next && next.forks) ? next.forks : [];
     };
     JKFPlayer.prototype.doMove = function (move) {
-        if (move.from) {
-            this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-        }
-        else {
-            this.shogi.drop(move.to.x, move.to.y, move.piece);
-        }
+        JKFPlayer.doMove(this.shogi, move);
     };
     JKFPlayer.prototype.undoMove = function (move) {
-        if (move.from) {
-            this.shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-        }
-        else {
-            this.shogi.undrop(move.to.x, move.to.y);
-        }
+        JKFPlayer.undoMove(this.shogi, move);
     };
     JKFPlayer.sameMoveMinimal = function (move1, move2) {
         return (move1.to.x == move2.to.x && move1.to.y == move2.to.y && (move1.from ? move1.from.x == move2.from.x && move1.from.y == move2.from.y && move1.promote == move2.promote : move1.piece == move2.piece));

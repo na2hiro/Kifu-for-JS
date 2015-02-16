@@ -164,6 +164,20 @@ class JKFPlayer{
 		}
 		return ret;
 	}
+	static doMove(shogi: Shogi, move: MoveMoveFormat){
+		if(move.from){
+			shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+		}else{
+			shogi.drop(move.to.x, move.to.y, move.piece);
+		}
+	}
+	static undoMove(shogi: Shogi, move: MoveMoveFormat){
+		if(move.from){
+			shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+		}else{
+			shogi.undrop(move.to.x, move.to.y);
+		}
+	}
 	// 1手進める
 	forward(){
 		if(!this.getMoveFormat(this.tesuu+1)) return false;
@@ -330,18 +344,10 @@ class JKFPlayer{
 		return (next && next.forks) ? next.forks : [];
 	}
 	private doMove(move: MoveMoveFormat){
-		if(move.from){
-			this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-		}else{
-			this.shogi.drop(move.to.x, move.to.y, move.piece);
-		}
+		JKFPlayer.doMove(this.shogi, move);
 	}
 	private undoMove(move: MoveMoveFormat){
-		if(move.from){
-			this.shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-		}else{
-			this.shogi.undrop(move.to.x, move.to.y);
-		}
+		JKFPlayer.undoMove(this.shogi, move);
 	}
 	private static sameMoveMinimal(move1: MoveMoveFormat, move2: MoveMoveFormat){
 		return (move1.to.x==move2.to.x && move1.to.y==move2.to.y
