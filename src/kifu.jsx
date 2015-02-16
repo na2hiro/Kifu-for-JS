@@ -27,7 +27,7 @@ var Board = React.createClass({
 						return <tr>
 							{nineX.map((logicalX)=>{
 								var x = this.props.reversed ? 10-logicalX : logicalX;
-								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
+								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} onDblclick={this.props.onDblclick} />
 							})}
 							<th>{numToKanji(y)}</th>
 						</tr>;
@@ -130,7 +130,7 @@ var Piece = DragSource("piece", {
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
 				{this.props.connectDropTarget(this.props.connectDragSource(
-					<img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} />
+					<img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} onDoubleClick={function(){this.props.onDblclick(this.props.x, this.props.y)}.bind(this)} />
 				))}
 			</td>
 		);
@@ -372,6 +372,80 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	},
 })));
 
+var KifuEditor = React.createClass({
+	logError: function(errs){
+		var move = this.state.player.kifu.moves[0];
+		if(move.comments){
+			move.comments = errs.split("\n").concat(move.comments);
+		}else{
+			move.comments = errs.split("\n");
+		}
+		this.setState(this.state);
+	},
+	getInitialState: function(){
+		this.props.shogi.editMode(true);
+		return {shogi: this.props.shogi};
+	},
+	onClickDl: function(){
+		//if(this.props.filename) window.open(this.props.filename);
+	},
+	onClickCredit: function(){
+		if(confirm("*** CREDIT ***\nKifu for JS (ver. "+version+")\n    by na2hiro\n    under the MIT License\n\n公式サイトを開きますか？")){
+			window.open("https://github.com/na2hiro/Kifu-for-JS", "kifufile");
+		}
+	},
+	onInputMove: function(move){
+		try{
+			JKFPlayer.doMove(this.state.shogi, move);
+		}catch(e){
+			alert("動かせません ("+e+")");
+		}
+		this.setState(this.state);
+	},
+	onDblclick: function(x, y){
+		this.state.shogi.flip(x, y);
+		this.setState(this.state);
+	},
+	render: function(){
+		var state = JKFPlayer.getState(this.state.shogi);
+
+		return (
+			<table className="kifuforjs" /*{...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(ReactDND.NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}*/>
+				<tbody>
+					<tr>
+						<td>
+							<div className="inlineblock players">
+								<Hand color={1} data={state.hands[1]} playerName="" ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<div className="mochi">
+									<ul className="lines">
+										<li><button className="dl" onClick={this.onClickDl}>棋譜保存</button></li>
+									</ul>
+								</div>
+							</div>
+						</td>
+						<td style={{textAlign:"center"}}>
+							<Board board={state.board} lastMove={null} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} onDblclick={this.onDblclick} />
+						</td>
+						<td>
+							<div className="inlineblock players">
+								<div className="mochi info">
+								</div>
+								<Hand color={0} data={state.hands[0]} playerName="" ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td colSpan="3" style={{textAlign:"center"}}>
+							<ul className="inline">
+								<li><button className="credit" onClick={this.onClickCredit}>credit</button></li>
+							</ul>
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		);
+	},
+});
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
 // 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
@@ -410,6 +484,19 @@ function loadString(kifu, id){
 	$(document).ready(function(){
 		React.render(
 			<Kifu kifu={kifu} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
+			document.getElementById(id)
+		);
+	});
+}
+
+function editor(id){
+	if(!id){
+		id = "kifuforjs_"+Math.random().toString(36).slice(2);
+		document.write("<div id='"+id+"'></div>");
+	}
+	$(document).ready(function(){
+		React.render(
+			<KifuEditor shogi={new Shogi()} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
 			document.getElementById(id)
 		);
 	});
@@ -456,5 +543,6 @@ function pad(str, space, length){
 }
 Kifu.load=load;
 Kifu.loadString=loadString;
+Kifu.editor=editor;
 Kifu.settings = {};
 export default Kifu;
