@@ -1183,6 +1183,29 @@ var JKFPlayer = (function () {
         }
         return ret;
     };
+    JKFPlayer.doMove = function (shogi, move) {
+        if (move.from) {
+            shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+        }
+        else {
+            shogi.drop(move.to.x, move.to.y, move.piece);
+        }
+    };
+    JKFPlayer.undoMove = function (shogi, move) {
+        if (move.from) {
+            shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+        }
+        else {
+            shogi.undrop(move.to.x, move.to.y);
+        }
+    };
+    JKFPlayer.getState = function (shogi) {
+        return {
+            color: shogi.turn == 0,
+            board: JKFPlayer.getBoardState(shogi),
+            hands: JKFPlayer.getHandsState(shogi)
+        };
+    };
     // 1手進める
     JKFPlayer.prototype.forward = function () {
         if (!this.getMoveFormat(this.tesuu + 1))
@@ -1321,29 +1344,7 @@ var JKFPlayer = (function () {
     };
     // jkf.initial.dataの形式を得る
     JKFPlayer.prototype.getState = function () {
-        return {
-            color: this.shogi.turn,
-            board: this.getBoardState(),
-            hands: this.getHandsState()
-        };
-    };
-    JKFPlayer.prototype.getBoardState = function () {
-        var ret = [];
-        for (var i = 1; i <= 9; i++) {
-            var arr = [];
-            for (var j = 1; j <= 9; j++) {
-                var piece = this.shogi.get(i, j);
-                arr.push(piece ? { color: piece.color, kind: piece.kind } : {});
-            }
-            ret.push(arr);
-        }
-        return ret;
-    };
-    JKFPlayer.prototype.getHandsState = function () {
-        return [
-            this.shogi.getHandsSummary(0 /* Black */),
-            this.shogi.getHandsSummary(1 /* White */),
-        ];
+        return JKFPlayer.getState(this.shogi);
     };
     JKFPlayer.prototype.getReadableKifuState = function () {
         var ret = [];
@@ -1370,23 +1371,31 @@ var JKFPlayer = (function () {
         return (next && next.forks) ? next.forks : [];
     };
     JKFPlayer.prototype.doMove = function (move) {
-        if (move.from) {
-            this.shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-        }
-        else {
-            this.shogi.drop(move.to.x, move.to.y, move.piece);
-        }
+        JKFPlayer.doMove(this.shogi, move);
     };
     JKFPlayer.prototype.undoMove = function (move) {
-        if (move.from) {
-            this.shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-        }
-        else {
-            this.shogi.undrop(move.to.x, move.to.y);
-        }
+        JKFPlayer.undoMove(this.shogi, move);
     };
     JKFPlayer.sameMoveMinimal = function (move1, move2) {
         return (move1.to.x == move2.to.x && move1.to.y == move2.to.y && (move1.from ? move1.from.x == move2.from.x && move1.from.y == move2.from.y && move1.promote == move2.promote : move1.piece == move2.piece));
+    };
+    JKFPlayer.getBoardState = function (shogi) {
+        var ret = [];
+        for (var i = 1; i <= 9; i++) {
+            var arr = [];
+            for (var j = 1; j <= 9; j++) {
+                var piece = shogi.get(i, j);
+                arr.push(piece ? { color: piece.color, kind: piece.kind } : {});
+            }
+            ret.push(arr);
+        }
+        return ret;
+    };
+    JKFPlayer.getHandsState = function (shogi) {
+        return [
+            shogi.getHandsSummary(0 /* Black */),
+            shogi.getHandsSummary(1 /* White */),
+        ];
     };
     JKFPlayer.debug = false;
     JKFPlayer._log = [];
@@ -7814,7 +7823,7 @@ var Kifu = React.createClass({displayName: "Kifu",
 							)
 						), 
 						React.createElement("td", {style: {textAlign:"center"}}, 
-							React.createElement(Board, {board: this.state.player.getBoardState(), lastMove: this.state.player.getMove(), ImageDirectoryPath: this.props.ImageDirectoryPath, onInputMove: this.onInputMove})
+							React.createElement(Board, {board: state.board, lastMove: this.state.player.getMove(), ImageDirectoryPath: this.props.ImageDirectoryPath, onInputMove: this.onInputMove})
 						), 
 						React.createElement("td", null, 
 							React.createElement("div", {className: "inlineblock players"}, 

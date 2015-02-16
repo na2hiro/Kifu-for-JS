@@ -252,7 +252,7 @@ var Kifu = React.createClass({
 							</div>
 						</td>
 						<td style={{textAlign:"center"}}>
-							<Board board={this.state.player.getBoardState()} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} />
+							<Board board={state.board} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} />
 						</td>
 						<td>
 							<div className="inlineblock players">
