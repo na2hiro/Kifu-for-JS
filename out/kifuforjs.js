@@ -7760,16 +7760,10 @@ var Kifu = React.createClass({displayName: "Kifu",
 		this.setState(this.state);
 	},
 	go: function(tesuu){
-		if(tesuu=="start"){
-			this.state.player.goto(0);
-		}else if(tesuu=="end"){
-			this.state.player.goto(Infinity);
-		}else{
-			tesuu = parseInt(tesuu);
-			if(isNaN(tesuu)) return;
-			this.state.player.go(tesuu);
-			this.setState(this.state);
-		}
+		tesuu = Number(tesuu);
+		if(isNaN(tesuu)) return;
+		this.state.player.go(tesuu);
+		this.setState(this.state);
 	},
 	render: function(){
 		var data = this.state.player.kifu.header;
@@ -7803,13 +7797,13 @@ var Kifu = React.createClass({displayName: "Kifu",
 													clearInterval(this.timerAutoload);
 												}
 												var s = parseInt(e.target.value);
-												if(!isNaN(s) && s>0){
+												if(!isNaN(s)){
 													this.timerAutoload = setInterval(function(){
 														this.reload();
 													}.bind(this), s*1000);
 												}
 											}.bind(this)}, 
-												React.createElement("option", {value: "0"}, "自動更新しない"), 
+												React.createElement("option", {value: "NaN"}, "自動更新しない"), 
 												React.createElement("option", {value: "30"}, "自動更新30秒毎"), 
 												React.createElement("option", {value: "60"}, "自動更新1分毎"), 
 												React.createElement("option", {value: "180"}, "自動更新3分毎")
@@ -7838,7 +7832,7 @@ var Kifu = React.createClass({displayName: "Kifu",
 										this.go(e.target.dataset.go);
 										this.setState(this.state);
 									}.bind(this)}, 
-								React.createElement("li", null, React.createElement("button", {"data-go": "start"}, "|<")), 
+								React.createElement("li", null, React.createElement("button", {"data-go": "-Infinity"}, "|<")), 
 								React.createElement("li", null, React.createElement("button", {"data-go": "-10"}, "<<")), 
 								React.createElement("li", null, React.createElement("button", {"data-go": "-1"}, "<")), 
 								React.createElement("li", null, 
@@ -7849,7 +7843,7 @@ var Kifu = React.createClass({displayName: "Kifu",
 								), 
 								React.createElement("li", null, React.createElement("button", {"data-go": "1"}, ">")), 
 								React.createElement("li", null, React.createElement("button", {"data-go": "10"}, ">>")), 
-								React.createElement("li", null, React.createElement("button", {"data-go": "end"}, ">|"))
+								React.createElement("li", null, React.createElement("button", {"data-go": "Infinity"}, ">|"))
 							), 
 							React.createElement("ul", {className: "inline"}, 
 								React.createElement("li", null, React.createElement("button", {className: "credit", onClick: this.onClickCredit}, "credit"))

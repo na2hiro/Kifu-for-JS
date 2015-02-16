@@ -198,16 +198,10 @@ var Kifu = React.createClass({
 		this.setState(this.state);
 	},
 	go: function(tesuu){
-		if(tesuu=="start"){
-			this.state.player.goto(0);
-		}else if(tesuu=="end"){
-			this.state.player.goto(Infinity);
-		}else{
-			tesuu = parseInt(tesuu);
-			if(isNaN(tesuu)) return;
-			this.state.player.go(tesuu);
-			this.setState(this.state);
-		}
+		tesuu = Number(tesuu);
+		if(isNaN(tesuu)) return;
+		this.state.player.go(tesuu);
+		this.setState(this.state);
 	},
 	render: function(){
 		var data = this.state.player.kifu.header;
@@ -241,13 +235,13 @@ var Kifu = React.createClass({
 													clearInterval(this.timerAutoload);
 												}
 												var s = parseInt(e.target.value);
-												if(!isNaN(s) && s>0){
+												if(!isNaN(s)){
 													this.timerAutoload = setInterval(function(){
 														this.reload();
 													}.bind(this), s*1000);
 												}
 											}.bind(this)}>
-												<option value="0">自動更新しない</option>
+												<option value="NaN">自動更新しない</option>
 												<option value="30">自動更新30秒毎</option>
 												<option value="60">自動更新1分毎</option>
 												<option value="180">自動更新3分毎</option>
@@ -276,7 +270,7 @@ var Kifu = React.createClass({
 										this.go(e.target.dataset.go);
 										this.setState(this.state);
 									}.bind(this)}>
-								<li><button data-go="start">|&lt;</button></li>
+								<li><button data-go="-Infinity">|&lt;</button></li>
 								<li><button data-go="-10">&lt;&lt;</button></li>
 								<li><button data-go="-1">&lt;</button></li>
 								<li>
@@ -287,7 +281,7 @@ var Kifu = React.createClass({
 								</li>
 								<li><button data-go="1">&gt;</button></li>
 								<li><button data-go="10">&gt;&gt;</button></li>
-								<li><button data-go="end">&gt;|</button></li>
+								<li><button data-go="Infinity">&gt;|</button></li>
 							</ul>
 							<ul className="inline">
 								<li><button className="credit" onClick={this.onClickCredit}>credit</button></li>
