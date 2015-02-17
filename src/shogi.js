@@ -253,10 +253,13 @@ var Shogi = (function () {
         this.pushToHand(piece);
     };
     // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
+    // 成功したらtrueを返す
     Shogi.prototype.flip = function (x, y) {
         if (!this.flagEditMode)
             throw "cannot edit board without editMode";
         var piece = this.get(x, y);
+        if (!piece)
+            return false;
         if (Piece.isPromoted(piece.kind)) {
             piece.unpromote();
             piece.inverse();
@@ -264,6 +267,7 @@ var Shogi = (function () {
         else {
             piece.promote();
         }
+        return true;
     };
     // 手番を設定する
     Shogi.prototype.setTurn = function (color) {
