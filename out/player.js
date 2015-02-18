@@ -6,14 +6,12 @@
  */
 var Shogi = (function () {
     function Shogi(setting) {
-        if (setting === void 0) { setting = {}; }
         this.initialize(setting);
     }
     // 盤面を初期化する
+    // 初期局面(なければ平手)
     Shogi.prototype.initialize = function (setting) {
-        if (setting === void 0) { setting = {}; }
-        if (!setting.preset)
-            setting.preset = "HIRATE";
+        if (setting === void 0) { setting = { preset: "HIRATE" }; }
         this.board = [];
         if (setting.preset != "OTHER") {
             for (var i = 0; i < 9; i++) {
@@ -253,10 +251,13 @@ var Shogi = (function () {
         this.pushToHand(piece);
     };
     // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
+    // 成功したらtrueを返す
     Shogi.prototype.flip = function (x, y) {
         if (!this.flagEditMode)
             throw "cannot edit board without editMode";
         var piece = this.get(x, y);
+        if (!piece)
+            return false;
         if (Piece.isPromoted(piece.kind)) {
             piece.unpromote();
             piece.inverse();
@@ -264,6 +265,7 @@ var Shogi = (function () {
         else {
             piece.promote();
         }
+        return true;
     };
     // 手番を設定する
     Shogi.prototype.setTurn = function (color) {
