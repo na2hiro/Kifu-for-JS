@@ -7,13 +7,24 @@
 	* 駒を移動(move)すると，移動先の駒を取れる．
 	* 駒を打つ(drop)ことができる．
 	* 動作を戻すことができる．
-* 手番と動きを守っているかどうかをチェックできる．
+* モード(editMode)
+	* 通常(false)
+		* 手番と動きを守っているかどうかをチェック
+		* 手番を管理
+	* 編集(true): 
+		* 手番や動きをチェックしない
+		* 手番を変更する
+		* 盤上の駒を駒台に載せる
+		* 盤上の駒を裏返し・反転させる
 
 ## Class詳細
 "//"が付いているものは未実装
 ### class Shogi
 ####initialize()
 局面を平手に並べる．
+
+#### editMode(flag: boolean)
+編集モード切り替え
 
 #### move(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean)
 (fromx, fromy)から(tox, toy)へ移動し，適当な処理を行う．

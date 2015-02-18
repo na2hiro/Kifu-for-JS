@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 class Shogi{
-	static preset = {
+	static preset: {[index:string]: {board: string[]; turn: Color;}} = {
 		"HIRATE": {
 			board: [
 				"-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -207,16 +207,12 @@ class Shogi{
 	hands: Piece[][]; // 持ち駒
 	turn: Color; // 次の手番
 	flagEditMode: boolean; // 編集モードかどうか
-	constructor(setting: {preset?: string} = {}){
+	constructor(setting?: SettingType){
 		this.initialize(setting);
 	}
 	// 盤面を初期化する
-	initialize(setting: {preset?: string; data?: {
-			color: boolean;
-			board: { color?: boolean; kind?: boolean; }[][];
-			hands: {[index:string]: number}[];
-		}} = {}){
-		if(!setting.preset) setting.preset = "HIRATE";
+	// 初期局面(なければ平手)
+	initialize(setting: SettingType = {preset: "HIRATE"}): void{
 		this.board = [];
 		if(setting.preset!="OTHER"){
 			for(var i=0; i<9; i++){
@@ -250,12 +246,12 @@ class Shogi{
 		this.flagEditMode = false;
 	}
 	// 編集モード切り替え
-	editMode(flag: boolean){
+	editMode(flag: boolean): void{
 		this.flagEditMode = flag;
 	}
 
 	// (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
-	move(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false){
+	move(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false): void{
 		var piece = this.get(fromx, fromy);
 		if(piece==null) throw "no piece found at "+fromx+", "+fromy;
 		this.checkTurn(piece.color);
@@ -271,7 +267,7 @@ class Shogi{
 		this.nextTurn();
 	}
 	// moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
-	unmove(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false, capture?: string){
+	unmove(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false, capture?: string): void{
 		var piece = this.get(tox, toy);
 		if(piece==null) throw "no piece found at "+tox+", "+toy;
 		this.checkTurn(Piece.oppositeColor(piece.color));
@@ -291,7 +287,7 @@ class Shogi{
 		this.prevTurn();
 	}
 	// (tox, toy)へcolorの持ち駒のkindを打つ．
-	drop(tox: number, toy: number, kind: string, color: Color = this.turn){
+	drop(tox: number, toy: number, kind: string, color: Color = this.turn): void{
 		this.checkTurn(color);
 		if(this.get(tox, toy)!=null) throw "there is a piece at "+tox+", "+toy;
 		var piece = this.popFromHand(kind, color);
@@ -299,7 +295,7 @@ class Shogi{
 		this.nextTurn();
 	}
 	// dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
-	undrop(tox: number, toy: number){
+	undrop(tox: number, toy: number): void{
 		var piece = this.get(tox, toy);
 		this.checkTurn(Piece.oppositeColor(piece.color));
 		if(piece==null) throw "there is no piece at "+tox+", "+toy;
@@ -422,7 +418,7 @@ class Shogi{
 	// 以下editModeでの関数
 
 	// (x, y)の駒を取ってcolorの持ち駒に加える
-	captureByColor(x: number, y: number, color: Color){
+	captureByColor(x: number, y: number, color: Color): void{
 		if(!this.flagEditMode) throw "cannot edit board without editMode";
 		var piece = this.get(x, y);
 		this.set(x, y, null);
@@ -432,7 +428,7 @@ class Shogi{
 	}
 	// (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
 	// 成功したらtrueを返す
-	flip(x: number, y: number){
+	flip(x: number, y: number): boolean{
 		if(!this.flagEditMode) throw "cannot edit board without editMode";
 		var piece = this.get(x, y);
 		if(!piece) return false;
@@ -445,7 +441,7 @@ class Shogi{
 		return true;
 	}
 	// 手番を設定する
-	setTurn(color: Color){
+	setTurn(color: Color): void{
 		if(!this.flagEditMode) throw "cannot set turn without editMode";
 		this.turn = color;
 	}
@@ -453,11 +449,11 @@ class Shogi{
 	// 以下private method
 
 	// (x, y)に駒を置く
-	private set(x: number, y: number, piece: Piece){
+	private set(x: number, y: number, piece: Piece): void{
 		this.board[x-1][y-1] = piece;
 	}
 	// (x, y)の駒を取って反対側の持ち駒に加える
-	private capture(x: number, y: number){
+	private capture(x: number, y: number): void{
 		var piece = this.get(x, y);
 		this.set(x, y, null);
 		piece.unpromote();
@@ -465,7 +461,7 @@ class Shogi{
 		this.pushToHand(piece);
 	}
 	// 駒pieceを持ち駒に加える
-	private pushToHand(piece: Piece){
+	private pushToHand(piece: Piece): void{
 		this.hands[piece.color].push(piece);
 	}
 	// color側のkindの駒を取って返す
@@ -480,18 +476,26 @@ class Shogi{
 		throw color+" has no "+kind;
 	}
 	// 次の手番に行く
-	private nextTurn(){
+	private nextTurn(): void{
 		if(this.flagEditMode) return;
 		this.turn = this.turn==Color.Black ? Color.White : Color.Black;
 	}
 	// 前の手番に行く
-	private prevTurn(){
+	private prevTurn(): void{
 		if(this.flagEditMode) return;
 		this.nextTurn();
 	}
 	// colorの手番で問題ないか確認する．編集モードならok．
-	private checkTurn(color: Color){
+	private checkTurn(color: Color): void{
 		if(!this.flagEditMode && color!=this.turn) throw "cannot move opposite piece";
+	}
+}
+interface SettingType{
+	preset: string;
+	data?: {
+		color: boolean;
+		board: { color?: boolean; kind?: boolean; }[][];
+		hands: {[index:string]: number}[];
 	}
 }
 interface Move{
@@ -514,15 +518,15 @@ class Piece{
 		this.kind = csa.slice(1);
 	}
 	// 成る
-	promote(){
+	promote(): void{
 		this.kind = Piece.promote(this.kind);
 	}
 	// 不成にする
-	unpromote(){
+	unpromote(): void{
 		this.kind = Piece.unpromote(this.kind);
 	}
 	// 駒の向きを反転する
-	inverse(){
+	inverse(): void{
 		this.color = this.color==Color.Black ? Color.White : Color.Black;
 	}
 	// CSAによる駒表現の文字列を返す

@@ -6,14 +6,12 @@
  */
 var Shogi = (function () {
     function Shogi(setting) {
-        if (setting === void 0) { setting = {}; }
         this.initialize(setting);
     }
     // 盤面を初期化する
+    // 初期局面(なければ平手)
     Shogi.prototype.initialize = function (setting) {
-        if (setting === void 0) { setting = {}; }
-        if (!setting.preset)
-            setting.preset = "HIRATE";
+        if (setting === void 0) { setting = { preset: "HIRATE" }; }
         this.board = [];
         if (setting.preset != "OTHER") {
             for (var i = 0; i < 9; i++) {
