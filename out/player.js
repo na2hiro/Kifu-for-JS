@@ -1184,7 +1184,7 @@ var JKFPlayer = (function () {
             shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
         }
         else {
-            shogi.drop(move.to.x, move.to.y, move.piece);
+            shogi.drop(move.to.x, move.to.y, move.piece, typeof move.color != "undefined" ? (move.color ? 0 : 1) : void 0);
         }
     };
     JKFPlayer.undoMove = function (shogi, move) {
