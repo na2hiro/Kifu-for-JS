@@ -6,7 +6,7 @@
  */
 import React from "react";
 import JKFPlayer from "json-kifu-format";
-import {Color} from "json-kifu-format/node_modules/shogi.js";
+import {Color, Shogi} from "json-kifu-format/node_modules/shogi.js";
 import {DragDropContext, DropTarget, DragSource} from "react-dnd";
 import HTML5Backend, {NativeTypes} from "react-dnd/modules/backends/HTML5";
 
@@ -27,7 +27,7 @@ var Board = React.createClass({
 						return <tr>
 							{nineX.map((logicalX)=>{
 								var x = this.props.reversed ? 10-logicalX : logicalX;
-								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} onDblclick={this.props.onDblclick} />
+								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} onDblclick={this.props.onDblclick} onDropPiece={this.props.onDropPiece} />
 							})}
 							<th>{numToKanji(y)}</th>
 						</tr>;
@@ -37,11 +37,19 @@ var Board = React.createClass({
 		);
 	},
 });
-var Hand = React.createClass({
+var Hand = DropTarget(["piece"/*, "piecehand"*/], {
+	drop: function(props, monitor, component) {
+		return {color: props.color};
+	},
+}, function collect(connect, monitor){
+	return {
+		connectDropTarget: connect.dropTarget()
+	};
+})(React.createClass({
 	render: function(){
 		var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
 		var virtualColor = this.props.reversed ? 1-this.props.color : this.props.color;
-		return (
+		return this.props.connectDropTarget(
 			<div className={"mochi mochi"+this.props.color}>
 				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
 				<div className="mochimain">
@@ -52,7 +60,7 @@ var Hand = React.createClass({
 			</div>
 		);
 	},
-});
+}));
 var PieceHandGroup = React.createClass({
 	render: function(){
 		var positioner;
@@ -82,7 +90,10 @@ var PieceHand = DragSource("piecehand", {
 		return {piece: props.data.kind, color: props.data.color};
 	},
 	endDrag: function(props, monitor, component){
-		props.onInputMove({piece: monitor.getItem().piece, color: monitor.getItem().color, to: monitor.getDropResult()});
+		var dropItem = monitor.getDropResult();
+		if(dropItem){
+			props.onInputMove({piece: monitor.getItem().piece, color: monitor.getItem().color, to: dropItem});
+		}
 	}
 }, function collect(connect, monitor){
 	return {
@@ -109,7 +120,17 @@ var Piece = DragSource("piece", {
 		return {x: props.x, y: props.y};
 	},
 	endDrag: function(props, monitor, component){
-		props.onInputMove({from: monitor.getItem(), to: monitor.getDropResult()});
+		var dragItem = monitor.getItem();
+		var dropItem = monitor.getDropResult();
+		if(!dropItem){
+			// out of DropTarget
+		}else if(dropItem.x){
+			// piece
+			props.onInputMove({from: dragItem, to: dropItem});
+		}else if(props.onDropPiece){
+			// piecehand
+			props.onDropPiece(dragItem, dropItem.color);
+		}
 	}
 }, function collect(connect, monitor){
 	return {
@@ -372,7 +393,24 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	},
 })));
 
-var KifuEditor = React.createClass({
+var KifuEditor = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
+	drop: function(props, monitor, component){
+		if(monitor.getItem().files[0]){
+			loadFile(monitor.getItem().files[0], function(data, name){
+				try{
+					component.setState({player: JKFPlayer.parse(data, name)});
+				}catch(e){
+					component.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+data);
+				}
+			});
+		}
+	},
+}, function collect(connect, monitor){
+	return {
+		connectDropTarget: connect.dropTarget(),
+		isOver: monitor.isOver()
+	};
+})(React.createClass({
 	logError: function(errs){
 		var move = this.state.player.kifu.moves[0];
 		if(move.comments){
@@ -406,6 +444,11 @@ var KifuEditor = React.createClass({
 		this.state.shogi.flip(x, y);
 		this.setState(this.state);
 	},
+	onDropPiece: function(xy, color){
+		console.log(xy, color);
+		this.state.shogi.captureByColor(xy.x, xy.y, color);
+		this.setState(this.state);
+	},
 	render: function(){
 		var state = JKFPlayer.getState(this.state.shogi);
 
@@ -415,7 +458,7 @@ var KifuEditor = React.createClass({
 					<tr>
 						<td>
 							<div className="inlineblock players">
-								<Hand color={1} data={state.hands[1]} playerName="" ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<Hand color={1} data={state.hands[1]} playerName="" ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} />
 								<div className="mochi">
 									<ul className="lines">
 										<li><button className="dl" onClick={this.onClickDl}>棋譜保存</button></li>
@@ -424,13 +467,13 @@ var KifuEditor = React.createClass({
 							</div>
 						</td>
 						<td style={{textAlign:"center"}}>
-							<Board board={state.board} lastMove={null} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} onDblclick={this.onDblclick} />
+							<Board board={state.board} lastMove={null} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} onDblclick={this.onDblclick} onDropPiece={this.onDropPiece} />
 						</td>
 						<td>
 							<div className="inlineblock players">
 								<div className="mochi info">
 								</div>
-								<Hand color={0} data={state.hands[0]} playerName="" ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<Hand color={0} data={state.hands[0]} playerName="" ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} />
 							</div>
 						</td>
 					</tr>
@@ -445,7 +488,7 @@ var KifuEditor = React.createClass({
 			</table>
 		);
 	},
-});
+})));
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
 // 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
