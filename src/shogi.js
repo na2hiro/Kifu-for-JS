@@ -262,8 +262,11 @@ var Shogi = (function () {
             piece.unpromote();
             piece.inverse();
         }
-        else {
+        else if (Piece.canPromote(piece.kind)) {
             piece.promote();
+        }
+        else {
+            piece.inverse();
         }
         return true;
     };

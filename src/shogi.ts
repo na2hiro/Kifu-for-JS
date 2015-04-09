@@ -435,8 +435,10 @@ class Shogi{
 		if(Piece.isPromoted(piece.kind)){
 			piece.unpromote();
 			piece.inverse();
-		}else{
+		}else if(Piece.canPromote(piece.kind)){
 			piece.promote();
+		}else{
+			piece.inverse();
 		}
 		return true;
 	}
