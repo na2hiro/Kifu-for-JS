@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+enum Color {Black, White}
 class Shogi{
 	static preset: {[index:string]: {board: string[]; turn: Color;}} = {
 		"HIRATE": {
@@ -506,7 +507,6 @@ interface Move{
 	kind?: string;
 	color?: Color;
 }
-enum Color {Black, White}
 interface MoveDefinition{
 	just?: number[][];
 	fly?: number[][];
