@@ -61,7 +61,7 @@
 	}
 	function presetToString(preset){
 		return {
-			"平手": "HIRATE", 
+			"平手": "HIRATE",
 			"香落ち": "KY",
 			"右香落ち": "KY_R",
 			"角落ち": "KA",
@@ -213,5 +213,6 @@ fork = "変化：" " "* te:[0-9]+ "手" nl moves:moves {return {te:parseInt(te),
 turn = [先後上下]
 nl = newline+ skipline*
 skipline = ("#" nonl* newline)
-newline = "\n" / "\r" "\n"?
+whitespace = " " / "\t"
+newline = whitespace* ("\n" / "\r" "\n"?)
 nonl = [^\r\n]

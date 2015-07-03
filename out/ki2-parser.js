@@ -230,12 +230,14 @@ JKFPlayer.ki2Parser = (function() {
         peg$c116 = function(te, moves) {return {te:parseInt(te), moves:moves.slice(1)}},
         peg$c117 = "#",
         peg$c118 = { type: "literal", value: "#", description: "\"#\"" },
-        peg$c119 = "\n",
-        peg$c120 = { type: "literal", value: "\n", description: "\"\\n\"" },
-        peg$c121 = "\r",
-        peg$c122 = { type: "literal", value: "\r", description: "\"\\r\"" },
-        peg$c123 = /^[^\r\n]/,
-        peg$c124 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
+        peg$c119 = "\t",
+        peg$c120 = { type: "literal", value: "\t", description: "\"\\t\"" },
+        peg$c121 = "\n",
+        peg$c122 = { type: "literal", value: "\n", description: "\"\\n\"" },
+        peg$c123 = "\r",
+        peg$c124 = { type: "literal", value: "\r", description: "\"\\r\"" },
+        peg$c125 = /^[^\r\n]/,
+        peg$c126 = { type: "class", value: "[^\\r\\n]", description: "[^\\r\\n]" },
 
         peg$currPos          = 0,
         peg$reportedPos      = 0,
@@ -1910,47 +1912,89 @@ JKFPlayer.ki2Parser = (function() {
       return s0;
     }
 
-    function peg$parsenewline() {
-      var s0, s1, s2;
+    function peg$parsewhitespace() {
+      var s0;
 
-      if (input.charCodeAt(peg$currPos) === 10) {
-        s0 = peg$c119;
+      if (input.charCodeAt(peg$currPos) === 32) {
+        s0 = peg$c14;
         peg$currPos++;
       } else {
         s0 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c120); }
+        if (peg$silentFails === 0) { peg$fail(peg$c15); }
       }
       if (s0 === peg$FAILED) {
-        s0 = peg$currPos;
-        if (input.charCodeAt(peg$currPos) === 13) {
-          s1 = peg$c121;
+        if (input.charCodeAt(peg$currPos) === 9) {
+          s0 = peg$c119;
           peg$currPos++;
         } else {
-          s1 = peg$FAILED;
+          s0 = peg$FAILED;
+          if (peg$silentFails === 0) { peg$fail(peg$c120); }
+        }
+      }
+
+      return s0;
+    }
+
+    function peg$parsenewline() {
+      var s0, s1, s2, s3, s4;
+
+      s0 = peg$currPos;
+      s1 = [];
+      s2 = peg$parsewhitespace();
+      while (s2 !== peg$FAILED) {
+        s1.push(s2);
+        s2 = peg$parsewhitespace();
+      }
+      if (s1 !== peg$FAILED) {
+        if (input.charCodeAt(peg$currPos) === 10) {
+          s2 = peg$c121;
+          peg$currPos++;
+        } else {
+          s2 = peg$FAILED;
           if (peg$silentFails === 0) { peg$fail(peg$c122); }
         }
-        if (s1 !== peg$FAILED) {
-          if (input.charCodeAt(peg$currPos) === 10) {
-            s2 = peg$c119;
+        if (s2 === peg$FAILED) {
+          s2 = peg$currPos;
+          if (input.charCodeAt(peg$currPos) === 13) {
+            s3 = peg$c123;
             peg$currPos++;
           } else {
-            s2 = peg$FAILED;
-            if (peg$silentFails === 0) { peg$fail(peg$c120); }
+            s3 = peg$FAILED;
+            if (peg$silentFails === 0) { peg$fail(peg$c124); }
           }
-          if (s2 === peg$FAILED) {
-            s2 = peg$c2;
-          }
-          if (s2 !== peg$FAILED) {
-            s1 = [s1, s2];
-            s0 = s1;
+          if (s3 !== peg$FAILED) {
+            if (input.charCodeAt(peg$currPos) === 10) {
+              s4 = peg$c121;
+              peg$currPos++;
+            } else {
+              s4 = peg$FAILED;
+              if (peg$silentFails === 0) { peg$fail(peg$c122); }
+            }
+            if (s4 === peg$FAILED) {
+              s4 = peg$c2;
+            }
+            if (s4 !== peg$FAILED) {
+              s3 = [s3, s4];
+              s2 = s3;
+            } else {
+              peg$currPos = s2;
+              s2 = peg$c0;
+            }
           } else {
-            peg$currPos = s0;
-            s0 = peg$c0;
+            peg$currPos = s2;
+            s2 = peg$c0;
           }
+        }
+        if (s2 !== peg$FAILED) {
+          s1 = [s1, s2];
+          s0 = s1;
         } else {
           peg$currPos = s0;
           s0 = peg$c0;
         }
+      } else {
+        peg$currPos = s0;
+        s0 = peg$c0;
       }
 
       return s0;
@@ -1959,12 +2003,12 @@ JKFPlayer.ki2Parser = (function() {
     function peg$parsenonl() {
       var s0;
 
-      if (peg$c123.test(input.charAt(peg$currPos))) {
+      if (peg$c125.test(input.charAt(peg$currPos))) {
         s0 = input.charAt(peg$currPos);
         peg$currPos++;
       } else {
         s0 = peg$FAILED;
-        if (peg$silentFails === 0) { peg$fail(peg$c124); }
+        if (peg$silentFails === 0) { peg$fail(peg$c126); }
       }
 
       return s0;
@@ -2033,7 +2077,7 @@ JKFPlayer.ki2Parser = (function() {
     	}
     	function presetToString(preset){
     		return {
-    			"平手": "HIRATE", 
+    			"平手": "HIRATE",
     			"香落ち": "KY",
     			"右香落ち": "KY_R",
     			"角落ち": "KA",
