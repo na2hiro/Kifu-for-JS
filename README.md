@@ -79,7 +79,7 @@ CSAによる駒表現の文字列を返す
 
 ## 開発環境
 
-* TypeScript 1.3
+* TypeScript 1.5
 
 ## license
 
