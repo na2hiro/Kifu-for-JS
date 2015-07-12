@@ -15,14 +15,10 @@
 				console.log(kifuPath);
 				$("applet param[name=KIFU]").parent().replaceWith("<div id='kifuforjs'></div>");
 				targetId = "kifuforjs";
-			}else if($("#flashcontent embed").length>0){
-				var kv = $($("#flashcontent embed")[0]).attr("flashvars").split("&").filter(function(kv){
-					return kv.split("=")[0]=="kifu";
-				})[0];
-				if(!kv) throw "url could not found";
+			}else if($("#flashcontent").length>0){
 				$("#flashcontent").replaceWith("<div id='flashcontent'></div>");
 				targetId="flashcontent";
-				kifuPath = kv.split("=")[1];
+				kifuPath = so.variables.kifu;
 			}else if($("object param[name=FlashVars]").val()){
 				$("object param[name=FlashVars]").val().split("&&").map(function(kv){var s=kv.split("=");if(s[0]=="kifu")kifuPath=s[1]});
 				if($("#Kifu").length>0){
