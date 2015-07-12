@@ -93,6 +93,20 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 ## 開発環境
 
 * JSX 0.12.2 ([react-tools](http://facebook.github.io/react/docs/getting-started.html#offline-transform))
+* Uglify JS 2
+
+環境設定例
+
+```
+# 必要ツール取得
+npm install react-tools -g
+npm install uglify-js -g
+# サブモジュール取得
+git submodule update --init --recursive
+# コンパイル
+cd src
+make
+```
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
