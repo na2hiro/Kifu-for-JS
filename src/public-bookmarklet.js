@@ -10,17 +10,25 @@
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
 			var targetId, kifuPath;
 			if($("applet param[name=KIFU]").length>0){
+				// applet方式
 				var base = $("applet param[name=KIFU]").parent().attr("codebase") || ".";
 				kifuPath = base.replace(/\/$/, "")+"/"+$("applet param[name=KIFU]").val();
 				console.log(kifuPath);
 				$("applet param[name=KIFU]").parent().replaceWith("<div id='kifuforjs'></div>");
 				targetId = "kifuforjs";
 			}else if($("#flashcontent").length>0){
-				$("#flashcontent").replaceWith("<div id='flashcontent'></div>");
-				targetId="flashcontent";
-				kifuPath = so.variables.kifu;
+				// SWFObject方式(idがflashcontentの場合のみ)
+				if(typeof so != "undefined" && so.variables && so.variables.kifu){
+					$("#flashcontent").replaceWith("<div id='flashcontent'></div>");
+					targetId = "flashcontent";
+					kifuPath = so.variables.kifu;
+				}
 			}else if($("object param[name=FlashVars]").val()){
-				$("object param[name=FlashVars]").val().split("&&").map(function(kv){var s=kv.split("=");if(s[0]=="kifu")kifuPath=s[1]});
+				// object方式
+				$("object param[name=FlashVars]").val().split("&&").map(function(kv){
+					var s = kv.split("=");
+					if(s[0]=="kifu") kifuPath=s[1];
+				});
 				if($("#Kifu").length>0){
 					$("#Kifu").replaceWith("<div id='Kifu'></div>");
 				}else{
@@ -29,7 +37,11 @@
 				targetId="Kifu";
 			}
 			if(!targetId && typeof params!="undefined" && params.FlashVars){
-				params.FlashVars.split("&").forEach(function(kv){var s=kv.split("=");if(s[0]=="kifu"){kifuPath=s[1]}});
+				// paramsがある場合
+				params.FlashVars.split("&").forEach(function(kv){
+					var s = kv.split("=");
+					if(s[0]=="kifu") kifuPath=s[1];
+				});
 				if($("#so").length==0){
 					$(document.body).prepend("<div id='so'></div>");
 				}else{
@@ -37,6 +49,19 @@
 				}
 				$("#so").css("visibility", "visible");
 				targetId="so";
+			}
+			if(!targetId){
+				// SWFObject方式(script総なめ)
+				$("script").filter(function(i, script){
+					return script.textContent.indexOf('SWFObject')>=0;
+				}).each(function(i, script){
+					var kifuMatch = script.textContent.match(/addVariable.+kifu.+"(.+)"/);
+					var idMatch = script.textContent.match(/write.+"(.+)"/);
+					if(kifuMatch && idMatch){
+						kifuPath = kifuMatch[1];
+						targetId = idMatch[1];
+					}
+				});
 			}
 			if(!targetId) throw "棋譜が見つかりませんでした";
 			console.log("load start");
