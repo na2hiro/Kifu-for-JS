@@ -1,14 +1,15 @@
+exports = typeof exports == "undefined" ? window : exports;
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-var Color;
 (function (Color) {
     Color[Color["Black"] = 0] = "Black";
     Color[Color["White"] = 1] = "White";
-})(Color || (Color = {}));
+})(exports.Color || (exports.Color = {}));
+var Color = exports.Color;
 var Shogi = (function () {
     function Shogi(setting) {
         this.initialize(setting);
@@ -527,6 +528,7 @@ var Shogi = (function () {
     };
     return Shogi;
 })();
+exports.Shogi = Shogi;
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 var Piece = (function () {
     function Piece(csa) {
@@ -618,3 +620,4 @@ var Piece = (function () {
     };
     return Piece;
 })();
+exports.Piece = Piece;

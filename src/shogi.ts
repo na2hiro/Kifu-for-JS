@@ -1,11 +1,12 @@
+declare var exports; exports = typeof exports=="undefined" ? window : exports;
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-enum Color {Black, White}
-class Shogi{
+export enum Color {Black, White}
+export class Shogi {
 	static preset: {[index:string]: {board: string[]; turn: Color;}} = {
 		"HIRATE": {
 			board: [
@@ -405,10 +406,10 @@ class Shogi{
 			"FU": 0,
 			"KY": 0,
 			"KE": 0,
-			"GI": 0, 
-			"KI": 0, 
-			"KA": 0, 
-			"HI": 0, 
+			"GI": 0,
+			"KI": 0,
+			"KA": 0,
+			"HI": 0,
 		};
 		for(var i=0; i<this.hands[color].length; i++){
 			ret[this.hands[color][i].kind]++;
@@ -512,7 +513,7 @@ interface MoveDefinition{
 	fly?: number[][];
 }
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
-class Piece{
+export class Piece{
 	color: Color; // 先後
 	kind: string; // 駒の種類
 	constructor(csa: string){
