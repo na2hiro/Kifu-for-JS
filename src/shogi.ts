@@ -278,6 +278,7 @@ export class Shogi {
 			captured = this.popFromHand(Piece.unpromote(capture), piece.color);
 			captured.inverse();
 		}
+		var editMode = this.flagEditMode;
 		this.editMode(true);
 		this.move(tox, toy, fromx, fromy);
 		if(promote) piece.unpromote();
@@ -285,7 +286,7 @@ export class Shogi {
 			if(Piece.isPromoted(capture)) captured.promote();
 			this.set(tox, toy, captured);
 		}
-		this.editMode(false);
+		this.editMode(editMode);
 		this.prevTurn();
 	}
 	// (tox, toy)へcolorの持ち駒のkindを打つ．
@@ -299,8 +300,8 @@ export class Shogi {
 	// dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
 	undrop(tox: number, toy: number): void{
 		var piece = this.get(tox, toy);
-		this.checkTurn(Piece.oppositeColor(piece.color));
 		if(piece==null) throw "there is no piece at "+tox+", "+toy;
+		this.checkTurn(Piece.oppositeColor(piece.color));
 		this.pushToHand(piece);
 		this.set(tox, toy, null);
 		this.prevTurn();
@@ -335,6 +336,10 @@ export class Shogi {
 			var piece = this.get(x, y);
 			return piece==null || piece.color!=color;
 		}.bind(this);
+		var shouldStop = function(x: number, y: number, color: Color){
+			var piece = this.get(x, y);
+			return piece!=null && piece.color!=color;
+		}.bind(this);
 		var piece = this.get(x, y);
 		if(piece==null) return [];
 		var moveDef = Piece.getMoveDef(piece.kind);
@@ -354,6 +359,7 @@ export class Shogi {
 				var to = {x: from.x+def[0], y: from.y+def[1]};
 				while(legal(to.x, to.y, piece.color)){
 					ret.push({from: from, to: {x: to.x, y: to.y}});
+					if(shouldStop(to.x, to.y, piece.color)) break;
 					to.x+=def[0];
 					to.y+=def[1];
 				}
@@ -593,12 +599,5 @@ export class Piece{
 	}
 	static oppositeColor(color: Color): Color{
 		return color==Color.Black ? Color.White : Color.Black;
-	}
-
-	// 以下private method
-
-	// 現在成っているかどうかを返す
-	private isPromoted(): boolean{
-		return Piece.isPromoted(this.kind);
 	}
 }

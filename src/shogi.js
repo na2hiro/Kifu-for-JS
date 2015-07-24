@@ -88,6 +88,7 @@ var Shogi = (function () {
             captured = this.popFromHand(Piece.unpromote(capture), piece.color);
             captured.inverse();
         }
+        var editMode = this.flagEditMode;
         this.editMode(true);
         this.move(tox, toy, fromx, fromy);
         if (promote)
@@ -97,7 +98,7 @@ var Shogi = (function () {
                 captured.promote();
             this.set(tox, toy, captured);
         }
-        this.editMode(false);
+        this.editMode(editMode);
         this.prevTurn();
     };
     // (tox, toy)へcolorの持ち駒のkindを打つ．
@@ -113,9 +114,9 @@ var Shogi = (function () {
     // dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
     Shogi.prototype.undrop = function (tox, toy) {
         var piece = this.get(tox, toy);
-        this.checkTurn(Piece.oppositeColor(piece.color));
         if (piece == null)
             throw "there is no piece at " + tox + ", " + toy;
+        this.checkTurn(Piece.oppositeColor(piece.color));
         this.pushToHand(piece);
         this.set(tox, toy, null);
         this.prevTurn();
@@ -151,6 +152,10 @@ var Shogi = (function () {
             var piece = this.get(x, y);
             return piece == null || piece.color != color;
         }.bind(this);
+        var shouldStop = function (x, y, color) {
+            var piece = this.get(x, y);
+            return piece != null && piece.color != color;
+        }.bind(this);
         var piece = this.get(x, y);
         if (piece == null)
             return [];
@@ -178,6 +183,8 @@ var Shogi = (function () {
                 var to = { x: from.x + def[0], y: from.y + def[1] };
                 while (legal(to.x, to.y, piece.color)) {
                     ret.push({ from: from, to: { x: to.x, y: to.y } });
+                    if (shouldStop(to.x, to.y, piece.color))
+                        break;
                     to.x += def[0];
                     to.y += def[1];
                 }
@@ -612,11 +619,6 @@ var Piece = (function () {
     };
     Piece.oppositeColor = function (color) {
         return color == Color.Black ? Color.White : Color.Black;
-    };
-    // 以下private method
-    // 現在成っているかどうかを返す
-    Piece.prototype.isPromoted = function () {
-        return Piece.isPromoted(this.kind);
     };
     return Piece;
 })();
