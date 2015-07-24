@@ -7,6 +7,7 @@ declare var exports; exports = typeof exports=="undefined" ? window : exports;
  */
 export enum Color {Black, White}
 export class Shogi {
+	// 既定の初期局面
 	static preset: {[index:string]: {board: string[]; turn: Color;}} = {
 		"HIRATE": {
 			board: [
@@ -248,6 +249,8 @@ export class Shogi {
 		this.flagEditMode = false;
 	}
 	// 編集モード切り替え
+	// * 通常モード：移動時に手番と移動可能かどうかチェックし，移動可能範囲は手番側のみ返す．
+	// * 編集モード：移動時に手番や移動可能かはチェックせず，移動可能範囲は両者とも返す．
 	editMode(flag: boolean): void{
 		this.flagEditMode = flag;
 	}
@@ -407,6 +410,7 @@ export class Shogi {
 	get(x: number, y: number): Piece{
 		return this.board[x-1][y-1];
 	}
+	// keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
 	getHandsSummary(color: Color): {[index: string]: number}{
 		var ret: {[index: string]: number} = {
 			"FU": 0,
@@ -522,6 +526,7 @@ interface MoveDefinition{
 export class Piece{
 	color: Color; // 先後
 	kind: string; // 駒の種類
+	// "+FU"などのCSAによる駒表現から駒オブジェクトを作成
 	constructor(csa: string){
 		this.color = csa.slice(0, 1)=="+" ? Color.Black : Color.White;
 		this.kind = csa.slice(1);

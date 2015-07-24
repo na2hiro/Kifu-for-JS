@@ -52,6 +52,8 @@ var Shogi = (function () {
         this.flagEditMode = false;
     };
     // 編集モード切り替え
+    // * 通常モード：移動時に手番と移動可能かどうかチェックし，移動可能範囲は手番側のみ返す．
+    // * 編集モード：移動時に手番や移動可能かはチェックせず，移動可能範囲は両者とも返す．
     Shogi.prototype.editMode = function (flag) {
         this.flagEditMode = flag;
     };
@@ -236,6 +238,7 @@ var Shogi = (function () {
     Shogi.prototype.get = function (x, y) {
         return this.board[x - 1][y - 1];
     };
+    // keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
     Shogi.prototype.getHandsSummary = function (color) {
         var ret = {
             "FU": 0,
@@ -335,6 +338,7 @@ var Shogi = (function () {
         if (!this.flagEditMode && color != this.turn)
             throw "cannot move opposite piece";
     };
+    // 既定の初期局面
     Shogi.preset = {
         "HIRATE": {
             board: [
@@ -538,6 +542,7 @@ var Shogi = (function () {
 exports.Shogi = Shogi;
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 var Piece = (function () {
+    // "+FU"などのCSAによる駒表現から駒オブジェクトを作成
     function Piece(csa) {
         this.color = csa.slice(0, 1) == "+" ? Color.Black : Color.White;
         this.kind = csa.slice(1);
