@@ -1,4 +1,3 @@
-declare var exports; exports = typeof exports=="undefined" ? window : exports;
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -504,7 +503,7 @@ export class Shogi {
 		if(!this.flagEditMode && color!=this.turn) throw "cannot move opposite piece";
 	}
 }
-interface SettingType{
+export interface SettingType {
 	preset: string;
 	data?: {
 		color: boolean;
@@ -512,13 +511,13 @@ interface SettingType{
 		hands: {[index:string]: number}[];
 	}
 }
-interface Move{
+export interface Move{
 	from?: {x: number; y: number;};
 	to: {x: number; y: number;};
 	kind?: string;
 	color?: Color;
 }
-interface MoveDefinition{
+export interface MoveDefinition{
 	just?: number[][];
 	fly?: number[][];
 }

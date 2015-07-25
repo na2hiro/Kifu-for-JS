@@ -1,6 +1,5 @@
 var assert = require('assert');
-var ShogiJS = require('../src/shogi.js');
-var Shogi = ShogiJS.Shogi;
+var ShogiJS = require('../lib/shogi.js');
 var Piece = ShogiJS.Piece;
 
 function sortMove(moves){
