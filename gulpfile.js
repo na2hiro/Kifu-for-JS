@@ -32,9 +32,9 @@ gulp.task('typescript', ['clean-lib'], function(cb){
 		.pipe(typescript({
 			module: "commonjs",
 			declarationFiles: true,
-			noEmitOnError: true
+			noEmitOnError: true,
+			outDir: LIB_DIR
 		})).on("error", function(err){
-			console.log("err");
 			error=true;
 			cb(err);
 		});
@@ -66,9 +66,7 @@ function test(cb){
 		.on('finish', function(){
 			gulp.src(TEST_FILE)
 				.pipe(mocha({}))
-				.on("error", function(err){
-					cb(err);
-				})
+				.on("error", cb)
 				.pipe(istanbul.writeReports({
 					coverageVariable: coverageVariable,
 					reporters: ['lcov','text-summary']
