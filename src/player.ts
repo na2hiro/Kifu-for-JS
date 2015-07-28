@@ -1,6 +1,4 @@
-/// <reference path="./JSONKifuFormat.d.ts" />
-/// <reference path="../Shogi.js/src/shogi.ts" />
-/// <reference path="./normalizer.ts" />
+/// <reference path="../src/JSONKifuFormat.d.ts" />
 
 /** @license
  * JSON Kifu Format
@@ -8,6 +6,16 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+import ShogiJS = require('../node_modules/shogi.js/lib/shogi');
+import Color = ShogiJS.Color;
+import Piece = ShogiJS.Piece;
+import Shogi = ShogiJS.Shogi;
+import Normalizer = require('./normalizer');
+import kifParser = require("../out/kif-parser");
+import ki2Parser = require("../out/ki2-parser");
+import csaParser = require("../out/csa-parser");
+
+export = JKFPlayer;
 
 class JKFPlayer{
 	shogi: Shogi;
@@ -74,23 +82,17 @@ class JKFPlayer{
 		return new JKFPlayer(JSON.parse(kifu));
 	}
 	static parseKIF(kifu: string){
-		if(!JKFPlayer.kifParser) throw "パーサが読み込まれていません";
 		JKFPlayer.log("parseKIF", kifu);
-		return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(kifu)));
 	}
 	static parseKI2(kifu: string){
-		if(!JKFPlayer.ki2Parser) throw "パーサが読み込まれていません";
 		JKFPlayer.log("parseKI2", kifu);
-		return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(kifu)));
 	}
 	static parseCSA(kifu: string){
-		if(!JKFPlayer.csaParser) throw "パーサが読み込まれていません";
 		JKFPlayer.log("parseCSA", kifu);
-		return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(kifu)));
 	}
-	static kifParser: {parse: (kifu: string)=>JSONKifuFormat};
-	static ki2Parser: {parse: (kifu: string)=>JSONKifuFormat};
-	static csaParser: {parse: (kifu: string)=>JSONKifuFormat};
 	static numToZen(n: number){
 		return "０１２３４５６７８９"[n];
 	}
