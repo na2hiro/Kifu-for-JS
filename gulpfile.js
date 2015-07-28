@@ -33,7 +33,8 @@ gulp.task('typescript', ['clean-lib'], function(cb){
 			module: "commonjs",
 			declarationFiles: true,
 			noEmitOnError: true,
-			outDir: LIB_DIR
+			outDir: LIB_DIR,
+			typescript: require("typescript")
 		})).on("error", function(err){
 			error=true;
 			cb(err);
