@@ -55,7 +55,7 @@
 	function dousaToRelative(str){
 		return {
 			"上": "U",
-			"寄": "C",
+			"寄": "M",
 			"引": "D",
 		}[str] || "";
 	}
