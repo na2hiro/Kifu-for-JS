@@ -74,7 +74,7 @@ gulp.task('peg', ['clean-peg'], function(){
 gulp.task('build', ['build-node', 'clean-browserify'], buildBrowserify);
 gulp.task('browserify-without-node', ['clean-browserify'], buildBrowserify);
 function buildBrowserify(){
-	return browserify(PLAYER_NODE_FILE)
+	return browserify().require(PLAYER_NODE_FILE, {expose:"JKFPlayer"})
 		.bundle()
 		.pipe(source(BROWSERIFY_OUT_NAME))
 		.pipe(gulp.dest(OUT_DIR));
