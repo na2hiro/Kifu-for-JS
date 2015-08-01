@@ -69,6 +69,7 @@ function normalizeMinimalMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: Mov
 			shogi.drop(move.to.x, move.to.y, move.piece);
 		}
 	}
+	restoreColorOfIllegalAction(moves, shogi);
 	for(var i=moves.length-1; i>=0; i--){
 		var move = moves[i].move;
 		if(move){
@@ -85,7 +86,6 @@ function normalizeMinimalMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: Mov
 			}
 		}
 	}
-	restoreColorOfIllegalAction(moves);
 }
 
 export function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat{
@@ -132,6 +132,7 @@ function normalizeKIFMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFor
 			shogi.drop(move.to.x, move.to.y, move.piece);
 		}
 	}
+	restoreColorOfIllegalAction(moves, shogi);
 	for(var i=moves.length-1; i>=0; i--){
 		var move = moves[i].move;
 		if(move){
@@ -148,7 +149,6 @@ function normalizeKIFMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFor
 			}
 		}
 	}
-	restoreColorOfIllegalAction(moves);
 }
 export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
 	var shogi = new Shogi(obj.initial || undefined);
@@ -195,6 +195,7 @@ function normalizeKI2Moves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFor
 			shogi.drop(move.to.x, move.to.y, move.piece);
 		}
 	}
+	restoreColorOfIllegalAction(moves, shogi);
 	for(var i=moves.length-1; i>=0; i--){
 		var move = moves[i].move;
 		if(!move) continue;
@@ -210,7 +211,6 @@ function normalizeKI2Moves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFor
 			}
 		}
 	}
-	restoreColorOfIllegalAction(moves);
 }
 export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
 	restorePreset(obj);
@@ -333,6 +333,12 @@ function moveSatisfiesRelative(relative: string, color: Color, move: Move): bool
 // CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
 function restorePreset(obj: JSONKifuFormat){
 	if(!obj.initial || obj.initial.preset!="OTHER") return;
+	var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
+	for(var i=0; i<2; i++){
+		for(var j=0; j<kinds.length; j++){
+			if(obj.initial.data.hands[i][kinds[j]]!=0) return;
+		}
+	}
 	var hirate = [
 			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
 			[{color:false,kind:"KE"},{color:false,kind:"KA"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"HI"},{color:true,kind:"KE"},],
@@ -382,8 +388,8 @@ function samePiece(p1, p2){
 	return (typeof p1.color=="undefined" && typeof p2.color=="undefined") ||
 		(typeof p1.color!="undefined" && typeof p2.color!="undefined" && p1.color==p2.color && p1.kind==p2.kind);
 }
-function restoreColorOfIllegalAction(moves: MoveFormat[]){
-	if(moves.length>=2 && moves[moves.length-1].special == "ILLEGAL_ACTION"){
-		moves[moves.length-1].special = (moves[moves.length-2] && moves[moves.length-2].move && moves[moves.length-2].move.color==false ? "-" : "+")+"ILLEGAL_ACTION";
+function restoreColorOfIllegalAction(moves: MoveFormat[], shogi: Shogi){
+	if(moves.length>=1 && moves[moves.length-1].special == "ILLEGAL_ACTION"){
+		moves[moves.length-1].special = (shogi.turn ? "+" : "-")+"ILLEGAL_ACTION";
 	}
 }

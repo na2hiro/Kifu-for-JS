@@ -26,7 +26,6 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
         var last = i <= 1 ? lastMove : moves[i - 1];
         var move = moves[i].move;
-        console.log(JSON.stringify(move), JSON.stringify(last));
         if (!move)
             continue;
         // 手番
@@ -342,6 +341,13 @@ function moveSatisfiesRelative(relative, color, move) {
 function restorePreset(obj) {
     if (!obj.initial || obj.initial.preset != "OTHER")
         return;
+    var kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
+    for (var i = 0; i < 2; i++) {
+        for (var j = 0; j < kinds.length; j++) {
+            if (obj.initial.data.hands[i][kinds[j]] != 0)
+                return;
+        }
+    }
     var hirate = [
         [{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
         [{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
