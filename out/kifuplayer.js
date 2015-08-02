@@ -66,6 +66,7 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
             shogi.drop(move.to.x, move.to.y, move.piece);
         }
     }
+    restoreColorOfIllegalAction(moves, shogi);
     for (var i = moves.length - 1; i >= 0; i--) {
         var move = moves[i].move;
         if (move) {
@@ -83,7 +84,6 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
             }
         }
     }
-    restoreColorOfIllegalAction(moves);
 }
 function normalizeKIF(obj) {
     var shogi = new Shogi(obj.initial || undefined);
@@ -130,6 +130,7 @@ function normalizeKIFMoves(shogi, moves, lastMove) {
             shogi.drop(move.to.x, move.to.y, move.piece);
         }
     }
+    restoreColorOfIllegalAction(moves, shogi);
     for (var i = moves.length - 1; i >= 0; i--) {
         var move = moves[i].move;
         if (move) {
@@ -147,7 +148,6 @@ function normalizeKIFMoves(shogi, moves, lastMove) {
             }
         }
     }
-    restoreColorOfIllegalAction(moves);
 }
 function normalizeKI2(obj) {
     var shogi = new Shogi(obj.initial || undefined);
@@ -196,6 +196,7 @@ function normalizeKI2Moves(shogi, moves, lastMove) {
             shogi.drop(move.to.x, move.to.y, move.piece);
         }
     }
+    restoreColorOfIllegalAction(moves, shogi);
     for (var i = moves.length - 1; i >= 0; i--) {
         var move = moves[i].move;
         if (!move)
@@ -213,7 +214,6 @@ function normalizeKI2Moves(shogi, moves, lastMove) {
             }
         }
     }
-    restoreColorOfIllegalAction(moves);
 }
 function normalizeCSA(obj) {
     restorePreset(obj);
@@ -397,9 +397,9 @@ function samePiece(p1, p2) {
     return (typeof p1.color == "undefined" && typeof p2.color == "undefined") ||
         (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
 }
-function restoreColorOfIllegalAction(moves) {
-    if (moves.length >= 2 && moves[moves.length - 1].special == "ILLEGAL_ACTION") {
-        moves[moves.length - 1].special = (moves[moves.length - 2] && moves[moves.length - 2].move && moves[moves.length - 2].move.color == false ? "-" : "+") + "ILLEGAL_ACTION";
+function restoreColorOfIllegalAction(moves, shogi) {
+    if (moves.length >= 1 && moves[moves.length - 1].special == "ILLEGAL_ACTION") {
+        moves[moves.length - 1].special = (shogi.turn ? "+" : "-") + "ILLEGAL_ACTION";
     }
 }
 
@@ -4783,20 +4783,18 @@ module.exports = (function() {
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
         			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        			delete ret.header["手番"];
         		}else{
         			ret.initial.data.color = true;
         		}
-        		ret.initial.data.hands = [{}, {}];
-        		if(ret.header["先手の持駒"] || ret.header["下手の持駒"]){
-        			ret.initial.data.hands[0] = makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]);
-        			delete ret.header["先手の持駒"];
-        			delete ret.header["下手の持駒"];
-        		}
-        		if(ret.header["後手の持駒"] || ret.header["上手の持駒"]){
-        			ret.initial.data.hands[1] = makeHand(ret.header["後手の持駒"] || ret.header["上手の持駒"]);
-        			delete ret.header["先手の持駒"];
-        			delete ret.header["下手の持駒"];
-        		}
+        		ret.initial.data.hands = [
+        			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
+        			makeHand(ret.header["後手の持駒"] || ret.header["上手の持駒"])
+        		];
+        		delete ret.header["先手の持駒"];
+        		delete ret.header["下手の持駒"];
+        		delete ret.header["後手の持駒"];
+        		delete ret.header["上手の持駒"];
         	}
         	var forkStack = [{te:0, moves:moves}];
         	for(var i=0; i<forks.length; i++){
@@ -4858,21 +4856,23 @@ module.exports = (function() {
         peg$c38 = function(hd, tl) {tl.unshift(hd); return tl;},
         peg$c39 = function(c) {return c.length==0 ? {} : {comments:c}},
         peg$c40 = function(line, c) {
-        	var ret = {time: line.time};
+        	var ret = {};
         	if(c.length>0) ret.comments = c;
         	if(typeof line.move=="object"){
         		ret.move=line.move;
         	}else{
         		ret.special=specialToCSA(line.move)
         	}
+        	if(line.time) ret.time=line.time;
         	return ret;
         },
         peg$c41 = "&",
         peg$c42 = { type: "literal", value: "&", description: "\"&\"" },
         peg$c43 = function(fugou, from) {
-        	var ret = {from: from, piece: fugou.piece};
+        	var ret = {piece: fugou.piece};
         	if(fugou.to){ret.to=fugou.to}else{ret.same=true};
         	if(fugou.promote) ret.promote=true;
+        	if(from) ret.from=from;
         	return ret;
         },
         peg$c44 = /^[^\r\n ]/,
@@ -7250,7 +7250,8 @@ module.exports = (function() {
     	}
     	function makeHand(str){
     		var kinds = str.replace(/　$/, "").split("　");
-    		var ret = {};
+    		var ret = {FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0};
+    		if(str=="") return ret;
     		for(var i=0; i<kinds.length; i++){
     			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
     		}

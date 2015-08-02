@@ -85,7 +85,7 @@ gulp.task('test-without-build-node', test);
 function test(cb){
 	// variable is necessary because of gulp-istanbul bug: https://github.com/SBoudrias/gulp-istanbul/issues/40
 	var coverageVariable = '$$cov_' + new Date().getTime() + '$$';
-	gulp.src([LIB_FILE])
+	gulp.src([PARSER_FILE, LIB_FILE])
 		.pipe(istanbul({coverageVariable: coverageVariable}))
 		.pipe(istanbul.hookRequire())
 		.on('finish', function(){

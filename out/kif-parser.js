@@ -52,20 +52,18 @@ module.exports = (function() {
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
         			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        			delete ret.header["手番"];
         		}else{
         			ret.initial.data.color = true;
         		}
-        		ret.initial.data.hands = [{}, {}];
-        		if(ret.header["先手の持駒"] || ret.header["下手の持駒"]){
-        			ret.initial.data.hands[0] = makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]);
-        			delete ret.header["先手の持駒"];
-        			delete ret.header["下手の持駒"];
-        		}
-        		if(ret.header["後手の持駒"] || ret.header["上手の持駒"]){
-        			ret.initial.data.hands[1] = makeHand(ret.header["後手の持駒"] || ret.header["上手の持駒"]);
-        			delete ret.header["先手の持駒"];
-        			delete ret.header["下手の持駒"];
-        		}
+        		ret.initial.data.hands = [
+        			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
+        			makeHand(ret.header["後手の持駒"] || ret.header["上手の持駒"])
+        		];
+        		delete ret.header["先手の持駒"];
+        		delete ret.header["下手の持駒"];
+        		delete ret.header["後手の持駒"];
+        		delete ret.header["上手の持駒"];
         	}
         	var forkStack = [{te:0, moves:moves}];
         	for(var i=0; i<forks.length; i++){
@@ -127,21 +125,23 @@ module.exports = (function() {
         peg$c38 = function(hd, tl) {tl.unshift(hd); return tl;},
         peg$c39 = function(c) {return c.length==0 ? {} : {comments:c}},
         peg$c40 = function(line, c) {
-        	var ret = {time: line.time};
+        	var ret = {};
         	if(c.length>0) ret.comments = c;
         	if(typeof line.move=="object"){
         		ret.move=line.move;
         	}else{
         		ret.special=specialToCSA(line.move)
         	}
+        	if(line.time) ret.time=line.time;
         	return ret;
         },
         peg$c41 = "&",
         peg$c42 = { type: "literal", value: "&", description: "\"&\"" },
         peg$c43 = function(fugou, from) {
-        	var ret = {from: from, piece: fugou.piece};
+        	var ret = {piece: fugou.piece};
         	if(fugou.to){ret.to=fugou.to}else{ret.same=true};
         	if(fugou.promote) ret.promote=true;
+        	if(from) ret.from=from;
         	return ret;
         },
         peg$c44 = /^[^\r\n ]/,
@@ -2519,7 +2519,8 @@ module.exports = (function() {
     	}
     	function makeHand(str){
     		var kinds = str.replace(/　$/, "").split("　");
-    		var ret = {};
+    		var ret = {FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0};
+    		if(str=="") return ret;
     		for(var i=0; i<kinds.length; i++){
     			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
     		}
