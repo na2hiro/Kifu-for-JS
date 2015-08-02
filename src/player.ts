@@ -223,9 +223,11 @@ class JKFPlayer{
 		this.goto(this.tesuu+tesuu);
 	}
 	// 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
-	forkAndForward(num: number){
-		this.forks.push({te: this.tesuu+1, moves: this.getMoveFormat(this.tesuu+1).forks[num]});
-		this.forward();
+	forkAndForward(num: number): boolean{
+		var forks = this.getMoveFormat(this.tesuu+1).forks;
+		if(!forks || forks.length<=num) return false;
+		this.forks.push({te: this.tesuu+1, moves: forks[num]});
+		return this.forward();
 	}
 	// 現在の局面から新しいかもしれない手を1手動かす．
 	// 必要フィールドは，指し: from, to, promote(成れる場合のみ)．打ち: to, piece

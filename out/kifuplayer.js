@@ -24,7 +24,7 @@ function normalizeMinimal(obj) {
 exports.normalizeMinimal = normalizeMinimal;
 function normalizeMinimalMoves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
-        var last = i <= 1 ? lastMove : moves[i - 1];
+        var last = i == 0 ? lastMove : moves[i - 1];
         var move = moves[i].move;
         if (!move)
             continue;
@@ -93,7 +93,7 @@ function normalizeKIF(obj) {
 exports.normalizeKIF = normalizeKIF;
 function normalizeKIFMoves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
-        var last = i <= 1 ? lastMove : moves[i - 1];
+        var last = i == 0 ? lastMove : moves[i - 1];
         var move = moves[i].move;
         if (!move)
             continue;
@@ -157,7 +157,7 @@ function normalizeKI2(obj) {
 exports.normalizeKI2 = normalizeKI2;
 function normalizeKI2Moves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
-        var last = i <= 1 ? lastMove : moves[i - 1];
+        var last = i == 0 ? lastMove : moves[i - 1];
         var move = moves[i].move;
         if (!move)
             continue;
@@ -7519,8 +7519,11 @@ var JKFPlayer = (function () {
     };
     // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
     JKFPlayer.prototype.forkAndForward = function (num) {
-        this.forks.push({ te: this.tesuu + 1, moves: this.getMoveFormat(this.tesuu + 1).forks[num] });
-        this.forward();
+        var forks = this.getMoveFormat(this.tesuu + 1).forks;
+        if (!forks || forks.length <= num)
+            return false;
+        this.forks.push({ te: this.tesuu + 1, moves: forks[num] });
+        return this.forward();
     };
     // 現在の局面から新しいかもしれない手を1手動かす．
     // 必要フィールドは，指し: from, to, promote(成れる場合のみ)．打ち: to, piece

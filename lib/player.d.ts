@@ -39,7 +39,7 @@ declare class JKFPlayer {
     backward(): boolean;
     goto(tesuu: number): void;
     go(tesuu: number): void;
-    forkAndForward(num: number): void;
+    forkAndForward(num: number): boolean;
     inputMove(move: MoveMoveFormat): boolean;
     getBoard(x: number, y: number): ShogiJS.Piece;
     getComments(tesuu?: number): string[];

@@ -83,7 +83,6 @@ describe("module Normalizer", function(){
 				{move:{from:p(3,3),to:p(3,4)}},
 				{move:{from:p(8,9),to:p(7,7)}, forks:[
 					[
-						{},
 						{move:{from:p(8,8),to:p(2,2)}},
                         {move:{from:p(3,1),to:p(2,2)}},
                         {move:{piece:"KA",to:p(4,5)}}
@@ -98,7 +97,6 @@ describe("module Normalizer", function(){
 				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
 				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
 					[
-						{},
 						{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
 						{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
 						{move:{to:p(4,5),color:true,piece:"KA"}}
@@ -199,7 +197,6 @@ describe("module Normalizer", function(){
 				{move:{from:p(3,3),to:p(3,4),piece:"FU"}},
 				{move:{from:p(8,9),to:p(7,7),piece:"KE"}, forks:[
 					[
-						{},
 						{move:{from:p(8,8),to:p(2,2),piece:"KA"}},
 						{move:{from:p(3,1),same:true,piece:"GI"}},
 						{move:{piece:"KA",to:p(4,5)}}
@@ -214,7 +211,6 @@ describe("module Normalizer", function(){
 				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
 				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
 					[
-						{},
 						{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
 						{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
 						{move:{to:p(4,5),color:true,piece:"KA"}}
@@ -340,7 +336,6 @@ describe("module Normalizer", function(){
 				{move:{to:p(3,4),piece:"FU"}},
 				{move:{to:p(7,7),piece:"KE"}, forks:[
 					[
-						{},
 						{move:{to:p(2,2),piece:"KA",promote:false}},
 						{move:{same:true,piece:"GI"}},
 						{move:{piece:"KA",to:p(4,5)}}
@@ -355,7 +350,6 @@ describe("module Normalizer", function(){
 				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
 				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
 					[
-						{},
 						{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
 						{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
 						{move:{to:p(4,5),color:true,piece:"KA"}}
@@ -681,7 +675,7 @@ describe("module Normalizer", function(){
 				{move: {from: p(4, 1), to: p(3, 2),piece:"KA",promote:true}},
                 {move: {from: p(9, 4), to: p(9, 5),piece:"FU"}},
 				{move: {from: p(2, 2), to: p(2, 1),piece:"UM"}, forks:[
-					[{}, {move: {from: p(3, 2), to: p(3, 1),piece:"UM"}}]
+					[{move: {from: p(3, 2), to: p(3, 1),piece:"UM"}}]
 				]}
 			);
 			expected.moves.push(
@@ -694,7 +688,7 @@ describe("module Normalizer", function(){
 				{move: {from: p(4,1), to: p(3, 2),piece:"KA", color:true,promote:true,capture:"KI"}},
 				{move: {from: p(9, 4), to: p(9,5),piece:"FU",color:false}},
 				{move: {from: p(2,2), to: p(2, 1),color:true,piece:"UM",relative:"R",capture:"KE"},forks:[
-					[{}, {move: {from: p(3,2), to: p(3, 1),color:true,piece:"UM",relative:"L",capture:"GI"}}]
+					[{move: {from: p(3,2), to: p(3, 1),color:true,piece:"UM",relative:"L",capture:"GI"}}]
 				]}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
@@ -953,8 +947,8 @@ describe("module Normalizer", function(){
 				moves: [
 					{},
 					{move:{from:p(7,7),to:p(7,6),piece:"FU"},forks:[
-						[{}, {special:"ILLEGAL_ACTION"}],
-						[{}, {move:{from:p(2,7),to:p(2,6),piece:"FU"}}, {special:"ILLEGAL_ACTION"}],
+						[{special:"ILLEGAL_ACTION"}],
+						[{move:{from:p(2,7),to:p(2,6),piece:"FU"}}, {special:"ILLEGAL_ACTION"}],
 					]},
 					{special:"ILLEGAL_ACTION"},
 				]
@@ -964,8 +958,8 @@ describe("module Normalizer", function(){
 				moves: [
 					{},
 					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:true},forks:[
-						[{}, {special:"-ILLEGAL_ACTION"}],
-						[{}, {move:{from:p(2,7),to:p(2,6),piece:"FU",color:true}}, {special:"+ILLEGAL_ACTION"}],
+						[{special:"-ILLEGAL_ACTION"}],
+						[{move:{from:p(2,7),to:p(2,6),piece:"FU",color:true}}, {special:"+ILLEGAL_ACTION"}],
 					]},
 					{special:"+ILLEGAL_ACTION"},
 				]

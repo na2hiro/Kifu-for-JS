@@ -42,6 +42,19 @@ describe("kif-parser", function(){
 			]
 		});
 	});
+	it("special", function(){
+		assert.deepEqual(kifParser.parse("1 ７六歩(77)\n2 ３四歩(33)\n3 ７八銀(79)\n 4 ８八角成(22)\n5 投了\nまで4手で後手の勝ち\n"),{
+			header:{},
+			moves:[
+				{},
+				{move:{from:p(7,7),to:p(7,6),piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),piece:"FU"}},
+				{move:{from:p(7,9),to:p(7,8),piece:"GI"}},
+				{move:{from:p(2,2),to:p(8,8),piece:"KA",promote:true}},
+				{special:"TORYO"},
+			]
+		});
+	});
 	describe("header", function(){
 		it("手合割", function(){
 			assert.deepEqual(kifParser.parse("手合割：平手\n1 ７六歩(77)\n2 ３四歩(33)\n3 ２二角成(88)\n 4 同　銀(31)\n5 ４五角打\n"),{
@@ -128,6 +141,43 @@ describe("kif-parser", function(){
 					{move:{to:p(1,3),piece:"KY"}},
 					{move:{to:p(1,2),piece:"KE"}},
 					{move:{from:p(1,3),same:true,piece:"KY",promote:true}},
+				]
+			});
+		});
+	});
+	describe("fork", function(){
+		it("normal", function(){
+			assert.deepEqual(kifParser.parse("\
+手合割：平手\n\
+1 ７六歩(77)\n\
+2 ３四歩(33)\n\
+3 ２二角成(88)+\n\
+4 同　銀(31)\n\
+5 ４五角打\n\
+6 中断\n\
+\n\
+変化：3手\n\
+3 ６六歩(67)\n\
+4 ８四歩(83)\n\
+"),{
+				header:{
+					"手合割":"平手",
+				},
+				initial: {preset: "HIRATE"},
+				moves:[
+					{},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU"}},
+					{move:{from:p(8,8),to:p(2,2),piece:"KA",promote:true},forks:[
+						[
+//							{},
+							{move:{from:p(6,7),to:p(6,6),piece:"FU"}},
+							{move:{from:p(8,3),to:p(8,4),piece:"FU"}},
+						]
+					]},
+					{move:{from:p(3,1),same:true,piece:"GI"}},
+					{move:{to:p(4,5),piece:"KA"}},
+					{special:"CHUDAN"},
 				]
 			});
 		});

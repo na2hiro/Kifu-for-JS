@@ -25,7 +25,7 @@ export function normalizeMinimal(obj: JSONKifuFormat): JSONKifuFormat{
 }
 function normalizeMinimalMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
 	for(var i=0; i<moves.length; i++){
-		var last = i<=1 ? lastMove : moves[i-1];
+		var last = i==0 ? lastMove : moves[i-1];
 		var move = moves[i].move;
 		if(!move) continue;
 		// 手番
@@ -95,7 +95,7 @@ export function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat{
 }
 function normalizeKIFMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
 	for(var i=0; i<moves.length; i++){
-		var last = i<=1 ? lastMove : moves[i-1];
+		var last = i==0 ? lastMove : moves[i-1];
 		var move = moves[i].move;
 		if(!move) continue;
 		// 手番
@@ -157,7 +157,7 @@ export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
 }
 function normalizeKI2Moves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
 	for(var i=0; i<moves.length; i++){
-		var last = i<=1 ? lastMove : moves[i-1];
+		var last = i==0 ? lastMove : moves[i-1];
 		var move = moves[i].move;
 		if(!move) continue;
 
