@@ -201,7 +201,6 @@ class JKFPlayer{
 	backward(){
 		if(this.tesuu<=0) return false;
 		var move = this.getMoveFormat(this.tesuu).move;
-		if(!move){ this.tesuu--; return true; }
 		JKFPlayer.log("backward", this.tesuu-1, move);
 		this.undoMove(move);
 		this.tesuu--;
