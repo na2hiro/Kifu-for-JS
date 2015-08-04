@@ -90,7 +90,7 @@ function test(cb){
 		.pipe(istanbul.hookRequire())
 		.on('finish', function(){
 			gulp.src(TEST_FILE)
-				.pipe(mocha({}))
+				.pipe(mocha({reporter:"dot"}))
 				.on("error", cb)
 				.pipe(istanbul.writeReports({
 					coverageVariable: coverageVariable,
