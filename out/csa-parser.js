@@ -49,7 +49,7 @@ module.exports = (function() {
         peg$c7 = function(header) {
         	var ret = {};
         	for(var i=0; i<header.length; i++){
-        		ret[header[i].k]=header[i].v;
+        		ret[normalizeHeaderKey(header[i].k)]=header[i].v;
         	}
         	return ret;
         },
@@ -118,7 +118,11 @@ module.exports = (function() {
         peg$c38 = function() { return {} },
         peg$c39 = function(lines) {
         	var board=[];
-        	var hands=[{}, {}];
+        	var hands=[
+        		{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
+        		{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0}
+        	];
+        	var all = {FU:18,KY:4,KE:4,GI:4,KI:4,KA:2,HI:2};
         	for(var i=0; i<9; i++){
         		var line=[];
         		for(var j=0; j<9; j++){
@@ -126,27 +130,41 @@ module.exports = (function() {
         		}
         		board.push(line);
         	}
-        	for(var i=0; i<lines.length; i++){
+        	all: for(var i=0; i<lines.length; i++){
         		for(var j=0; j<lines[i].pieces.length; j++){
         			var p = lines[i].pieces[j];
         			if(p.xy.x==0){
         				// 持ち駒
+        				if(p.piece=="AL"){
+        					hands[line[i].teban?0:1]=all;
+        					break all;
+        				}
         				var obj=hands[lines[i].teban?0:1];
-        				if(!obj[p.piece]) obj[p.piece]=0;
         				obj[p.piece]++;
         			}else{
         				// 盤上
         				board[p.xy.x-1][p.xy.y-1] = {color: lines[i].teban, kind: p.piece};
         			}
+        			if(p.piece!="OU") all[p.piece]--;
         		}
         	}
         	return {preset: "OTHER", data: {board: board, hands: hands}}
         },
         peg$c40 = function(teban, pieces) {return {teban: teban, pieces: pieces}},
         peg$c41 = function(hd, tl) {tl.unshift(hd); return tl;},
-        peg$c42 = function(c) {return {comments:c}},
-        peg$c43 = function(move, time, comment) { var ret = {comments:comment}; if(time){ret.time=time;}if(move.special){ret.special=move.special}else{ret.move=move}; return ret; },
-        peg$c44 = function(from, to, piece) { return {from:from.x==0?null:from, to:to, piece:piece}},
+        peg$c42 = function(c) {return c.length>0?{comments:c}:{}},
+        peg$c43 = function(move, time, comments) {
+        	var ret = {};
+        	if(comments.length>0){ret.comments=comments;}
+        	if(time){ret.time=time;}
+        	if(move.special){ret.special=move.special}else{ret.move=move};
+        	return ret;
+        },
+        peg$c44 = function(from, to, piece) {
+        	var ret = {to:to, piece:piece}
+        	if(from.x!=0) ret.from = from;
+        	return ret;
+        },
         peg$c45 = "%",
         peg$c46 = { type: "literal", value: "%", description: "\"%\"" },
         peg$c47 = /^[\-+_A-Z]/,
@@ -1528,10 +1546,8 @@ module.exports = (function() {
 
     	function secToTime(sec){
     		var remain, h, m, s = sec%60;
-    		remain = (sec-s)/60;
-    		m = remain%60;
-    		remain = (remain - m)/60;
-    		return {h:remain, m:m, s:s};
+    		m = (sec-s)/60;
+    		return {m:m, s:s};
     	}
     	function getHirate(){
     		return [
@@ -1545,6 +1561,15 @@ module.exports = (function() {
     			[{color:false,kind:"KE"},{color:false,kind:"HI"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"KA"},{color:true,kind:"KE"},],
     			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
     		];
+    	}
+    	function normalizeHeaderKey(key){
+    		return {
+    			"EVENT": "棋戦",
+    			"SITE": "場所",
+    			"START_TIME": "開始日時",
+    			"END_TIME": "終了日時",
+    			"TIME_LIMIT": "持ち時間",
+    		}[key] || key;
     	}
 
 
