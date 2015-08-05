@@ -61,7 +61,7 @@ describe("class Shogi", function(){
 				data: {
 					board: [
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
-						[{color: false, kind: "OU"}, {}, {color: true, kind: "FU"}, {}, {}, {}, {}, {}, {}],
+						[{color: Color.White, kind: "OU"}, {}, {color: Color.Black, kind: "FU"}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -70,7 +70,7 @@ describe("class Shogi", function(){
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}]
 					],
-					color: true,
+					color: Color.Black,
 					hands: [
 						{"KI":1},
 						{}
@@ -94,8 +94,8 @@ describe("class Shogi", function(){
 				preset: "OTHER",
 				data: {
 					board: [
-						[{}, {}, {}, {}, {}, {color: false, kind: "KE"}, {color: false, kind: "KE"}, {}, {color: true, kind: "OU"}],
-						[{}, {}, {}, {}, {}, {color: false, kind: "KE"}, {}, {}, {}],
+						[{}, {}, {}, {}, {}, {color: Color.White, kind: "KE"}, {color: Color.White, kind: "KE"}, {}, {color: Color.Black, kind: "OU"}],
+						[{}, {}, {}, {}, {}, {color: Color.White, kind: "KE"}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -104,7 +104,7 @@ describe("class Shogi", function(){
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}],
 						[{}, {}, {}, {}, {}, {}, {}, {}, {}]
 					],
-					color: false,
+					color: Color.White,
 					hands: [
 						{},
 						{"KE":1}

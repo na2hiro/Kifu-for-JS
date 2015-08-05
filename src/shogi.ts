@@ -231,10 +231,10 @@ export class Shogi {
 				this.board[i]=[];
 				for(var j=0; j<9; j++){
 					var p = setting.data.board[i][j];
-					this.board[i][j] = p.kind ? new Piece((p.color?"+":":")+p.kind) : null;
+					this.board[i][j] = p.kind ? new Piece((p.color==Color.Black?"+":"-")+p.kind) : null;
 				}
 			}
-			this.turn = setting.data.color ? Color.Black : Color.White;
+			this.turn = setting.data.color;
 			this.hands = [[], []];
 			for(var c=0; c<2; c++){
 				for(var k in setting.data.hands[c]){
@@ -506,8 +506,8 @@ export class Shogi {
 export interface SettingType {
 	preset: string;
 	data?: {
-		color: boolean;
-		board: { color?: boolean; kind?: boolean; }[][];
+		color: Color;
+		board: { color?: Color; kind?: string; }[][];
 		hands: {[index:string]: number}[];
 	}
 }

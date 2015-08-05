@@ -48,10 +48,10 @@ export declare class Shogi {
 export interface SettingType {
     preset: string;
     data?: {
-        color: boolean;
+        color: Color;
         board: {
-            color?: boolean;
-            kind?: boolean;
+            color?: Color;
+            kind?: string;
         }[][];
         hands: {
             [index: string]: number;
