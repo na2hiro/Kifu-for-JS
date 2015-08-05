@@ -25,7 +25,7 @@ describe("module Normalizer", function(){
 		});
 		it("normal", function(){
 			actual.moves[1] = {move:{from:p(7,7),to:p(7,6)}};
-			expected.moves[1] = {move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}};
+			expected.moves[1] = {move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}};
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
         });
 		it("same, capture", function(){
@@ -35,9 +35,9 @@ describe("module Normalizer", function(){
 				{move:{from:p(8,8),to:p(4,4)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(4,3),to:p(4,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(4,4),color:true,piece:"KA",same:true,capture:"FU"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(4,3),to:p(4,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(4,4),color:0,piece:"KA",same:true,capture:"FU"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -50,11 +50,11 @@ describe("module Normalizer", function(){
 				{move:{piece:"KA",to:p(4,5)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-				{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-				{move:{to:p(4,5),color:true,piece:"KA"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+				{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+				{move:{to:p(4,5),color:0,piece:"KA"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -68,12 +68,12 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3)}}
             );
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}},
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -93,18 +93,18 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}, forks:[
 					[
-						{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-						{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-						{move:{to:p(4,5),color:true,piece:"KA"}}
+						{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+						{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+						{move:{to:p(4,5),color:0,piece:"KA"}}
 					]
 				]},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -139,7 +139,7 @@ describe("module Normalizer", function(){
 		});
 		it("normal", function(){
 			actual.moves[1] = {move:{from:p(7,7),to:p(7,6),piece:"FU"}};
-			expected.moves[1] = {move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}};
+			expected.moves[1] = {move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}};
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
 		it("same, capture", function(){
@@ -149,9 +149,9 @@ describe("module Normalizer", function(){
 				{move:{from:p(8,8),to:p(4,4),piece:"KA",same:true}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(4,3),to:p(4,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(4,4),color:true,piece:"KA",same:true,capture:"FU"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(4,3),to:p(4,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(4,4),color:0,piece:"KA",same:true,capture:"FU"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
@@ -164,11 +164,11 @@ describe("module Normalizer", function(){
 				{move:{piece:"KA",to:p(4,5)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-				{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-				{move:{to:p(4,5),color:true,piece:"KA"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+				{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+				{move:{to:p(4,5),color:0,piece:"KA"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
@@ -182,12 +182,12 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}},
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
@@ -207,18 +207,18 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}, forks:[
 					[
-						{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-						{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-						{move:{to:p(4,5),color:true,piece:"KA"}}
+						{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+						{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+						{move:{to:p(4,5),color:0,piece:"KA"}}
 					]
 				]},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
@@ -251,7 +251,7 @@ describe("module Normalizer", function(){
 		});
 		it("normal", function () {
 			actual.moves[1] = {move: {to: p(7, 6), piece: "FU"}};
-			expected.moves[1] = {move: {from: p(7, 7), to: p(7, 6), color: true, piece: "FU"}};
+			expected.moves[1] = {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}};
 			assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 		});
 		it("same, capture", function () {
@@ -261,9 +261,9 @@ describe("module Normalizer", function(){
 				{move: {to: p(4, 4), piece: "KA", same: true}}
 			);
 			expected.moves.push(
-				{move: {from: p(7, 7), to: p(7, 6), color: true, piece: "FU"}},
-				{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-				{move: {from: p(8, 8), to: p(4, 4), color: true, piece: "KA", same: true, capture: "FU"}}
+				{move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
+				{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+				{move: {from: p(8, 8), to: p(4, 4), color: 0, piece: "KA", same: true, capture: "FU"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 		});
@@ -277,12 +277,12 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3),relative:"H"}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}},
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 		});
@@ -295,11 +295,11 @@ describe("module Normalizer", function(){
 				{move:{piece:"KA",to:p(4,5)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-				{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-				{move:{to:p(4,5),color:true,piece:"KA"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+				{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+				{move:{to:p(4,5),color:0,piece:"KA"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 		});
@@ -309,7 +309,7 @@ describe("module Normalizer", function(){
 					{move: {to: p(5, 8), piece: "KI",relative:"R"}}
 				);
 				expected.moves.push(
-					{move: {from: p(4, 9), to: p(5, 8), color: true, piece: "KI",relative:"R"}}
+					{move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI",relative:"R"}}
 				);
 				assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 			});
@@ -346,18 +346,18 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3),relative:"H"}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}, forks:[
 					[
-						{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-						{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-						{move:{to:p(4,5),color:true,piece:"KA"}}
+						{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+						{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+						{move:{to:p(4,5),color:0,piece:"KA"}}
 					]
 				]},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 		});
@@ -378,7 +378,7 @@ describe("module Normalizer", function(){
 					{move: {piece:"KI",to: p(5, 8),relative:"L"}}
 				);
 				expected.moves.push(
-					{move: {from: p(6, 9), to: p(5, 8), color: true, piece: "KI", relative:"L"}}
+					{move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative:"L"}}
 				);
 				assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 			});
@@ -389,9 +389,9 @@ describe("module Normalizer", function(){
 					{move: {to: p(5, 8),piece:"KI",relative:"U"}}
 				);
 				expected.moves.push(
-					{move: {from: p(4, 9), to: p(4, 8), color: true, piece: "KI"}},
-					{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-					{move: {from: p(6, 9), to: p(5, 8), color: true, piece: "KI", relative:"U"}}
+					{move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
+					{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+					{move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative:"U"}}
 				);
 				assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 			});
@@ -402,9 +402,9 @@ describe("module Normalizer", function(){
 					{move: {to: p(5, 8),piece:"KI",relative:"M"}}
 				);
 				expected.moves.push(
-					{move: {from: p(4, 9), to: p(4, 8), color: true, piece: "KI"}},
-					{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-					{move: {from: p(4, 8), to: p(5, 8), color: true, piece: "KI", relative:"M"}}
+					{move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
+					{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+					{move: {from: p(4, 8), to: p(5, 8), color: 0, piece: "KI", relative:"M"}}
 				);
 				assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 			});
@@ -417,11 +417,11 @@ describe("module Normalizer", function(){
 					{move: {to: p(5, 9),piece:"KI",relative:"D"}}
 				);
 				expected.moves.push(
-					{move: {from: p(4, 9), to: p(5, 8), color: true, piece: "KI", relative:"R"}},
-					{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-					{move: {from: p(5, 9), to: p(4, 8), color: true, piece: "OU"}},
-					{move: {from: p(4, 4), to: p(4, 5), color: false, piece: "FU"}},
-					{move: {from: p(5, 8), to: p(5, 9), color: true, piece: "KI", relative:"D"}}
+					{move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative:"R"}},
+					{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+					{move: {from: p(5, 9), to: p(4, 8), color: 0, piece: "OU"}},
+					{move: {from: p(4, 4), to: p(4, 5), color: 1, piece: "FU"}},
+					{move: {from: p(5, 8), to: p(5, 9), color: 0, piece: "KI", relative:"D"}}
 				);
 				assert.deepEqual(Normalizer.normalizeKI2(actual), expected);
 			});
@@ -438,15 +438,15 @@ describe("module Normalizer", function(){
 						{move: {from: p(2, 2), to: p(2, 1),piece:"UM"}}
 						);
 				expected.moves.push(
-						{move: {from: p(7, 7), to: p(7, 6),piece:"FU",color:true}},
-						{move: {from: p(3, 3), to: p(3, 4),piece:"FU",color:false}},
-						{move: {from: p(8, 8), to: p(2, 2),promote:true,piece:"KA",capture:"KA",color:true}},
-						{move: {from: p(4, 1), to: p(3, 2),piece:"KI",color:false}},
-						{move: {piece:"KA", to: p(4, 1),piece:"KA",color:true}},
-						{move: {from: p(9, 3), to: p(9,4),piece:"FU",color:false}},
-						{move: {from: p(4,1), to: p(3, 2),piece:"KA", color:true,promote:true,capture:"KI"}},
-						{move: {from: p(9, 4), to: p(9,5),piece:"FU",color:false}},
-						{move: {from: p(2,2), to: p(2, 1),color:true,piece:"UM",relative:"R",capture:"KE"}}
+						{move: {from: p(7, 7), to: p(7, 6),piece:"FU",color:0}},
+						{move: {from: p(3, 3), to: p(3, 4),piece:"FU",color:1}},
+						{move: {from: p(8, 8), to: p(2, 2),promote:true,piece:"KA",capture:"KA",color:0}},
+						{move: {from: p(4, 1), to: p(3, 2),piece:"KI",color:1}},
+						{move: {piece:"KA", to: p(4, 1),piece:"KA",color:0}},
+						{move: {from: p(9, 3), to: p(9,4),piece:"FU",color:1}},
+						{move: {from: p(4,1), to: p(3, 2),piece:"KA", color:0,promote:true,capture:"KI"}},
+						{move: {from: p(9, 4), to: p(9,5),piece:"FU",color:1}},
+						{move: {from: p(2,2), to: p(2, 1),color:0,piece:"UM",relative:"R",capture:"KE"}}
 						);
 				assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 			});
@@ -480,7 +480,7 @@ describe("module Normalizer", function(){
 		});
 		it("normal", function () {
 			actual.moves[1] = {move: {from: p(7, 7), to: p(7, 6), piece: "FU"}};
-			expected.moves[1] = {move: {from: p(7, 7), to: p(7, 6), color: true, piece: "FU"}};
+			expected.moves[1] = {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}};
 			assert.deepEqual(Normalizer.normalizeCSA(actual), expected);
 		});
 		it("same, capture", function () {
@@ -490,9 +490,9 @@ describe("module Normalizer", function(){
 				{move: {from: p(8, 8), to: p(4, 4), piece: "KA"}}
 			);
 			expected.moves.push(
-				{move: {from: p(7, 7), to: p(7, 6), color: true, piece: "FU"}},
-				{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-				{move: {from: p(8, 8), to: p(4, 4), color: true, piece: "KA", same: true, capture: "FU"}}
+				{move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
+				{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+				{move: {from: p(8, 8), to: p(4, 4), color: 0, piece: "KA", same: true, capture: "FU"}}
 			);
 			assert.deepEqual(Normalizer.normalizeCSA(actual), expected);
 		});
@@ -506,12 +506,12 @@ describe("module Normalizer", function(){
 				{move:{piece:"KE",to:p(3,3)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}},
-				{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-				{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-				{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}},
+				{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+				{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+				{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 			);
 			assert.deepEqual(Normalizer.normalizeCSA(actual), expected);
 		});
@@ -524,11 +524,11 @@ describe("module Normalizer", function(){
 				{move:{piece:"KA",to:p(4,5)}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-				{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-				{move:{to:p(4,5),color:true,piece:"KA"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+				{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+				{move:{to:p(4,5),color:0,piece:"KA"}}
 			);
 			assert.deepEqual(Normalizer.normalizeCSA(actual), expected);
 		});
@@ -541,11 +541,11 @@ describe("module Normalizer", function(){
 				{move:{from:p(2,2),to:p(1,1),piece:"UM"}}
 			);
 			expected.moves.push(
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-				{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:true}},
-				{move:{from:p(4,1),to:p(4,2),color:false,piece:"KI"}},
-				{move:{from:p(2,2),to:p(1,1),color:true,piece:"UM",capture:"KY"}}
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:true}},
+				{move:{from:p(4,1),to:p(4,2),color:1,piece:"KI"}},
+				{move:{from:p(2,2),to:p(1,1),color:0,piece:"UM",capture:"KY"}}
 			);
 			assert.deepEqual(Normalizer.normalizeCSA(actual), expected);
 		});
@@ -577,9 +577,9 @@ describe("module Normalizer", function(){
 				{move: {from: p(6, 9), to: p(5, 8)}}
 			);
 			expected.moves.push(
-				{move: {from: p(4, 9), to: p(4, 8), color: true, piece: "KI"}},
-				{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-				{move: {from: p(6, 9), to: p(5, 8), color: true, piece: "KI", relative:"U"}}
+				{move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
+				{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+				{move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative:"U"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -590,9 +590,9 @@ describe("module Normalizer", function(){
 				{move: {from: p(4, 8), to: p(5, 8)}}
 			);
 			expected.moves.push(
-				{move: {from: p(4, 9), to: p(4, 8), color: true, piece: "KI"}},
-				{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-				{move: {from: p(4, 8), to: p(5, 8), color: true, piece: "KI", relative:"M"}}
+				{move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
+				{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+				{move: {from: p(4, 8), to: p(5, 8), color: 0, piece: "KI", relative:"M"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -605,11 +605,11 @@ describe("module Normalizer", function(){
 				{move: {from: p(5, 8), to: p(5, 9),piece:"KI"}}
 			);
 			expected.moves.push(
-				{move: {from: p(6, 9), to: p(5, 8), color: true, piece: "KI", relative:"L"}},
-				{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-				{move: {from: p(5, 9), to: p(4, 8), color: true, piece: "OU"}},
-				{move: {from: p(4, 4), to: p(4, 5), color: false, piece: "FU"}},
-				{move: {from: p(5, 8), to: p(5, 9), color: true, piece: "KI", relative:"D"}}
+				{move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative:"L"}},
+				{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+				{move: {from: p(5, 9), to: p(4, 8), color: 0, piece: "OU"}},
+				{move: {from: p(4, 4), to: p(4, 5), color: 1, piece: "FU"}},
+				{move: {from: p(5, 8), to: p(5, 9), color: 0, piece: "KI", relative:"D"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
@@ -618,7 +618,7 @@ describe("module Normalizer", function(){
 				{move: {from: p(4, 9), to: p(5, 8)}}
 			);
 			expected.moves.push(
-				{move: {from: p(4, 9), to: p(5, 8), color: true, piece: "KI",relative:"R"}}
+				{move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI",relative:"R"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -635,15 +635,15 @@ describe("module Normalizer", function(){
 				{move: {from: p(4,9), to: p(5, 8)}}
 			);
 			expected.moves.push(
-				{move: {from: p(7, 7), to: p(7, 6),piece:"FU",color:true}},
-				{move: {from: p(3, 3), to: p(3, 4),piece:"FU",color:false}},
-				{move: {from: p(8, 8), to: p(2, 2),promote:true,piece:"KA",capture:"KA",color:true}},
-				{move: {from: p(4, 1), to: p(3, 2),piece:"KI",color:false}},
-				{move: {from: p(2, 2), to: p(3, 2),piece:"UM",color:true,capture:"KI",same:true}},
-				{move: {from: p(3, 1), to: p(3, 2),piece:"GI",color:false,capture:"UM",same:true}},
-				{move: {piece:"KI", to: p(4, 8),color:true,relative:"H"}},
-				{move: {from: p(3, 2), to: p(3, 3),piece:"GI",color:false}},
-				{move: {from: p(4,9), to: p(5, 8),color:true,piece:"KI",relative:"RU"}}
+				{move: {from: p(7, 7), to: p(7, 6),piece:"FU",color:0}},
+				{move: {from: p(3, 3), to: p(3, 4),piece:"FU",color:1}},
+				{move: {from: p(8, 8), to: p(2, 2),promote:true,piece:"KA",capture:"KA",color:0}},
+				{move: {from: p(4, 1), to: p(3, 2),piece:"KI",color:1}},
+				{move: {from: p(2, 2), to: p(3, 2),piece:"UM",color:0,capture:"KI",same:true}},
+				{move: {from: p(3, 1), to: p(3, 2),piece:"GI",color:1,capture:"UM",same:true}},
+				{move: {piece:"KI", to: p(4, 8),color:0,relative:"H"}},
+				{move: {from: p(3, 2), to: p(3, 3),piece:"GI",color:1}},
+				{move: {from: p(4,9), to: p(5, 8),color:0,piece:"KI",relative:"RU"}}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
 		});
@@ -656,11 +656,11 @@ describe("module Normalizer", function(){
 				{move: {from: p(4, 9), to: p(4, 8),piece:"KI"}}
 			);
 			expected.moves.push(
-				{move: {from: p(5, 9), to: p(6, 8), color: true, piece: "OU"}},
-				{move: {from: p(4, 3), to: p(4, 4), color: false, piece: "FU"}},
-				{move: {from: p(6, 9), to: p(5, 9), color: true, piece: "KI", relative:"L"}},
-				{move: {from: p(4, 4), to: p(4, 5), color: false, piece: "FU"}},
-				{move: {from: p(4, 9), to: p(4, 8), color: true, piece: "KI", relative:"C"}}
+				{move: {from: p(5, 9), to: p(6, 8), color: 0, piece: "OU"}},
+				{move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
+				{move: {from: p(6, 9), to: p(5, 9), color: 0, piece: "KI", relative:"L"}},
+				{move: {from: p(4, 4), to: p(4, 5), color: 1, piece: "FU"}},
+				{move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI", relative:"C"}}
 			);
 			assert.deepEqual(Normalizer.normalizeKIF(actual), expected);
 		});
@@ -679,16 +679,16 @@ describe("module Normalizer", function(){
 				]}
 			);
 			expected.moves.push(
-				{move: {from: p(7, 7), to: p(7, 6),piece:"FU",color:true}},
-				{move: {from: p(3, 3), to: p(3, 4),piece:"FU",color:false}},
-				{move: {from: p(8, 8), to: p(2, 2),promote:true,piece:"KA",capture:"KA",color:true}},
-				{move: {from: p(4, 1), to: p(3, 2),piece:"KI",color:false}},
-				{move: {piece:"KA", to: p(4, 1),piece:"KA",color:true}},
-				{move: {from: p(9, 3), to: p(9,4),piece:"FU",color:false}},
-				{move: {from: p(4,1), to: p(3, 2),piece:"KA", color:true,promote:true,capture:"KI"}},
-				{move: {from: p(9, 4), to: p(9,5),piece:"FU",color:false}},
-				{move: {from: p(2,2), to: p(2, 1),color:true,piece:"UM",relative:"R",capture:"KE"},forks:[
-					[{move: {from: p(3,2), to: p(3, 1),color:true,piece:"UM",relative:"L",capture:"GI"}}]
+				{move: {from: p(7, 7), to: p(7, 6),piece:"FU",color:0}},
+				{move: {from: p(3, 3), to: p(3, 4),piece:"FU",color:1}},
+				{move: {from: p(8, 8), to: p(2, 2),promote:true,piece:"KA",capture:"KA",color:0}},
+				{move: {from: p(4, 1), to: p(3, 2),piece:"KI",color:1}},
+				{move: {piece:"KA", to: p(4, 1),piece:"KA",color:0}},
+				{move: {from: p(9, 3), to: p(9,4),piece:"FU",color:1}},
+				{move: {from: p(4,1), to: p(3, 2),piece:"KA", color:0,promote:true,capture:"KI"}},
+				{move: {from: p(9, 4), to: p(9,5),piece:"FU",color:1}},
+				{move: {from: p(2,2), to: p(2, 1),color:0,piece:"UM",relative:"R",capture:"KE"},forks:[
+					[{move: {from: p(3,2), to: p(3, 1),color:0,piece:"UM",relative:"L",capture:"GI"}}]
 				]}
 			);
 			assert.deepEqual(Normalizer.normalizeMinimal(actual), expected);
@@ -702,17 +702,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "HI" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: true,
+						color: 0,
 						hands:[
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -735,17 +735,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "HI" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: false,
+						color: 1,
 						hands:[
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -760,17 +760,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "HI" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: false,
+						color: 1,
 						hands:[
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -788,17 +788,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "HI" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: false, 
+						color: 1, 
 						hands:[
 							{FU:1,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -813,17 +813,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "KA" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "GI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KE" }, { color: false, kind: "HI" }, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{ color: false, kind: "KY" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: false,
+						color: 1,
 						hands:[
 							{FU:1,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -841,17 +841,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: false,
+						color: 1,
 						hands:[
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -874,17 +874,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: true,
+						color: 0,
 						hands:[
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -899,17 +899,17 @@ describe("module Normalizer", function(){
 					preset: "OTHER",
 					data: {
 						board: [
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "HI" }, { color: true, kind: "KE" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{ color: false, kind: "OU" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "OU" },],
-							[{ color: false, kind: "KI" }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KI" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "GI" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, { color: true, kind: "KA" }, { color: true, kind: "KE" },],
-							[{                          }, {}, { color: false, kind: "FU" }, {}, {}, {}, { color: true, kind: "FU" }, {}, { color: true, kind: "KY" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" },],
+							[{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
+							[{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" },],
 						],
-						color: true,
+						color: 0,
 						hands:[
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 							{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -935,7 +935,7 @@ describe("module Normalizer", function(){
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:true}},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:0}},
 					{special:"+ILLEGAL_ACTION"},
 				]
 			};
@@ -957,9 +957,9 @@ describe("module Normalizer", function(){
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:true},forks:[
+					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:0},forks:[
 						[{special:"-ILLEGAL_ACTION"}],
-						[{move:{from:p(2,7),to:p(2,6),piece:"FU",color:true}}, {special:"+ILLEGAL_ACTION"}],
+						[{move:{from:p(2,7),to:p(2,6),piece:"FU",color:0}}, {special:"+ILLEGAL_ACTION"}],
 					]},
 					{special:"+ILLEGAL_ACTION"},
 				]

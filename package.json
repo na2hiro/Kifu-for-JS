@@ -36,6 +36,6 @@
     "gulp-typescript": "^2.8.0",
     "gulp-webserver": "^0.9.1",
     "merge2": "^0.3.6",
-    "shogi.js": "na2hiro/Shogi.js#b77bf0f"
+    "shogi.js": "na2hiro/Shogi.js#4267322"
   }
 }

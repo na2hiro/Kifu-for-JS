@@ -1,4 +1,3 @@
-/// <reference path="../src/JSONKifuFormat.d.ts" />
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -7,8 +6,9 @@
  */
 import ShogiJS = require("../node_modules/shogi.js/lib/shogi");
 import Color = ShogiJS.Color;
-export declare function canPromote(place: PlaceFormat, color: Color): boolean;
-export declare function normalizeMinimal(obj: JSONKifuFormat): JSONKifuFormat;
-export declare function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat;
-export declare function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat;
-export declare function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat;
+import JKF = require('./JSONKifuFormat');
+export declare function canPromote(place: JKF.PlaceFormat, color: Color): boolean;
+export declare function normalizeMinimal(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat;
+export declare function normalizeKIF(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat;
+export declare function normalizeKI2(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat;
+export declare function normalizeCSA(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat;

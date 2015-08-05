@@ -1,5 +1,3 @@
-/// <reference path="../src/JSONKifuFormat.d.ts" />
-
 /** @license
  * JSON Kifu Format 
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -11,25 +9,26 @@ import Shogi = ShogiJS.Shogi;
 import Piece = ShogiJS.Piece;
 import Color = ShogiJS.Color;
 import Move = ShogiJS.Move;
+import JKF = require('./JSONKifuFormat');
 
-export function canPromote(place: PlaceFormat, color: Color){
+export function canPromote(place: JKF.PlaceFormat, color: Color){
 	return color==Color.Black ? place.y<=3 : place.y>=7;
 }
 
 // 最小形式の棋譜をnormalizeする
 // 最小形式: (指し) from, to, promote; (打ち) piece, to
-export function normalizeMinimal(obj: JSONKifuFormat): JSONKifuFormat{
+export function normalizeMinimal(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat{
 	var shogi = new Shogi(obj.initial || undefined);
 	normalizeMinimalMoves(shogi, obj.moves);
 	return obj;
 }
-function normalizeMinimalMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
+function normalizeMinimalMoves(shogi: Shogi, moves: JKF.MoveFormat[], lastMove?: JKF.MoveFormat){
 	for(var i=0; i<moves.length; i++){
 		var last = i==0 ? lastMove : moves[i-1];
 		var move = moves[i].move;
 		if(!move) continue;
 		// 手番
-		move.color=shogi.turn==Color.Black;
+		move.color=shogi.turn;
 		if(move.from){
 			// move
 
@@ -88,18 +87,18 @@ function normalizeMinimalMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: Mov
 	}
 }
 
-export function normalizeKIF(obj: JSONKifuFormat): JSONKifuFormat{
+export function normalizeKIF(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat{
 	var shogi = new Shogi(obj.initial || undefined);
 	normalizeKIFMoves(shogi, obj.moves);
 	return obj;
 }
-function normalizeKIFMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
+function normalizeKIFMoves(shogi: Shogi, moves: JKF.MoveFormat[], lastMove?: JKF.MoveFormat){
 	for(var i=0; i<moves.length; i++){
 		var last = i==0 ? lastMove : moves[i-1];
 		var move = moves[i].move;
 		if(!move) continue;
 		// 手番
-		move.color=shogi.turn==Color.Black;
+		move.color=shogi.turn;
 		if(move.from){
 			// move
 
@@ -150,19 +149,19 @@ function normalizeKIFMoves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFor
 		}
 	}
 }
-export function normalizeKI2(obj: JSONKifuFormat): JSONKifuFormat{
+export function normalizeKI2(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat{
 	var shogi = new Shogi(obj.initial || undefined);
 	normalizeKI2Moves(shogi, obj.moves);
 	return obj;
 }
-function normalizeKI2Moves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFormat){
+function normalizeKI2Moves(shogi: Shogi, moves: JKF.MoveFormat[], lastMove?: JKF.MoveFormat){
 	for(var i=0; i<moves.length; i++){
 		var last = i==0 ? lastMove : moves[i-1];
 		var move = moves[i].move;
 		if(!move) continue;
 
 		// 手番
-		move.color=shogi.turn==Color.Black;
+		move.color=shogi.turn;
 		// 同からto復元
 		if(move.same) move.to = last.move.to;
 
@@ -212,14 +211,14 @@ function normalizeKI2Moves(shogi: Shogi, moves: MoveFormat[], lastMove?: MoveFor
 		}
 	}
 }
-export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
+export function normalizeCSA(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat{
 	restorePreset(obj);
 	var shogi = new Shogi(obj.initial || undefined);
 	for(var i=0; i<obj.moves.length; i++){
 		var move = obj.moves[i].move;
 		if(!move) continue;
 		// 手番
-		move.color=shogi.turn==Color.Black;
+		move.color=shogi.turn;
 		if(move.from){
 			// move
 
@@ -261,7 +260,7 @@ export function normalizeCSA(obj: JSONKifuFormat): JSONKifuFormat{
 	}
 	return obj;
 }
-function addRelativeInformation(shogi: Shogi, move: MoveMoveFormat){
+function addRelativeInformation(shogi: Shogi, move: JKF.MoveMoveFormat){
 	var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map((mv)=>flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)));
 	if(moveVectors.length>=2){
 		var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
@@ -282,7 +281,7 @@ function addRelativeInformation(shogi: Shogi, move: MoveMoveFormat){
 		}();
 	}
 }
-function addCaptureInformation(shogi: Shogi, move: MoveMoveFormat){
+function addCaptureInformation(shogi: Shogi, move: JKF.MoveMoveFormat){
 	var to = shogi.get(move.to.x, move.to.y);
 	if(to) move.capture = to.kind;
 }
@@ -331,7 +330,7 @@ function moveSatisfiesRelative(relative: string, color: Color, move: Move): bool
 	}
 }
 // CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
-function restorePreset(obj: JSONKifuFormat){
+function restorePreset(obj: JKF.JSONKifuFormat){
 	if(!obj.initial || obj.initial.preset!="OTHER") return;
 	var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
 	for(var i=0; i<2; i++){
@@ -340,15 +339,15 @@ function restorePreset(obj: JSONKifuFormat){
 		}
 	}
 	var hirate = [
-			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
-			[{color:false,kind:"KE"},{color:false,kind:"KA"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"HI"},{color:true,kind:"KE"},],
-			[{color:false,kind:"GI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"GI"},],
-			[{color:false,kind:"KI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KI"},],
-			[{color:false,kind:"OU"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"OU"},],
-			[{color:false,kind:"KI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KI"},],
-			[{color:false,kind:"GI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"GI"},],
-			[{color:false,kind:"KE"},{color:false,kind:"HI"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"KA"},{color:true,kind:"KE"},],
-			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
+			[{color:Color.White,kind:"KY"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"KY"},],
+			[{color:Color.White,kind:"KE"},{color:Color.White,kind:"KA"},{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{color:Color.Black,kind:"HI"},{color:Color.Black,kind:"KE"},],
+			[{color:Color.White,kind:"GI"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"GI"},],
+			[{color:Color.White,kind:"KI"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"KI"},],
+			[{color:Color.White,kind:"OU"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"OU"},],
+			[{color:Color.White,kind:"KI"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"KI"},],
+			[{color:Color.White,kind:"GI"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"GI"},],
+			[{color:Color.White,kind:"KE"},{color:Color.White,kind:"HI"},{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{color:Color.Black,kind:"KA"},{color:Color.Black,kind:"KE"},],
+			[{color:Color.White,kind:"KY"},{                     },{color:Color.White,kind:"FU"},{},{},{},{color:Color.Black,kind:"FU"},{                    },{color:Color.Black,kind:"KY"},],
 		];
 	var diff = [];
 	for(var i=0; i<9; i++){
@@ -375,11 +374,11 @@ function restorePreset(obj: JSONKifuFormat){
 
 	var preset = presets[diff.sort().join("")];
 	if(preset=="HIRATE"){
-		if(obj.initial.data.color==true){
+		if(obj.initial.data.color==Color.Black){
 			obj.initial.preset="HIRATE";
 			delete obj.initial.data;
 		}
-	}else if(preset && obj.initial.data.color==false){
+	}else if(preset && obj.initial.data.color==Color.White){
 		obj.initial.preset=preset;
 		delete obj.initial.data;
 	}
@@ -388,7 +387,7 @@ function samePiece(p1, p2){
 	return (typeof p1.color=="undefined" && typeof p2.color=="undefined") ||
 		(typeof p1.color!="undefined" && typeof p2.color!="undefined" && p1.color==p2.color && p1.kind==p2.kind);
 }
-function restoreColorOfIllegalAction(moves: MoveFormat[], shogi: Shogi){
+function restoreColorOfIllegalAction(moves: JKF.MoveFormat[], shogi: Shogi){
 	if(moves.length>=1 && moves[moves.length-1].special == "ILLEGAL_ACTION"){
 		moves[moves.length-1].special = (shogi.turn ? "+" : "-")+"ILLEGAL_ACTION";
 	}

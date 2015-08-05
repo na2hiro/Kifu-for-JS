@@ -35,14 +35,15 @@ gulp.task('clean-coverage', function(cb){
 	del([COVERAGE_DIR+"lcov-report/*", "!"+COVERAGE_DIR+"lcov-report/404.html"], cb);
 });
 
-gulp.task('default', ['serve'], function(){
+gulp.task('default', ['serve'], watch);
+gulp.task('watch', watch);
+function watch(){
 	gulp.watch(SRC_FILE, ['typescript']); // will change LIB_FILE
 	gulp.watch(PEG_FILE, ['peg']); // will change PARSER_FILE
 	gulp.watch([PARSER_FILE, LIB_FILE], ['test-without-build-node', 'browserify-without-node']);
 	gulp.watch(TEST_FILE, ['test-without-build-node']);
 	gulp.watch(PLAYER_NODE_FILE, ['browserify-without-node']);
-});
-
+}
 gulp.task('build-node', ['typescript', 'peg']);
 
 gulp.task('typescript', ['clean-lib'], function(cb){

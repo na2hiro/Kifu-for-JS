@@ -1,4 +1,3 @@
-/// <reference path="../src/JSONKifuFormat.d.ts" />
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -7,20 +6,21 @@
  */
 import ShogiJS = require('../node_modules/shogi.js/lib/shogi');
 import Shogi = ShogiJS.Shogi;
+import JKF = require('./JSONKifuFormat');
 export = JKFPlayer;
 declare class JKFPlayer {
     shogi: Shogi;
-    kifu: JSONKifuFormat;
+    kifu: JKF.JSONKifuFormat;
     tesuu: number;
     forks: {
         te: number;
-        moves: MoveFormat[];
+        moves: JKF.MoveFormat[];
     }[];
     static debug: boolean;
     static _log: any[];
     static log(...lg: any[]): void;
-    constructor(kifu: JSONKifuFormat);
-    initialize(kifu: JSONKifuFormat): void;
+    constructor(kifu: JKF.JSONKifuFormat);
+    initialize(kifu: JKF.JSONKifuFormat): void;
     static parse(kifu: string, filename?: string): JKFPlayer;
     static parseJKF(kifu: string): JKFPlayer;
     static parseKIF(kifu: string): JKFPlayer;
@@ -31,24 +31,24 @@ declare class JKFPlayer {
     static kindToKan(kind: string): string;
     static relativeToKan(relative: string): any;
     static specialToKan(special: string): any;
-    static moveToReadableKifu(mv: MoveFormat): string;
-    static doMove(shogi: Shogi, move: MoveMoveFormat): void;
-    static undoMove(shogi: Shogi, move: MoveMoveFormat): void;
-    static getState(shogi: Shogi): StateFormat;
+    static moveToReadableKifu(mv: JKF.MoveFormat): string;
+    static doMove(shogi: Shogi, move: JKF.MoveMoveFormat): void;
+    static undoMove(shogi: Shogi, move: JKF.MoveMoveFormat): void;
+    static getState(shogi: Shogi): JKF.StateFormat;
     forward(): boolean;
     backward(): boolean;
     goto(tesuu: number): void;
     go(tesuu: number): void;
     forkAndForward(num: number): boolean;
-    inputMove(move: MoveMoveFormat): boolean;
+    inputMove(move: JKF.MoveMoveFormat): boolean;
     getBoard(x: number, y: number): ShogiJS.Piece;
     getComments(tesuu?: number): string[];
-    getMove(tesuu?: number): MoveMoveFormat;
+    getMove(tesuu?: number): JKF.MoveMoveFormat;
     getReadableKifu(tesuu?: number): string;
     getReadableForkKifu(tesuu?: number): string[];
     getMaxTesuu(): number;
     toJKF(): string;
-    getState(): StateFormat;
+    getState(): JKF.StateFormat;
     getReadableKifuState(): {
         kifu: string;
         forks: string[];

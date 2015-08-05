@@ -40,12 +40,12 @@ describe("class Player", function(){
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-					{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-					{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}},
-					{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-					{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-					{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+					{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+					{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}},
+					{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+					{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+					{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 				]
 			});
 			assert.equal(player.shogi.toCSAString(), "\
@@ -102,8 +102,8 @@ P-\n\
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-					{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
+					{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
 					{special: "CHUDAN"}
 				]
 			});
@@ -122,8 +122,8 @@ P-\n\
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-					{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
+					{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
 					{special: "CHUDAN"}
 				]
 			});
@@ -139,8 +139,8 @@ P-\n\
 			header: {},
 			moves: [
 				{},
-				{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-				{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
 				{special: "CHUDAN"}
 			]
 		});
@@ -159,18 +159,18 @@ P-\n\
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),color:true,piece:"FU"}},
-					{move:{from:p(3,3),to:p(3,4),color:false,piece:"FU"}},
-					{move:{from:p(8,9),to:p(7,7),color:true,piece:"KE"}, forks:[
+					{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+					{move:{from:p(8,9),to:p(7,7),color:0,piece:"KE"}, forks:[
 						[
-							{move:{from:p(8,8),to:p(2,2),color:true,piece:"KA",capture:"KA",promote:false}},
-							{move:{from:p(3,1),to:p(2,2),color:false,piece:"GI",capture:"KA",same:true}},
-							{move:{to:p(4,5),color:true,piece:"KA"}}
+							{move:{from:p(8,8),to:p(2,2),color:0,piece:"KA",capture:"KA",promote:false}},
+							{move:{from:p(3,1),to:p(2,2),color:1,piece:"GI",capture:"KA",same:true}},
+							{move:{to:p(4,5),color:0,piece:"KA"}}
 						]
 					]},
-					{move:{from:p(2,2),to:p(7,7),color:false,piece:"KA",capture:"KE",promote:true,same:true}},
-					{move:{from:p(8,8),to:p(7,7),color:true,piece:"KA",capture:"UM",same:true}},
-					{move:{to:p(3,3),color:false,piece:"KE",relative:"H"}}
+					{move:{from:p(2,2),to:p(7,7),color:1,piece:"KA",capture:"KE",promote:true,same:true}},
+					{move:{from:p(8,8),to:p(7,7),color:0,piece:"KA",capture:"UM",same:true}},
+					{move:{to:p(3,3),color:1,piece:"KE",relative:"H"}}
 				]
 			});
 			assert(player.forward());
@@ -261,8 +261,8 @@ P-\n\
 				header: {},
 				moves: [
 					{},
-					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:true}},
-					{move:{from:p(3,3),to:p(3,4),piece:"FU",color:false}},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:0}},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU",color:1}},
 				]
 			});
 			player.goto(2);
@@ -282,19 +282,19 @@ P-\n\
 	});
 	it("moveToReadableKifu", function(){
 		assert.equal(JKFPlayer.moveToReadableKifu({
-			move: {from:p(7,7), to:p(7,6), piece:"FU", color:true}
+			move: {from:p(7,7), to:p(7,6), piece:"FU", color:0}
 		}), "☗７六歩");
 		assert.equal(JKFPlayer.moveToReadableKifu({
-			move: {from:p(2,3), to:p(2,4), piece:"FU", color:false, same:true}
+			move: {from:p(2,3), to:p(2,4), piece:"FU", color:1, same:true}
 		}), "☖同　歩");
 		assert.equal(JKFPlayer.moveToReadableKifu({
-			move: {from:p(3,3), to:p(2,4), piece:"GI", color:true, promote:true}
+			move: {from:p(3,3), to:p(2,4), piece:"GI", color:0, promote:true}
 		}), "☗２四銀成");
 		assert.equal(JKFPlayer.moveToReadableKifu({
-			move: {from:p(3,3), to:p(2,4), piece:"GI", color:true, promote:false}
+			move: {from:p(3,3), to:p(2,4), piece:"GI", color:0, promote:false}
 		}), "☗２四銀不成");
 		assert.equal(JKFPlayer.moveToReadableKifu({
-			move: {from:p(6,8), to:p(5,7), piece:"GI", color:true, relative:"RU"}
+			move: {from:p(6,8), to:p(5,7), piece:"GI", color:0, relative:"RU"}
 		}), "☗５七銀右上");
 		assert.equal(JKFPlayer.moveToReadableKifu({
 			special: "TORYO"
@@ -307,10 +307,10 @@ P-\n\
 				header: {},
 				moves: [
 					{comments:["hoge"]},
-					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:true},forks:[
-						[{move:{from:p(2,7),to:p(2,6),piece:"FU",color:true}}]
+					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:0},forks:[
+						[{move:{from:p(2,7),to:p(2,6),piece:"FU",color:0}}]
 					]},
-					{move:{from:p(3,3),to:p(3,4),piece:"FU",color:false}},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU",color:1}},
 				]
 			});
 		});
@@ -324,7 +324,7 @@ P-\n\
 		});
 		it("getMove", function(){
 			assert.deepEqual(player.getMove(), null);
-			assert.deepEqual(player.getMove(2), {from:p(3,3),to:p(3,4),piece:"FU",color:false});
+			assert.deepEqual(player.getMove(2), {from:p(3,3),to:p(3,4),piece:"FU",color:1});
 		});
 		it("getReadableKifu", function(){
 			assert.deepEqual(player.getReadableKifu(), "開始局面");
@@ -343,7 +343,7 @@ P-\n\
 					[{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" },],
 					[{ color: 1, kind: "KY" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "KY" },],
 				],
-				color: true,
+				color: 0,
 				hands:[
 					{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 					{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
@@ -364,7 +364,7 @@ P-\n\
 		it("getNextFork", function(){
 			assert.deepEqual(player.getNextFork(1), []);
 			assert.deepEqual(player.getNextFork(), [
-				[{ "move": {"color": true,"from":p(2,7),"piece": "FU","to":p(2,6)}}]
+				[{ "move": {"color": 0,"from":p(2,7),"piece": "FU","to":p(2,6)}}]
 			]);
 		});
 		it("toJKF", function(){
