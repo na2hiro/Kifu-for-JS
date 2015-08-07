@@ -166,6 +166,7 @@ class JKFPlayer{
 		return ret;
 	}
 	static doMove(shogi: Shogi, move: JKF.MoveMoveFormat){
+		if(!move) return;
 		if(move.from){
 			shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
 		}else{
@@ -173,6 +174,7 @@ class JKFPlayer{
 		}
 	}
 	static undoMove(shogi: Shogi, move: JKF.MoveMoveFormat){
+		if(!move) return;
 		if(move.from){
 			shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
 		}else{

@@ -7471,6 +7471,8 @@ var JKFPlayer = (function () {
         return ret;
     };
     JKFPlayer.doMove = function (shogi, move) {
+        if (!move)
+            return;
         if (move.from) {
             shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
         }
@@ -7479,6 +7481,8 @@ var JKFPlayer = (function () {
         }
     };
     JKFPlayer.undoMove = function (shogi, move) {
+        if (!move)
+            return;
         if (move.from) {
             shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
         }

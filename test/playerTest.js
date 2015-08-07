@@ -144,14 +144,43 @@ P-\n\
 				{special: "CHUDAN"}
 			]
 		});
-		var first = player.shogi.toCSAString();
-		player.forward();
-		player.forward();
-		var third = player.shogi.toCSAString();
+		var initial = player.shogi.toCSAString();
+		assert.equal(player.tesuu, 0);
+		assert(player.forward());
+		assert.equal(player.tesuu, 1);
+		assert(player.forward());
+		assert.equal(player.tesuu, 2);
+		var second = player.shogi.toCSAString();
+		assert(player.forward());
+		assert.equal(player.tesuu, 3);
+		assert.equal(player.forward(), false);
+		assert.equal(player.tesuu, 3);
 		player.goto(0);
-		assert.equal(player.shogi.toCSAString(), first);
+		assert.equal(player.tesuu, 0);
+		assert.equal(player.shogi.toCSAString(), initial);
+		assert.equal(player.backward(), false);
+		assert.equal(player.tesuu, 0);
 		player.go(2);
-		assert.equal(player.shogi.toCSAString(), third);
+		assert.equal(player.tesuu, 2);
+		assert.equal(player.shogi.toCSAString(), second);
+	});
+	it("goto Infinity", function(){
+		var player = new JKFPlayer({
+			header: {},
+			moves: [
+				{},
+				{move:{from:p(7,7),to:p(7,6),color:0,piece:"FU"}},
+				{move:{from:p(3,3),to:p(3,4),color:1,piece:"FU"}},
+				{special: "CHUDAN"}
+			]
+		});
+		var first = player.shogi.toCSAString();
+		assert.equal(player.tesuu, 0);
+		player.goto(Infinity); // goto last
+		assert.equal(player.tesuu, 3);
+		player.goto(-1);
+		assert.equal(player.tesuu, 0);
+		assert.equal(player.shogi.toCSAString(), first);
 	});
 	describe("forkAndForward", function(){
 		it("new", function(){
