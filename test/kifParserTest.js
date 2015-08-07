@@ -119,8 +119,8 @@ describe("kif-parser", function(){
 					preset:"OTHER",
 					data:{
 						board:[
-							[{color:false,kind:"OU"},{},{},{},{},{},{},{},{}],
-							[{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"},{color:false,kind:"FU"}],
+							[{color:1,kind:"OU"},{},{},{},{},{},{},{},{}],
+							[{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"}],
 							[{},{},{},{},{},{},{},{},{}],
 							[{},{},{},{},{},{},{},{},{}],
 							[{},{},{},{},{},{},{},{},{}],
@@ -129,7 +129,7 @@ describe("kif-parser", function(){
 							[{},{},{},{},{},{},{},{},{}],
 							[{},{},{},{},{},{},{},{},{}],
 						],
-						color: true,
+						color: 0,
 						hands:[
 							{FU:0,KY:4,KE:0,GI:0,KI:0,KA:0,HI:2},
 							{FU:0,KY:0,KE:4,GI:4,KI:0,KA:0,HI:0},

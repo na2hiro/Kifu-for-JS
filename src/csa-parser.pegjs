@@ -6,15 +6,15 @@
 	}
 	function getHirate(){
 		return [
-			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
-			[{color:false,kind:"KE"},{color:false,kind:"KA"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"HI"},{color:true,kind:"KE"},],
-			[{color:false,kind:"GI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"GI"},],
-			[{color:false,kind:"KI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KI"},],
-			[{color:false,kind:"OU"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"OU"},],
-			[{color:false,kind:"KI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KI"},],
-			[{color:false,kind:"GI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"GI"},],
-			[{color:false,kind:"KE"},{color:false,kind:"HI"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"KA"},{color:true,kind:"KE"},],
-			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
+			[{color:1,kind:"KY"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KY"},],
+			[{color:1,kind:"KE"},{color:1,kind:"KA"},{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{color:0,kind:"HI"},{color:0,kind:"KE"},],
+			[{color:1,kind:"GI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"GI"},],
+			[{color:1,kind:"KI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KI"},],
+			[{color:1,kind:"OU"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"OU"},],
+			[{color:1,kind:"KI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KI"},],
+			[{color:1,kind:"GI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"GI"},],
+			[{color:1,kind:"KE"},{color:1,kind:"HI"},{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{color:0,kind:"KA"},{color:0,kind:"KE"},],
+			[{color:1,kind:"KY"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KY"},],
 		];
 	}
 	function normalizeHeaderKey(key){
@@ -115,10 +115,10 @@ komabetsu = lines:komabetsuline* {
 			if(p.xy.x==0){
 				// 持ち駒
 				if(p.piece=="AL"){
-					hands[line[i].teban?0:1]=all;
+					hands[lines[i].teban]=all;
 					break all;
 				}
-				var obj=hands[lines[i].teban?0:1];
+				var obj=hands[lines[i].teban];
 				obj[p.piece]++;
 			}else{
 				// 盤上
@@ -148,7 +148,7 @@ normalmove = teban from:xy to:xy piece:piece nl {
 }
 specialmove = "%" m:[-+_A-Z]+ nl { return {special: m.join("")}; }
 
-teban = "+"{return true}/"-"{return false}
+teban = "+"{return 0}/"-"{return 1}
 
 comment = "'" c:nonl* nl { return c.join(""); }
 time = "T" t:[0-9]* nl { return {now: secToTime(parseInt(t.join("")))}; }

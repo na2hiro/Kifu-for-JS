@@ -51,10 +51,10 @@ module.exports = (function() {
         	}
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
-        			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? 0 : 1;
         			delete ret.header["手番"];
         		}else{
-        			ret.initial.data.color = true;
+        			ret.initial.data.color = 0;
         		}
         		ret.initial.data.hands = [
         			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
@@ -112,12 +112,12 @@ module.exports = (function() {
         peg$c25 = function() { return {} },
         peg$c26 = "^",
         peg$c27 = { type: "literal", value: "^", description: "\"^\"" },
-        peg$c28 = function() {return true},
+        peg$c28 = function() {return 0},
         peg$c29 = "v",
         peg$c30 = { type: "literal", value: "v", description: "\"v\"" },
         peg$c31 = "V",
         peg$c32 = { type: "literal", value: "V", description: "\"V\"" },
-        peg$c33 = function() {return false},
+        peg$c33 = function() {return 1},
         peg$c34 = function(hd, tl, res) {
         	tl.unshift(hd);
         	if(res && !tl[tl.length-1].special){

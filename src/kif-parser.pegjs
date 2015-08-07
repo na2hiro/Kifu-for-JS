@@ -105,10 +105,10 @@ kifu
 	}
 	if(ret.initial && ret.initial.data){
 		if(ret.header["手番"]){
-			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? 0 : 1 ;
 			delete ret.header["手番"];
 		}else{
-			ret.initial.data.color = true;
+			ret.initial.data.color = 0;
 		}
 		ret.initial.data.hands = [
 			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
@@ -152,7 +152,7 @@ initialboard = (" " nonl* nl)? ("+" nonl* nl)? lines:ikkatsuline+ ("+" nonl* nl)
 }
 ikkatsuline = "|" masu:masu+ "|" nonl+ nl { return masu; }
 masu = c:teban k:piece {return {color:c, kind:k}} / " ・" { return {} }
-teban = (" "/"+"/"^"){return true} / ("v"/"V"){return false}
+teban = (" "/"+"/"^"){return 0} / ("v"/"V"){return 1}
 
 split = "手数----指手--" "-------消費時間--"? nl
 

@@ -1172,10 +1172,10 @@ module.exports = (function() {
         			if(p.xy.x==0){
         				// 持ち駒
         				if(p.piece=="AL"){
-        					hands[line[i].teban?0:1]=all;
+        					hands[lines[i].teban]=all;
         					break all;
         				}
-        				var obj=hands[lines[i].teban?0:1];
+        				var obj=hands[lines[i].teban];
         				obj[p.piece]++;
         			}else{
         				// 盤上
@@ -1208,10 +1208,10 @@ module.exports = (function() {
         peg$c49 = function(m) { return {special: m.join("")}; },
         peg$c50 = "+",
         peg$c51 = { type: "literal", value: "+", description: "\"+\"" },
-        peg$c52 = function() {return true},
+        peg$c52 = function() {return 0},
         peg$c53 = "-",
         peg$c54 = { type: "literal", value: "-", description: "\"-\"" },
-        peg$c55 = function() {return false},
+        peg$c55 = function() {return 1},
         peg$c56 = "'",
         peg$c57 = { type: "literal", value: "'", description: "\"'\"" },
         peg$c58 = function(c) { return c.join(""); },
@@ -2587,15 +2587,15 @@ module.exports = (function() {
     	}
     	function getHirate(){
     		return [
-    			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
-    			[{color:false,kind:"KE"},{color:false,kind:"KA"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"HI"},{color:true,kind:"KE"},],
-    			[{color:false,kind:"GI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"GI"},],
-    			[{color:false,kind:"KI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KI"},],
-    			[{color:false,kind:"OU"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"OU"},],
-    			[{color:false,kind:"KI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KI"},],
-    			[{color:false,kind:"GI"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"GI"},],
-    			[{color:false,kind:"KE"},{color:false,kind:"HI"},{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{color:true,kind:"KA"},{color:true,kind:"KE"},],
-    			[{color:false,kind:"KY"},{                     },{color:false,kind:"FU"},{},{},{},{color:true,kind:"FU"},{                    },{color:true,kind:"KY"},],
+    			[{color:1,kind:"KY"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KY"},],
+    			[{color:1,kind:"KE"},{color:1,kind:"KA"},{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{color:0,kind:"HI"},{color:0,kind:"KE"},],
+    			[{color:1,kind:"GI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"GI"},],
+    			[{color:1,kind:"KI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KI"},],
+    			[{color:1,kind:"OU"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"OU"},],
+    			[{color:1,kind:"KI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KI"},],
+    			[{color:1,kind:"GI"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"GI"},],
+    			[{color:1,kind:"KE"},{color:1,kind:"HI"},{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{color:0,kind:"KA"},{color:0,kind:"KE"},],
+    			[{color:1,kind:"KY"},{                 },{color:1,kind:"FU"},{},{},{},{color:0,kind:"FU"},{                 },{color:0,kind:"KY"},],
     		];
     	}
     	function normalizeHeaderKey(key){
@@ -2681,10 +2681,10 @@ module.exports = (function() {
         	}
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
-        			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? 0 : 1;
         			delete ret.header["手番"];
         		}else{
-        			ret.initial.data.color = true;
+        			ret.initial.data.color = 0;
         		}
         		ret.initial.data.hands = [
         			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
@@ -2742,12 +2742,12 @@ module.exports = (function() {
         peg$c25 = function() { return {} },
         peg$c26 = "^",
         peg$c27 = { type: "literal", value: "^", description: "\"^\"" },
-        peg$c28 = function() {return true},
+        peg$c28 = function() {return 0},
         peg$c29 = "v",
         peg$c30 = { type: "literal", value: "v", description: "\"v\"" },
         peg$c31 = "V",
         peg$c32 = { type: "literal", value: "V", description: "\"V\"" },
-        peg$c33 = function() {return false},
+        peg$c33 = function() {return 1},
         peg$c34 = function(hd, tl, res) {
         	tl.unshift(hd);
         	if(res && !tl[tl.length-1].special){
@@ -4805,10 +4805,10 @@ module.exports = (function() {
         	}
         	if(ret.initial && ret.initial.data){
         		if(ret.header["手番"]){
-        			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? true : false;
+        			ret.initial.data.color="下先".indexOf(ret.header["手番"])>=0 ? 0 : 1 ;
         			delete ret.header["手番"];
         		}else{
-        			ret.initial.data.color = true;
+        			ret.initial.data.color = 0;
         		}
         		ret.initial.data.hands = [
         			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
@@ -4866,12 +4866,12 @@ module.exports = (function() {
         peg$c25 = function() { return {} },
         peg$c26 = "^",
         peg$c27 = { type: "literal", value: "^", description: "\"^\"" },
-        peg$c28 = function() {return true},
+        peg$c28 = function() {return 0},
         peg$c29 = "v",
         peg$c30 = { type: "literal", value: "v", description: "\"v\"" },
         peg$c31 = "V",
         peg$c32 = { type: "literal", value: "V", description: "\"V\"" },
-        peg$c33 = function() {return false},
+        peg$c33 = function() {return 1},
         peg$c34 = "\u624B\u6570----\u6307\u624B--",
         peg$c35 = { type: "literal", value: "\u624B\u6570----\u6307\u624B--", description: "\"\\u624B\\u6570----\\u6307\\u624B--\"" },
         peg$c36 = "-------\u6D88\u8CBB\u6642\u9593--",
