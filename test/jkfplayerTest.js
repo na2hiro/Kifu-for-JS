@@ -1,5 +1,5 @@
 var assert = require('assert');
-var JKFPlayer = require('../lib/player.js');
+var JKFPlayer = require('../lib/jkfplayer.js');
 
 function p(x, y){
 	return {x:x,y:y};

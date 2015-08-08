@@ -2,7 +2,7 @@
   "name": "json-kifu-format",
   "version": "1.0.0",
   "description": "JSON棋譜フォーマット(JKF)の定義とその関連ライブラリ",
-  "main": "out/kifuplayer.js",
+  "main": "lib/jkfplayer.js",
   "directories": {
     "test": "test"
   },

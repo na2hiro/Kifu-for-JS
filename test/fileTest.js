@@ -3,7 +3,7 @@ jschardet = require("jschardet");
 var Iconv = require("iconv").Iconv;
 var sjisIconv = new Iconv("cp932", "utf-8");
 var fs = require("fs");
-var JKFPlayer = require("../lib/player");
+var JKFPlayer = require("../lib/jkfplayer");
 makeTest("kif", function(filename){return filename.match(/u$/) ? loadUTF : loadSJIS});
 makeTest("ki2", function(filename){return filename.match(/u$/) ? loadUTF : loadSJIS});
 makeTest("csa", function(filename){return loadAuto});
