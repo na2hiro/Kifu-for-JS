@@ -557,6 +557,23 @@ describe("module Normalizer", function(){
 				Normalizer.normalizeCSA(actual);
 			});
 		});
+		it("recover total time", function(){
+			actual.moves.push(
+				{move:{from:p(7,7),to:p(7,6),piece:"FU"},time:{now:{m:0,s:12}}}, // totalはnormalizerが復元
+				{move:{from:p(3,3),to:p(3,4),piece:"FU"},time:{now:{m:0,s:2}}},
+				{move:{from:p(8,8),to:p(2,2),piece:"UM"},time:{now:{m:1,s:40}}},
+				{move:{from:p(3,1),to:p(2,2),piece:"GI"},time:{now:{m:0,s:1}}},
+				{move:{to:p(4,5),piece:"KA"},time:{now:{m:0,s:0}}}
+			);
+			expected.moves.push(
+					{move:{from:p(7,7),to:p(7,6),piece:"FU",color:0},time:{now:{m:0,s:12},total:{h:0,m:0,s:12}}}, // totalはnormalizerが復元
+					{move:{from:p(3,3),to:p(3,4),piece:"FU",color:1},time:{now:{m:0,s:2},total:{h:0,m:0,s:2}}},
+					{move:{from:p(8,8),to:p(2,2),piece:"KA",capture:"KA",promote:true,color:0},time:{now:{m:1,s:40},total:{h:0,m:1,s:52}}},
+					{move:{from:p(3,1),to:p(2,2),piece:"GI",capture:"UM",same:true,color:1},time:{now:{m:0,s:1},total:{h:0,m:0,s:3}}},
+					{move:{to:p(4,5),piece:"KA",color:0},time:{now:{m:0,s:0},total:{h:0,m:1,s:52}}}
+			);
+			assert.deepEqual(Normalizer.normalizeCSA(actual), expected);
+		});
 	});
 	describe("addRelativeInformation", function() {
 		var actual, expected;

@@ -9,9 +9,9 @@ import Color = ShogiJS.Color;
 import Piece = ShogiJS.Piece;
 import Shogi = ShogiJS.Shogi;
 import Normalizer = require('./normalizer');
-import kifParser = require("../out/kif-parser");
-import ki2Parser = require("../out/ki2-parser");
-import csaParser = require("../out/csa-parser");
+import kifParser = require("../lib/kif-parser");
+import ki2Parser = require("../lib/ki2-parser");
+import csaParser = require("../lib/csa-parser");
 import JKF = require('./JSONKifuFormat');
 
 export = JKFPlayer;

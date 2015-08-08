@@ -215,6 +215,7 @@ export function normalizeCSA(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat{
 	restorePreset(obj);
 	var shogi = new Shogi(obj.initial || undefined);
 	for(var i=0; i<obj.moves.length; i++){
+		restoreTotalTime(obj.moves[i].time, i>=2 ? obj.moves[i-2].time : void 0);
 		var move = obj.moves[i].move;
 		if(!move) continue;
 		// 手番
@@ -391,4 +392,16 @@ function restoreColorOfIllegalAction(moves: JKF.MoveFormat[], shogi: Shogi){
 	if(moves.length>=1 && moves[moves.length-1].special == "ILLEGAL_ACTION"){
 		moves[moves.length-1].special = (shogi.turn ? "+" : "-")+"ILLEGAL_ACTION";
 	}
+}
+function restoreTotalTime(time: {now: JKF.TimeFormat, total: JKF.TimeFormat}, lastTime: {now: JKF.TimeFormat, total: JKF.TimeFormat} = {now: {m:0,s:0}, total: {h:0,m:0,s:0}}){
+	if(!time) return;
+	time.total = {
+		h:(time.now.h||0)+lastTime.total.h,
+		m:time.now.m+lastTime.total.m,
+		s:time.now.s+lastTime.total.s,
+	};
+	time.total.m += Math.floor(time.total.s/60);
+	time.total.s = time.total.s%60;
+	time.total.h += Math.floor(time.total.m/60);
+	time.total.m = time.total.m%60;
 }

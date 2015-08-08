@@ -1,5 +1,5 @@
 var assert = require('assert');
-var ki2Parser = require("../out/ki2-parser.js");
+var ki2Parser = require("../lib/ki2-parser.js");
 
 function p(x, y){
 	return {x:x,y:y};

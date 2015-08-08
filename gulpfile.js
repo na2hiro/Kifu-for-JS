@@ -9,84 +9,89 @@ var source = require('vinyl-source-stream');
 var merge = require('merge2');
 var del = require('del');
 
-var SRC_FILE = './src/*.ts';
-var TEST_FILE = "./test/*.js";
-var PEG_FILE = "./src/*.pegjs";
-var LIB_DIR = "./lib/";
-var PLAYER_NODE_FILE = LIB_DIR+"player.js";
-var LIB_FILE = LIB_DIR+"*.js";
+var SRC_DIR = "./src/";
 var OUT_DIR = "./out/";
-var PARSER_FILE = 'out/*-parser.js';
-var COVERAGE_DIR = "./coverage/";
-var BROWSERIFY_OUT_NAME = 'kifuplayer.js';
-var BROWSERIFY_OUT_FILE = OUT_DIR+BROWSERIFY_OUT_NAME;
+var LIB_DIR = "./lib/";
 
-gulp.task('clean', ['clean-lib', 'clean-peg', 'clean-browserify', 'clean-coverage']);
-gulp.task('clean-lib', function(cb){
-	del([LIB_DIR+"*"], cb);
+var PEG_FILE = SRC_DIR+"*.pegjs";
+var PEG_OUT_DIR = LIB_DIR;
+var PEG_OUT_FILE = PEG_OUT_DIR+'*-parser.js';
+var TS_FILE = SRC_DIR+'*.ts';
+var TS_OUT_DIR = LIB_DIR;
+var TS_OUT_FILE = TS_OUT_DIR+"*([^-]).js"; // filename without "-"
+var BROWSERIFY_FILE = LIB_DIR+"player.js";
+var BROWSERIFY_OUT_DIR = OUT_DIR;
+var BROWSERIFY_OUT_NAME = 'kifuplayer.js';
+var TEST_FILE = "./test/*.js";
+var COVERAGE_DIR = "./coverage/";
+
+gulp.task('clean', ['clean:ts', 'clean:peg', 'clean:browserify', 'clean:coverage']);
+gulp.task('clean:ts', function(cb){
+	del([TS_OUT_FILE], cb);
 });
-gulp.task('clean-peg', function(cb){
-	del([PARSER_FILE], cb);
+gulp.task('clean:peg', function(cb){
+	del([PEG_OUT_FILE], cb);
 });
-gulp.task('clean-browserify', function(cb){
-	del([BROWSERIFY_OUT_FILE], cb);
+gulp.task('clean:browserify', function(cb){
+	del([BROWSERIFY_OUT_DIR+BROWSERIFY_OUT_NAME], cb);
 });
-gulp.task('clean-coverage', function(cb){
+gulp.task('clean:coverage', function(cb){
 	del([COVERAGE_DIR+"lcov-report/*", "!"+COVERAGE_DIR+"lcov-report/404.html"], cb);
 });
 
 gulp.task('default', ['serve'], watch);
 gulp.task('watch', watch);
 function watch(){
-	gulp.watch(SRC_FILE, ['typescript']); // will change LIB_FILE
-	gulp.watch(PEG_FILE, ['peg']); // will change PARSER_FILE
-	gulp.watch([PARSER_FILE, LIB_FILE], ['test-without-build-node', 'browserify-without-node']);
+	gulp.watch(TS_FILE, ['typescript']); // will change TS_OUT_FILE
+	gulp.watch(PEG_FILE, ['peg']); // will change PEG_OUT_FILE
+	gulp.watch([PEG_OUT_FILE, TS_OUT_FILE], ['test-without-build-node', 'browserify-without-node']);
 	gulp.watch(TEST_FILE, ['test-without-build-node']);
-	gulp.watch(PLAYER_NODE_FILE, ['browserify-without-node']);
+	gulp.watch(BROWSERIFY_FILE, ['browserify-without-node']);
 }
 gulp.task('build-node', ['typescript', 'peg']);
 
-gulp.task('typescript', ['clean-lib'], function(cb){
+gulp.task('typescript', ['clean:ts'], function(cb){
 	var error = false;
-	var result = gulp.src([SRC_FILE])
+	var result = gulp.src([TS_FILE])
 		.pipe(typescript({
+			typescript: require("typescript"),
 			module: "commonjs",
 			declarationFiles: true,
 			noEmitOnError: true,
-			outDir: LIB_DIR
+			outDir: TS_OUT_DIR
 		})).on("error", function(err){
 			error = true;
 			cb(err);
 		});
 	merge([result.dts, result.js])
-		.pipe(gulp.dest(LIB_DIR))
+		.pipe(gulp.dest(TS_OUT_DIR))
 		.on("finish", function(){
 			// prevent cb being called twice when error occurs
 			if(!error) cb();
 		})
 });
 
-gulp.task('peg', ['clean-peg'], function(){
+gulp.task('peg', ['clean:peg'], function(){
 	return gulp.src([PEG_FILE])
 		.pipe(peg())
-		.pipe(gulp.dest(OUT_DIR));
+		.pipe(gulp.dest(PEG_OUT_DIR));
 });
 
-gulp.task('build', ['build-node', 'clean-browserify'], buildBrowserify);
-gulp.task('browserify-without-node', ['clean-browserify'], buildBrowserify);
+gulp.task('build', ['build-node', 'clean:browserify'], buildBrowserify);
+gulp.task('browserify-without-node', ['clean:browserify'], buildBrowserify);
 function buildBrowserify(){
-	return browserify().require(PLAYER_NODE_FILE, {expose:"JKFPlayer"})
+	return browserify().require(BROWSERIFY_FILE, {expose:"JKFPlayer"})
 		.bundle()
 		.pipe(source(BROWSERIFY_OUT_NAME))
-		.pipe(gulp.dest(OUT_DIR));
+		.pipe(gulp.dest(BROWSERIFY_OUT_DIR));
 }
 
-gulp.task('test', ['build-node','clean-coverage'], test);
+gulp.task('test', ['build-node','clean:coverage'], test);
 gulp.task('test-without-build-node', test);
 function test(cb){
 	// variable is necessary because of gulp-istanbul bug: https://github.com/SBoudrias/gulp-istanbul/issues/40
 	var coverageVariable = '$$cov_' + new Date().getTime() + '$$';
-	gulp.src([PARSER_FILE, LIB_FILE])
+	gulp.src([PEG_OUT_FILE, TS_OUT_FILE])
 		.pipe(istanbul({coverageVariable: coverageVariable}))
 		.pipe(istanbul.hookRequire())
 		.on('finish', function(){

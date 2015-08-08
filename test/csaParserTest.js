@@ -1,5 +1,5 @@
 var assert = require('assert');
-var csaParser = require("../out/csa-parser.js");
+var csaParser = require("../lib/csa-parser.js");
 
 function p(x, y){
 	return {x:x,y:y};

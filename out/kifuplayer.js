@@ -1,1039 +1,4 @@
 require=(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-/** @license
- * JSON Kifu Format
- * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
- * This software is released under the MIT License.
- * http://opensource.org/licenses/mit-license.php
- */
-var ShogiJS = require("../node_modules/shogi.js/lib/shogi");
-var Shogi = ShogiJS.Shogi;
-var Piece = ShogiJS.Piece;
-var Color = ShogiJS.Color;
-function canPromote(place, color) {
-    return color == Color.Black ? place.y <= 3 : place.y >= 7;
-}
-exports.canPromote = canPromote;
-// 最小形式の棋譜をnormalizeする
-// 最小形式: (指し) from, to, promote; (打ち) piece, to
-function normalizeMinimal(obj) {
-    var shogi = new Shogi(obj.initial || undefined);
-    normalizeMinimalMoves(shogi, obj.moves);
-    return obj;
-}
-exports.normalizeMinimal = normalizeMinimal;
-function normalizeMinimalMoves(shogi, moves, lastMove) {
-    for (var i = 0; i < moves.length; i++) {
-        var last = i == 0 ? lastMove : moves[i - 1];
-        var move = moves[i].move;
-        if (!move)
-            continue;
-        // 手番
-        move.color = shogi.turn;
-        if (move.from) {
-            // move
-            // toからsame復元
-            if (last && last.move && move.to.x == last.move.to.x && move.to.y == last.move.to.y) {
-                move.same = true;
-            }
-            // capture復元
-            addCaptureInformation(shogi, move);
-            // piece復元
-            if (!move.piece) {
-                move.piece = shogi.get(move.from.x, move.from.y).kind;
-            }
-            // 不成復元
-            if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
-                // 成ってない
-                if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
-                    move.promote = false;
-                }
-            }
-            // relative復元
-            addRelativeInformation(shogi, move);
-            try {
-                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-            }
-            catch (e) {
-                throw i + "手目で失敗しました: " + e;
-            }
-        }
-        else {
-            // drop
-            if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
-                move.relative = "H";
-            }
-            shogi.drop(move.to.x, move.to.y, move.piece);
-        }
-    }
-    restoreColorOfIllegalAction(moves, shogi);
-    for (var i = moves.length - 1; i >= 0; i--) {
-        var move = moves[i].move;
-        if (move) {
-            if (move.from) {
-                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-            }
-            else {
-                shogi.undrop(move.to.x, move.to.y);
-            }
-        }
-        last = i <= 1 ? lastMove : moves[i - 1];
-        if (moves[i].forks) {
-            for (var j = 0; j < moves[i].forks.length; j++) {
-                normalizeMinimalMoves(shogi, moves[i].forks[j], last);
-            }
-        }
-    }
-}
-function normalizeKIF(obj) {
-    var shogi = new Shogi(obj.initial || undefined);
-    normalizeKIFMoves(shogi, obj.moves);
-    return obj;
-}
-exports.normalizeKIF = normalizeKIF;
-function normalizeKIFMoves(shogi, moves, lastMove) {
-    for (var i = 0; i < moves.length; i++) {
-        var last = i == 0 ? lastMove : moves[i - 1];
-        var move = moves[i].move;
-        if (!move)
-            continue;
-        // 手番
-        move.color = shogi.turn;
-        if (move.from) {
-            // move
-            // sameからto復元
-            if (move.same)
-                move.to = last.move.to;
-            // capture復元
-            addCaptureInformation(shogi, move);
-            // 不成復元
-            if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
-                // 成ってない
-                if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
-                    move.promote = false;
-                }
-            }
-            // relative復元
-            addRelativeInformation(shogi, move);
-            try {
-                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-            }
-            catch (e) {
-                throw i + "手目で失敗しました: " + e;
-            }
-        }
-        else {
-            // drop
-            if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
-                move.relative = "H";
-            }
-            shogi.drop(move.to.x, move.to.y, move.piece);
-        }
-    }
-    restoreColorOfIllegalAction(moves, shogi);
-    for (var i = moves.length - 1; i >= 0; i--) {
-        var move = moves[i].move;
-        if (move) {
-            if (move.from) {
-                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-            }
-            else {
-                shogi.undrop(move.to.x, move.to.y);
-            }
-        }
-        last = i <= 1 ? lastMove : moves[i - 1];
-        if (moves[i].forks) {
-            for (var j = 0; j < moves[i].forks.length; j++) {
-                normalizeKIFMoves(shogi, moves[i].forks[j], last);
-            }
-        }
-    }
-}
-function normalizeKI2(obj) {
-    var shogi = new Shogi(obj.initial || undefined);
-    normalizeKI2Moves(shogi, obj.moves);
-    return obj;
-}
-exports.normalizeKI2 = normalizeKI2;
-function normalizeKI2Moves(shogi, moves, lastMove) {
-    for (var i = 0; i < moves.length; i++) {
-        var last = i == 0 ? lastMove : moves[i - 1];
-        var move = moves[i].move;
-        if (!move)
-            continue;
-        // 手番
-        move.color = shogi.turn;
-        // 同からto復元
-        if (move.same)
-            move.to = last.move.to;
-        // from復元
-        var candMoves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
-        if (move.relative == "H" || candMoves.length == 0) {
-        }
-        else if (candMoves.length == 1) {
-            move.from = candMoves[0].from;
-        }
-        else {
-            // 相対逆算
-            var moveAns = filterMovesByRelatives(move.relative, shogi.turn, candMoves);
-            if (moveAns.length != 1)
-                throw "相対情報が不完全で複数の候補があります";
-            move.from = moveAns[0].from;
-        }
-        if (move.from) {
-            // move
-            // capture復元
-            addCaptureInformation(shogi, move);
-            try {
-                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-            }
-            catch (e) {
-                throw i + "手目で失敗しました: " + e;
-            }
-        }
-        else {
-            // drop
-            shogi.drop(move.to.x, move.to.y, move.piece);
-        }
-    }
-    restoreColorOfIllegalAction(moves, shogi);
-    for (var i = moves.length - 1; i >= 0; i--) {
-        var move = moves[i].move;
-        if (!move)
-            continue;
-        if (move.from) {
-            shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
-        }
-        else {
-            shogi.undrop(move.to.x, move.to.y);
-        }
-        last = i <= 1 ? lastMove : moves[i - 1];
-        if (moves[i].forks) {
-            for (var j = 0; j < moves[i].forks.length; j++) {
-                normalizeKI2Moves(shogi, moves[i].forks[j], last);
-            }
-        }
-    }
-}
-function normalizeCSA(obj) {
-    restorePreset(obj);
-    var shogi = new Shogi(obj.initial || undefined);
-    for (var i = 0; i < obj.moves.length; i++) {
-        var move = obj.moves[i].move;
-        if (!move)
-            continue;
-        // 手番
-        move.color = shogi.turn;
-        if (move.from) {
-            // move
-            // same復元
-            if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x == move.to.x && obj.moves[i - 1].move.to.y == move.to.y) {
-                move.same = true;
-            }
-            // capture復元
-            addCaptureInformation(shogi, move);
-            if (Piece.isPromoted(move.piece)) {
-                // 成かも
-                var from = shogi.get(move.from.x, move.from.y);
-                if (from.kind != move.piece) {
-                    move.piece = from.kind;
-                    move.promote = true;
-                }
-            }
-            else if (Piece.canPromote(move.piece)) {
-                // 不成かも
-                if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
-                    move.promote = false;
-                }
-            }
-            // relative復元
-            addRelativeInformation(shogi, move);
-            try {
-                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
-            }
-            catch (e) {
-                throw i + "手目で失敗しました: " + e;
-            }
-        }
-        else {
-            // drop
-            if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
-                move.relative = "H";
-            }
-            shogi.drop(move.to.x, move.to.y, move.piece);
-        }
-    }
-    return obj;
-}
-exports.normalizeCSA = normalizeCSA;
-function addRelativeInformation(shogi, move) {
-    var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map(function (mv) { return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)); });
-    if (moveVectors.length >= 2) {
-        var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
-        move.relative = function () {
-            // 上下方向唯一
-            if (moveVectors.filter(function (mv) { return mv.y == realVector.y; }).length == 1)
-                return YToUMD(realVector.y);
-            // 左右方向唯一
-            if (moveVectors.filter(function (mv) { return mv.x == realVector.x; }).length == 1) {
-                if ((move.piece == "UM" || move.piece == "RY") && realVector.x == 0) {
-                    //直はだめ
-                    return XToLCR(moveVectors.filter(function (mv) { return mv.x < 0; }).length == 0 ? -1 : 1);
-                }
-                else {
-                    return XToLCR(realVector.x);
-                }
-            }
-            //上下も左右も他の駒がいる
-            return XToLCR(realVector.x) + YToUMD(realVector.y);
-        }();
-    }
-}
-function addCaptureInformation(shogi, move) {
-    var to = shogi.get(move.to.x, move.to.y);
-    if (to)
-        move.capture = to.kind;
-}
-function flipVector(color, vector) {
-    return color == Color.Black ? vector : { x: -vector.x, y: -vector.y };
-}
-function spaceship(a, b) {
-    return a == b ? 0 : (a > b ? 1 : -1);
-}
-function spaceshipVector(a, b) {
-    return { x: spaceship(a.x, b.x), y: spaceship(a.y, b.y) };
-}
-// yの段から移動した場合の相対情報
-function YToUMD(y) {
-    return y == 0 ? "M" : (y > 0 ? "D" : "U");
-}
-// xの行から移動した場合の相対情報
-function XToLCR(x) {
-    return x == 0 ? "C" : (x > 0 ? "R" : "L");
-}
-function filterMovesByRelatives(relative, color, moves) {
-    var ret = [];
-    for (var i = 0; i < moves.length; i++) {
-        if (relative.split("").every(function (rel) { return moveSatisfiesRelative(rel, color, moves[i]); })) {
-            ret.push(moves[i]);
-        }
-    }
-    return ret;
-}
-function moveSatisfiesRelative(relative, color, move) {
-    var vec = flipVector(color, { x: move.to.x - move.from.x, y: move.to.y - move.from.y });
-    switch (relative) {
-        case "U":
-            return vec.y < 0;
-        case "M":
-            return vec.y == 0;
-        case "D":
-            return vec.y > 0;
-        case "L":
-            return vec.x < 0;
-        case "C":
-            return vec.x == 0;
-        case "R":
-            return vec.x > 0;
-    }
-}
-// CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
-function restorePreset(obj) {
-    if (!obj.initial || obj.initial.preset != "OTHER")
-        return;
-    var kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
-    for (var i = 0; i < 2; i++) {
-        for (var j = 0; j < kinds.length; j++) {
-            if (obj.initial.data.hands[i][kinds[j]] != 0)
-                return;
-        }
-    }
-    var hirate = [
-        [{ color: Color.White, kind: "KY" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KY" },],
-        [{ color: Color.White, kind: "KE" }, { color: Color.White, kind: "KA" }, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, { color: Color.Black, kind: "HI" }, { color: Color.Black, kind: "KE" },],
-        [{ color: Color.White, kind: "GI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "GI" },],
-        [{ color: Color.White, kind: "KI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KI" },],
-        [{ color: Color.White, kind: "OU" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "OU" },],
-        [{ color: Color.White, kind: "KI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KI" },],
-        [{ color: Color.White, kind: "GI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "GI" },],
-        [{ color: Color.White, kind: "KE" }, { color: Color.White, kind: "HI" }, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, { color: Color.Black, kind: "KA" }, { color: Color.Black, kind: "KE" },],
-        [{ color: Color.White, kind: "KY" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KY" },],
-    ];
-    var diff = [];
-    for (var i = 0; i < 9; i++) {
-        for (var j = 0; j < 9; j++) {
-            if (!samePiece(obj.initial.data.board[i][j], hirate[i][j]))
-                diff.push("" + (i + 1) + (j + 1));
-        }
-    }
-    var presets = {};
-    presets[""] = "HIRATE";
-    presets["11"] = "KY";
-    presets["91"] = "KY_R";
-    presets["22"] = "KA";
-    presets["82"] = "HI";
-    presets["1182"] = "HIKY";
-    presets["2282"] = "2";
-    presets["228291"] = "3";
-    presets["11228291"] = "4";
-    presets["1122818291"] = "5";
-    presets["1121228291"] = "5_L";
-    presets["112122818291"] = "6";
-    presets["1121223171818291"] = "8";
-    presets["11212231416171818291"] = "10";
-    var preset = presets[diff.sort().join("")];
-    if (preset == "HIRATE") {
-        if (obj.initial.data.color == Color.Black) {
-            obj.initial.preset = "HIRATE";
-            delete obj.initial.data;
-        }
-    }
-    else if (preset && obj.initial.data.color == Color.White) {
-        obj.initial.preset = preset;
-        delete obj.initial.data;
-    }
-}
-function samePiece(p1, p2) {
-    return (typeof p1.color == "undefined" && typeof p2.color == "undefined") ||
-        (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
-}
-function restoreColorOfIllegalAction(moves, shogi) {
-    if (moves.length >= 1 && moves[moves.length - 1].special == "ILLEGAL_ACTION") {
-        moves[moves.length - 1].special = (shogi.turn ? "+" : "-") + "ILLEGAL_ACTION";
-    }
-}
-
-},{"../node_modules/shogi.js/lib/shogi":2}],2:[function(require,module,exports){
-/** @license
- * Shogi.js
- * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
- * This software is released under the MIT License.
- * http://opensource.org/licenses/mit-license.php
- */
-(function (Color) {
-    Color[Color["Black"] = 0] = "Black";
-    Color[Color["White"] = 1] = "White";
-})(exports.Color || (exports.Color = {}));
-var Color = exports.Color;
-var Shogi = (function () {
-    function Shogi(setting) {
-        this.initialize(setting);
-    }
-    // 盤面を初期化する
-    // 初期局面(なければ平手)
-    Shogi.prototype.initialize = function (setting) {
-        if (setting === void 0) { setting = { preset: "HIRATE" }; }
-        this.board = [];
-        if (setting.preset != "OTHER") {
-            for (var i = 0; i < 9; i++) {
-                this.board[i] = [];
-                for (var j = 0; j < 9; j++) {
-                    var csa = Shogi.preset[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
-                    this.board[i][j] = csa == " * " ? null : new Piece(csa);
-                }
-            }
-            this.turn = Shogi.preset[setting.preset].turn;
-            this.hands = [[], []];
-        }
-        else {
-            for (var i = 0; i < 9; i++) {
-                this.board[i] = [];
-                for (var j = 0; j < 9; j++) {
-                    var p = setting.data.board[i][j];
-                    this.board[i][j] = p.kind ? new Piece((p.color == Color.Black ? "+" : "-") + p.kind) : null;
-                }
-            }
-            this.turn = setting.data.color;
-            this.hands = [[], []];
-            for (var c = 0; c < 2; c++) {
-                for (var k in setting.data.hands[c]) {
-                    var csa = (c == 0 ? "+" : "-") + k;
-                    for (var i = 0; i < setting.data.hands[c][k]; i++) {
-                        this.hands[c].push(new Piece(csa));
-                    }
-                }
-            }
-        }
-        this.flagEditMode = false;
-    };
-    // 編集モード切り替え
-    // * 通常モード：移動時に手番と移動可能かどうかチェックし，移動可能範囲は手番側のみ返す．
-    // * 編集モード：移動時に手番や移動可能かはチェックせず，移動可能範囲は両者とも返す．
-    Shogi.prototype.editMode = function (flag) {
-        this.flagEditMode = flag;
-    };
-    // (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
-    Shogi.prototype.move = function (fromx, fromy, tox, toy, promote) {
-        if (promote === void 0) { promote = false; }
-        var piece = this.get(fromx, fromy);
-        if (piece == null)
-            throw "no piece found at " + fromx + ", " + fromy;
-        this.checkTurn(piece.color);
-        if (!this.flagEditMode) {
-            if (!this.getMovesFrom(fromx, fromy).some(function (move) {
-                return move.to.x == tox && move.to.y == toy;
-            }))
-                throw "cannot move from " + fromx + ", " + fromy + " to " + tox + ", " + toy;
-        }
-        if (this.get(tox, toy) != null)
-            this.capture(tox, toy);
-        if (promote)
-            piece.promote();
-        this.set(tox, toy, piece);
-        this.set(fromx, fromy, null);
-        this.nextTurn();
-    };
-    // moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
-    Shogi.prototype.unmove = function (fromx, fromy, tox, toy, promote, capture) {
-        if (promote === void 0) { promote = false; }
-        var piece = this.get(tox, toy);
-        if (piece == null)
-            throw "no piece found at " + tox + ", " + toy;
-        this.checkTurn(Piece.oppositeColor(piece.color));
-        var captured;
-        if (capture) {
-            captured = this.popFromHand(Piece.unpromote(capture), piece.color);
-            captured.inverse();
-        }
-        var editMode = this.flagEditMode;
-        this.editMode(true);
-        this.move(tox, toy, fromx, fromy);
-        if (promote)
-            piece.unpromote();
-        if (capture) {
-            if (Piece.isPromoted(capture))
-                captured.promote();
-            this.set(tox, toy, captured);
-        }
-        this.editMode(editMode);
-        this.prevTurn();
-    };
-    // (tox, toy)へcolorの持ち駒のkindを打つ．
-    Shogi.prototype.drop = function (tox, toy, kind, color) {
-        if (color === void 0) { color = this.turn; }
-        this.checkTurn(color);
-        if (this.get(tox, toy) != null)
-            throw "there is a piece at " + tox + ", " + toy;
-        var piece = this.popFromHand(kind, color);
-        this.set(tox, toy, piece);
-        this.nextTurn();
-    };
-    // dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
-    Shogi.prototype.undrop = function (tox, toy) {
-        var piece = this.get(tox, toy);
-        if (piece == null)
-            throw "there is no piece at " + tox + ", " + toy;
-        this.checkTurn(Piece.oppositeColor(piece.color));
-        this.pushToHand(piece);
-        this.set(tox, toy, null);
-        this.prevTurn();
-    };
-    // CSAによる盤面表現の文字列を返す
-    Shogi.prototype.toCSAString = function () {
-        var ret = [];
-        for (var y = 0; y < 9; y++) {
-            var line = "P" + (y + 1);
-            for (var x = 8; x >= 0; x--) {
-                var piece = this.board[x][y];
-                line += piece == null ? " * " : piece.toCSAString();
-            }
-            ret.push(line);
-        }
-        for (var i = 0; i < 2; i++) {
-            var line = "P" + "+-"[i];
-            for (var j = 0; j < this.hands[i].length; j++) {
-                line += "00" + this.hands[i][j].kind;
-            }
-            ret.push(line);
-        }
-        ret.push(this.turn == Color.Black ? "+" : "-");
-        return ret.join("\n");
-    };
-    // (x, y)の駒の移動可能な動きをすべて得る
-    // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
-    Shogi.prototype.getMovesFrom = function (x, y) {
-        // 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
-        var legal = function (x, y, color) {
-            if (x < 1 || 9 < x || y < 1 || 9 < y)
-                return false;
-            var piece = this.get(x, y);
-            return piece == null || piece.color != color;
-        }.bind(this);
-        var shouldStop = function (x, y, color) {
-            var piece = this.get(x, y);
-            return piece != null && piece.color != color;
-        }.bind(this);
-        var piece = this.get(x, y);
-        if (piece == null)
-            return [];
-        var moveDef = Piece.getMoveDef(piece.kind);
-        var ret = [], from = { x: x, y: y };
-        if (moveDef.just) {
-            for (var i = 0; i < moveDef.just.length; i++) {
-                var def = moveDef.just[i];
-                if (piece.color == Color.White) {
-                    def[0] *= -1;
-                    def[1] *= -1;
-                }
-                var to = { x: from.x + def[0], y: from.y + def[1] };
-                if (legal(to.x, to.y, piece.color))
-                    ret.push({ from: from, to: to });
-            }
-        }
-        if (moveDef.fly) {
-            for (var i = 0; i < moveDef.fly.length; i++) {
-                var def = moveDef.fly[i];
-                if (piece.color == Color.White) {
-                    def[0] *= -1;
-                    def[1] *= -1;
-                }
-                var to = { x: from.x + def[0], y: from.y + def[1] };
-                while (legal(to.x, to.y, piece.color)) {
-                    ret.push({ from: from, to: { x: to.x, y: to.y } });
-                    if (shouldStop(to.x, to.y, piece.color))
-                        break;
-                    to.x += def[0];
-                    to.y += def[1];
-                }
-            }
-        }
-        return ret;
-    };
-    // colorが打てる動きを全て得る
-    Shogi.prototype.getDropsBy = function (color) {
-        var ret = [];
-        var places = [];
-        for (var i = 1; i <= 9; i++) {
-            for (var j = 1; j <= 9; j++) {
-                if (this.get(i, j) == null)
-                    places.push({ x: i, y: j });
-            }
-        }
-        var done = {};
-        for (var i = 0; i < this.hands[color].length; i++) {
-            var kind = this.hands[color][i].kind;
-            if (done[kind])
-                continue;
-            done[kind] = true;
-            for (var j = 0; j < places.length; j++) {
-                ret.push({ to: places[j], color: color, kind: kind });
-            }
-        }
-        return ret;
-    };
-    // (x, y)に行けるcolor側のkindの駒の動きを得る
-    Shogi.prototype.getMovesTo = function (x, y, kind, color) {
-        if (color === void 0) { color = this.turn; }
-        var to = { x: x, y: y };
-        var ret = [];
-        for (var i = 1; i <= 9; i++) {
-            for (var j = 1; j <= 9; j++) {
-                var piece = this.get(i, j);
-                if (!piece || piece.kind != kind || piece.color != color)
-                    continue;
-                var moves = this.getMovesFrom(i, j);
-                if (moves.some(function (move) { return move.to.x == x && move.to.y == y; })) {
-                    ret.push({ from: { x: i, y: j }, to: to });
-                }
-            }
-        }
-        return ret;
-    };
-    // (x, y)の駒を得る
-    Shogi.prototype.get = function (x, y) {
-        return this.board[x - 1][y - 1];
-    };
-    // keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
-    Shogi.prototype.getHandsSummary = function (color) {
-        var ret = {
-            "FU": 0,
-            "KY": 0,
-            "KE": 0,
-            "GI": 0,
-            "KI": 0,
-            "KA": 0,
-            "HI": 0
-        };
-        for (var i = 0; i < this.hands[color].length; i++) {
-            ret[this.hands[color][i].kind]++;
-        }
-        return ret;
-    };
-    // 以下editModeでの関数
-    // (x, y)の駒を取ってcolorの持ち駒に加える
-    Shogi.prototype.captureByColor = function (x, y, color) {
-        if (!this.flagEditMode)
-            throw "cannot edit board without editMode";
-        var piece = this.get(x, y);
-        this.set(x, y, null);
-        piece.unpromote();
-        if (piece.color != color)
-            piece.inverse();
-        this.pushToHand(piece);
-    };
-    // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
-    // 成功したらtrueを返す
-    Shogi.prototype.flip = function (x, y) {
-        if (!this.flagEditMode)
-            throw "cannot edit board without editMode";
-        var piece = this.get(x, y);
-        if (!piece)
-            return false;
-        if (Piece.isPromoted(piece.kind)) {
-            piece.unpromote();
-            piece.inverse();
-        }
-        else if (Piece.canPromote(piece.kind)) {
-            piece.promote();
-        }
-        else {
-            piece.inverse();
-        }
-        return true;
-    };
-    // 手番を設定する
-    Shogi.prototype.setTurn = function (color) {
-        if (!this.flagEditMode)
-            throw "cannot set turn without editMode";
-        this.turn = color;
-    };
-    // 以下private method
-    // (x, y)に駒を置く
-    Shogi.prototype.set = function (x, y, piece) {
-        this.board[x - 1][y - 1] = piece;
-    };
-    // (x, y)の駒を取って反対側の持ち駒に加える
-    Shogi.prototype.capture = function (x, y) {
-        var piece = this.get(x, y);
-        this.set(x, y, null);
-        piece.unpromote();
-        piece.inverse();
-        this.pushToHand(piece);
-    };
-    // 駒pieceを持ち駒に加える
-    Shogi.prototype.pushToHand = function (piece) {
-        this.hands[piece.color].push(piece);
-    };
-    // color側のkindの駒を取って返す
-    Shogi.prototype.popFromHand = function (kind, color) {
-        var hand = this.hands[color];
-        for (var i = 0; i < hand.length; i++) {
-            if (hand[i].kind != kind)
-                continue;
-            var piece = hand[i];
-            hand.splice(i, 1); // remove at i
-            return piece;
-        }
-        throw color + " has no " + kind;
-    };
-    // 次の手番に行く
-    Shogi.prototype.nextTurn = function () {
-        if (this.flagEditMode)
-            return;
-        this.turn = this.turn == Color.Black ? Color.White : Color.Black;
-    };
-    // 前の手番に行く
-    Shogi.prototype.prevTurn = function () {
-        if (this.flagEditMode)
-            return;
-        this.nextTurn();
-    };
-    // colorの手番で問題ないか確認する．編集モードならok．
-    Shogi.prototype.checkTurn = function (color) {
-        if (!this.flagEditMode && color != this.turn)
-            throw "cannot move opposite piece";
-    };
-    // 既定の初期局面
-    Shogi.preset = {
-        "HIRATE": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " * -HI *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.Black
-        },
-        "KY": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
-                " * -HI *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "KY_R": {
-            board: [
-                " * -KE-GI-KI-OU-KI-GI-KE-KY",
-                " * -HI *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "KA": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " * -HI *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "HI": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " *  *  *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "HIKY": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "2": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "3": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "4": {
-            board: [
-                " * -KE-GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "5": {
-            board: [
-                " *  * -GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "5_L": {
-            board: [
-                " * -KE-GI-KI-OU-KI-GI *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "6": {
-            board: [
-                " *  * -GI-KI-OU-KI-GI *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "8": {
-            board: [
-                " *  *  * -KI-OU-KI *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        },
-        "10": {
-            board: [
-                " *  *  *  * -OU *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White
-        }
-    };
-    return Shogi;
-})();
-exports.Shogi = Shogi;
-// enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
-var Piece = (function () {
-    // "+FU"などのCSAによる駒表現から駒オブジェクトを作成
-    function Piece(csa) {
-        this.color = csa.slice(0, 1) == "+" ? Color.Black : Color.White;
-        this.kind = csa.slice(1);
-    }
-    // 成る
-    Piece.prototype.promote = function () {
-        this.kind = Piece.promote(this.kind);
-    };
-    // 不成にする
-    Piece.prototype.unpromote = function () {
-        this.kind = Piece.unpromote(this.kind);
-    };
-    // 駒の向きを反転する
-    Piece.prototype.inverse = function () {
-        this.color = this.color == Color.Black ? Color.White : Color.Black;
-    };
-    // CSAによる駒表現の文字列を返す
-    Piece.prototype.toCSAString = function () {
-        return (this.color == Color.Black ? "+" : "-") + this.kind;
-    };
-    // 成った時の種類を返す．なければそのまま．
-    Piece.promote = function (kind) {
-        return {
-            FU: "TO",
-            KY: "NY",
-            KE: "NK",
-            GI: "NG",
-            KA: "UM",
-            HI: "RY"
-        }[kind] || kind;
-    };
-    // 表に返した時の種類を返す．表の場合はそのまま．
-    Piece.unpromote = function (kind) {
-        return {
-            TO: "FU",
-            NY: "KY",
-            NK: "KE",
-            NG: "GI",
-            KI: "KI",
-            UM: "KA",
-            RY: "HI",
-            OU: "OU"
-        }[kind] || kind;
-    };
-    // 成れる駒かどうかを返す
-    Piece.canPromote = function (kind) {
-        return Piece.promote(kind) != kind;
-    };
-    Piece.getMoveDef = function (kind) {
-        switch (kind) {
-            case "FU":
-                return { just: [[0, -1],] };
-            case "KY":
-                return { fly: [[0, -1],] };
-            case "KE":
-                return { just: [[-1, -2], [1, -2],] };
-            case "GI":
-                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1],] };
-            case "KI":
-            case "TO":
-            case "NY":
-            case "NK":
-            case "NG":
-                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]] };
-            case "KA":
-                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
-            case "HI":
-                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
-            case "OU":
-                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]] };
-            case "UM":
-                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],], just: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
-            case "RY":
-                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
-        }
-    };
-    Piece.isPromoted = function (kind) {
-        return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
-    };
-    Piece.oppositeColor = function (color) {
-        return color == Color.Black ? Color.White : Color.Black;
-    };
-    return Piece;
-})();
-exports.Piece = Piece;
-
-},{}],3:[function(require,module,exports){
 module.exports = (function() {
   /*
    * Generated by PEG.js 0.8.0.
@@ -2627,7 +1592,7 @@ module.exports = (function() {
     parse:       parse
   };
 })();
-},{}],4:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 module.exports = (function() {
   /*
    * Generated by PEG.js 0.8.0.
@@ -4751,7 +3716,7 @@ module.exports = (function() {
     parse:       parse
   };
 })();
-},{}],5:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 module.exports = (function() {
   /*
    * Generated by PEG.js 0.8.0.
@@ -7300,6 +6265,1056 @@ module.exports = (function() {
     parse:       parse
   };
 })();
+},{}],4:[function(require,module,exports){
+/** @license
+ * JSON Kifu Format
+ * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
+var ShogiJS = require("../node_modules/shogi.js/lib/shogi");
+var Shogi = ShogiJS.Shogi;
+var Piece = ShogiJS.Piece;
+var Color = ShogiJS.Color;
+function canPromote(place, color) {
+    return color == Color.Black ? place.y <= 3 : place.y >= 7;
+}
+exports.canPromote = canPromote;
+// 最小形式の棋譜をnormalizeする
+// 最小形式: (指し) from, to, promote; (打ち) piece, to
+function normalizeMinimal(obj) {
+    var shogi = new Shogi(obj.initial || undefined);
+    normalizeMinimalMoves(shogi, obj.moves);
+    return obj;
+}
+exports.normalizeMinimal = normalizeMinimal;
+function normalizeMinimalMoves(shogi, moves, lastMove) {
+    for (var i = 0; i < moves.length; i++) {
+        var last = i == 0 ? lastMove : moves[i - 1];
+        var move = moves[i].move;
+        if (!move)
+            continue;
+        // 手番
+        move.color = shogi.turn;
+        if (move.from) {
+            // move
+            // toからsame復元
+            if (last && last.move && move.to.x == last.move.to.x && move.to.y == last.move.to.y) {
+                move.same = true;
+            }
+            // capture復元
+            addCaptureInformation(shogi, move);
+            // piece復元
+            if (!move.piece) {
+                move.piece = shogi.get(move.from.x, move.from.y).kind;
+            }
+            // 不成復元
+            if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
+                // 成ってない
+                if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
+                    move.promote = false;
+                }
+            }
+            // relative復元
+            addRelativeInformation(shogi, move);
+            try {
+                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+            }
+            catch (e) {
+                throw i + "手目で失敗しました: " + e;
+            }
+        }
+        else {
+            // drop
+            if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                move.relative = "H";
+            }
+            shogi.drop(move.to.x, move.to.y, move.piece);
+        }
+    }
+    restoreColorOfIllegalAction(moves, shogi);
+    for (var i = moves.length - 1; i >= 0; i--) {
+        var move = moves[i].move;
+        if (move) {
+            if (move.from) {
+                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+            }
+            else {
+                shogi.undrop(move.to.x, move.to.y);
+            }
+        }
+        last = i <= 1 ? lastMove : moves[i - 1];
+        if (moves[i].forks) {
+            for (var j = 0; j < moves[i].forks.length; j++) {
+                normalizeMinimalMoves(shogi, moves[i].forks[j], last);
+            }
+        }
+    }
+}
+function normalizeKIF(obj) {
+    var shogi = new Shogi(obj.initial || undefined);
+    normalizeKIFMoves(shogi, obj.moves);
+    return obj;
+}
+exports.normalizeKIF = normalizeKIF;
+function normalizeKIFMoves(shogi, moves, lastMove) {
+    for (var i = 0; i < moves.length; i++) {
+        var last = i == 0 ? lastMove : moves[i - 1];
+        var move = moves[i].move;
+        if (!move)
+            continue;
+        // 手番
+        move.color = shogi.turn;
+        if (move.from) {
+            // move
+            // sameからto復元
+            if (move.same)
+                move.to = last.move.to;
+            // capture復元
+            addCaptureInformation(shogi, move);
+            // 不成復元
+            if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
+                // 成ってない
+                if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
+                    move.promote = false;
+                }
+            }
+            // relative復元
+            addRelativeInformation(shogi, move);
+            try {
+                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+            }
+            catch (e) {
+                throw i + "手目で失敗しました: " + e;
+            }
+        }
+        else {
+            // drop
+            if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                move.relative = "H";
+            }
+            shogi.drop(move.to.x, move.to.y, move.piece);
+        }
+    }
+    restoreColorOfIllegalAction(moves, shogi);
+    for (var i = moves.length - 1; i >= 0; i--) {
+        var move = moves[i].move;
+        if (move) {
+            if (move.from) {
+                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+            }
+            else {
+                shogi.undrop(move.to.x, move.to.y);
+            }
+        }
+        last = i <= 1 ? lastMove : moves[i - 1];
+        if (moves[i].forks) {
+            for (var j = 0; j < moves[i].forks.length; j++) {
+                normalizeKIFMoves(shogi, moves[i].forks[j], last);
+            }
+        }
+    }
+}
+function normalizeKI2(obj) {
+    var shogi = new Shogi(obj.initial || undefined);
+    normalizeKI2Moves(shogi, obj.moves);
+    return obj;
+}
+exports.normalizeKI2 = normalizeKI2;
+function normalizeKI2Moves(shogi, moves, lastMove) {
+    for (var i = 0; i < moves.length; i++) {
+        var last = i == 0 ? lastMove : moves[i - 1];
+        var move = moves[i].move;
+        if (!move)
+            continue;
+        // 手番
+        move.color = shogi.turn;
+        // 同からto復元
+        if (move.same)
+            move.to = last.move.to;
+        // from復元
+        var candMoves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
+        if (move.relative == "H" || candMoves.length == 0) {
+        }
+        else if (candMoves.length == 1) {
+            move.from = candMoves[0].from;
+        }
+        else {
+            // 相対逆算
+            var moveAns = filterMovesByRelatives(move.relative, shogi.turn, candMoves);
+            if (moveAns.length != 1)
+                throw "相対情報が不完全で複数の候補があります";
+            move.from = moveAns[0].from;
+        }
+        if (move.from) {
+            // move
+            // capture復元
+            addCaptureInformation(shogi, move);
+            try {
+                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+            }
+            catch (e) {
+                throw i + "手目で失敗しました: " + e;
+            }
+        }
+        else {
+            // drop
+            shogi.drop(move.to.x, move.to.y, move.piece);
+        }
+    }
+    restoreColorOfIllegalAction(moves, shogi);
+    for (var i = moves.length - 1; i >= 0; i--) {
+        var move = moves[i].move;
+        if (!move)
+            continue;
+        if (move.from) {
+            shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+        }
+        else {
+            shogi.undrop(move.to.x, move.to.y);
+        }
+        last = i <= 1 ? lastMove : moves[i - 1];
+        if (moves[i].forks) {
+            for (var j = 0; j < moves[i].forks.length; j++) {
+                normalizeKI2Moves(shogi, moves[i].forks[j], last);
+            }
+        }
+    }
+}
+function normalizeCSA(obj) {
+    restorePreset(obj);
+    var shogi = new Shogi(obj.initial || undefined);
+    for (var i = 0; i < obj.moves.length; i++) {
+        restoreTotalTime(obj.moves[i].time, i >= 2 ? obj.moves[i - 2].time : void 0);
+        var move = obj.moves[i].move;
+        if (!move)
+            continue;
+        // 手番
+        move.color = shogi.turn;
+        if (move.from) {
+            // move
+            // same復元
+            if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x == move.to.x && obj.moves[i - 1].move.to.y == move.to.y) {
+                move.same = true;
+            }
+            // capture復元
+            addCaptureInformation(shogi, move);
+            if (Piece.isPromoted(move.piece)) {
+                // 成かも
+                var from = shogi.get(move.from.x, move.from.y);
+                if (from.kind != move.piece) {
+                    move.piece = from.kind;
+                    move.promote = true;
+                }
+            }
+            else if (Piece.canPromote(move.piece)) {
+                // 不成かも
+                if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
+                    move.promote = false;
+                }
+            }
+            // relative復元
+            addRelativeInformation(shogi, move);
+            try {
+                shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
+            }
+            catch (e) {
+                throw i + "手目で失敗しました: " + e;
+            }
+        }
+        else {
+            // drop
+            if (shogi.getMovesTo(move.to.x, move.to.y, move.piece).length > 0) {
+                move.relative = "H";
+            }
+            shogi.drop(move.to.x, move.to.y, move.piece);
+        }
+    }
+    return obj;
+}
+exports.normalizeCSA = normalizeCSA;
+function addRelativeInformation(shogi, move) {
+    var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map(function (mv) { return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)); });
+    if (moveVectors.length >= 2) {
+        var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
+        move.relative = function () {
+            // 上下方向唯一
+            if (moveVectors.filter(function (mv) { return mv.y == realVector.y; }).length == 1)
+                return YToUMD(realVector.y);
+            // 左右方向唯一
+            if (moveVectors.filter(function (mv) { return mv.x == realVector.x; }).length == 1) {
+                if ((move.piece == "UM" || move.piece == "RY") && realVector.x == 0) {
+                    //直はだめ
+                    return XToLCR(moveVectors.filter(function (mv) { return mv.x < 0; }).length == 0 ? -1 : 1);
+                }
+                else {
+                    return XToLCR(realVector.x);
+                }
+            }
+            //上下も左右も他の駒がいる
+            return XToLCR(realVector.x) + YToUMD(realVector.y);
+        }();
+    }
+}
+function addCaptureInformation(shogi, move) {
+    var to = shogi.get(move.to.x, move.to.y);
+    if (to)
+        move.capture = to.kind;
+}
+function flipVector(color, vector) {
+    return color == Color.Black ? vector : { x: -vector.x, y: -vector.y };
+}
+function spaceship(a, b) {
+    return a == b ? 0 : (a > b ? 1 : -1);
+}
+function spaceshipVector(a, b) {
+    return { x: spaceship(a.x, b.x), y: spaceship(a.y, b.y) };
+}
+// yの段から移動した場合の相対情報
+function YToUMD(y) {
+    return y == 0 ? "M" : (y > 0 ? "D" : "U");
+}
+// xの行から移動した場合の相対情報
+function XToLCR(x) {
+    return x == 0 ? "C" : (x > 0 ? "R" : "L");
+}
+function filterMovesByRelatives(relative, color, moves) {
+    var ret = [];
+    for (var i = 0; i < moves.length; i++) {
+        if (relative.split("").every(function (rel) { return moveSatisfiesRelative(rel, color, moves[i]); })) {
+            ret.push(moves[i]);
+        }
+    }
+    return ret;
+}
+function moveSatisfiesRelative(relative, color, move) {
+    var vec = flipVector(color, { x: move.to.x - move.from.x, y: move.to.y - move.from.y });
+    switch (relative) {
+        case "U":
+            return vec.y < 0;
+        case "M":
+            return vec.y == 0;
+        case "D":
+            return vec.y > 0;
+        case "L":
+            return vec.x < 0;
+        case "C":
+            return vec.x == 0;
+        case "R":
+            return vec.x > 0;
+    }
+}
+// CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
+function restorePreset(obj) {
+    if (!obj.initial || obj.initial.preset != "OTHER")
+        return;
+    var kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
+    for (var i = 0; i < 2; i++) {
+        for (var j = 0; j < kinds.length; j++) {
+            if (obj.initial.data.hands[i][kinds[j]] != 0)
+                return;
+        }
+    }
+    var hirate = [
+        [{ color: Color.White, kind: "KY" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KY" },],
+        [{ color: Color.White, kind: "KE" }, { color: Color.White, kind: "KA" }, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, { color: Color.Black, kind: "HI" }, { color: Color.Black, kind: "KE" },],
+        [{ color: Color.White, kind: "GI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "GI" },],
+        [{ color: Color.White, kind: "KI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KI" },],
+        [{ color: Color.White, kind: "OU" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "OU" },],
+        [{ color: Color.White, kind: "KI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KI" },],
+        [{ color: Color.White, kind: "GI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "GI" },],
+        [{ color: Color.White, kind: "KE" }, { color: Color.White, kind: "HI" }, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, { color: Color.Black, kind: "KA" }, { color: Color.Black, kind: "KE" },],
+        [{ color: Color.White, kind: "KY" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KY" },],
+    ];
+    var diff = [];
+    for (var i = 0; i < 9; i++) {
+        for (var j = 0; j < 9; j++) {
+            if (!samePiece(obj.initial.data.board[i][j], hirate[i][j]))
+                diff.push("" + (i + 1) + (j + 1));
+        }
+    }
+    var presets = {};
+    presets[""] = "HIRATE";
+    presets["11"] = "KY";
+    presets["91"] = "KY_R";
+    presets["22"] = "KA";
+    presets["82"] = "HI";
+    presets["1182"] = "HIKY";
+    presets["2282"] = "2";
+    presets["228291"] = "3";
+    presets["11228291"] = "4";
+    presets["1122818291"] = "5";
+    presets["1121228291"] = "5_L";
+    presets["112122818291"] = "6";
+    presets["1121223171818291"] = "8";
+    presets["11212231416171818291"] = "10";
+    var preset = presets[diff.sort().join("")];
+    if (preset == "HIRATE") {
+        if (obj.initial.data.color == Color.Black) {
+            obj.initial.preset = "HIRATE";
+            delete obj.initial.data;
+        }
+    }
+    else if (preset && obj.initial.data.color == Color.White) {
+        obj.initial.preset = preset;
+        delete obj.initial.data;
+    }
+}
+function samePiece(p1, p2) {
+    return (typeof p1.color == "undefined" && typeof p2.color == "undefined") ||
+        (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
+}
+function restoreColorOfIllegalAction(moves, shogi) {
+    if (moves.length >= 1 && moves[moves.length - 1].special == "ILLEGAL_ACTION") {
+        moves[moves.length - 1].special = (shogi.turn ? "+" : "-") + "ILLEGAL_ACTION";
+    }
+}
+function restoreTotalTime(time, lastTime) {
+    if (lastTime === void 0) { lastTime = { now: { m: 0, s: 0 }, total: { h: 0, m: 0, s: 0 } }; }
+    if (!time)
+        return;
+    time.total = {
+        h: (time.now.h || 0) + lastTime.total.h,
+        m: time.now.m + lastTime.total.m,
+        s: time.now.s + lastTime.total.s
+    };
+    time.total.m += Math.floor(time.total.s / 60);
+    time.total.s = time.total.s % 60;
+    time.total.h += Math.floor(time.total.m / 60);
+    time.total.m = time.total.m % 60;
+}
+
+},{"../node_modules/shogi.js/lib/shogi":5}],5:[function(require,module,exports){
+/** @license
+ * Shogi.js
+ * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
+(function (Color) {
+    Color[Color["Black"] = 0] = "Black";
+    Color[Color["White"] = 1] = "White";
+})(exports.Color || (exports.Color = {}));
+var Color = exports.Color;
+var Shogi = (function () {
+    function Shogi(setting) {
+        this.initialize(setting);
+    }
+    // 盤面を初期化する
+    // 初期局面(なければ平手)
+    Shogi.prototype.initialize = function (setting) {
+        if (setting === void 0) { setting = { preset: "HIRATE" }; }
+        this.board = [];
+        if (setting.preset != "OTHER") {
+            for (var i = 0; i < 9; i++) {
+                this.board[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    var csa = Shogi.preset[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
+                    this.board[i][j] = csa == " * " ? null : new Piece(csa);
+                }
+            }
+            this.turn = Shogi.preset[setting.preset].turn;
+            this.hands = [[], []];
+        }
+        else {
+            for (var i = 0; i < 9; i++) {
+                this.board[i] = [];
+                for (var j = 0; j < 9; j++) {
+                    var p = setting.data.board[i][j];
+                    this.board[i][j] = p.kind ? new Piece((p.color == Color.Black ? "+" : "-") + p.kind) : null;
+                }
+            }
+            this.turn = setting.data.color;
+            this.hands = [[], []];
+            for (var c = 0; c < 2; c++) {
+                for (var k in setting.data.hands[c]) {
+                    var csa = (c == 0 ? "+" : "-") + k;
+                    for (var i = 0; i < setting.data.hands[c][k]; i++) {
+                        this.hands[c].push(new Piece(csa));
+                    }
+                }
+            }
+        }
+        this.flagEditMode = false;
+    };
+    // 編集モード切り替え
+    // * 通常モード：移動時に手番と移動可能かどうかチェックし，移動可能範囲は手番側のみ返す．
+    // * 編集モード：移動時に手番や移動可能かはチェックせず，移動可能範囲は両者とも返す．
+    Shogi.prototype.editMode = function (flag) {
+        this.flagEditMode = flag;
+    };
+    // (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
+    Shogi.prototype.move = function (fromx, fromy, tox, toy, promote) {
+        if (promote === void 0) { promote = false; }
+        var piece = this.get(fromx, fromy);
+        if (piece == null)
+            throw "no piece found at " + fromx + ", " + fromy;
+        this.checkTurn(piece.color);
+        if (!this.flagEditMode) {
+            if (!this.getMovesFrom(fromx, fromy).some(function (move) {
+                return move.to.x == tox && move.to.y == toy;
+            }))
+                throw "cannot move from " + fromx + ", " + fromy + " to " + tox + ", " + toy;
+        }
+        if (this.get(tox, toy) != null)
+            this.capture(tox, toy);
+        if (promote)
+            piece.promote();
+        this.set(tox, toy, piece);
+        this.set(fromx, fromy, null);
+        this.nextTurn();
+    };
+    // moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
+    Shogi.prototype.unmove = function (fromx, fromy, tox, toy, promote, capture) {
+        if (promote === void 0) { promote = false; }
+        var piece = this.get(tox, toy);
+        if (piece == null)
+            throw "no piece found at " + tox + ", " + toy;
+        this.checkTurn(Piece.oppositeColor(piece.color));
+        var captured;
+        if (capture) {
+            captured = this.popFromHand(Piece.unpromote(capture), piece.color);
+            captured.inverse();
+        }
+        var editMode = this.flagEditMode;
+        this.editMode(true);
+        this.move(tox, toy, fromx, fromy);
+        if (promote)
+            piece.unpromote();
+        if (capture) {
+            if (Piece.isPromoted(capture))
+                captured.promote();
+            this.set(tox, toy, captured);
+        }
+        this.editMode(editMode);
+        this.prevTurn();
+    };
+    // (tox, toy)へcolorの持ち駒のkindを打つ．
+    Shogi.prototype.drop = function (tox, toy, kind, color) {
+        if (color === void 0) { color = this.turn; }
+        this.checkTurn(color);
+        if (this.get(tox, toy) != null)
+            throw "there is a piece at " + tox + ", " + toy;
+        var piece = this.popFromHand(kind, color);
+        this.set(tox, toy, piece);
+        this.nextTurn();
+    };
+    // dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
+    Shogi.prototype.undrop = function (tox, toy) {
+        var piece = this.get(tox, toy);
+        if (piece == null)
+            throw "there is no piece at " + tox + ", " + toy;
+        this.checkTurn(Piece.oppositeColor(piece.color));
+        this.pushToHand(piece);
+        this.set(tox, toy, null);
+        this.prevTurn();
+    };
+    // CSAによる盤面表現の文字列を返す
+    Shogi.prototype.toCSAString = function () {
+        var ret = [];
+        for (var y = 0; y < 9; y++) {
+            var line = "P" + (y + 1);
+            for (var x = 8; x >= 0; x--) {
+                var piece = this.board[x][y];
+                line += piece == null ? " * " : piece.toCSAString();
+            }
+            ret.push(line);
+        }
+        for (var i = 0; i < 2; i++) {
+            var line = "P" + "+-"[i];
+            for (var j = 0; j < this.hands[i].length; j++) {
+                line += "00" + this.hands[i][j].kind;
+            }
+            ret.push(line);
+        }
+        ret.push(this.turn == Color.Black ? "+" : "-");
+        return ret.join("\n");
+    };
+    // (x, y)の駒の移動可能な動きをすべて得る
+    // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
+    Shogi.prototype.getMovesFrom = function (x, y) {
+        // 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
+        var legal = function (x, y, color) {
+            if (x < 1 || 9 < x || y < 1 || 9 < y)
+                return false;
+            var piece = this.get(x, y);
+            return piece == null || piece.color != color;
+        }.bind(this);
+        var shouldStop = function (x, y, color) {
+            var piece = this.get(x, y);
+            return piece != null && piece.color != color;
+        }.bind(this);
+        var piece = this.get(x, y);
+        if (piece == null)
+            return [];
+        var moveDef = Piece.getMoveDef(piece.kind);
+        var ret = [], from = { x: x, y: y };
+        if (moveDef.just) {
+            for (var i = 0; i < moveDef.just.length; i++) {
+                var def = moveDef.just[i];
+                if (piece.color == Color.White) {
+                    def[0] *= -1;
+                    def[1] *= -1;
+                }
+                var to = { x: from.x + def[0], y: from.y + def[1] };
+                if (legal(to.x, to.y, piece.color))
+                    ret.push({ from: from, to: to });
+            }
+        }
+        if (moveDef.fly) {
+            for (var i = 0; i < moveDef.fly.length; i++) {
+                var def = moveDef.fly[i];
+                if (piece.color == Color.White) {
+                    def[0] *= -1;
+                    def[1] *= -1;
+                }
+                var to = { x: from.x + def[0], y: from.y + def[1] };
+                while (legal(to.x, to.y, piece.color)) {
+                    ret.push({ from: from, to: { x: to.x, y: to.y } });
+                    if (shouldStop(to.x, to.y, piece.color))
+                        break;
+                    to.x += def[0];
+                    to.y += def[1];
+                }
+            }
+        }
+        return ret;
+    };
+    // colorが打てる動きを全て得る
+    Shogi.prototype.getDropsBy = function (color) {
+        var ret = [];
+        var places = [];
+        for (var i = 1; i <= 9; i++) {
+            for (var j = 1; j <= 9; j++) {
+                if (this.get(i, j) == null)
+                    places.push({ x: i, y: j });
+            }
+        }
+        var done = {};
+        for (var i = 0; i < this.hands[color].length; i++) {
+            var kind = this.hands[color][i].kind;
+            if (done[kind])
+                continue;
+            done[kind] = true;
+            for (var j = 0; j < places.length; j++) {
+                ret.push({ to: places[j], color: color, kind: kind });
+            }
+        }
+        return ret;
+    };
+    // (x, y)に行けるcolor側のkindの駒の動きを得る
+    Shogi.prototype.getMovesTo = function (x, y, kind, color) {
+        if (color === void 0) { color = this.turn; }
+        var to = { x: x, y: y };
+        var ret = [];
+        for (var i = 1; i <= 9; i++) {
+            for (var j = 1; j <= 9; j++) {
+                var piece = this.get(i, j);
+                if (!piece || piece.kind != kind || piece.color != color)
+                    continue;
+                var moves = this.getMovesFrom(i, j);
+                if (moves.some(function (move) { return move.to.x == x && move.to.y == y; })) {
+                    ret.push({ from: { x: i, y: j }, to: to });
+                }
+            }
+        }
+        return ret;
+    };
+    // (x, y)の駒を得る
+    Shogi.prototype.get = function (x, y) {
+        return this.board[x - 1][y - 1];
+    };
+    // keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
+    Shogi.prototype.getHandsSummary = function (color) {
+        var ret = {
+            "FU": 0,
+            "KY": 0,
+            "KE": 0,
+            "GI": 0,
+            "KI": 0,
+            "KA": 0,
+            "HI": 0
+        };
+        for (var i = 0; i < this.hands[color].length; i++) {
+            ret[this.hands[color][i].kind]++;
+        }
+        return ret;
+    };
+    // 以下editModeでの関数
+    // (x, y)の駒を取ってcolorの持ち駒に加える
+    Shogi.prototype.captureByColor = function (x, y, color) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        this.set(x, y, null);
+        piece.unpromote();
+        if (piece.color != color)
+            piece.inverse();
+        this.pushToHand(piece);
+    };
+    // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
+    // 成功したらtrueを返す
+    Shogi.prototype.flip = function (x, y) {
+        if (!this.flagEditMode)
+            throw "cannot edit board without editMode";
+        var piece = this.get(x, y);
+        if (!piece)
+            return false;
+        if (Piece.isPromoted(piece.kind)) {
+            piece.unpromote();
+            piece.inverse();
+        }
+        else if (Piece.canPromote(piece.kind)) {
+            piece.promote();
+        }
+        else {
+            piece.inverse();
+        }
+        return true;
+    };
+    // 手番を設定する
+    Shogi.prototype.setTurn = function (color) {
+        if (!this.flagEditMode)
+            throw "cannot set turn without editMode";
+        this.turn = color;
+    };
+    // 以下private method
+    // (x, y)に駒を置く
+    Shogi.prototype.set = function (x, y, piece) {
+        this.board[x - 1][y - 1] = piece;
+    };
+    // (x, y)の駒を取って反対側の持ち駒に加える
+    Shogi.prototype.capture = function (x, y) {
+        var piece = this.get(x, y);
+        this.set(x, y, null);
+        piece.unpromote();
+        piece.inverse();
+        this.pushToHand(piece);
+    };
+    // 駒pieceを持ち駒に加える
+    Shogi.prototype.pushToHand = function (piece) {
+        this.hands[piece.color].push(piece);
+    };
+    // color側のkindの駒を取って返す
+    Shogi.prototype.popFromHand = function (kind, color) {
+        var hand = this.hands[color];
+        for (var i = 0; i < hand.length; i++) {
+            if (hand[i].kind != kind)
+                continue;
+            var piece = hand[i];
+            hand.splice(i, 1); // remove at i
+            return piece;
+        }
+        throw color + " has no " + kind;
+    };
+    // 次の手番に行く
+    Shogi.prototype.nextTurn = function () {
+        if (this.flagEditMode)
+            return;
+        this.turn = this.turn == Color.Black ? Color.White : Color.Black;
+    };
+    // 前の手番に行く
+    Shogi.prototype.prevTurn = function () {
+        if (this.flagEditMode)
+            return;
+        this.nextTurn();
+    };
+    // colorの手番で問題ないか確認する．編集モードならok．
+    Shogi.prototype.checkTurn = function (color) {
+        if (!this.flagEditMode && color != this.turn)
+            throw "cannot move opposite piece";
+    };
+    // 既定の初期局面
+    Shogi.preset = {
+        "HIRATE": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.Black
+        },
+        "KY": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "KY_R": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "KA": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " * -HI *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "HI": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " *  *  *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "HIKY": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  * -KA * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "2": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "3": {
+            board: [
+                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "4": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "5": {
+            board: [
+                " *  * -GI-KI-OU-KI-GI-KE * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "5_L": {
+            board: [
+                " * -KE-GI-KI-OU-KI-GI *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "6": {
+            board: [
+                " *  * -GI-KI-OU-KI-GI *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "8": {
+            board: [
+                " *  *  * -KI-OU-KI *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        },
+        "10": {
+            board: [
+                " *  *  *  * -OU *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                " *  *  *  *  *  *  *  *  * ",
+                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+                " * +KA *  *  *  *  * +HI * ",
+                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+            ],
+            turn: Color.White
+        }
+    };
+    return Shogi;
+})();
+exports.Shogi = Shogi;
+// enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
+var Piece = (function () {
+    // "+FU"などのCSAによる駒表現から駒オブジェクトを作成
+    function Piece(csa) {
+        this.color = csa.slice(0, 1) == "+" ? Color.Black : Color.White;
+        this.kind = csa.slice(1);
+    }
+    // 成る
+    Piece.prototype.promote = function () {
+        this.kind = Piece.promote(this.kind);
+    };
+    // 不成にする
+    Piece.prototype.unpromote = function () {
+        this.kind = Piece.unpromote(this.kind);
+    };
+    // 駒の向きを反転する
+    Piece.prototype.inverse = function () {
+        this.color = this.color == Color.Black ? Color.White : Color.Black;
+    };
+    // CSAによる駒表現の文字列を返す
+    Piece.prototype.toCSAString = function () {
+        return (this.color == Color.Black ? "+" : "-") + this.kind;
+    };
+    // 成った時の種類を返す．なければそのまま．
+    Piece.promote = function (kind) {
+        return {
+            FU: "TO",
+            KY: "NY",
+            KE: "NK",
+            GI: "NG",
+            KA: "UM",
+            HI: "RY"
+        }[kind] || kind;
+    };
+    // 表に返した時の種類を返す．表の場合はそのまま．
+    Piece.unpromote = function (kind) {
+        return {
+            TO: "FU",
+            NY: "KY",
+            NK: "KE",
+            NG: "GI",
+            KI: "KI",
+            UM: "KA",
+            RY: "HI",
+            OU: "OU"
+        }[kind] || kind;
+    };
+    // 成れる駒かどうかを返す
+    Piece.canPromote = function (kind) {
+        return Piece.promote(kind) != kind;
+    };
+    Piece.getMoveDef = function (kind) {
+        switch (kind) {
+            case "FU":
+                return { just: [[0, -1],] };
+            case "KY":
+                return { fly: [[0, -1],] };
+            case "KE":
+                return { just: [[-1, -2], [1, -2],] };
+            case "GI":
+                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1],] };
+            case "KI":
+            case "TO":
+            case "NY":
+            case "NK":
+            case "NG":
+                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]] };
+            case "KA":
+                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
+            case "HI":
+                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
+            case "OU":
+                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]] };
+            case "UM":
+                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],], just: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
+            case "RY":
+                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
+        }
+    };
+    Piece.isPromoted = function (kind) {
+        return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
+    };
+    Piece.oppositeColor = function (color) {
+        return color == Color.Black ? Color.White : Color.Black;
+    };
+    return Piece;
+})();
+exports.Piece = Piece;
+
 },{}],"JKFPlayer":[function(require,module,exports){
 /** @license
  * JSON Kifu Format
@@ -7312,9 +7327,9 @@ var Color = ShogiJS.Color;
 var Piece = ShogiJS.Piece;
 var Shogi = ShogiJS.Shogi;
 var Normalizer = require('./normalizer');
-var kifParser = require("../out/kif-parser");
-var ki2Parser = require("../out/ki2-parser");
-var csaParser = require("../out/csa-parser");
+var kifParser = require("../lib/kif-parser");
+var ki2Parser = require("../lib/ki2-parser");
+var csaParser = require("../lib/csa-parser");
 var JKFPlayer = (function () {
     function JKFPlayer(kifu) {
         this.shogi = new Shogi(kifu.initial || undefined);
@@ -7696,4 +7711,4 @@ var JKFPlayer = (function () {
 })();
 module.exports = JKFPlayer;
 
-},{"../node_modules/shogi.js/lib/shogi":2,"../out/csa-parser":3,"../out/ki2-parser":4,"../out/kif-parser":5,"./normalizer":1}]},{},[]);
+},{"../lib/csa-parser":1,"../lib/ki2-parser":2,"../lib/kif-parser":3,"../node_modules/shogi.js/lib/shogi":5,"./normalizer":4}]},{},[]);
