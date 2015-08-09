@@ -41,6 +41,6 @@
     "typescript": "^1.5.3"
   },
   "dependencies": {
-    "shogi.js": "na2hiro/Shogi.js#4267322"
+    "shogi.js": "^1.0.0"
   }
 }
