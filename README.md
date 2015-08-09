@@ -1,6 +1,14 @@
 # Shogi.js (Ver. 1.0)
 将棋の盤駒を扱うシンプルなJavaScriptライブラリ．DOM, jQuery等不使用．TypeScript．
 
+## インストール
+
+```
+npm install shogi.js
+```
+
+もしくは右のDownload ZIPから．
+
 ## 概要
 * 最低限の将棋の法則に従って操作ができる．
 	* 局面を平手に並べることができる．
