@@ -7,17 +7,18 @@ var JKFPlayer = require("../lib/jkfplayer");
 makeTest("kif", function(filename){return filename.match(/u$/) ? loadUTF : loadSJIS});
 makeTest("ki2", function(filename){return filename.match(/u$/) ? loadUTF : loadSJIS});
 makeTest("csa", function(filename){return loadAuto});
+makeTest("jkf", function(filename){return loadUTF});
 
 function makeTest(ext, fileNameToLoadFunc){
 	var datas = {};
 	describe(ext+" file", function(){
-		var files = fs.readdirSync(__dirname+"/../example/files/"+ext);
+		var files = fs.readdirSync(__dirname+"/files/"+ext);
 		for(var i=0; i<files.length; i++){
 			(function(filename){
 				if(!filename.match(new RegExp("\\."+ext+"u?$"))) return;
 				it(filename, function(done){
 					try{
-						fileNameToLoadFunc(filename)(__dirname+"/../example/files/"+ext+"/"+filename, function(err, data){
+						fileNameToLoadFunc(filename)(__dirname+"/files/"+ext+"/"+filename, function(err, data){
 							if(err){
 								done(err);
 								return;

@@ -1,11 +1,11 @@
 <meta charset="utf-8">
-<script src="../out/kifuplayer.js" charset="utf-8"></script>
+<script src="../out/jkfplayer.js" charset="utf-8"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
 var JKFPlayer = require("JKFPlayer");
 $(document).ready(function() {
-	$.ajax('./files/ki2/fork.ki2', {
+	$.ajax('../test/files/ki2/fork.ki2', {
 		success: function(data) {
 			kifu=data;
 			parse(data);
