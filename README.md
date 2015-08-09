@@ -191,6 +191,15 @@ JSONで一般的なUTF-8を使用するものとします．
 ```
 
 ## プログラム
+
+インストールは
+
+```
+npm install json-kifu-format
+```
+
+または右のDownload ZIPボタンから．
+
 ### ブラウザ用
 node.js用のファイルをbrowserifyで１つにまとめたJKFPlayerが用意されています．`require("JKFPlayer")`で読み込むことができます．
 
