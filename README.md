@@ -1,4 +1,4 @@
-# Shogi.js
+# Shogi.js (Ver. 1.0)
 将棋の盤駒を扱うシンプルなJavaScriptライブラリ．DOM, jQuery等不使用．TypeScript．
 
 ## 概要
