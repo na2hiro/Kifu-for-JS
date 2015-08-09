@@ -3,20 +3,18 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
+var JKFPlayer = require("JKFPlayer");
 $(document).ready(function() {
-	$.ajax('./files/ki2/fork.ki2', {
+	$.ajax('./files/kif/no_henka.kifu', {
 		success: function(data) {
 			kifu=data;
 			parse(data);
-		},
-		beforeSend: function(xhr){
-			xhr.overrideMimeType("text/html;charset=Shift_JIS");
 		},
 	}, 'text');
 });
 
 function parse(data){
-	player = JKFPlayer.parseKI2(data);
+	player = JKFPlayer.parseKIF(data);
 	var cnt=0;
 	console.log(player.getReadableKifu());
 	while(player.forward() && cnt++<1000){
@@ -24,7 +22,6 @@ function parse(data){
 	}
 	cnt=0;
 	while(player.backward() && cnt++<1000){}
-	console.log(player.shogi.toCSAString());
 	player.goto(20);
 	console.log(player.shogi.toCSAString());
 	player.goto(10);

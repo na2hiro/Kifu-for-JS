@@ -1,19 +1,26 @@
-/// <reference path="./JSONKifuFormat.d.ts" />
-/// <reference path="../Shogi.js/src/shogi.ts" />
-/// <reference path="./normalizer.ts" />
-
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+import ShogiJS = require('../node_modules/shogi.js/lib/shogi');
+import Color = ShogiJS.Color;
+import Piece = ShogiJS.Piece;
+import Shogi = ShogiJS.Shogi;
+import Normalizer = require('./normalizer');
+import kifParser = require("../lib/kif-parser");
+import ki2Parser = require("../lib/ki2-parser");
+import csaParser = require("../lib/csa-parser");
+import JKF = require('./JSONKifuFormat');
+
+export = JKFPlayer;
 
 class JKFPlayer{
 	shogi: Shogi;
-	kifu: JSONKifuFormat;
+	kifu: JKF.JSONKifuFormat;
 	tesuu: number;
-	forks: {te: number; moves: MoveFormat[]}[];
+	forks: {te: number; moves: JKF.MoveFormat[]}[];
 	static debug = false;
 	static _log = [];
 	static log(...lg: any[]){
@@ -23,11 +30,11 @@ class JKFPlayer{
 			JKFPlayer._log.push(lg);
 		}
 	}
-	constructor(kifu: JSONKifuFormat){
+	constructor(kifu: JKF.JSONKifuFormat){
 		this.shogi = new Shogi(kifu.initial || undefined);
 		this.initialize(kifu);
 	}
-	initialize(kifu: JSONKifuFormat){
+	initialize(kifu: JKF.JSONKifuFormat){
 		this.kifu = kifu;
 		this.tesuu = 0;
 		this.forks = [{te: 0, moves: this.kifu.moves}];
@@ -74,23 +81,17 @@ class JKFPlayer{
 		return new JKFPlayer(JSON.parse(kifu));
 	}
 	static parseKIF(kifu: string){
-		if(!JKFPlayer.kifParser) throw "パーサが読み込まれていません";
 		JKFPlayer.log("parseKIF", kifu);
-		return new JKFPlayer(Normalizer.normalizeKIF(JKFPlayer.kifParser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(kifu)));
 	}
 	static parseKI2(kifu: string){
-		if(!JKFPlayer.ki2Parser) throw "パーサが読み込まれていません";
 		JKFPlayer.log("parseKI2", kifu);
-		return new JKFPlayer(Normalizer.normalizeKI2(JKFPlayer.ki2Parser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(kifu)));
 	}
 	static parseCSA(kifu: string){
-		if(!JKFPlayer.csaParser) throw "パーサが読み込まれていません";
 		JKFPlayer.log("parseCSA", kifu);
-		return new JKFPlayer(Normalizer.normalizeCSA(JKFPlayer.csaParser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(kifu)));
 	}
-	static kifParser: {parse: (kifu: string)=>JSONKifuFormat};
-	static ki2Parser: {parse: (kifu: string)=>JSONKifuFormat};
-	static csaParser: {parse: (kifu: string)=>JSONKifuFormat};
 	static numToZen(n: number){
 		return "０１２３４５６７８９"[n];
 	}
@@ -144,12 +145,12 @@ class JKFPlayer{
 			"ERROR": "エラー",
 		}[special] || special;
 	}
-	static moveToReadableKifu(mv: MoveFormat): string{
+	static moveToReadableKifu(mv: JKF.MoveFormat): string{
 		if(mv.special){
 			return JKFPlayer.specialToKan(mv.special);
 		}
 		var move = mv.move;
-		var ret = move.color ? "☗" : "☖";
+		var ret = move.color==Color.Black ? "☗" : "☖";
 		if(move.same){
 			ret+="同　";
 		}else{
@@ -164,23 +165,25 @@ class JKFPlayer{
 		}
 		return ret;
 	}
-	static doMove(shogi: Shogi, move: MoveMoveFormat){
+	static doMove(shogi: Shogi, move: JKF.MoveMoveFormat){
+		if(!move) return;
 		if(move.from){
 			shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
 		}else{
-			shogi.drop(move.to.x, move.to.y, move.piece, typeof move.color != "undefined" ? (move.color ? 0 : 1) : void 0);
+			shogi.drop(move.to.x, move.to.y, move.piece, typeof move.color != "undefined" ? move.color : void 0);
 		}
 	}
-	static undoMove(shogi: Shogi, move: MoveMoveFormat){
+	static undoMove(shogi: Shogi, move: JKF.MoveMoveFormat){
+		if(!move) return;
 		if(move.from){
 			shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
 		}else{
 			shogi.undrop(move.to.x, move.to.y);
 		}
 	}
-	static getState(shogi: Shogi): StateFormat{
+	static getState(shogi: Shogi): JKF.StateFormat{
 		return {
-			color: shogi.turn==0,
+			color: shogi.turn,
 			board: JKFPlayer.getBoardState(shogi),
 			hands: JKFPlayer.getHandsState(shogi),
 		};
@@ -199,7 +202,6 @@ class JKFPlayer{
 	backward(){
 		if(this.tesuu<=0) return false;
 		var move = this.getMoveFormat(this.tesuu).move;
-		if(!move){ this.tesuu--; return true; }
 		JKFPlayer.log("backward", this.tesuu-1, move);
 		this.undoMove(move);
 		this.tesuu--;
@@ -221,16 +223,18 @@ class JKFPlayer{
 		this.goto(this.tesuu+tesuu);
 	}
 	// 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
-	forkAndForward(num: number){
-		this.forks.push({te: this.tesuu+1, moves: this.getMoveFormat(this.tesuu+1).forks[num]});
-		this.forward();
+	forkAndForward(num: number): boolean{
+		var forks = this.getMoveFormat(this.tesuu+1).forks;
+		if(!forks || forks.length<=num) return false;
+		this.forks.push({te: this.tesuu+1, moves: forks[num]});
+		return this.forward();
 	}
 	// 現在の局面から新しいかもしれない手を1手動かす．
 	// 必要フィールドは，指し: from, to, promote(成れる場合のみ)．打ち: to, piece
 	// 新しい手の場合，最終手であれば手を追加，そうでなければ分岐を追加
 	// もしpromoteの可能性があればfalseを返して何もしない
 	// 成功すればその局面に移動してtrueを返す．
-	inputMove(move: MoveMoveFormat){
+	inputMove(move: JKF.MoveMoveFormat){
 		if(this.getMoveFormat().special) throw "終了局面へ棋譜を追加することは出来ません";
 		if(move.from!=null && move.promote==null){
 			var piece = this.shogi.get(move.from.x, move.from.y);
@@ -315,7 +319,7 @@ class JKFPlayer{
 	// private
 
 	// 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る
-	private getMoveFormat(tesuu: number = this.tesuu): MoveFormat{
+	private getMoveFormat(tesuu: number = this.tesuu): JKF.MoveFormat{
 		for(var i=this.forks.length-1; i>=0; i--){
 			var fork = this.forks[i];
 			if(fork.te<=tesuu){
@@ -328,13 +332,13 @@ class JKFPlayer{
 		var next = this.getMoveFormat(tesuu+1);
 		return (next && next.forks) ? next.forks : [];
 	}
-	private doMove(move: MoveMoveFormat){
+	private doMove(move: JKF.MoveMoveFormat){
 		JKFPlayer.doMove(this.shogi, move);
 	}
-	private undoMove(move: MoveMoveFormat){
+	private undoMove(move: JKF.MoveMoveFormat){
 		JKFPlayer.undoMove(this.shogi, move);
 	}
-	private static sameMoveMinimal(move1: MoveMoveFormat, move2: MoveMoveFormat){
+	private static sameMoveMinimal(move1: JKF.MoveMoveFormat, move2: JKF.MoveMoveFormat){
 		return (move1.to.x==move2.to.x && move1.to.y==move2.to.y
 						&& (move1.from
 							? move1.from.x==move2.from.x && move1.from.y==move2.from.y && move1.promote==move2.promote

@@ -3,19 +3,23 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
+var JKFPlayer = require("JKFPlayer");
 $(document).ready(function() {
-	$.ajax('./files/kif/no_henka.kifu', {
+	$.ajax('./files/jkf/ryuou201409020101.jkf', {
 		success: function(data) {
 			kifu=data;
 			parse(data);
+		},
+		beforeSend: function(xhr){
+			xhr.overrideMimeType("text/html;charset=utf-8");
 		},
 	}, 'text');
 });
 
 function parse(data){
-	player = JKFPlayer.parseKIF(data);
+	player = JKFPlayer.parse(data);
 	var cnt=0;
-	console.log(player.getReadableKifu());
+		console.log(player.getReadableKifu());
 	while(player.forward() && cnt++<1000){
 		console.log(player.getReadableKifu());
 	}

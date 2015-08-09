@@ -3,24 +3,25 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
+var JKFPlayer = require("JKFPlayer");
 $(document).ready(function() {
-	$.ajax('./files/csa/2005_GPS_K-SHOGI.csa', {
+	$.ajax('./files/kif/fork.kif', {
 		success: function(data) {
 			kifu=data;
 			parse(data);
 		},
 		beforeSend: function(xhr){
-			xhr.overrideMimeType("text/html;charset=UTF-8");
+			xhr.overrideMimeType("text/html;charset=Shift_JIS");
 		},
 	}, 'text');
 });
 
 function parse(data){
-	player = JKFPlayer.parseCSA(data);
+	player = JKFPlayer.parseKIF(data);
 	var cnt=0;
 	console.log(player.getReadableKifu());
 	while(player.forward() && cnt++<1000){
-		console.log(cnt, player.getReadableKifu());
+		console.log(player.getReadableKifu());
 	}
 	cnt=0;
 	while(player.backward() && cnt++<1000){}

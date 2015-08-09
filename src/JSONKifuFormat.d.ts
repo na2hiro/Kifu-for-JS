@@ -4,7 +4,9 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-interface JSONKifuFormat{
+ import ShogiJS = require("../node_modules/shogi.js/lib/shogi");
+ import Color = ShogiJS.Color;
+export interface JSONKifuFormat{
 	header: {[index: string]: string;};
 	initial?: {
 		preset: string;
@@ -13,14 +15,14 @@ interface JSONKifuFormat{
 	moves: MoveFormat[];
 }
 // 盤面
-interface StateFormat{
-	color: boolean;
-	board: { color?: boolean; kind?: boolean; }[][];
+export interface StateFormat{
+	color: Color;
+	board: { color?: Color; kind?: string; }[][];
 	hands: {[index:string]: number}[];
 }
 // 動作
-interface MoveMoveFormat {
-	color: boolean;
+export interface MoveMoveFormat {
+	color: Color;
 	from?: PlaceFormat;
 	to?: PlaceFormat;
 	piece: string;
@@ -30,7 +32,7 @@ interface MoveMoveFormat {
 	relative?: string;
 }
 // 棋譜(一手)
-interface MoveFormat{
+export interface MoveFormat{
 	comments?: string[];
 	move?: MoveMoveFormat;
 	time?: {
@@ -41,13 +43,13 @@ interface MoveFormat{
 	forks?: MoveFormat[][];
 }
 // 時間
-interface TimeFormat{
+export interface TimeFormat{
 	h?: number;
 	m: number;
 	s: number;
 }
 // 座標
-interface PlaceFormat{
+export interface PlaceFormat{
 	x: number;
 	y: number;
 }

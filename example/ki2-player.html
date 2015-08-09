@@ -3,8 +3,9 @@
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
+var JKFPlayer = require("JKFPlayer");
 $(document).ready(function() {
-	$.ajax('./files/kif/fork.kif', {
+	$.ajax('./files/ki2/fork.ki2', {
 		success: function(data) {
 			kifu=data;
 			parse(data);
@@ -16,7 +17,7 @@ $(document).ready(function() {
 });
 
 function parse(data){
-	player = JKFPlayer.parseKIF(data);
+	player = JKFPlayer.parseKI2(data);
 	var cnt=0;
 	console.log(player.getReadableKifu());
 	while(player.forward() && cnt++<1000){
@@ -24,6 +25,7 @@ function parse(data){
 	}
 	cnt=0;
 	while(player.backward() && cnt++<1000){}
+	console.log(player.shogi.toCSAString());
 	player.goto(20);
 	console.log(player.shogi.toCSAString());
 	player.goto(10);
