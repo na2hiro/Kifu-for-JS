@@ -4,7 +4,10 @@
 <meta charset="utf-8">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="../out/kifuforjs.js" charset="utf-8"></script>
-<script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
+<script>
+var Kifu = require("Kifu");
+Kifu.settings={ImageDirectoryPath: "../images"};
+</script>
 <link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
 </head>
 
@@ -30,15 +33,15 @@ JavaもFlashも使わない，JavaScriptだけで動く<a href="https://github.c
 		</ul>
 </ul>
 <h2>KIFファイル読み込み</h2>
-<script>Kifu.load("../json-kifu-format/test/files/kif/jt201409130101.kif");</script>
+<script>Kifu.load("../node_modules/json-kifu-format/test/files/kif/jt201409130101.kif");</script>
 <h3>分岐棋譜</h3>
-<script>Kifu.load("../json-kifu-format/test/files/kif/fork.kif");</script>
+<script>Kifu.load("../node_modules/json-kifu-format/test/files/kif/fork.kif");</script>
 <h2>KI2ファイル読み込み</h2>
-<script>Kifu.load("../json-kifu-format/test/files/ki2/9fu.ki2");</script>
+<script>Kifu.load("../node_modules/json-kifu-format/test/files/ki2/9fu.ki2");</script>
 <h2>CSAファイル読み込み</h2>
-<script>Kifu.load("../json-kifu-format/test/files/csa/8mai.csa");</script>
+<script>Kifu.load("../node_modules/json-kifu-format/test/files/csa/8mai.csa");</script>
 <h2>JKFファイル読み込み</h2>
-<script>Kifu.load("../json-kifu-format/test/files/jkf/ryuou201409020101.jkf");</script>
+<script>Kifu.load("../node_modules/json-kifu-format/test/files/jkf/ryuou201409020101.jkf");</script>
 </script>
 </body>
 </html>

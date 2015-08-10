@@ -1,6 +1,15 @@
-var Kifu= (function(){
+/** @license
+ * Kifu for JS
+ * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+ * This software is released under the MIT License.
+ * http://opensource.org/licenses/mit-license.php
+ */
+import React from "react";
+import JKFPlayer from "json-kifu-format";
+import {Color} from "json-kifu-format/node_modules/shogi.js";
+//import {DragDropMixin, NativeDragItemTypes} from "react-dnd";
+
 var version = "1.0.10";
-var DragDropMixin = ReactDND.DragDropMixin;
 var Board = React.createClass({
 	render: function(){
 		var nineY = [1,2,3,4,5,6,7,8,9];
@@ -37,8 +46,8 @@ var Hand = React.createClass({
 	},
 });
 var PieceHand = React.createClass({
-	mixins: [DragDropMixin],
-	statics: {
+//	mixins: [DragDropMixin],
+/*	statics: {
 		configureDragDrop: function(registerType) {
 			registerType("piecehand", {
 				dragSource: {
@@ -48,12 +57,13 @@ var PieceHand = React.createClass({
 				},
 			});
 		}
-	},
+	},*/
 	render: function(){
 		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""].join(" ");
+//				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piecehand")}/>
 		return (
 			<span className={classNames}>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piecehand")}/>
+				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}/>
 				<span className='maisuu'>{numToKanji(this.props.value)}</span>
 			</span>
 		);
@@ -63,8 +73,8 @@ var PieceHand = React.createClass({
 	},
 });
 var Piece = React.createClass({
-	mixins: [DragDropMixin],
-	statics: {
+//	mixins: [DragDropMixin],
+/*	statics: {
 		configureDragDrop: function(registerType) {
 			registerType("piece", {
 				dragSource: {
@@ -86,11 +96,12 @@ var Piece = React.createClass({
 				},
 			});
 		}
-	},
+	},*/
 	render: function(){
+//				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piece")} {...this.dropTargetFor("piece","piecehand")} style={{visibility: this.getDragState("piece").isDragging?"hidden":""}} />
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piece")} {...this.dropTargetFor("piece","piecehand")} style={{visibility: this.getDragState("piece").isDragging?"hidden":""}} />
+				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}/>
 			</td>
 		);
 	},
@@ -215,7 +226,8 @@ var Kifu = React.createClass({
 		var state = this.state.player.getState();
 
 		return (
-			<table className="kifuforjs" {...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(ReactDND.NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}>
+//			<table className="kifuforjs" {...this.dropTargetFor(NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}>
+			<table className="kifuforjs">
 				<tbody>
 					<tr>
 						<td>
@@ -294,11 +306,11 @@ var Kifu = React.createClass({
 		);
 	},
 
-	mixins: [DragDropMixin],
-
+//	mixins: [DragDropMixin],
+/*
 	statics: {
 		configureDragDrop: function (registerType) {
-			registerType(ReactDND.NativeDragItemTypes.FILE, {
+			registerType(NativeDragItemTypes.FILE, {
 				dropTarget: {
 					acceptDrop: function(component, item) {
 						// Do something with files
@@ -311,7 +323,7 @@ var Kifu = React.createClass({
 				}
 			});
 		}
-	},
+	},*/
 });
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
@@ -384,5 +396,4 @@ function pad(str, space, length){
 }
 Kifu.load=load;
 Kifu.settings = {};
-return Kifu;
-})();
+export default Kifu;
