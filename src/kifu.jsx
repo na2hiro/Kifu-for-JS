@@ -7,7 +7,8 @@
 import React from "react";
 import JKFPlayer from "json-kifu-format";
 import {Color} from "json-kifu-format/node_modules/shogi.js";
-//import {DragDropMixin, NativeDragItemTypes} from "react-dnd";
+import {DragDropContext, DropTarget} from "react-dnd";
+import HTML5Backend, {NativeTypes} from "react-dnd/modules/backends/HTML5";
 
 var version = "1.0.10";
 var Board = React.createClass({
@@ -139,7 +140,20 @@ var ForkList = React.createClass({
 		);
 	}
 });
-var Kifu = React.createClass({
+var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
+	drop: function(props, monitor, component){
+		if(monitor.getItem().files[0]){
+			loadFile(monitor.getItem().files[0], function(data, name){
+				component.setState({player: JKFPlayer.parse(data, name)});
+			});
+		}
+	},
+}, function collect(connect, monitor){
+	return {
+		connectDropTarget: connect.dropTarget(),
+		isOver: monitor.isOver()
+	};
+})(React.createClass({
 	componentDidMount: function(){
 		ajax(this.props.filename, function(data, err){
 			if(err){
@@ -225,9 +239,8 @@ var Kifu = React.createClass({
 
 		var state = this.state.player.getState();
 
-		return (
-//			<table className="kifuforjs" {...this.dropTargetFor(NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}>
-			<table className="kifuforjs">
+		return this.props.connectDropTarget(
+			<table className="kifuforjs" style={{backgroundColor: this.props.isOver ? "silver" : ""}}>
 				<tbody>
 					<tr>
 						<td>
@@ -305,26 +318,7 @@ var Kifu = React.createClass({
 			</table>
 		);
 	},
-
-//	mixins: [DragDropMixin],
-/*
-	statics: {
-		configureDragDrop: function (registerType) {
-			registerType(NativeDragItemTypes.FILE, {
-				dropTarget: {
-					acceptDrop: function(component, item) {
-						// Do something with files
-						if(item.files[0]){
-							loadFile(item.files[0], function(data, name){
-								component.setState({player: JKFPlayer.parse(data, name)});
-							});
-						}
-					}
-				}
-			});
-		}
-	},*/
-});
+})));
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
 // 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
