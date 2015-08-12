@@ -7,7 +7,7 @@
 import React from "react";
 import JKFPlayer from "json-kifu-format";
 import {Color} from "json-kifu-format/node_modules/shogi.js";
-import {DragDropContext, DropTarget} from "react-dnd";
+import {DragDropContext, DropTarget, DragSource} from "react-dnd";
 import HTML5Backend, {NativeTypes} from "react-dnd/modules/backends/HTML5";
 
 var version = "1.0.10";
@@ -39,32 +39,32 @@ var Hand = React.createClass({
 				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
 				<div className="mochimain">
 					{["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
-						return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} />;
+						return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} />;
 					}.bind(this))}
 				</div>
 			</div>
 		);
 	},
 });
-var PieceHand = React.createClass({
-//	mixins: [DragDropMixin],
-/*	statics: {
-		configureDragDrop: function(registerType) {
-			registerType("piecehand", {
-				dragSource: {
-					beginDrag: function(component) {
-						return {item: {piece: component.props.data.kind}};
-					}
-				},
-			});
-		}
-	},*/
+var PieceHand = DragSource("piecehand", {
+	beginDrag: function(props, monitor, component) {
+		return {piece: props.data.kind};
+	},
+	endDrag: function(props, monitor, component){
+		console.log(props);
+		props.onInputMove({piece: monitor.getItem().piece, to: monitor.getDropResult()});
+	}
+}, function collect(connect, monitor){
+	return {
+		connectDragSource: connect.dragSource(),
+		isDragging: monitor.isDragging()
+	};
+})(React.createClass({
 	render: function(){
 		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""].join(" ");
-//				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piecehand")}/>
 		return (
 			<span className={classNames}>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}/>
+				{this.props.connectDragSource(<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}/>)}
 				<span className='maisuu'>{numToKanji(this.props.value)}</span>
 			</span>
 		);
@@ -72,44 +72,41 @@ var PieceHand = React.createClass({
 	getPieceImage: function(kind, color){
 		return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
 	},
-});
-var Piece = React.createClass({
-//	mixins: [DragDropMixin],
-/*	statics: {
-		configureDragDrop: function(registerType) {
-			registerType("piece", {
-				dragSource: {
-					beginDrag: function(component) {
-						return {item: {x: component.props.x, y: component.props.y}};
-					}
-				},
-				dropTarget: {
-					acceptDrop: function(component, item) {
-						component.props.onInputMove({from: item, to: {x: component.props.x, y: component.props.y}});
-					}
-				},
-			});
-			registerType("piecehand", {
-				dropTarget: {
-					acceptDrop: function(component, item) {
-						component.props.onInputMove({piece: item.piece, to: {x: component.props.x, y: component.props.y}});
-					}
-				},
-			});
-		}
-	},*/
+}));
+var Piece = DragSource("piece", {
+	beginDrag: function(props, monitor, component) {
+		return {x: props.x, y: props.y};
+	},
+	endDrag: function(props, monitor, component){
+		props.onInputMove({from: monitor.getItem(), to: monitor.getDropResult()});
+	}
+}, function collect(connect, monitor){
+	return {
+		connectDragSource: connect.dragSource(),
+		isDragging: monitor.isDragging()
+	};
+})(DropTarget(["piece", "piecehand"], {
+	drop: function(props, monitor, component) {
+		return {x: props.x, y: props.y};
+	},
+}, function collect(connect, monitor){
+	return {
+		connectDropTarget: connect.dropTarget()
+	};
+})(React.createClass({
 	render: function(){
-//				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} {...this.dragSourceFor("piece")} {...this.dropTargetFor("piece","piecehand")} style={{visibility: this.getDragState("piece").isDragging?"hidden":""}} />
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
-				<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}/>
+				{this.props.connectDropTarget(this.props.connectDragSource(
+					<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} style={{visibility: this.props.isDragging?"hidden":""}} />
+				))}
 			</td>
 		);
 	},
 	getPieceImage: function(kind, color){
 		return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
 	},
-});
+})));
 var KifuList = React.createClass({
 	render: function(){
 		var options = [];
@@ -284,7 +281,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 								<div className="mochi info">
 									{info}
 								</div>
-								<Hand color={0} data={state.hands[0]} playerName={this.state.player.kifu.header["先手"] || this.state.player.kifu.header["下手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<Hand color={0} data={state.hands[0]} playerName={this.state.player.kifu.header["先手"] || this.state.player.kifu.header["下手"]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove}/>
 							</div>
 						</td>
 					</tr>
