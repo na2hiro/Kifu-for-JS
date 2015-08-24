@@ -7,6 +7,7 @@
 (function() {
 	function start() {
 		try{
+			var Kifu = require("Kifu");
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
 			var targetId, kifuPath;
 			if($("applet param[name=KIFU]").length>0){

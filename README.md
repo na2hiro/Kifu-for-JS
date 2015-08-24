@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 1.0.10)
+# Kifu for JS (ver. 1.1.0)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -92,21 +92,27 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 ## 開発環境
 
-* JSX 0.12.2 ([react-tools](http://facebook.github.io/react/docs/getting-started.html#offline-transform))
-* Uglify JS 2
-
-環境設定例
+package.jsonに必要モジュールが書いてあります．パッケージマネージャnpmを使用し，
 
 ```
-# 必要ツール取得
-npm install react-tools -g
-npm install uglify-js -g
-# サブモジュール取得
-git submodule update --init --recursive
-# コンパイル
-cd src
-make
+$ npm install
+
 ```
+
+を実行することで下記のモジュールをインストールできます．
+
+* [na2hiro/json-kifu-format](https://github.com/na2hiro/json-kifu-format) 1.0: 将棋の盤駒を扱うライブラリ
+* gulp 3.9 (自動化ツール)
+* react 0.13, react-dnd 1.1 (GUIフレームワーク)
+* browserify 11.0 (ブラウザ用require)
+* babelify 6.1 (ES6, JSXトランスパイラ)
+* uglify(ify) (ソースコード圧縮)
+
+```
+$ ./node_modules/.bin/gulp build # パスが通っている場合は単にgulp build
+```
+
+を起動すると，JSXのトランスパイルとブックマークレットのuglifyが行われます．
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
