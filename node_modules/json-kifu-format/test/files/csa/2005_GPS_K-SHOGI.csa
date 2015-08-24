@@ -1,0 +1,536 @@
+N+sente
+N-gote
+P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
++
+'Tue May  3 13:50:01 2005
++7776FU
+T12
+'time left 1488 1500
+-3334FU
+T1
+'time left 1488 1499
++2726FU
+T1
+'time left 1487 1499
+-4344FU
+T1
+'time left 1487 1498
++3948GI
+T1
+'time left 1486 1498
+-8242HI
+T1
+'time left 1486 1497
++5968OU
+T1
+'time left 1485 1497
+-5162OU
+T1
+'time left 1485 1496
++6878OU
+T1
+'time left 1484 1496
+-6272OU
+T1
+'time left 1484 1495
++5756FU
+T1
+'time left 1483 1495
+-7282OU
+T1
+'time left 1483 1494
++4958KI
+T1
+'time left 1482 1494
+-7172GI
+T1
+'time left 1482 1493
++9796FU
+T1
+'time left 1481 1493
+-9394FU
+T1
+'time left 1481 1492
++7968GI
+T1
+'time left 1480 1492
+-3435FU
+T1
+'time left 1480 1491
++6766FU
+T12
+'time left 1468 1491
+-4232HI
+T18
+'time left 1468 1473
++6857GI
+T15
+'time left 1453 1473
+-3142GI
+T33
+'time left 1453 1440
++2625FU
+T9
+'time left 1444 1440
+-3234HI
+T8
+'time left 1444 1432
++6665FU
+T7
+'time left 1437 1432
+-1314FU
+T5
+'time left 1437 1427
++8866KA
+T12
+'time left 1425 1427
+-2133KE
+T5
+'time left 1425 1422
++4746FU
+T14
+'time left 1411 1422
+-7374FU
+T8
+'time left 1411 1414
++6655KA
+T10
+'time left 1401 1414
+-7273GI
+T17
+'time left 1401 1397
++2524FU
+T8
+'time left 1393 1397
+-3424HI
+T2
+'time left 1393 1395
++2824HI
+T9
+'time left 1384 1395
+-2324FU
+T8
+'time left 1384 1387
++0023HI
+T15
+'time left 1369 1387
+-4132KI
+T16
+'time left 1369 1371
++2324RY
+T40
+'time left 1329 1371
+-4243GI
+T1
+'time left 1329 1370
++2427RY
+T14
+'time left 1315 1370
+-0025FU
+T46
+'time left 1315 1324
++3736FU
+T16
+'time left 1299 1324
+-9495FU
+T47
+'time left 1299 1277
++9695FU
+T10
+'time left 1289 1277
+-9195KY
+T12
+'time left 1289 1265
++0096FU
+T1
+'time left 1288 1265
+-9596KY
+T21
+'time left 1288 1244
++0097FU
+T1
+'time left 1287 1244
+-0024HI
+T12
+'time left 1287 1232
++4837GI
+T24
+'time left 1263 1232
+-3536FU
+T12
+'time left 1263 1220
++2736RY
+T22
+'time left 1241 1220
+-2526FU
+T28
+'time left 1241 1192
++3726GI
+T5
+'time left 1236 1192
+-5354FU
+T28
+'time left 1236 1164
++5566KA
+T21
+'time left 1215 1164
+-0028FU
+T21
+'time left 1215 1143
++2635GI
+T1
+'time left 1214 1143
+-2423HI
+T11
+'time left 1214 1132
++9796FU
+T9
+'time left 1205 1132
+-2231KA
+T13
+'time left 1205 1119
++2937KE
+T4
+'time left 1201 1119
+-0098FU
+T16
+'time left 1201 1103
++0024FU
+T24
+'time left 1177 1103
+-2321HI
+T42
+'time left 1177 1061
++9998KY
+T22
+'time left 1155 1061
+-2829TO
+T3
+'time left 1155 1058
++0034FU
+T18
+'time left 1137 1058
+-2919TO
+T26
+'time left 1137 1032
++3433TO
+T1
+'time left 1136 1032
+-3233KI
+T45
+'time left 1136 987
++3745KE
+T14
+'time left 1122 987
+-3332KI
+T41
+'time left 1122 946
++0023KY
+T15
+'time left 1107 946
+-0022FU
+T46
+'time left 1107 900
++0033KE
+T17
+'time left 1090 900
+-0034FU
+T45
+'time left 1090 855
++3534GI
+T19
+'time left 1071 855
+-3197UM
+T19
+'time left 1071 836
++8997KE
+T30
+'time left 1041 836
+-2151HI
+T30
+'time left 1041 806
++2322NY
+T2
+'time left 1039 806
+-3242KI
+T32
+'time left 1039 774
++0086KA
+T1
+'time left 1038 774
+-6152KI
+T20
+'time left 1038 754
++9785KE
+T34
+'time left 1004 754
+-4445FU
+T30
+'time left 1004 724
++8573NK
+T40
+'time left 964 724
+-8273OU
+T14
+'time left 964 710
++0031GI
+T16
+'time left 948 710
+-0053KE
+T25
+'time left 948 685
++8695KA
+T1
+'time left 947 685
+-0084KY
+T21
+'time left 947 664
++3142GI
+T20
+'time left 927 664
+-5242KI
+T25
+'time left 927 639
++3443NG
+T1
+'time left 926 639
+-4243KI
+T26
+'time left 926 613
++0085GI
+T1
+'time left 925 613
+-7372OU
+T21
+'time left 925 592
++8584GI
+T23
+'time left 902 592
+-8384FU
+T21
+'time left 902 571
++0062KI
+T22
+'time left 880 571
+-7262OU
+T20
+'time left 880 551
++6684KA
+T21
+'time left 859 551
+-0073GI
+T25
+'time left 859 526
++3341NK
+T21
+'time left 838 526
+-5141HI
+T25
+'time left 838 501
++3632RY
+T18
+'time left 820 501
+-4342KI
+T11
+'time left 820 490
++3241RY
+T7
+'time left 813 490
+-4241KI
+T21
+'time left 813 469
++8473UM
+T1
+'time left 812 469
+-8173KE
+T15
+'time left 812 454
++0092HI
+T1
+'time left 811 454
+-0072HI
+T15
+'time left 811 439
++9573UM
+T22
+'time left 789 439
+-6273OU
+T9
+'time left 789 430
++0085KE
+T11
+'time left 778 430
+-7362OU
+T20
+'time left 778 410
++0073GI
+T1
+'time left 777 410
+-6252OU
+T16
+'time left 777 394
++9272RY
+T26
+'time left 751 394
+-5243OU
+T20
+'time left 751 374
++0023HI
+T2
+'time left 749 374
+-0033GI
+T16
+'time left 749 358
++2333RY
+T25
+'time left 724 358
+-4333OU
+T1
+'time left 724 357
++2423TO
+T25
+'time left 699 357
+-3334OU
+T15
+'time left 699 342
++0038KY
+T16
+'time left 683 342
+-0036KE
+T11
+'time left 683 331
++3836KY
+T18
+'time left 665 331
+-3425OU
+T15
+'time left 665 316
++0027GI
+T2
+'time left 663 316
+-0026KI
+T11
+'time left 663 305
++0037KE
+T19
+'time left 644 305
+-2515OU
+T10
+'time left 644 295
++0028FU
+T1
+'time left 643 295
+-2637KI
+T15
+'time left 643 280
++2211NY
+T1
+'time left 642 280
+-0077GI
+T15
+'time left 642 265
++7877OU
+T21
+'time left 621 265
+-0044KA
+T8
+'time left 621 257
++7767OU
+T5
+'time left 616 257
+-0089KA
+T15
+'time left 616 242
++0078GI
+T33
+'time left 583 242
+-5365KE
+T15
+'time left 583 227
++1716FU
+T9
+'time left 574 227
+-1525OU
+T1
+'time left 574 226
++0026KY
+T27
+'time left 547 226
+-4426KA
+T1
+'time left 547 225
++2324TO
+T20
+'time left 527 225
+-2524OU
+T1
+'time left 527 224
++7222RY
+T20
+'time left 507 224
+-0023FU
+T4
+'time left 507 220
++2233RY
+T14
+'time left 493 220
+-2413OU
+T3
+'time left 493 217
++2726GI
+T15
+'time left 478 217
+-6557NK
+T1
+'time left 478 216
++5857KI
+T60
+'time left 418 216
+-0075KE
+T7
+'time left 418 209
++6777OU
+T9
+'time left 409 209
+-7587NK
+T4
+'time left 409 205
++7787OU
+T19
+'time left 390 205
+-0086FU
+T1
+'time left 390 204
++8786OU
+T6
+'time left 384 204
+-0088HI
+T1
+'time left 384 203
++0087FU
+T1
+'time left 383 203
+-0094KE
+T4
+'time left 383 199
++8695OU
+T1
+'time left 382 199
+-0084GI
+T2
+'time left 382 197
++7384NG
+T1
+'time left 381 197
+%TORYO
+'+ win
+'Tue May  3 14:34:13 2005
+'game end
