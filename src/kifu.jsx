@@ -51,7 +51,6 @@ var PieceHand = DragSource("piecehand", {
 		return {piece: props.data.kind};
 	},
 	endDrag: function(props, monitor, component){
-		console.log(props);
 		props.onInputMove({piece: monitor.getItem().piece, to: monitor.getDropResult()});
 	}
 }, function collect(connect, monitor){
@@ -206,7 +205,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 				this.state.player.inputMove(move);
 			}
 		}catch(e){
-			alert("動かせません ("+e+")");
+			// ignore
 		}
 		this.setState(this.state);
 	},
@@ -242,7 +241,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 					<tr>
 						<td>
 							<div className={"inlineblock players "+(this.state.player.kifu.moves.some(function(move){return move.forks&&move.forks.length>0;})?"withfork":"")}>
-								<Hand color={1} data={state.hands[1]} playerName={this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]} ImageDirectoryPath={this.props.ImageDirectoryPath}/>
+								<Hand color={1} data={state.hands[1]} playerName={this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove}/>
 								<div className="mochi">
 									<KifuList onChange={this.onChangeKifuList} kifu={this.state.player.getReadableKifuState()} tesuu={this.state.player.tesuu} />
 									<ul className="lines">
@@ -350,7 +349,6 @@ function ajax(filename, onSuccess){
 	$.ajax(filename, {
 		success: function(data, textStatus){
 			if(textStatus=="notmodified"){
-				console.log("kifu not modified");
 				return;
 			}
 			onSuccess(data);
