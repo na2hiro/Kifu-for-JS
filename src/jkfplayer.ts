@@ -82,15 +82,19 @@ class JKFPlayer{
 	}
 	static parseKIF(kifu: string){
 		JKFPlayer.log("parseKIF", kifu);
-		return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(JKFPlayer.addLastNewLine(kifu))));
 	}
 	static parseKI2(kifu: string){
 		JKFPlayer.log("parseKI2", kifu);
-		return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(JKFPlayer.addLastNewLine(kifu))));
 	}
 	static parseCSA(kifu: string){
 		JKFPlayer.log("parseCSA", kifu);
-		return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(kifu)));
+		return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(JKFPlayer.addLastNewLine(kifu))));
+	}
+	static addLastNewLine(kifu: string){
+		if(kifu.substr(kifu.length-1)=="\n") return kifu;
+		return kifu+"\n";
 	}
 	static numToZen(n: number){
 		return "０１２３４５６７８９"[n];

@@ -182,4 +182,54 @@ describe("kif-parser", function(){
 			});
 		});
 	});
+	describe("split", function(){
+		it("normal", function(){
+			assert.deepEqual(kifParser.parse("\
+手合割：平手\n\
+手数----指手--\n\
+*開始コメント\n\
+1 ７六歩(77)\n\
+*初手コメント\n\
+2 ３四歩(33)\n\
+3 ２二角成(88)+\n\
+4 中断\n\
+"),{
+				header:{
+					"手合割":"平手",
+				},
+				initial: {preset: "HIRATE"},
+				moves:[
+					{comments:["開始コメント"]},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU"},comments:["初手コメント"]},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU"}},
+					{move:{from:p(8,8),to:p(2,2),piece:"KA",promote:true}},
+					{special:"CHUDAN"},
+				]
+			});
+		});
+		it("after initial comment", function(){
+			assert.deepEqual(kifParser.parse("\
+手合割：平手\n\
+*開始コメント\n\
+手数----指手--\n\
+1 ７六歩(77)\n\
+*初手コメント\n\
+2 ３四歩(33)\n\
+3 ２二角成(88)+\n\
+4 中断\n\
+"),{
+				header:{
+					"手合割":"平手",
+				},
+				initial: {preset: "HIRATE"},
+				moves:[
+					{comments:["開始コメント"]},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU"},comments:["初手コメント"]},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU"}},
+					{move:{from:p(8,8),to:p(2,2),piece:"KA",promote:true}},
+					{special:"CHUDAN"},
+				]
+			});
+		});
+	});
 });

@@ -1820,7 +1820,7 @@ module.exports = (function() {
         peg$c113 = function() {return "FUZUMI"},
         peg$c114 = "\u5909\u5316\uFF1A",
         peg$c115 = { type: "literal", value: "\u5909\u5316\uFF1A", description: "\"\\u5909\\u5316\\uFF1A\"" },
-        peg$c116 = function(te, moves) {return {te:parseInt(te), moves:moves.slice(1)}},
+        peg$c116 = function(te, moves) {return {te:parseInt(te.join("")), moves:moves.slice(1)}},
         peg$c117 = "#",
         peg$c118 = { type: "literal", value: "#", description: "\"#\"" },
         peg$c119 = "\t",
@@ -3947,7 +3947,7 @@ module.exports = (function() {
         peg$c125 = function() {return "FUZUMI"},
         peg$c126 = "\u5909\u5316\uFF1A",
         peg$c127 = { type: "literal", value: "\u5909\u5316\uFF1A", description: "\"\\u5909\\u5316\\uFF1A\"" },
-        peg$c128 = function(te, moves) {return {te:parseInt(te), moves:moves.slice(1)}},
+        peg$c128 = function(te, moves) {return {te:parseInt(te.join("")), moves:moves.slice(1)}},
         peg$c129 = "#",
         peg$c130 = { type: "literal", value: "#", description: "\"#\"" },
         peg$c131 = "\t",
@@ -4685,26 +4685,35 @@ module.exports = (function() {
     }
 
     function peg$parsemoves() {
-      var s0, s1, s2, s3;
+      var s0, s1, s2, s3, s4;
 
       s0 = peg$currPos;
       s1 = peg$parsefirstboard();
       if (s1 !== peg$FAILED) {
-        s2 = [];
-        s3 = peg$parsemove();
-        while (s3 !== peg$FAILED) {
-          s2.push(s3);
-          s3 = peg$parsemove();
+        s2 = peg$parsesplit();
+        if (s2 === peg$FAILED) {
+          s2 = peg$c2;
         }
         if (s2 !== peg$FAILED) {
-          s3 = peg$parseresult();
-          if (s3 === peg$FAILED) {
-            s3 = peg$c2;
+          s3 = [];
+          s4 = peg$parsemove();
+          while (s4 !== peg$FAILED) {
+            s3.push(s4);
+            s4 = peg$parsemove();
           }
           if (s3 !== peg$FAILED) {
-            peg$reportedPos = s0;
-            s1 = peg$c38(s1, s2);
-            s0 = s1;
+            s4 = peg$parseresult();
+            if (s4 === peg$FAILED) {
+              s4 = peg$c2;
+            }
+            if (s4 !== peg$FAILED) {
+              peg$reportedPos = s0;
+              s1 = peg$c38(s1, s3);
+              s0 = s1;
+            } else {
+              peg$currPos = s0;
+              s0 = peg$c0;
+            }
           } else {
             peg$currPos = s0;
             s0 = peg$c0;
@@ -7401,15 +7410,20 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.parseKIF = function (kifu) {
         JKFPlayer.log("parseKIF", kifu);
-        return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(kifu)));
+        return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(JKFPlayer.addLastNewLine(kifu))));
     };
     JKFPlayer.parseKI2 = function (kifu) {
         JKFPlayer.log("parseKI2", kifu);
-        return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(kifu)));
+        return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(JKFPlayer.addLastNewLine(kifu))));
     };
     JKFPlayer.parseCSA = function (kifu) {
         JKFPlayer.log("parseCSA", kifu);
-        return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(kifu)));
+        return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(JKFPlayer.addLastNewLine(kifu))));
+    };
+    JKFPlayer.addLastNewLine = function (kifu) {
+        if (kifu.substr(kifu.length - 1) == "\n")
+            return kifu;
+        return kifu + "\n";
     };
     JKFPlayer.numToZen = function (n) {
         return "０１２３４５６７８９"[n];

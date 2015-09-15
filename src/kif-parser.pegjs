@@ -157,7 +157,7 @@ teban = (" "/"+"/"^"){return 0} / ("v"/"V"){return 1}
 split = "手数----指手--" "-------消費時間--"? nl
 
 // 棋譜部分
-moves = hd:firstboard tl:move* result? {tl.unshift(hd); return tl;}
+moves = hd:firstboard split? tl:move* result? {tl.unshift(hd); return tl;}
 
 firstboard = c:comment* pointer? {return c.length==0 ? {} : {comments:c}}
 move = line:line c:comment* pointer? {

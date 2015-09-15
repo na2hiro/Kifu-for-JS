@@ -26,6 +26,7 @@ declare class JKFPlayer {
     static parseKIF(kifu: string): JKFPlayer;
     static parseKI2(kifu: string): JKFPlayer;
     static parseCSA(kifu: string): JKFPlayer;
+    static addLastNewLine(kifu: string): string;
     static numToZen(n: number): string;
     static numToKan(n: number): string;
     static kindToKan(kind: string): string;
