@@ -9,73 +9,83 @@
 		try{
 			var Kifu = require("Kifu");
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
-			var targetId, kifuPath;
-			if($("applet param[name=KIFU]").length>0){
+			var targetList = [];
+			$("applet param[name=KIFU]").each(function(index){
 				// applet方式
-				var base = $("applet param[name=KIFU]").parent().attr("codebase") || ".";
-				kifuPath = base.replace(/\/$/, "")+"/"+$("applet param[name=KIFU]").val();
-				console.log(kifuPath);
-				$("applet param[name=KIFU]").parent().replaceWith("<div id='kifuforjs'></div>");
-				targetId = "kifuforjs";
-			}else if($("#flashcontent").length>0){
-				// SWFObject方式(idがflashcontentの場合のみ)
-				if(typeof so != "undefined" && so.variables && so.variables.kifu){
-					$("#flashcontent").replaceWith("<div id='flashcontent'></div>");
-					targetId = "flashcontent";
-					kifuPath = so.variables.kifu;
-				}
-			}else if($("object param[name=FlashVars]").val()){
-				// object方式
-				$("object param[name=FlashVars]").val().split("&&").map(function(kv){
+				// homepage2.nifty.com/kakinoki_y/kifujf/example.html
+				var $parent = $(this).parent();
+				var base = $parent.attr("codebase") || ".";
+				var targetId = "kifuforjs_"+makeRandomString();
+				var kifuPath = base.replace(/\/$/, "")+"/"+$(this).val();
+				$parent.replaceWith("<div id='"+targetId+"'></div>");
+				targetList.push({targetId: targetId, kifuPath: kifuPath, method: "applet"})
+			});
+			$("object param[name=FlashVars]").each(function(index){
+				// object方式 http://homepage2.nifty.com/kakinoki_y/flash/example.html
+				var $parent = $(this).parent();
+				var kifuPath;
+				$(this).val().split("&").map(function(kv){
 					var s = kv.split("=");
 					if(s[0]=="kifu") kifuPath=s[1];
 				});
-				if($("#Kifu").length>0){
-					$("#Kifu").replaceWith("<div id='Kifu'></div>");
-				}else{
-					$("object param[name=FlashVars]").parent().replaceWith("<div id='Kifu'></div>");
-				}
-				targetId="Kifu";
-			}
-			if(!targetId && typeof params!="undefined" && params.FlashVars){
-				// paramsがある場合
+				if(!kifuPath) return;
+
+				var targetId = "kifuforjs_"+makeRandomString();
+				$parent.replaceWith("<div id='"+targetId+"'></div>");
+				targetList.push({kifuPath: kifuPath, targetId: targetId, method: "object"});
+			});
+
+			// SWFObject方式
+			// ただしFlashが有効であるなどして上記objectで拾われた場合は対応しない
+			if(typeof so != "undefined" && so.variables && so.variables.kifu && $("#flashcontent").length>0){
+				// ただしidがflashcontentかつsoオブジェクトが存在する場合のみ)
+				// http://homepage2.nifty.com/kakinoki_y/flash/resize.html
+				$("#flashcontent").replaceWith("<div id='flashcontent'></div>");
+				targetList.push({targetId: "flashcontent", kifuPath: so.variables.kifu, method: "swo_flashcontent"});
+			}else if(typeof params!="undefined" && params.FlashVars && $("#so").length>0){
+				// ただしidがsoかつparamsオブジェクトがある場合
+				// http://mainichi.jp/feature/shougi/ohsho/etc/64/150111.html
+				var kifuPath;
 				params.FlashVars.split("&").forEach(function(kv){
 					var s = kv.split("=");
 					if(s[0]=="kifu") kifuPath=s[1];
 				});
-				if($("#so").length==0){
-					$(document.body).prepend("<div id='so'></div>");
-				}else{
+				if(kifuPath){
 					$("#so").replaceWith("<div id='so'></div>");
+					$("#so").css("visibility", "visible");
+					targetList.push({targetId: "so", kifuPath: kifuPath, method: "swo_so"})
 				}
-				$("#so").css("visibility", "visible");
-				targetId="so";
-			}
-			if(!targetId){
+			}else{
 				// SWFObject方式(script総なめ)
+				// http://kiftwi.net/r/YO1ErcFF
 				$("script").filter(function(i, script){
 					return script.textContent.indexOf('SWFObject')>=0;
 				}).each(function(i, script){
 					var kifuMatch = script.textContent.match(/addVariable.+kifu.+"(.+)"/);
 					var idMatch = script.textContent.match(/write.+"(.+)"/);
 					if(kifuMatch && idMatch){
-						kifuPath = kifuMatch[1];
-						targetId = idMatch[1];
+						targetList.push({kifuPath: kifuMatch[1], targetId: idMatch[1], method: "swo_bruteforce"});
 					}
 				});
 			}
-			if(!targetId) throw "棋譜が見つかりませんでした";
-			console.log("load start");
-			try{
-				Kifu.load(kifuPath.replace(/\.(z|gz)$/ig, ""), targetId);
-			}catch(e){
-				throw "棋譜解析エラー"+e;
-			}
+			if(targetList.length==0) throw "将棋盤が見つかりませんでした";
+			console.log("load start", targetList);
+			targetList.forEach(function(target){
+				try{
+					Kifu.load(target.kifuPath.replace(/\.(z|gz)$/ig, ""), target.targetId);
+				}catch(e){
+					console.log("error", e);
+				}
+			});
 		}catch(e){
 			console.log(e);
 			alert("読込失敗: "+e);
 		}
 	}
+	function makeRandomString(){
+		return Math.random().toString(36).slice(2);
+	}
+
 	var cnt=0;
 	if(typeof $=="undefined" || !$.fn || !$.fn.jquery){
 		cnt++;

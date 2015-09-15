@@ -140,7 +140,11 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	drop: function(props, monitor, component){
 		if(monitor.getItem().files[0]){
 			loadFile(monitor.getItem().files[0], function(data, name){
-				component.setState({player: JKFPlayer.parse(data, name)});
+				try{
+					component.setState({player: JKFPlayer.parse(data, name)});
+				}catch(e){
+					component.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．");
+				}
 			});
 		}
 	},
@@ -159,7 +163,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 			try{
 				this.setState({player: JKFPlayer.parse(data, this.props.filename)});
 			}catch(e){
-				this.logError("棋譜ファイルが壊れています: "+e);
+				this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．");
 			}
 		}.bind(this));
 	},
