@@ -10,7 +10,7 @@ import {Color} from "json-kifu-format/node_modules/shogi.js";
 import {DragDropContext, DropTarget, DragSource} from "react-dnd";
 import HTML5Backend, {NativeTypes} from "react-dnd/modules/backends/HTML5";
 
-var version = "1.1.0";
+var version = "1.1.2";
 var Board = React.createClass({
 	render: function(){
 		var nineY = [1,2,3,4,5,6,7,8,9];

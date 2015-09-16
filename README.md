@@ -32,8 +32,10 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 1. あらかじめブックマークレットを追加しておく
 2. 棋譜テキストが書かれているページ([例](http://shogikakolog.web.fc2.com/part121.htm))を開く
 3. 棋譜テキストを選択する
+![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/select-1.png)
 4. ブックマークレットを開く
 5. 棋譜テキストの直後にKifu for JSの再生盤が表示される
+![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/select-2.png)
 
 ## Kifu for JS
 ### 機能
