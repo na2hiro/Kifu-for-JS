@@ -68,7 +68,19 @@
 					}
 				});
 			}
-			if(targetList.length==0) throw "将棋盤が見つかりませんでした";
+			if(window.getSelection && getSelection().toString()!=""){
+				var selection=getSelection();
+				var id = makeRandomString();
+				$("<div id='"+id+"'>").insertAfter($(selection.focusNode));
+				try{
+					Kifu.loadString(selection.toString(), id);
+				}catch(e){
+					//alert("選択された棋譜の形式エラー: "+e);
+					console.log(e);
+				}
+			}else if(targetList.length==0){
+				throw "将棋盤が見つかりませんでした";
+			}
 			console.log("load start", targetList);
 			targetList.forEach(function(target){
 				try{

@@ -143,7 +143,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 				try{
 					component.setState({player: JKFPlayer.parse(data, name)});
 				}catch(e){
-					component.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．");
+					component.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+data);
 				}
 			});
 		}
@@ -155,17 +155,25 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	};
 })(React.createClass({
 	componentDidMount: function(){
-		ajax(this.props.filename, function(data, err){
-			if(err){
-				this.logError(err);
-				return;
-			}
-			try{
-				this.setState({player: JKFPlayer.parse(data, this.props.filename)});
-			}catch(e){
-				this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．");
-			}
-		}.bind(this));
+		if(this.props.filename){
+			ajax(this.props.filename, function(data, err){
+				if(err){
+					this.logError(err);
+					return;
+				}
+				try{
+					this.setState({player: JKFPlayer.parse(data, this.props.filename)});
+				}catch(e){
+					this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+data);
+				}
+			}.bind(this));
+		}else{
+				try{
+					this.setState({player: JKFPlayer.parse(this.props.kifu)});
+				}catch(e){
+					this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+this.props.kifu);
+				}
+		}
 	},
 	logError: function(errs){
 		var move = this.state.player.kifu.moves[0];
@@ -320,6 +328,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	},
 })));
 
+
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
 // 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
 function loadFile(file, callback){
@@ -347,7 +356,21 @@ function load(filename, id){
 			document.getElementById(id)
 		);
 	});
-};
+}
+
+function loadString(kifu, id){
+	if(!id){
+		id = "kifuforjs_"+Math.random().toString(36).slice(2);
+		document.write("<div id='"+id+"'></div>");
+	}
+	$(document).ready(function(){
+		React.render(
+			<Kifu kifu={kifu} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
+			document.getElementById(id)
+		);
+	});
+}
+
 function ajax(filename, onSuccess){
 	var encoding = getEncodingFromFileName(filename);
 	$.ajax(filename, {
@@ -388,5 +411,6 @@ function pad(str, space, length){
 	return ret+str;
 }
 Kifu.load=load;
+Kifu.loadString=loadString;
 Kifu.settings = {};
 export default Kifu;

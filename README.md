@@ -1,10 +1,12 @@
-# Kifu for JS (ver. 1.1.0)
+# Kifu for JS (ver. 1.1.2)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
 * Kifu for JSは，Kifu for FlashやJava同様，HTML内で棋譜を読み込み表示，再生を行う．
 	* **KIF**, **KI2**, **CSA**, [**JKF**](https://github.com/na2hiro/json-kifu-format)形式に対応．
-* Kifu for JSブックマークレットは，1クリックでKifu for FlashやKifu for JavaをKifu for JSに置き換えて盤面を表示する．	
+* Kifu for JSブックマークレットは，1クリックで
+	* Kifu for FlashやKifu for JavaをKifu for JSに置き換えて盤面を表示する．
+	* 選択された棋譜テキストから盤面を表示する．
 * Flash, Javaなどを必要としないため，iOSやAndroidでも表示できる
 
 ## 動作例
@@ -12,10 +14,11 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS ブックマークレット
 1クリックでKifu for {Flash/Java}をKifu for JSに置き換えて盤面を表示します．
+また，棋譜テキストを選択してブックマークレットを開くことで，盤面を表示できます．
 
-### 使い方
+### 使い方(Java/Flash置換)
 
-1. 次のコードをブックマークへ追加する→
+1. あらかじめ次のコードをブックマークへ追加しておく→
 `javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/out/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
 2. Kifu for FlashやKifu for Javaが使われているページ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html))を開く
 ![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/1.png)
@@ -23,6 +26,14 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 ![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/2.png)
 4. FlashやJava部分が置き換えられ，Kifu for JSの再生盤になる
 ![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/3.png)
+
+### 使い方(棋譜テキスト)
+
+1. あらかじめブックマークレットを追加しておく
+2. 棋譜テキストが書かれているページ([例](http://shogikakolog.web.fc2.com/part121.htm))を開く
+3. 棋譜テキストを選択する
+4. ブックマークレットを開く
+5. 棋譜テキストの直後にKifu for JSの再生盤が表示される
 
 ## Kifu for JS
 ### 機能
