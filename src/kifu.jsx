@@ -18,15 +18,20 @@ var Board = React.createClass({
 		return (
 			<table className="ban">
 				<tbody>
-					<tr>{nineX.map(function(x){return <th>{x}</th>;})}</tr>
-					{nineY.map(function(y){
+					<tr>{nineX.map((logicalX)=>{
+						var x = this.props.reversed ? 10-logicalX : logicalX;
+						return <th>{x}</th>;
+					})}</tr>
+					{nineY.map((logicalY)=>{
+						var y = this.props.reversed ? 10-logicalY : logicalY;
 						return <tr>
-							{nineX.map(function(x){
-								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} />
-							}.bind(this))}
+							{nineX.map((logicalX)=>{
+								var x = this.props.reversed ? 10-logicalX : logicalX;
+								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
+							})}
 							<th>{numToKanji(y)}</th>
 						</tr>;
-					}.bind(this))}
+					})}
 				</tbody>
 			</table>
 		);
@@ -35,13 +40,14 @@ var Board = React.createClass({
 var Hand = React.createClass({
 	render: function(){
 		var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
+		var virtualColor = this.props.reversed ? 1-this.props.color : this.props.color;
 		return (
 			<div className={"mochi mochi"+this.props.color}>
 				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
 				<div className="mochimain">
-					{(this.props.color==0 ? kinds.reverse() : kinds).map(function(kind){
-						return <PieceHandGroup value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} />;
-					}.bind(this))}
+					{(virtualColor==0 ? kinds.reverse() : kinds).map((kind)=>
+						<PieceHandGroup value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed}/>
+					)}
 				</div>
 			</div>
 		);
@@ -62,7 +68,7 @@ var PieceHandGroup = React.createClass({
 		var pieces = [];
 		for(var i=0; i<this.props.value; i++){
 			pieces.push(<PieceHand data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
-				   	onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null}/>);
+				   	onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null} reversed={this.props.reversed}/>);
 		}
 		return (
 			<span className={"mochigoma"+(this.props.value==0?"":(this.props.data.kind=="FU" ? " fu":" fu-else"))}>
@@ -85,11 +91,12 @@ var PieceHand = DragSource("piecehand", {
 	};
 })(React.createClass({
 	render: function(){
+		var virtualColor = this.props.reversed ? 1-this.props.data.color : this.props.data.color;
 		var style = this.props.position==null 
 			? {} 
 			: {top:0, left: this.props.position, position: "absolute", zIndex:100-this.props.index};
 		return (this.props.connectDragSource(
-			<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}
+			<img src={this.getPieceImage(this.props.data.kind, virtualColor)}
 				style={style}/>
 		));
 	},
@@ -119,10 +126,11 @@ var Piece = DragSource("piece", {
 	};
 })(React.createClass({
 	render: function(){
+		var color = this.props.data.color;
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
 				{this.props.connectDropTarget(this.props.connectDragSource(
-					<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)} style={{visibility: this.props.isDragging?"hidden":""}} />
+					<img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} />
 				))}
 			</td>
 		);
@@ -219,10 +227,13 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 		}.bind(this));
 	},
 	getInitialState: function(){
-		return {player: new JKFPlayer({header: {}, moves: [{}]})};
+		return {player: new JKFPlayer({header: {}, moves: [{}]}), reversed: false};
 	},
 	onClickDl: function(){
 		if(this.props.filename) window.open(this.props.filename);
+	},
+	onClickReverse: function(){
+		this.setState({reversed: !this.state.reversed});
 	},
 	onClickCredit: function(){
 		if(confirm("*** CREDIT ***\nKifu for JS (ver. "+version+")\n    by na2hiro\n    under the MIT License\n\n公式サイトを開きますか？")){
@@ -272,13 +283,20 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 
 		var state = this.state.player.getState();
 
+		var players = [
+			this.state.player.kifu.header["先手"] || this.state.player.kifu.header["下手"],
+			this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]
+		];
+
+		var reversed = this.state.reversed;
+
 		return this.props.connectDropTarget(
 			<table className="kifuforjs" style={{backgroundColor: this.props.isOver ? "silver" : ""}}>
 				<tbody>
 					<tr>
 						<td>
 							<div className={"inlineblock players "+(this.state.player.kifu.moves.some(function(move){return move.forks&&move.forks.length>0;})?"withfork":"")}>
-								<Hand color={1} data={state.hands[1]} playerName={this.state.player.kifu.header["後手"] || this.state.player.kifu.header["上手"]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove}/>
+								<Hand color={reversed?0:1} data={state.hands[reversed?0:1]} playerName={players[reversed?0:1]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed}/>
 								<div className="mochi">
 									<KifuList onChange={this.onChangeKifuList} kifu={this.state.player.getReadableKifuState()} tesuu={this.state.player.tesuu} />
 									<ul className="lines">
@@ -310,14 +328,14 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 							</div>
 						</td>
 						<td style={{textAlign:"center"}}>
-							<Board board={state.board} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} />
+							<Board board={state.board} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed} />
 						</td>
 						<td>
 							<div className="inlineblock players">
 								<div className="mochi info">
 									{info}
 								</div>
-								<Hand color={0} data={state.hands[0]} playerName={this.state.player.kifu.header["先手"] || this.state.player.kifu.header["下手"]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove}/>
+								<Hand color={reversed?1:0} data={state.hands[reversed?1:0]} playerName={players[reversed?1:0]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed}/>
 							</div>
 						</td>
 					</tr>
@@ -332,7 +350,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 								<li><button data-go="-10">&lt;&lt;</button></li>
 								<li><button data-go="-1">&lt;</button></li>
 								<li>
-									<input type="text" name="tesuu" size="3" style={{textAlign:"center"}} ref="tesuu" value={this.state.player.tesuu} onChange={function(e){
+									<input type="text" name="tesuu" size="3" ref="tesuu" value={this.state.player.tesuu} onChange={function(e){
 											this.goto(e.target.value);
 											this.setState(this.state);
 										}.bind(this)} />
@@ -341,8 +359,9 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 								<li><button data-go="10">&gt;&gt;</button></li>
 								<li><button data-go="Infinity">&gt;|</button></li>
 							</ul>
-							<ul className="inline">
-								<li><button className="credit" onClick={this.onClickCredit}>credit</button></li>
+							<ul className="inline tools">
+								<li><button onClick={this.onClickReverse}>反転</button></li>
+								<li><button onClick={this.onClickCredit}>credit</button></li>
 							</ul>
 							<textarea rows="10" className="comment" disabled value={this.state.player.getComments().join("\n")}></textarea>
 						</td>

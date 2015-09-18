@@ -132,8 +132,10 @@
 	height: 30px;
 	width: 55px;
 	font-size: 18px;
+	text-align: center;
+	vertical-align: bottom;
 }
-.kifuforjs ul.inline button.credit{
+.kifuforjs ul.inline.tools button{
 	font-size: 15px;
 }
 .kifuforjs textarea{
