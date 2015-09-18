@@ -79,10 +79,10 @@ var PieceHandGroup = React.createClass({
 });
 var PieceHand = DragSource("piecehand", {
 	beginDrag: function(props, monitor, component) {
-		return {piece: props.data.kind};
+		return {piece: props.data.kind, color: props.data.color};
 	},
 	endDrag: function(props, monitor, component){
-		props.onInputMove({piece: monitor.getItem().piece, to: monitor.getDropResult()});
+		props.onInputMove({piece: monitor.getItem().piece, color: monitor.getItem().color, to: monitor.getDropResult()});
 	}
 }, function collect(connect, monitor){
 	return {
