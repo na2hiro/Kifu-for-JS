@@ -89,19 +89,20 @@
 	background-color: #eee;
 }
 .kifuforjs div.mochi div.mochimain span.mochigoma{
-	position:relative;
+	position: relative;
+	display: inline-block;
 }
-.kifuforjs div.mochi div.mochimain span.mochigoma span.maisuu{
-	display: inline;
-	position: absolute;
-	bottom: 0px;
-	right: 0px;
-	color:blue;
-}
-.kifuforjs div.mochi div.mochimain span.mochigoma.mai0,
-.kifuforjs div.mochi div.mochimain span.mochigoma.mai0 span.maisuu,
-.kifuforjs div.mochi div.mochimain span.mochigoma.mai1 span.maisuu{
+.kifuforjs div.mochi div.mochimain span.mochigoma{
 	display: none;
+	position: relative;
+}
+.kifuforjs div.mochi div.mochimain span.mochigoma.fu{
+	display: inline-block;
+	width: 120px;
+}
+.kifuforjs div.mochi div.mochimain span.mochigoma.fu-else{
+	display: inline-block;
+	width: 60px;
 }
 .kifuforjs div.players{
 	height:100%;width:120px;

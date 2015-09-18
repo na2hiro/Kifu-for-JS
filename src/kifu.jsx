@@ -34,15 +34,40 @@ var Board = React.createClass({
 });
 var Hand = React.createClass({
 	render: function(){
+		var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
 		return (
 			<div className={"mochi mochi"+this.props.color}>
 				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
 				<div className="mochimain">
-					{["FU","KY","KE","GI","KI","KA","HI"].map(function(kind){
-						return <PieceHand value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} />;
+					{(this.props.color==0 ? kinds.reverse() : kinds).map(function(kind){
+						return <PieceHandGroup value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} />;
 					}.bind(this))}
 				</div>
 			</div>
+		);
+	},
+});
+var PieceHandGroup = React.createClass({
+	render: function(){
+		var positioner;
+		if(this.props.data.kind=="FU"){
+			if(this.props.value>=4){
+				positioner = i=>(120-32)*i/(this.props.value-1);
+			}
+		}else{
+			if(this.props.value>=2){
+				positioner = i=>(60-32)*i/(this.props.value-1);
+			}
+		}
+		var pieces = [];
+		for(var i=0; i<this.props.value; i++){
+			pieces.push(<PieceHand data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
+				   	onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null}/>);
+		}
+		return (
+			<span className={"mochigoma"+(this.props.value==0?"":(this.props.data.kind=="FU" ? " fu":" fu-else"))}>
+				{pieces}
+			</span>
 		);
 	},
 });
@@ -60,13 +85,13 @@ var PieceHand = DragSource("piecehand", {
 	};
 })(React.createClass({
 	render: function(){
-		var classNames = ["mochigoma", "mochi_"+this.props.kind, this.props.value<=1?"mai"+this.props.value:""].join(" ");
-		return (
-			<span className={classNames}>
-				{this.props.connectDragSource(<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}/>)}
-				<span className='maisuu'>{numToKanji(this.props.value)}</span>
-			</span>
-		);
+		var style = this.props.position==null 
+			? {} 
+			: {top:0, left: this.props.position, position: "absolute", zIndex:100-this.props.index};
+		return (this.props.connectDragSource(
+			<img src={this.getPieceImage(this.props.data.kind, this.props.data.color)}
+				style={style}/>
+		));
 	},
 	getPieceImage: function(kind, color){
 		return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
