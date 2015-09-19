@@ -4,10 +4,11 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+var KifuForJS; // 二度読み込まないようにする
 (function() {
 	function start() {
 		try{
-			var Kifu = require("Kifu");
+			var Kifu = KifuForJS = require("Kifu");
 			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
 			var targetList = [];
 			$("applet param[name=KIFU]").each(function(index){
@@ -111,18 +112,21 @@
 		};
 		document.body.appendChild(scr);
 	}
-	cnt++;
-	var scr = document.createElement("script");
-	scr.src = "https://na2hiro.github.io/Kifu-for-JS/out/kifuforjs.js";
-	scr.charset="utf-8";
-	scr.onload = function(){
-		console.log("Kifu for JS loaded");
-		if(--cnt==0) start();
-	};
-	document.body.appendChild(scr);
+	if(!KifuForJS){
+		cnt++;
+		var scr = document.createElement("script");
+		scr.src = "https://na2hiro.github.io/Kifu-for-JS/out/kifuforjs.js";
+		scr.charset="utf-8";
+		scr.onload = function(){
+			console.log("Kifu for JS loaded");
+			if(--cnt==0) start();
+		};
+		document.body.appendChild(scr);
+	}
 	var link = document.createElement('link');
 	link.type='text/css';
 	link.href='https://na2hiro.github.io/Kifu-for-JS/css/kifuforjs.css';
 	link.rel='stylesheet';
 	document.getElementsByTagName('head')[0].appendChild(link);
+	if(cnt==0) start(); // いずれも読み込み済み
 })();
