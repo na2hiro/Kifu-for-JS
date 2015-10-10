@@ -2,11 +2,12 @@
 <head>
 <title>Kifu for JS editor</title>
 <meta charset="utf-8">
-<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="jquery.min.js"></script>
 <script src="../out/kifuforjs.js" charset="utf-8"></script>
-<script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
 <link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
 <script>
+var Kifu = require("Kifu");
+Kifu.settings={ImageDirectoryPath: "../images"};
 Kifu.editor("kifu");
 </script>
 </head>

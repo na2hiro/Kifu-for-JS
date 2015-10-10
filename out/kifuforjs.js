@@ -33592,16 +33592,22 @@ var Kifu = (0, _reactDnd.DragDropContext)(_reactDndModulesBackendsHTML52["defaul
 		this.setState(this.state);
 	},
 	reload: function reload() {
-		ajax(this.props.filename, (function (data, err) {
-			_jsonKifuFormat2["default"].log("reload");
-			var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
-			var player = _jsonKifuFormat2["default"].parse(data, this.filename);
-			player.goto(tesuu);
-			this.setState({ player: player });
-		}).bind(this));
+		if (this.props.filename) {
+			ajax(this.props.filename, (function (data, err) {
+				_jsonKifuFormat2["default"].log("reload");
+				var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
+				var player = _jsonKifuFormat2["default"].parse(data, this.filename);
+				player.goto(tesuu);
+				this.setState({ player: player });
+			}).bind(this));
+		}
 	},
 	getInitialState: function getInitialState() {
-		return { player: new _jsonKifuFormat2["default"]({ header: {}, moves: [{}] }), reversed: false };
+		if (this.props.filename) {
+			return { player: new _jsonKifuFormat2["default"]({ header: {}, moves: [{}] }), reversed: false };
+		} else {
+			return { player: new _jsonKifuFormat2["default"](this.props.kifu) };
+		}
 	},
 	onClickDl: function onClickDl() {
 		if (this.props.filename) window.open(this.props.filename);
@@ -33880,7 +33886,61 @@ var Kifu = (0, _reactDnd.DragDropContext)(_reactDndModulesBackendsHTML52["defaul
 	}
 })));
 
-var KifuEditor = (0, _reactDnd.DragDropContext)(_reactDndModulesBackendsHTML52["default"])((0, _reactDnd.DropTarget)(_reactDndModulesBackendsHTML5.NativeTypes.FILE, {
+var KifuEditor = _react2["default"].createClass({
+	displayName: "KifuEditor",
+
+	getInitialState: function getInitialState() {
+		return { editMode: true };
+	},
+	render: function render() {
+		var state = this.state;
+		return _react2["default"].createElement(
+			"table",
+			{ className: "kifuforjs" /*{...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(ReactDND.NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}*/ },
+			_react2["default"].createElement(
+				"tbody",
+				null,
+				_react2["default"].createElement(
+					"tr",
+					null,
+					_react2["default"].createElement(
+						"td",
+						null,
+						_react2["default"].createElement(
+							"ul",
+							{ className: "inline" },
+							_react2["default"].createElement(
+								"li",
+								null,
+								_react2["default"].createElement(
+									"button",
+									{ className: "startInput", onClick: this.onClickStartInput },
+									"Start Input"
+								)
+							)
+						),
+						state.editMode ? "edit" : "view"
+					)
+				),
+				_react2["default"].createElement(
+					"tr",
+					null,
+					_react2["default"].createElement(
+						"td",
+						null,
+						state.editMode ? _react2["default"].createElement(ShogiEditor, { shogi: this.props.shogi, ImageDirectoryPath: this.props.ImageDirectoryPath }) : _react2["default"].createElement(Kifu, { kifu: JSON.stringify({ header: {}, initial: { preset: "OTHER", data: { color: true, board: _jsonKifuFormat2["default"].getBoardState(this.props.shogi), hands: _jsonKifuFormat2["default"].getHandsState(this.props.shogi) } }, moves: [{}] }), ImageDirectoryPath: this.props.ImageDirectoryPath })
+					)
+				)
+			)
+		);
+	},
+	onClickStartInput: function onClickStartInput() {
+		console.log("startInput");
+		this.setState({ editMode: !this.state.editMode });
+	}
+});
+
+var ShogiEditor = (0, _reactDnd.DragDropContext)(_reactDndModulesBackendsHTML52["default"])((0, _reactDnd.DropTarget)(_reactDndModulesBackendsHTML5.NativeTypes.FILE, {
 	drop: function drop(props, monitor, component) {
 		if (monitor.getItem().files[0]) {
 			loadFile(monitor.getItem().files[0], function (data, name) {
@@ -34105,6 +34165,7 @@ function pad(str, space, length) {
 Kifu.load = load;
 Kifu.loadString = loadString;
 Kifu.editor = editor;
+Kifu.ShogiEditor = ShogiEditor;
 Kifu.settings = {};
 exports["default"] = Kifu;
 module.exports = exports["default"];

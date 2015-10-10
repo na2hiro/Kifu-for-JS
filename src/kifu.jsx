@@ -222,11 +222,11 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 				}
 			}.bind(this));
 		}else{
-				try{
-					this.setState({player: JKFPlayer.parse(this.props.kifu)});
-				}catch(e){
-					this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+this.props.kifu);
-				}
+			try{
+				this.setState({player: JKFPlayer.parse(this.props.kifu)});
+			}catch(e){
+				this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+this.props.kifu);
+			}
 		}
 	},
 	logError: function(errs){
@@ -239,13 +239,15 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 		this.setState(this.state);
 	},
 	reload: function(){
-		ajax(this.props.filename, function(data, err){
-			JKFPlayer.log("reload");
-			var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
-			var player = JKFPlayer.parse(data, this.filename);
-			player.goto(tesuu);
-			this.setState({player: player});
-		}.bind(this));
+		if(this.props.filename){
+			ajax(this.props.filename, function(data, err){
+				JKFPlayer.log("reload");
+				var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
+				var player = JKFPlayer.parse(data, this.filename);
+				player.goto(tesuu);
+				this.setState({player: player});
+			}.bind(this));
+		}
 	},
 	getInitialState: function(){
 		return {player: new JKFPlayer({header: {}, moves: [{}]}), reversed: false};
@@ -393,7 +395,42 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	},
 })));
 
-var KifuEditor = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
+var KifuEditor = React.createClass({
+	getInitialState: function(){
+		return {editMode: true};
+	},
+	render: function(){
+		var state = this.state;
+		return (
+			<table className="kifuforjs" /*{...this.dropTargetFor(ReactDND.NativeDragItemTypes.FILE)} style={{backgroundColor: this.getDropState(ReactDND.NativeDragItemTypes.FILE).isHovering ? "silver" : ""}}*/>
+				<tbody>
+					<tr>
+						<td>
+							<ul className="inline">
+								<li><button className="startInput" onClick={this.onClickStartInput}>Start Input</button></li>
+							</ul>
+							{state.editMode?"edit":"view"}
+						</td>
+					</tr>
+					<tr>
+						<td>
+							{state.editMode
+								? <ShogiEditor shogi={this.props.shogi} ImageDirectoryPath={this.props.ImageDirectoryPath} />
+								: <Kifu kifu={JSON.stringify({header:{}, initial: {preset: "OTHER", data: {color:true, board: JKFPlayer.getBoardState(this.props.shogi), hands: JKFPlayer.getHandsState(this.props.shogi)}}, moves: [{}]})} ImageDirectoryPath={this.props.ImageDirectoryPath} />
+							}
+						</td>
+					</tr>
+				</tbody>
+			</table>
+		);
+	},
+	onClickStartInput: function(){
+		console.log("startInput");
+		this.setState({editMode: !this.state.editMode});
+	},
+});
+
+var ShogiEditor = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	drop: function(props, monitor, component){
 		if(monitor.getItem().files[0]){
 			loadFile(monitor.getItem().files[0], function(data, name){
@@ -587,5 +624,6 @@ function pad(str, space, length){
 Kifu.load=load;
 Kifu.loadString=loadString;
 Kifu.editor=editor;
+Kifu.ShogiEditor=ShogiEditor;
 Kifu.settings = {};
 export default Kifu;
