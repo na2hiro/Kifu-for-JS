@@ -343,7 +343,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 						<td colSpan="3" style={{textAlign:"center"}}>
 							<ul className="inline go" style={{margin:"0 auto"}} onClick={function(e){
 										if(e.target.tagName!="BUTTON") return;
-										this.go(e.target.dataset.go);
+										this.go($(e.target).data("go"));
 										this.setState(this.state);
 									}.bind(this)}>
 								<li><button data-go="-Infinity">|&lt;</button></li>
