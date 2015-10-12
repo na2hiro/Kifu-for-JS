@@ -29,7 +29,7 @@ var Board = React.createClass({
 								var x = this.props.reversed ? 10-logicalX : logicalX;
 								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
 							})}
-							<th>{numToKanji(y)}</th>
+							<th>{JKFPlayer.numToKan(y)}</th>
 						</tr>;
 					})}
 				</tbody>
@@ -440,9 +440,6 @@ function ajax(filename, onSuccess){
 	});
 };
 
-function numToKanji(n){
-	return "〇一二三四五六七八九"[n];
-}
 function colorToMark(color){
 	return color==Color.Black ? "☗" : "☖";
 }
