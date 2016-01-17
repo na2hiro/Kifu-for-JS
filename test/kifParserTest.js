@@ -144,6 +144,63 @@ describe("kif-parser", function(){
 				]
 			});
 		});
+		it("Kifu for iPhone dialect", function(){
+			// 持ち駒が半角スペース区切り
+			// 手合割が平手
+			assert.deepEqual(kifParser.parse("\
+手合割：平手\n\
+上手の持駒：銀四 桂四 \n\
+  ９ ８ ７ ６ ５ ４ ３ ２ １\n\
++---------------------------+\n\
+| ・ ・ ・ ・ ・ ・ ・v歩v玉|一\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|二\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|三\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|四\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|五\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|六\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|七\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|八\n\
+| ・ ・ ・ ・ ・ ・ ・v歩 ・|九\n\
++---------------------------+\n\
+下手の持駒：飛二 香四 \n\
+下手番\n\
+下手：shitate\n\
+上手：uwate\n\
+1 １三香打\n2 １二桂打\n3 同　香成(13)\n"),{
+				header:{
+					"手合割":"平手",
+					"上手":"uwate",
+					"下手":"shitate",
+				},
+				initial: {
+					preset:"OTHER", // 上書き
+					data:{
+						board:[
+							[{color:1,kind:"OU"},{},{},{},{},{},{},{},{}],
+							[{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"},{color:1,kind:"FU"}],
+							[{},{},{},{},{},{},{},{},{}],
+							[{},{},{},{},{},{},{},{},{}],
+							[{},{},{},{},{},{},{},{},{}],
+							[{},{},{},{},{},{},{},{},{}],
+							[{},{},{},{},{},{},{},{},{}],
+							[{},{},{},{},{},{},{},{},{}],
+							[{},{},{},{},{},{},{},{},{}],
+						],
+						color: 0,
+						hands:[
+							{FU:0,KY:4,KE:0,GI:0,KI:0,KA:0,HI:2},
+							{FU:0,KY:0,KE:4,GI:4,KI:0,KA:0,HI:0},
+						]
+					}
+				},
+				moves:[
+					{},
+					{move:{to:p(1,3),piece:"KY"}},
+					{move:{to:p(1,2),piece:"KE"}},
+					{move:{from:p(1,3),same:true,piece:"KY",promote:true}},
+				]
+			});
+		});
 	});
 	describe("fork", function(){
 		it("normal", function(){

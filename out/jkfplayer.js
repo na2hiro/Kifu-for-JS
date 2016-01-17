@@ -6246,10 +6246,12 @@ module.exports = (function() {
     		}[preset.replace(/\s/g, "")];
     	}
     	function makeHand(str){
-    		var kinds = str.replace(/　$/, "").split("　");
+    		// Kifu for iPhoneは半角スペース区切り
+    		var kinds = str.split(/[ 　]/);
     		var ret = {FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0};
     		if(str=="") return ret;
     		for(var i=0; i<kinds.length; i++){
+    			if(kinds[i]=="") continue;
     			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
     		}
     		return ret;
@@ -6361,6 +6363,10 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
     }
 }
 function normalizeKIF(obj) {
+    // Kifu for iPhone bug
+    if (obj.initial && obj.initial.preset == "HIRATE" && obj.initial.data) {
+        obj.initial.preset = "OTHER";
+    }
     var shogi = new Shogi(obj.initial || undefined);
     normalizeKIFMoves(shogi, obj.moves);
     return obj;

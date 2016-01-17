@@ -352,7 +352,7 @@ P-\n\
 			assert.deepEqual(player.getComments(2), []);
 		});
 		it("getMove", function(){
-			assert.deepEqual(player.getMove(), null);
+			assert.deepEqual(player.getMove(), void 0);
 			assert.deepEqual(player.getMove(2), {from:p(3,3),to:p(3,4),piece:"FU",color:1});
 		});
 		it("getReadableKifu", function(){

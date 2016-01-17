@@ -88,6 +88,10 @@ function normalizeMinimalMoves(shogi: Shogi, moves: JKF.MoveFormat[], lastMove?:
 }
 
 export function normalizeKIF(obj: JKF.JSONKifuFormat): JKF.JSONKifuFormat{
+	// Kifu for iPhone bug
+	if(obj.initial && obj.initial.preset == "HIRATE" && obj.initial.data) {
+		obj.initial.preset = "OTHER";
+	}
 	var shogi = new Shogi(obj.initial || undefined);
 	normalizeKIFMoves(shogi, obj.moves);
 	return obj;
