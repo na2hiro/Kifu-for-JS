@@ -94,10 +94,10 @@ kifu
  = skipline* headers:header* ini:initialboard? headers2:header* split? moves:moves forks:fork* nl? {
  	var ret = {header:{}, moves:moves}
 	for(var i=0; i<headers.length; i++){
-		ret.header[headers[i].k]=headers[i].v;
+		if(headers[i]) ret.header[headers[i].k]=headers[i].v;
 	}
 	for(var i=0; i<headers2.length; i++){
-		ret.header[headers2[i].k]=headers2[i].v;
+		if(headers2[i]) ret.header[headers2[i].k]=headers2[i].v;
 	}
 	if(ini){
 		ret.initial = ini;
@@ -136,8 +136,9 @@ kifu
 }
 
 // ヘッダ
-header
- = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}} / te:turn "手番" nl {return {k:"手番",v:te}}
+header = key:[^：\r\n]+ "：" value:nonl* nl {return {k:key.join(""), v:value.join("")}}
+	/ te:turn "手番" nl {return {k:"手番",v:te}}
+	/ "盤面回転" nl {return null}
 
 turn = [先後上下]
 
@@ -201,6 +202,7 @@ hms = h:[0-9]+ ":" m:[0-9]+ ":" s:[0-9]+ {return {h:toN(h),m:toN(m),s:toN(s)}}
 ms = m:[0-9]+ ":" s:[0-9]+ {return {m:toN(m),s:toN(s)}}
 
 comment = "*" comm:nonl* nl {return comm.join("")}
+	/ "&" annotation:nonl* nl {return "&"+annotation.join("")}
 
 result = "まで" [0-9]+ "手" res:(
 	"で" win:turn "手の" res:("勝ち" {return "TORYO"}

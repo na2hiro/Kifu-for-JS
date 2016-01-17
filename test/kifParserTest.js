@@ -289,4 +289,32 @@ describe("kif-parser", function(){
 			});
 		});
 	});
+	describe("unsupported annotations", function(){
+		it("盤面回転", function(){
+			assert.deepEqual(kifParser.parse("盤面回転\n1 ７六歩(77)\n2 ３四歩(33)\n3 ２二角成(88)\n 4 同　銀(31)\n5 ４五角打\n"),{
+				header:{},
+				moves:[
+					{},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU"}},
+					{move:{from:p(8,8),to:p(2,2),piece:"KA",promote:true}},
+					{move:{from:p(3,1),same:true,piece:"GI"}},
+					{move:{to:p(4,5),piece:"KA"}},
+				]
+			});
+		});
+		it("&読み込み時表示", function(){
+			assert.deepEqual(kifParser.parse("1 ７六歩(77)\n2 ３四歩(33)\n&読み込み時表示\n3 ２二角成(88)\n 4 同　銀(31)\n5 ４五角打\n"),{
+				header:{},
+				moves:[
+					{},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU"}},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU"},comments:["&読み込み時表示"]},
+					{move:{from:p(8,8),to:p(2,2),piece:"KA",promote:true}},
+					{move:{from:p(3,1),same:true,piece:"GI"}},
+					{move:{to:p(4,5),piece:"KA"}},
+				]
+			});
+		});
+	});
 });
