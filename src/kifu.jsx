@@ -209,6 +209,21 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
             }
 		}
 	},
+	componentWillReceiveProps(nextProps){
+		if(this.props.kifu!=nextProps.kifu){
+			try{
+				JKFPlayer.log("reload");
+				var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
+				var player = JKFPlayer.parse(nextProps.kifu);
+                player.goto(tesuu);
+				this.setState({
+					player: player
+				});
+			}catch(e){
+				this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+this.props.kifu);
+			}
+		}
+	},
 	logError: function(errs){
 		var move = this.state.player.kifu.moves[0];
 		if(move.comments){
@@ -410,30 +425,42 @@ function load(filename, id){
 	}, id);
 }
 
-function loadCallback(callback, id){
+function KifuController(id) {
 	if(!id){
 		id = "kifuforjs_"+Math.random().toString(36).slice(2);
 		document.write("<div id='"+id+"'></div>");
 	}
-	$(document).ready(function(){
+	this.id = id;
+}
+KifuController.prototype.loadKifu = function(kifu) {
+	$(document).ready(() => {
+		var container = document.getElementById(this.id);
 		React.render(
-			<Kifu callback={callback} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
-			document.getElementById(id)
+			<Kifu kifu={kifu} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
+			container
 		);
 	});
+};
+KifuController.prototype.changeCallback = function(callback) {
+	$(document).ready(() => {
+		var container = document.getElementById(this.id);
+		React.render(
+			<Kifu callback={callback} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
+			container
+		);
+	});
+};
+
+function loadCallback(callback, id){
+	var controller = new KifuController(id);
+	controller.changeCallback(callback);
+	return controller;
 }
 
 function loadString(kifu, id){
-	if(!id){
-		id = "kifuforjs_"+Math.random().toString(36).slice(2);
-		document.write("<div id='"+id+"'></div>");
-	}
-	$(document).ready(function(){
-		React.render(
-			<Kifu kifu={kifu} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
-			document.getElementById(id)
-		);
-	});
+	var controller = new KifuController(id);
+	controller.loadKifu(kifu);
+	return controller;
 }
 
 function ajax(filename, onSuccess){
