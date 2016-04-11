@@ -188,24 +188,25 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	};
 })(React.createClass({
 	componentDidMount: function(){
-		if(this.props.filename){
-			ajax(this.props.filename, function(data, err){
-				if(err){
-					this.logError(err);
-					return;
-				}
-				try{
-					this.setState({player: JKFPlayer.parse(data, this.props.filename)});
+		if(this.props.callback) {
+			this.props.callback((data, filename) => {
+				try {
+					this.setState({
+						player: JKFPlayer.parse(data, filename),
+						filename: filename
+					})
 				}catch(e){
 					this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+data);
 				}
-			}.bind(this));
-		}else{
-				try{
-					this.setState({player: JKFPlayer.parse(this.props.kifu)});
-				}catch(e){
-					this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+this.props.kifu);
-				}
+			});
+		} else {
+            try{
+                this.setState({
+					player: JKFPlayer.parse(this.props.kifu)
+				});
+            }catch(e){
+                this.logError("棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n"+this.props.kifu);
+            }
 		}
 	},
 	logError: function(errs){
@@ -218,19 +219,27 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 		this.setState(this.state);
 	},
 	reload: function(){
-		ajax(this.props.filename, function(data, err){
-			JKFPlayer.log("reload");
-			var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
-			var player = JKFPlayer.parse(data, this.filename);
-			player.goto(tesuu);
-			this.setState({player: player});
-		}.bind(this));
+		if(this.props.callback){
+			this.props.callback((data, filename) => {
+				JKFPlayer.log("reload");
+				var tesuu = this.state.player.tesuu == this.state.player.getMaxTesuu() ? Infinity : this.state.player.tesuu;
+				var player = JKFPlayer.parse(data, filename);
+				player.goto(tesuu);
+				this.setState({
+					player: player,
+					filename: filename
+				});
+			});
+		}
 	},
 	getInitialState: function(){
 		return {player: new JKFPlayer({header: {}, moves: [{}]}), reversed: false};
 	},
 	onClickDl: function(){
-		if(this.props.filename) window.open(this.props.filename);
+		if(this.state.filename) window.open(this.state.filename);
+	},
+	clickDlAvailable: function(){
+		return this.state.filename;
 	},
 	onClickReverse: function(){
 		this.setState({reversed: !this.state.reversed});
@@ -303,7 +312,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 										<li className="fork">
 											<ForkList onChange={this.onChangeForkList} forks={this.state.player.getReadableForkKifu()} nowMove={this.state.player.tesuu<this.state.player.getMaxTesuu() ? this.state.player.getReadableKifu(this.state.player.tesuu+1) : null} />
 										</li>
-										<li><button className="dl" onClick={this.onClickDl}>棋譜保存</button></li>
+										<li><button className="dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>棋譜保存</button></li>
 
 										<li>
 											<select className="autoload" onChange={function(e){
@@ -390,13 +399,25 @@ function getEncodingFromFileName(filename){
 }
 
 function load(filename, id){
+	loadCallback(function(done){
+		ajax(filename, (data, err) => {
+			if(err){
+				this.logError(err);
+				return;
+			}
+			done(data, filename);
+		});
+	}, id);
+}
+
+function loadCallback(callback, id){
 	if(!id){
 		id = "kifuforjs_"+Math.random().toString(36).slice(2);
 		document.write("<div id='"+id+"'></div>");
 	}
 	$(document).ready(function(){
 		React.render(
-			<Kifu filename={filename} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
+			<Kifu callback={callback} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
 			document.getElementById(id)
 		);
 	});
@@ -453,5 +474,6 @@ function pad(str, space, length){
 }
 Kifu.load=load;
 Kifu.loadString=loadString;
+Kifu.loadCallback=loadCallback;
 Kifu.settings = {};
 export default Kifu;
