@@ -9,6 +9,7 @@ import JKFPlayer from "json-kifu-format";
 import {Color} from "json-kifu-format/node_modules/shogi.js";
 import {DragDropContext, DropTarget, DragSource} from "react-dnd";
 import HTML5Backend, {NativeTypes} from "react-dnd/modules/backends/HTML5";
+import TouchBackend from "react-dnd-touch-backend";
 
 var version = "1.1.5";
 var Board = React.createClass({
@@ -169,7 +170,7 @@ var ForkList = React.createClass({
 		);
 	}
 });
-var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
+var Kifu = DragDropContext(HTML5Backend)(DragDropContext(TouchBackend)(DropTarget(NativeTypes.FILE, {
 	drop: function(props, monitor, component){
 		if(monitor.getItem().files[0]){
 			loadFile(monitor.getItem().files[0], function(data, name){
@@ -394,7 +395,7 @@ var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 			</table>
 		);
 	},
-})));
+}))));
 
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す

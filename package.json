@@ -30,7 +30,8 @@
   "dependencies": {
     "json-kifu-format": "^1.0.4",
     "react": "^0.13.3",
-    "react-dnd": "^1.1.8"
+    "react-dnd": "^1.1.8",
+    "react-dnd-touch-backend": "^0.2.5"
   },
   "devDependencies": {
     "babelify": "^6.1.3",
