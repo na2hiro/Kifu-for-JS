@@ -5,11 +5,11 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import React from "react";
+import {render} from "react-dom";
 import JKFPlayer from "json-kifu-format";
 import {Color} from "json-kifu-format/node_modules/shogi.js";
 import {DragDropContext, DropTarget, DragSource} from "react-dnd";
-import HTML5Backend, {NativeTypes} from "react-dnd/modules/backends/HTML5";
-import TouchBackend from "react-dnd-touch-backend";
+import HTML5Backend, {NativeTypes} from "react-dnd-html5-backend";
 
 var version = "1.1.5";
 var Board = React.createClass({
@@ -21,14 +21,14 @@ var Board = React.createClass({
 				<tbody>
 					<tr>{nineX.map((logicalX)=>{
 						var x = this.props.reversed ? 10-logicalX : logicalX;
-						return <th>{x}</th>;
+						return <th key={x}>{x}</th>;
 					})}</tr>
 					{nineY.map((logicalY)=>{
 						var y = this.props.reversed ? 10-logicalY : logicalY;
-						return <tr>
+						return <tr key={y}>
 							{nineX.map((logicalX)=>{
 								var x = this.props.reversed ? 10-logicalX : logicalX;
-								return <Piece data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
+								return <Piece key={x} data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
 							})}
 							<th>{JKFPlayer.numToKan(y)}</th>
 						</tr>;
@@ -47,7 +47,7 @@ var Hand = React.createClass({
 				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
 				<div className="mochimain">
 					{(virtualColor==0 ? kinds.reverse() : kinds).map((kind)=>
-						<PieceHandGroup value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed}/>
+						<PieceHandGroup key={kind} value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed}/>
 					)}
 				</div>
 			</div>
@@ -68,7 +68,7 @@ var PieceHandGroup = React.createClass({
 		}
 		var pieces = [];
 		for(var i=0; i<this.props.value; i++){
-			pieces.push(<PieceHand data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
+			pieces.push(<PieceHand key={i} data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
 				   	onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null} reversed={this.props.reversed}/>);
 		}
 		return (
@@ -97,8 +97,8 @@ var PieceHand = DragSource("piecehand", {
 			? {} 
 			: {top:0, left: this.props.position, position: "absolute", zIndex:100-this.props.index};
 		return (this.props.connectDragSource(
-			<img src={this.getPieceImage(this.props.data.kind, virtualColor)}
-				style={style}/>
+			<div><img src={this.getPieceImage(this.props.data.kind, virtualColor)}
+				style={style}/></div>
 		));
 	},
 	getPieceImage: function(kind, color){
@@ -131,7 +131,7 @@ var Piece = DragSource("piece", {
 		return (
 			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
 				{this.props.connectDropTarget(this.props.connectDragSource(
-					<img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} />
+					<div><img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} /></div>
 				))}
 			</td>
 		);
@@ -145,7 +145,7 @@ var KifuList = React.createClass({
 		var options = [];
 		for(var i=0; i<this.props.kifu.length; i++){
 			var kifu = this.props.kifu[i];
-			options.push(<option value={i}>{(kifu.comments.length>0?"*":"\xa0")+pad(i.toString(),"\xa0", 3)+" "+kifu.kifu+" "+kifu.forks.join(" ")}</option>);
+			options.push(<option key={i} value={i}>{(kifu.comments.length>0?"*":"\xa0")+pad(i.toString(),"\xa0", 3)+" "+kifu.kifu+" "+kifu.forks.join(" ")}</option>);
 		}
 		return <select className="kifulist" size="7" onChange={this.onChange} value={this.props.tesuu}>{options}</select>;
 	},
@@ -162,15 +162,15 @@ var ForkList = React.createClass({
 				this.props.onChange(this.refs.select.getDOMNode().value)
 			}.bind(this)} ref="select" disabled={forks.length==0}>
 				{forks.length>0
-					? [<option value="top">{this.props.nowMove}</option>].concat(forks.map(function(fork, i){
-							return <option value={i}>{fork}</option>;
+					? [<option key={this.props.nowMove} value="top">{this.props.nowMove}</option>].concat(forks.map(function(fork, i){
+							return <option key={fork} value={i}>{fork}</option>;
 						}))
 					: <option value="top">変化なし</option>}
 			</select>
 		);
 	}
 });
-var Kifu = DragDropContext(HTML5Backend)(DragDropContext(TouchBackend)(DropTarget(NativeTypes.FILE, {
+var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	drop: function(props, monitor, component){
 		if(monitor.getItem().files[0]){
 			loadFile(monitor.getItem().files[0], function(data, name){
@@ -301,8 +301,8 @@ var Kifu = DragDropContext(HTML5Backend)(DragDropContext(TouchBackend)(DropTarge
 		var data = this.state.player.kifu.header;
 		var dds = [];
 		for(var key in data){
-			dds.push(<dt>{key}</dt>);
-			dds.push(<dd>{data[key]}</dd>);
+			dds.push(<dt key={"key"+key}>{key}</dt>);
+			dds.push(<dd key={"val"+key}>{data[key]}</dd>);
 		}
 		var info = <dl>{dds}</dl>;
 
@@ -395,7 +395,7 @@ var Kifu = DragDropContext(HTML5Backend)(DragDropContext(TouchBackend)(DropTarge
 			</table>
 		);
 	},
-}))));
+})));
 
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
@@ -436,7 +436,7 @@ function KifuController(id) {
 KifuController.prototype.loadKifu = function(kifu) {
 	$(document).ready(() => {
 		var container = document.getElementById(this.id);
-		React.render(
+		render(
 			<Kifu kifu={kifu} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
 			container
 		);
@@ -445,7 +445,7 @@ KifuController.prototype.loadKifu = function(kifu) {
 KifuController.prototype.changeCallback = function(callback) {
 	$(document).ready(() => {
 		var container = document.getElementById(this.id);
-		React.render(
+		render(
 			<Kifu callback={callback} ImageDirectoryPath={Kifu.settings.ImageDirectoryPath}/>,
 			container
 		);
