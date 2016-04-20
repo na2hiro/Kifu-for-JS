@@ -10,7 +10,7 @@ var concat = require('gulp-concat');
 var merge = require('merge2');
 var streamify = require('gulp-streamify');
 
-var BROWSERIFY_SRC_FILE = "./src/kifu.jsx";
+var BROWSERIFY_SRC_FILE = "./src/kifu.js";
 var BROWSERIFY_OUT_NAME = "./kifuforjs.js";
 var BROWSERIFY_OUT_DIR = "./out/";
 var UGLIFY_SRC_FILE = "./src/*bookmarklet.js";

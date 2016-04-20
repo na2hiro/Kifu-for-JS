@@ -7,169 +7,15 @@
 import React from "react";
 import {render} from "react-dom";
 import JKFPlayer from "json-kifu-format";
-import {Color} from "json-kifu-format/node_modules/shogi.js";
 import {DragDropContext, DropTarget, DragSource} from "react-dnd";
 import HTML5Backend, {NativeTypes} from "react-dnd-html5-backend";
 
+import Board from "./Board.js";
+import ForkList from "./ForkList.js";
+import KifuList from "./KifuList.js";
+import Hand from "./Hand.js";
+
 var version = "1.1.5";
-var Board = React.createClass({
-	render: function(){
-		var nineY = [1,2,3,4,5,6,7,8,9];
-		var nineX = nineY.slice().reverse();
-		return (
-			<table className="ban">
-				<tbody>
-					<tr>{nineX.map((logicalX)=>{
-						var x = this.props.reversed ? 10-logicalX : logicalX;
-						return <th key={x}>{x}</th>;
-					})}</tr>
-					{nineY.map((logicalY)=>{
-						var y = this.props.reversed ? 10-logicalY : logicalY;
-						return <tr key={y}>
-							{nineX.map((logicalX)=>{
-								var x = this.props.reversed ? 10-logicalX : logicalX;
-								return <Piece key={x} data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
-							})}
-							<th>{JKFPlayer.numToKan(y)}</th>
-						</tr>;
-					})}
-				</tbody>
-			</table>
-		);
-	},
-});
-var Hand = React.createClass({
-	render: function(){
-		var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
-		var virtualColor = this.props.reversed ? 1-this.props.color : this.props.color;
-		return (
-			<div className={"mochi mochi"+this.props.color}>
-				<div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
-				<div className="mochimain">
-					{(virtualColor==0 ? kinds.reverse() : kinds).map((kind)=>
-						<PieceHandGroup key={kind} value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed}/>
-					)}
-				</div>
-			</div>
-		);
-	},
-});
-var PieceHandGroup = React.createClass({
-	render: function(){
-		var positioner;
-		if(this.props.data.kind=="FU"){
-			if(this.props.value>=4){
-				positioner = i=>(120-32)*i/(this.props.value-1);
-			}
-		}else{
-			if(this.props.value>=2){
-				positioner = i=>(60-32)*i/(this.props.value-1);
-			}
-		}
-		var pieces = [];
-		for(var i=0; i<this.props.value; i++){
-			pieces.push(<PieceHand key={i} data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
-				   	onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null} reversed={this.props.reversed}/>);
-		}
-		return (
-			<span className={"mochigoma"+(this.props.value==0?"":(this.props.data.kind=="FU" ? " fu":" fu-else"))}>
-				{pieces}
-			</span>
-		);
-	},
-});
-var PieceHand = DragSource("piecehand", {
-	beginDrag: function(props, monitor, component) {
-		return {piece: props.data.kind, color: props.data.color};
-	},
-	endDrag: function(props, monitor, component){
-		props.onInputMove({piece: monitor.getItem().piece, color: monitor.getItem().color, to: monitor.getDropResult()});
-	}
-}, function collect(connect, monitor){
-	return {
-		connectDragSource: connect.dragSource(),
-		isDragging: monitor.isDragging()
-	};
-})(React.createClass({
-	render: function(){
-		var virtualColor = this.props.reversed ? 1-this.props.data.color : this.props.data.color;
-		var style = this.props.position==null 
-			? {} 
-			: {top:0, left: this.props.position, position: "absolute", zIndex:100-this.props.index};
-		return (this.props.connectDragSource(
-			<div><img src={this.getPieceImage(this.props.data.kind, virtualColor)}
-				style={style}/></div>
-		));
-	},
-	getPieceImage: function(kind, color){
-		return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
-	},
-}));
-var Piece = DragSource("piece", {
-	beginDrag: function(props, monitor, component) {
-		return {x: props.x, y: props.y};
-	},
-	endDrag: function(props, monitor, component){
-		props.onInputMove({from: monitor.getItem(), to: monitor.getDropResult()});
-	}
-}, function collect(connect, monitor){
-	return {
-		connectDragSource: connect.dragSource(),
-		isDragging: monitor.isDragging()
-	};
-})(DropTarget(["piece", "piecehand"], {
-	drop: function(props, monitor, component) {
-		return {x: props.x, y: props.y};
-	},
-}, function collect(connect, monitor){
-	return {
-		connectDropTarget: connect.dropTarget()
-	};
-})(React.createClass({
-	render: function(){
-		var color = this.props.data.color;
-		return (
-			<td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
-				{this.props.connectDropTarget(this.props.connectDragSource(
-					<div><img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} /></div>
-				))}
-			</td>
-		);
-	},
-	getPieceImage: function(kind, color){
-		return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
-	},
-})));
-var KifuList = React.createClass({
-	render: function(){
-		var options = [];
-		for(var i=0; i<this.props.kifu.length; i++){
-			var kifu = this.props.kifu[i];
-			options.push(<option key={i} value={i}>{(kifu.comments.length>0?"*":"\xa0")+pad(i.toString(),"\xa0", 3)+" "+kifu.kifu+" "+kifu.forks.join(" ")}</option>);
-		}
-		return <select className="kifulist" size="7" onChange={this.onChange} value={this.props.tesuu}>{options}</select>;
-	},
-	onChange: function(e){
-		this.props.onChange(e.target.value);
-	},
-});
-var ForkList = React.createClass({
-	render: function(){
-		// 分岐
-		var forks = this.props.forks;
-		return (
-			<select className="forklist" value="top" onChange={function(){
-				this.props.onChange(this.refs.select.getDOMNode().value)
-			}.bind(this)} ref="select" disabled={forks.length==0}>
-				{forks.length>0
-					? [<option key={this.props.nowMove} value="top">{this.props.nowMove}</option>].concat(forks.map(function(fork, i){
-							return <option key={fork} value={i}>{fork}</option>;
-						}))
-					: <option value="top">変化なし</option>}
-			</select>
-		);
-	}
-});
 var Kifu = DragDropContext(HTML5Backend)(DropTarget(NativeTypes.FILE, {
 	drop: function(props, monitor, component){
 		if(monitor.getItem().files[0]){
@@ -489,17 +335,6 @@ function ajax(filename, onSuccess){
 	});
 };
 
-function colorToMark(color){
-	return color==Color.Black ? "☗" : "☖";
-}
-// length <= 10
-function pad(str, space, length){
-	var ret = "";
-	for(var i=str.length; i<length; i++){
-		ret+=space;
-	}
-	return ret+str;
-}
 Kifu.load=load;
 Kifu.loadString=loadString;
 Kifu.loadCallback=loadCallback;
