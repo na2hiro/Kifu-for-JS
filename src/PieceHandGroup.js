@@ -1,8 +1,8 @@
 import PieceHand from "./PieceHand.js";
 import React from "react";
 
-var PieceHandGroup = React.createClass({
-    render: function(){
+export default class PieceHandGroup extends React.Component {
+    render(){
         var positioner;
         if(this.props.data.kind=="FU"){
             if(this.props.value>=4){
@@ -23,7 +23,5 @@ var PieceHandGroup = React.createClass({
 				{pieces}
 			</span>
         );
-    },
-});
-
-export default PieceHandGroup;
+    }
+}

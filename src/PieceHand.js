@@ -1,7 +1,7 @@
 import React from "react"
 import {DropTarget, DragSource} from "react-dnd";
 
-var PieceHand = DragSource("piecehand", {
+@DragSource("piecehand", {
     beginDrag: function(props, monitor, component) {
         return {piece: props.data.kind, color: props.data.color};
     },
@@ -13,8 +13,9 @@ var PieceHand = DragSource("piecehand", {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     };
-})(React.createClass({
-    render: function(){
+})
+export default class PieceHand extends React.Component {
+    render(){
         var virtualColor = this.props.reversed ? 1-this.props.data.color : this.props.data.color;
         var style = this.props.position==null
             ? {}
@@ -23,10 +24,8 @@ var PieceHand = DragSource("piecehand", {
             <div><img src={this.getPieceImage(this.props.data.kind, virtualColor)}
                       style={style}/></div>
         ));
-    },
-    getPieceImage: function(kind, color){
+    }
+    getPieceImage(kind, color){
         return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
-    },
-}));
-
-export default PieceHand;
+    }
+}

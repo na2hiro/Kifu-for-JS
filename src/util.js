@@ -12,3 +12,4 @@ export function pad(str, space, length){
     return ret+str;
 }
 
+export const version = "1.1.5";

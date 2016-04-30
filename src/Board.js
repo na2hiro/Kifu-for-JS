@@ -2,8 +2,8 @@ import Piece from "./Piece.js";
 import React from "react"
 import JKFPlayer from "json-kifu-format";
 
-var Board = React.createClass({
-    render: function(){
+export default class Board extends React.Component {
+    render(){
         var nineY = [1,2,3,4,5,6,7,8,9];
         var nineX = nineY.slice().reverse();
         return (
@@ -26,7 +26,5 @@ var Board = React.createClass({
                 </tbody>
             </table>
         );
-    },
-});
-
-export default Board;
+    }
+}

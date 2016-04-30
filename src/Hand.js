@@ -2,8 +2,8 @@ import React from "react";
 import PieceHandGroup from "./PieceHandGroup.js";
 import {colorToMark} from "./util.js";
 
-var Hand = React.createClass({
-    render: function(){
+export default class Hand extends React.Component {
+    render(){
         var kinds = ["FU","KY","KE","GI","KI","KA","HI"];
         var virtualColor = this.props.reversed ? 1-this.props.color : this.props.color;
         return (
@@ -16,7 +16,5 @@ var Hand = React.createClass({
                 </div>
             </div>
         );
-    },
-});
-
-export default Hand;
+    }
+}

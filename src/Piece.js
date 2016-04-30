@@ -1,7 +1,7 @@
 import React from "react"
 import {DropTarget, DragSource} from "react-dnd";
 
-var Piece = DragSource("piece", {
+@DragSource("piece", {
     beginDrag: function(props, monitor, component) {
         return {x: props.x, y: props.y};
     },
@@ -13,7 +13,8 @@ var Piece = DragSource("piece", {
         connectDragSource: connect.dragSource(),
         isDragging: monitor.isDragging()
     };
-})(DropTarget(["piece", "piecehand"], {
+})
+@DropTarget(["piece", "piecehand"], {
     drop: function(props, monitor, component) {
         return {x: props.x, y: props.y};
     },
@@ -21,20 +22,24 @@ var Piece = DragSource("piece", {
     return {
         connectDropTarget: connect.dropTarget()
     };
-})(React.createClass({
-    render: function(){
+})
+export default class Piece extends React.Component {
+    render(){
         var color = this.props.data.color;
         return (
-            <td className={this.props.lastMove && this.props.lastMove.to.x==this.props.x && this.props.lastMove.to.y==this.props.y ? "lastto" : "" }>
+            <td className={this.props.lastMove && equalsPos(this.props.lastMove.to, this.props) ? "lastto" : "" }>
                 {this.props.connectDropTarget(this.props.connectDragSource(
-                    <div><img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)} style={{visibility: this.props.isDragging?"hidden":""}} /></div>
+                    <div><img src={this.getPieceImage(this.props.data.kind, this.props.reversed?1-color:color)}
+                              style={{visibility: this.props.isDragging?"hidden":""}} /></div>
                 ))}
             </td>
         );
-    },
-    getPieceImage: function(kind, color){
+    }
+    getPieceImage(kind, color){
         return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
-    },
-})));
+    }
+}
 
-export default Piece;
+function equalsPos(pos1, pos2) {
+    return pos1.x==pos2.x && pos1.y==pos2.y;
+}
