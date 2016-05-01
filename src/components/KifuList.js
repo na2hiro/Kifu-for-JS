@@ -1,5 +1,5 @@
 import React from "react";
-import {pad} from "./util.js"
+import {pad} from "../util.js"
 
 export default class KifuList extends React.Component {
     render(){

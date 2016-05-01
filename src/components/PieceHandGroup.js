@@ -1,4 +1,4 @@
-import PieceHand from "./PieceHand.js";
+import PieceHand from "./../PieceHand.js";
 import React from "react";
 
 export default class PieceHandGroup extends React.Component {

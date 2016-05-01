@@ -1,6 +1,6 @@
 import React from "react";
 import PieceHandGroup from "./PieceHandGroup.js";
-import {colorToMark} from "./util.js";
+import {colorToMark} from "./../util.js";
 
 export default class Hand extends React.Component {
     render(){
