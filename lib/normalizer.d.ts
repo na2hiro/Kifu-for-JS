@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-import ShogiJS = require("../node_modules/shogi.js/lib/shogi");
+import ShogiJS = require("shogi.js/lib/shogi");
 import Color = ShogiJS.Color;
 import JKF = require('./JSONKifuFormat');
 export declare function canPromote(place: JKF.PlaceFormat, color: Color): boolean;

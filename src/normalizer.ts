@@ -1,10 +1,10 @@
 /** @license
- * JSON Kifu Format 
+ * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-import ShogiJS = require("../node_modules/shogi.js/lib/shogi");
+import ShogiJS = require("shogi.js/lib/shogi");
 import Shogi = ShogiJS.Shogi;
 import Piece = ShogiJS.Piece;
 import Color = ShogiJS.Color;
