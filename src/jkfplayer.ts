@@ -4,7 +4,7 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-import ShogiJS = require('../node_modules/shogi.js/lib/shogi');
+import ShogiJS = require('shogi.js/lib/shogi');
 import Color = ShogiJS.Color;
 import Piece = ShogiJS.Piece;
 import Shogi = ShogiJS.Shogi;
