@@ -212,7 +212,7 @@ node.js用のファイルをbrowserifyで１つにまとめたJKFPlayerが用意
 * `lib/`
 	* `kif-parser.{d.ts/js}`: KIFをJSON形式に一対一変換するパーサ
 	* `ki2-parser.{d.ts/js}`: KI2をJSON形式に一対一変換するパーサ
-	* `csa-parser.{d.ts/js}`: CSAをJSON形式に一対一変換するパーサ
+	* `csa-parser.{d.ts/js}`: CSA(V1, V2, V2.1, V2.2)をJSON形式に一対一変換するパーサ
 	* `normalizer.{d.ts/js}`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
 	* `jkfplayer.{d.ts/js}`: JKFを扱う棋譜再生盤の例
 
