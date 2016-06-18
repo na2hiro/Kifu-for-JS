@@ -7,7 +7,7 @@ import Board from "./Board.js";
 import ForkList from "./ForkList.js";
 import KifuList from "./KifuList.js";
 import Hand from "./Hand.js";
-import {version} from "./util.js"
+import {version, loadFile} from "./util.js"
 
 @DragDropContext(HTML5Backend)
 @DropTarget(NativeTypes.FILE, {
