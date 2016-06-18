@@ -4,7 +4,6 @@
 
 ## 1.2.0 (2016/6/18)
 
-* モバイルでのタッチ入力に対応
 * CSA V2 (floodgate等でも使用されている)に対応したjson-kifu-formatを使用
 * これから[Semantic versioning](http://semver.org/lang/ja/)を採用します．
 
