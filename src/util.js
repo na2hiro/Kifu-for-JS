@@ -1,4 +1,4 @@
-import {Color} from "json-kifu-format/node_modules/shogi.js";
+import {Color} from "shogi.js";
 
 export function colorToMark(color){
     return color==Color.Black ? "☗" : "☖";
