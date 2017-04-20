@@ -411,5 +411,6 @@ P-\n\
 		assert(JKFPlayer.sameMoveMinimal({to:p(2,3),piece:"KY"}, {to:p(2,3),piece:"KY"}));
 		assert.equal(JKFPlayer.sameMoveMinimal({from:p(2,3),to:p(2,2),promote:false}, {from:p(2,3),to:p(2,2),promote:true, piece:"FU"}), false);
 		assert.equal(JKFPlayer.sameMoveMinimal({to:p(2,3),piece:"KE"}, {to:p(2,3),piece:"KY"}), false);
+		assert.equal(JKFPlayer.sameMoveMinimal({from:p(2,7),to:p(2,6),piece:"FU"}, {to:p(2,6),piece:"KA"}), false);
 	});
 });
