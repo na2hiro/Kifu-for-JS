@@ -51,6 +51,14 @@ describe("class Piece", function(){
 			assert.equal(gi.toCSAString(), "+GI");
 		});
 	});
+	describe("toSFENString", function(){
+		it("normal", function(){
+			assert.equal(new Piece("+GI").toSFENString(), "S");
+			assert.equal(new Piece("-GI").toSFENString(), "s");
+			assert.equal(new Piece("+TO").toSFENString(), "+P");
+			assert.equal(new Piece("-TO").toSFENString(), "+p");
+		})
+	})
 	describe("static promote", function(){
 		it("normal", function(){
 			assert.equal(Piece.promote("KA"), "UM");

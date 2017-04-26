@@ -546,6 +546,21 @@ export class Piece{
 	toCSAString(): string{
 		return (this.color==Color.Black ? "+" : "-")+this.kind;
 	}
+	// SFENによる駒表現の文字列を返す
+	toSFENString(): string{
+		var sfenPiece = {
+			FU: "P", // Pawn
+			KY: "L", // Lance
+			KE: "N", // kNight
+			GI: "S", // Silver
+			KI: "G", // Gold
+			KA: "B", // Bishop
+			HI: "R", // Rook
+			OU: "K", // King
+		}[Piece.unpromote(this.kind)];
+		return (Piece.isPromoted(this.kind) ? "+" : "") +
+		 (this.color==Color.Black ? sfenPiece : sfenPiece.toLowerCase());
+	}
 	// 成った時の種類を返す．なければそのまま．
 	static promote(kind: string): string{
 		return {

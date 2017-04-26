@@ -1,4 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -538,7 +539,7 @@ var Shogi = (function () {
         }
     };
     return Shogi;
-})();
+}());
 exports.Shogi = Shogi;
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 var Piece = (function () {
@@ -562,6 +563,21 @@ var Piece = (function () {
     // CSAによる駒表現の文字列を返す
     Piece.prototype.toCSAString = function () {
         return (this.color == Color.Black ? "+" : "-") + this.kind;
+    };
+    // SFENによる駒表現の文字列を返す
+    Piece.prototype.toSFENString = function () {
+        var sfenPiece = {
+            FU: "P",
+            KY: "L",
+            KE: "N",
+            GI: "S",
+            KI: "G",
+            KA: "B",
+            HI: "R",
+            OU: "K"
+        }[Piece.unpromote(this.kind)];
+        return (Piece.isPromoted(this.kind) ? "+" : "") +
+            (this.color == Color.Black ? sfenPiece : sfenPiece.toLowerCase());
     };
     // 成った時の種類を返す．なければそのまま．
     Piece.promote = function (kind) {
@@ -626,7 +642,7 @@ var Piece = (function () {
         return color == Color.Black ? Color.White : Color.Black;
     };
     return Piece;
-})();
+}());
 exports.Piece = Piece;
 
 },{}]},{},[1]);

@@ -82,6 +82,7 @@ export declare class Piece {
     unpromote(): void;
     inverse(): void;
     toCSAString(): string;
+    toSFENString(): string;
     static promote(kind: string): string;
     static unpromote(kind: string): string;
     static canPromote(kind: string): boolean;
