@@ -668,4 +668,27 @@ export class Piece{
 	static oppositeColor(color: Color): Color{
 		return color==Color.Black ? Color.White : Color.Black;
 	}
+	// SFENによる文字列表現から駒オブジェクトを作成
+	static fromSFENString(sfen: string): Piece{
+		var promoted = sfen[0]=="+";
+		if (promoted){
+			sfen = sfen.slice(1);
+		}
+		var color = sfen.match(/[A-Z]/) ? "+" : "-";
+		var kind = {
+			P: "FU",
+			L: "KY",
+			N: "KE",
+			S: "GI",
+			G: "KI",
+			B: "KA",
+			R: "HI",
+			K: "OU",
+		}[sfen.toUpperCase()];
+		var piece = new Piece(color + kind);
+		if (promoted){
+			piece.promote();
+		}
+		return piece;
+	}
 }

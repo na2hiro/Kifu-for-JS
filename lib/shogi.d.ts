@@ -90,4 +90,5 @@ export declare class Piece {
     static getMoveDef(kind: string): MoveDefinition;
     static isPromoted(kind: string): boolean;
     static oppositeColor(color: Color): Color;
+    static fromSFENString(sfen: string): Piece;
 }

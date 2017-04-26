@@ -80,4 +80,12 @@ describe("class Piece", function(){
 			assert.equal(Piece.canPromote("KI"), false);
 		});
 	});
+	describe("static fromSFENString", function(){
+		it("normal", function(){
+			assert.equal(Piece.fromSFENString("S").toCSAString(), "+GI");
+			assert.equal(Piece.fromSFENString("s").toCSAString(), "-GI");
+			assert.equal(Piece.fromSFENString("+P").toCSAString(), "+TO");
+			assert.equal(Piece.fromSFENString("+p").toCSAString(), "-TO");
+		});
+	})
 });
