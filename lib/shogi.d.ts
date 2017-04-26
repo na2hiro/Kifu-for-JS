@@ -27,6 +27,7 @@ export declare class Shogi {
     drop(tox: number, toy: number, kind: string, color?: Color): void;
     undrop(tox: number, toy: number): void;
     toCSAString(): string;
+    toSFENString(moveCount?: number): string;
     getMovesFrom(x: number, y: number): Move[];
     getDropsBy(color: Color): Move[];
     getMovesTo(x: number, y: number, kind: string, color?: Color): Move[];

@@ -329,6 +329,55 @@ export class Shogi {
 		ret.push(this.turn==Color.Black ? "+" : "-");
 		return ret.join("\n");
 	}
+	// SFENによる盤面表現の文字列を返す
+	toSFENString(moveCount=1): string{
+		var ret = [];
+		var sfenBoard = [];
+		for(var y=0; y<9; y++){
+			var line = "";
+			var empty = 0;
+			for(var x=8; x>=0; x--){
+				var piece = this.board[x][y];
+				if(piece==null){
+					empty++;
+				}else{
+					if(empty>0){
+						line+=""+empty;
+						empty = 0;
+					}
+					line+=piece.toSFENString();
+				}
+			}
+			if(empty>0){
+				line+=""+empty;
+			}
+			sfenBoard.push(line);
+		}
+		ret.push(sfenBoard.join("/"));
+		ret.push(this.turn==Color.Black ? "b" : "w");
+		if(this.hands[0].length==0 && this.hands[1].length==0){
+			ret.push("-");
+		}else{
+			var sfenHands = "";
+			var kinds = ["R","B","G","S","N","L","P","r","b","g","s","n","l","p"];
+			var count = {};
+			for(var i=0; i<2; i++){
+				for(var j=0; j<this.hands[i].length; j++){
+					var key = this.hands[i][j].toSFENString();
+					count[key] = (count[key] || 0) + 1;
+				}
+			}
+			for(var i=0; i<kinds.length; i++){
+				var kind = kinds[i];
+				if(count[kind]>0){
+					sfenHands += (count[kind]>1 ? count[kind] : "") + kind;
+				}
+			}
+			ret.push(sfenHands);
+		}
+		ret.push("" + moveCount);
+		return ret.join(" ");
+	}
 	// (x, y)の駒の移動可能な動きをすべて得る
 	// 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
 	getMovesFrom(x: number, y: number): Move[]{
