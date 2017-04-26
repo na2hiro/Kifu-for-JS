@@ -21,6 +21,7 @@ export declare class Shogi {
     flagEditMode: boolean;
     constructor(setting?: SettingType);
     initialize(setting?: SettingType): void;
+    initializeFromSFENString(sfen: string): void;
     editMode(flag: boolean): void;
     move(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean): void;
     unmove(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean, capture?: string): void;
