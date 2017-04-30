@@ -80,7 +80,6 @@ var Shogi = (function () {
                 x = 8;
             }
             else {
-                console.log(x, y, c);
                 this.board[x][y] = Piece.fromSFENString(c);
                 x--;
             }

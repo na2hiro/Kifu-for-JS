@@ -273,7 +273,6 @@ export class Shogi {
 				y++;
 				x = 8;
 			}else{
-				console.log(x, y, c);
 				this.board[x][y] = Piece.fromSFENString(c);
 				x--;
 			}
