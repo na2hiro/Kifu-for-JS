@@ -126,6 +126,40 @@ describe("class Shogi", function(){
 				"-"].join("\n"));
 		});
 	});
+	describe("initializeFromSFENString", function(){
+		it("example 1", function(){
+			shogi.initializeFromSFENString("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1");
+			assert.equal(shogi.toCSAString(), [
+				"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+				"P2 * -HI *  *  *  *  * -KA * ",
+				"P3-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+				"P4 *  *  *  *  *  *  *  *  * ",
+				"P5 *  *  *  *  *  *  *  *  * ",
+				"P6 *  *  *  *  *  *  *  *  * ",
+				"P7+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+				"P8 * +KA *  *  *  *  * +HI * ",
+				"P9+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+				"P+",
+				"P-",
+				"+"].join("\n"));
+		});
+		it("example 2", function(){
+		shogi.initializeFromSFENString("8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124");
+			assert.equal(shogi.toCSAString(), [
+				"P1 *  *  *  *  *  *  *  * -KY",
+				"P2 * -KY+RY *  * +FU *  *  * ",
+				"P3-FU *  * -FU+KA+KI * -FU-FU",
+				"P4-OU-FU-GI * -FU *  *  *  * ",
+				"P5+KE-KE * +FU *  * +KI *  * ",
+				"P6+FU * +FU * +FU *  * +FU+FU",
+				"P7 * +FU+GI *  *  *  *  *  * ",
+				"P8 * +OU+GI+KI *  *  * -RY * ",
+				"P9+KY+KE *  * -TO *  *  * +KY",
+				"P+00GI",
+				"P-00KA00KI00KE00FU00FU00FU",
+				"-"].join("\n"));
+		});
+	})
 	describe("editMode", function(){
 		it("example 1", function(){
 			shogi.move(7, 7, 7, 6);
@@ -390,6 +424,37 @@ describe("class Shogi", function(){
 	});
 	describe("toCSAString", function(){
 
+	});
+	describe("toSFENString", function(){
+		it("normal", function(){
+			assert.equal(shogi.toSFENString(),
+				"lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1");
+		});
+		it("color", function(){
+			shogi.initialize({preset:"KY"});
+			assert.equal(shogi.toSFENString(),
+				"lnsgkgsn1/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1");
+		});
+		it("hands", function(){
+			shogi.move(7, 7, 7, 6);
+			shogi.move(3, 3, 3, 4);
+			shogi.move(8, 8, 2, 2, true);
+			shogi.move(3, 1, 2, 2);
+			assert.equal(shogi.toSFENString(5),
+				"lnsgkg1nl/1r5s1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/7R1/LNSGKGSNL b Bb 5");
+			shogi.move(7, 6, 7, 5);
+			shogi.move(7, 3, 7, 4);
+			shogi.move(7, 5, 7, 4);
+			shogi.move(8, 1, 7, 3);
+			shogi.move(7, 4, 7, 3, true);
+			shogi.move(8, 2, 7, 2);
+			shogi.move(7, 3, 8, 3);
+			assert.equal(shogi.toSFENString(12),
+				"l1sgkg1nl/2r4s1/p+P1ppp1pp/6p2/9/9/PP1PPPPPP/7R1/LNSGKGSNL w BN2Pb 12");
+			shogi.move(7, 2, 7, 9, true);
+			assert.equal(shogi.toSFENString(13),
+				"l1sgkg1nl/7s1/p+P1ppp1pp/6p2/9/9/PP1PPPPPP/7R1/LN+rGKGSNL b BN2Pbs 13");
+		});
 	});
 	describe("getMovesFrom", function(){
 		it("just", function () {

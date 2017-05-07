@@ -21,12 +21,14 @@ export declare class Shogi {
     flagEditMode: boolean;
     constructor(setting?: SettingType);
     initialize(setting?: SettingType): void;
+    initializeFromSFENString(sfen: string): void;
     editMode(flag: boolean): void;
     move(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean): void;
     unmove(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean, capture?: string): void;
     drop(tox: number, toy: number, kind: string, color?: Color): void;
     undrop(tox: number, toy: number): void;
     toCSAString(): string;
+    toSFENString(moveCount?: number): string;
     getMovesFrom(x: number, y: number): Move[];
     getDropsBy(color: Color): Move[];
     getMovesTo(x: number, y: number, kind: string, color?: Color): Move[];
@@ -82,10 +84,12 @@ export declare class Piece {
     unpromote(): void;
     inverse(): void;
     toCSAString(): string;
+    toSFENString(): string;
     static promote(kind: string): string;
     static unpromote(kind: string): string;
     static canPromote(kind: string): boolean;
     static getMoveDef(kind: string): MoveDefinition;
     static isPromoted(kind: string): boolean;
     static oppositeColor(color: Color): Color;
+    static fromSFENString(sfen: string): Piece;
 }

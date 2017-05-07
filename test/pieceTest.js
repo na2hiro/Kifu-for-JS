@@ -51,6 +51,14 @@ describe("class Piece", function(){
 			assert.equal(gi.toCSAString(), "+GI");
 		});
 	});
+	describe("toSFENString", function(){
+		it("normal", function(){
+			assert.equal(new Piece("+GI").toSFENString(), "S");
+			assert.equal(new Piece("-GI").toSFENString(), "s");
+			assert.equal(new Piece("+TO").toSFENString(), "+P");
+			assert.equal(new Piece("-TO").toSFENString(), "+p");
+		})
+	})
 	describe("static promote", function(){
 		it("normal", function(){
 			assert.equal(Piece.promote("KA"), "UM");
@@ -72,4 +80,12 @@ describe("class Piece", function(){
 			assert.equal(Piece.canPromote("KI"), false);
 		});
 	});
+	describe("static fromSFENString", function(){
+		it("normal", function(){
+			assert.equal(Piece.fromSFENString("S").toCSAString(), "+GI");
+			assert.equal(Piece.fromSFENString("s").toCSAString(), "-GI");
+			assert.equal(Piece.fromSFENString("+P").toCSAString(), "+TO");
+			assert.equal(Piece.fromSFENString("+p").toCSAString(), "-TO");
+		});
+	})
 });

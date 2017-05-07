@@ -1,4 +1,5 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+"use strict";
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -50,6 +51,57 @@ var Shogi = (function () {
             }
         }
         this.flagEditMode = false;
+    };
+    // SFENによる盤面表現の文字列で盤面を初期化する
+    Shogi.prototype.initializeFromSFENString = function (sfen) {
+        this.board = [];
+        for (var i = 0; i < 9; i++) {
+            this.board[i] = [];
+            for (var j = 0; j < 9; j++) {
+                this.board[i][j] = null;
+            }
+        }
+        var segments = sfen.split(' ');
+        var sfenBoard = segments[0];
+        var x = 8;
+        var y = 0;
+        for (var i = 0; i < sfenBoard.length; i++) {
+            var c = sfenBoard[i];
+            var promoted = false;
+            if (c == "+") {
+                i++;
+                c += sfenBoard[i];
+            }
+            if (c.match(/^[1-9]$/)) {
+                x -= Number(c);
+            }
+            else if (c == "/") {
+                y++;
+                x = 8;
+            }
+            else {
+                this.board[x][y] = Piece.fromSFENString(c);
+                x--;
+            }
+        }
+        this.turn = segments[1] == "b" ? Color.Black : Color.White;
+        this.hands = [[], []];
+        var sfenHands = segments[2];
+        if (sfenHands != "-") {
+            while (sfenHands.length > 0) {
+                var count = 1;
+                var m = sfenHands.match(/^[0-9]+/);
+                if (m) {
+                    count = Number(m[0]);
+                    sfenHands = sfenHands.slice(m[0].length);
+                }
+                for (var i = 0; i < count; i++) {
+                    var piece = Piece.fromSFENString(sfenHands[0]);
+                    this.hands[piece.color].push(piece);
+                }
+                sfenHands = sfenHands.slice(1);
+            }
+        }
     };
     // 編集モード切り替え
     // * 通常モード：移動時に手番と移動可能かどうかチェックし，移動可能範囲は手番側のみ返す．
@@ -143,6 +195,58 @@ var Shogi = (function () {
         }
         ret.push(this.turn == Color.Black ? "+" : "-");
         return ret.join("\n");
+    };
+    // SFENによる盤面表現の文字列を返す
+    Shogi.prototype.toSFENString = function (moveCount) {
+        if (moveCount === void 0) { moveCount = 1; }
+        var ret = [];
+        var sfenBoard = [];
+        for (var y = 0; y < 9; y++) {
+            var line = "";
+            var empty = 0;
+            for (var x = 8; x >= 0; x--) {
+                var piece = this.board[x][y];
+                if (piece == null) {
+                    empty++;
+                }
+                else {
+                    if (empty > 0) {
+                        line += "" + empty;
+                        empty = 0;
+                    }
+                    line += piece.toSFENString();
+                }
+            }
+            if (empty > 0) {
+                line += "" + empty;
+            }
+            sfenBoard.push(line);
+        }
+        ret.push(sfenBoard.join("/"));
+        ret.push(this.turn == Color.Black ? "b" : "w");
+        if (this.hands[0].length == 0 && this.hands[1].length == 0) {
+            ret.push("-");
+        }
+        else {
+            var sfenHands = "";
+            var kinds = ["R", "B", "G", "S", "N", "L", "P", "r", "b", "g", "s", "n", "l", "p"];
+            var count = {};
+            for (var i = 0; i < 2; i++) {
+                for (var j = 0; j < this.hands[i].length; j++) {
+                    var key = this.hands[i][j].toSFENString();
+                    count[key] = (count[key] || 0) + 1;
+                }
+            }
+            for (var i = 0; i < kinds.length; i++) {
+                var kind = kinds[i];
+                if (count[kind] > 0) {
+                    sfenHands += (count[kind] > 1 ? count[kind] : "") + kind;
+                }
+            }
+            ret.push(sfenHands);
+        }
+        ret.push("" + moveCount);
+        return ret.join(" ");
     };
     // (x, y)の駒の移動可能な動きをすべて得る
     // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
@@ -538,7 +642,7 @@ var Shogi = (function () {
         }
     };
     return Shogi;
-})();
+}());
 exports.Shogi = Shogi;
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 var Piece = (function () {
@@ -562,6 +666,21 @@ var Piece = (function () {
     // CSAによる駒表現の文字列を返す
     Piece.prototype.toCSAString = function () {
         return (this.color == Color.Black ? "+" : "-") + this.kind;
+    };
+    // SFENによる駒表現の文字列を返す
+    Piece.prototype.toSFENString = function () {
+        var sfenPiece = {
+            FU: "P",
+            KY: "L",
+            KE: "N",
+            GI: "S",
+            KI: "G",
+            KA: "B",
+            HI: "R",
+            OU: "K"
+        }[Piece.unpromote(this.kind)];
+        return (Piece.isPromoted(this.kind) ? "+" : "") +
+            (this.color == Color.Black ? sfenPiece : sfenPiece.toLowerCase());
     };
     // 成った時の種類を返す．なければそのまま．
     Piece.promote = function (kind) {
@@ -625,8 +744,31 @@ var Piece = (function () {
     Piece.oppositeColor = function (color) {
         return color == Color.Black ? Color.White : Color.Black;
     };
+    // SFENによる文字列表現から駒オブジェクトを作成
+    Piece.fromSFENString = function (sfen) {
+        var promoted = sfen[0] == "+";
+        if (promoted) {
+            sfen = sfen.slice(1);
+        }
+        var color = sfen.match(/[A-Z]/) ? "+" : "-";
+        var kind = {
+            P: "FU",
+            L: "KY",
+            N: "KE",
+            S: "GI",
+            G: "KI",
+            B: "KA",
+            R: "HI",
+            K: "OU"
+        }[sfen.toUpperCase()];
+        var piece = new Piece(color + kind);
+        if (promoted) {
+            piece.promote();
+        }
+        return piece;
+    };
     return Piece;
-})();
+}());
 exports.Piece = Piece;
 
 },{}]},{},[1]);
