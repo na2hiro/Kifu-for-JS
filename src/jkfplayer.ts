@@ -344,7 +344,7 @@ class JKFPlayer{
 	}
 	private static sameMoveMinimal(move1: JKF.MoveMoveFormat, move2: JKF.MoveMoveFormat){
 		return (move1.to.x==move2.to.x && move1.to.y==move2.to.y
-						&& (move1.from
+						&& (move1.from && move2.from
 							? move1.from.x==move2.from.x && move1.from.y==move2.from.y && move1.promote==move2.promote
 							: move1.piece==move2.piece ));
 	}

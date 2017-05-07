@@ -6367,6 +6367,7 @@ module.exports = (function() {
   };
 })();
 },{}],4:[function(require,module,exports){
+"use strict";
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -7421,6 +7422,7 @@ var Piece = (function () {
 exports.Piece = Piece;
 
 },{}],"JKFPlayer":[function(require,module,exports){
+"use strict";
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -7793,7 +7795,7 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.sameMoveMinimal = function (move1, move2) {
         return (move1.to.x == move2.to.x && move1.to.y == move2.to.y
-            && (move1.from
+            && (move1.from && move2.from
                 ? move1.from.x == move2.from.x && move1.from.y == move2.from.y && move1.promote == move2.promote
                 : move1.piece == move2.piece));
     };
@@ -7818,7 +7820,7 @@ var JKFPlayer = (function () {
     JKFPlayer.debug = false;
     JKFPlayer._log = [];
     return JKFPlayer;
-})();
+}());
 module.exports = JKFPlayer;
 
 },{"../lib/csa-parser":1,"../lib/ki2-parser":2,"../lib/kif-parser":3,"./normalizer":4,"shogi.js/lib/shogi":5}]},{},[]);
