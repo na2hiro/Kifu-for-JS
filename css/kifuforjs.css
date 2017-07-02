@@ -96,6 +96,9 @@
 	display: none;
 	position: relative;
 }
+.kifuforjs div.mochi div.mochimain span.mochigoma div{
+	display: inline-block;
+}
 .kifuforjs div.mochi div.mochimain span.mochigoma.fu{
 	display: inline-block;
 	width: 120px;
