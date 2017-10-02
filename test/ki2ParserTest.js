@@ -163,5 +163,39 @@ describe("ki2-parser", function(){
 				]
 			});
 		});
+
+		it("Multiple forks", function(){
+			assert.deepEqual(ki2Parser.parse(
+				"▲７六歩 △３四歩\n" +
+				"\n" +
+				"変化：2手\n" +
+				"△８四歩\n" +
+				"\n" +
+				"変化：2手\n" +
+				"△４四歩\n" +
+				"\n" +
+				"変化：1手\n" +
+				"▲２六歩\n" +
+				"\n" +
+				"変化：1手\n" +
+				"▲８六歩\n" +
+				"\n" +
+				"変化：1手\n" +
+				"▲７八金"),{
+				header:{},
+				moves:[
+					{},
+					{move:{to:p(7,6),piece:"FU"}, forks:[
+						[{move:{to:p(2,6),piece:"FU"}}],
+						[{move:{to:p(8,6),piece:"FU"}}],
+						[{move:{to:p(7,8),piece:"KI"}}],
+					]},
+					{move:{to:p(3,4),piece:"FU"}, forks:[
+						[{move:{to:p(8,4),piece:"FU"}}],
+						[{move:{to:p(4,4),piece:"FU"}}],
+					]},
+				]
+			});
+		});
 	});
 });

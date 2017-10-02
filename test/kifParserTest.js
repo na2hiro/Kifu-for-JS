@@ -238,6 +238,41 @@ describe("kif-parser", function(){
 				]
 			});
 		});
+
+		it("Multiple forks", function(){
+			assert.deepEqual(kifParser.parse(
+				"1 ７六歩(77)+\n" +
+				"2 ３四歩(33)+\n" +
+				"\n" +
+				"変化：2手\n" +
+				"2 ８四歩(83)+\n" +
+				"\n" +
+				"変化：2手\n" +
+				"2 ４四歩(43)\n" +
+				"\n" +
+				"変化：1手\n" +
+				"1 ２六歩(27)+\n" +
+				"\n" +
+				"変化：1手\n" +
+				"1 ８六歩(87)+\n" +
+				"\n" +
+				"変化：1手\n" +
+				"1 ７八金(69)\n"),{
+				header:{},
+				moves:[
+					{},
+					{move:{from:p(7,7),to:p(7,6),piece:"FU"}, forks:[
+						[{move:{from:p(2,7),to:p(2,6),piece:"FU"}}],
+						[{move:{from:p(8,7),to:p(8,6),piece:"FU"}}],
+						[{move:{from:p(6,9),to:p(7,8),piece:"KI"}}],
+					]},
+					{move:{from:p(3,3),to:p(3,4),piece:"FU"}, forks:[
+						[{move:{from:p(8,3),to:p(8,4),piece:"FU"}}],
+						[{move:{from:p(4,3),to:p(4,4),piece:"FU"}}],
+					]},
+				]
+			});
+		});
 	});
 	describe("split", function(){
 		it("normal", function(){

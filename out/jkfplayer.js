@@ -1692,7 +1692,7 @@ module.exports = (function() {
         	for(var i=0; i<forks.length; i++){
         		var nowFork = forks[i];
         		var fork = forkStack.pop();
-        		while(fork.te>nowFork.te){fork = forkStack.pop();}
+        		while(fork.te>=nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
         		move.forks = move.forks || [];
         		move.forks.push(nowFork.moves);
@@ -3816,7 +3816,7 @@ module.exports = (function() {
         	for(var i=0; i<forks.length; i++){
         		var nowFork = forks[i];
         		var fork = forkStack.pop();
-        		while(fork.te>nowFork.te){fork = forkStack.pop();}
+        		while(fork.te>=nowFork.te){fork = forkStack.pop();}
         		var move = fork.moves[nowFork.te-fork.te];
         		move.forks = move.forks || [];
         		move.forks.push(nowFork.moves);
