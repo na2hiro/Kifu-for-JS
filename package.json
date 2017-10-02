@@ -28,7 +28,7 @@
   },
   "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
   "dependencies": {
-    "json-kifu-format": "^1.1.0",
+    "json-kifu-format": "^1.1.1",
     "shogi.js": "^1.0.0",
     "react": "^0.14.8",
     "react-dnd": "^2.1.4",

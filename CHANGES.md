@@ -2,6 +2,11 @@
 
 近況：目指せKifu for Win
 
+## 1.2.1 (2017/10/2)
+
+* json-kifu-format追従
+	* 3つ目以降の分岐が表示されないバグ修正
+
 ## 1.2.0 (2016/6/18)
 
 * CSA V2 (floodgate等でも使用されている)に対応したjson-kifu-formatを使用
