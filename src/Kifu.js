@@ -1,15 +1,17 @@
 import React from "react";
 import JKFPlayer from "json-kifu-format";
-import {DragDropContext, DropTarget, DragSource} from "react-dnd";
-import HTML5Backend, {NativeTypes} from "react-dnd-html5-backend";
+import {DragDropContext, DropTarget} from "react-dnd";
+import {NativeTypes} from "react-dnd-html5-backend";
+import MultiBackend, {Preview} from "react-dnd-multi-backend";
+import HTML5toTouch from 'react-dnd-multi-backend/lib/HTML5toTouch';
 
 import Board from "./Board.js";
 import ForkList from "./ForkList.js";
 import KifuList from "./KifuList.js";
 import Hand from "./Hand.js";
-import {version, loadFile} from "./util.js"
+import {loadFile, version} from "./util.js"
 
-@DragDropContext(HTML5Backend)
+@DragDropContext(MultiBackend(HTML5toTouch))
 @DropTarget(NativeTypes.FILE, {
     drop(props, monitor, component){
         if(monitor.getItem().files[0]){
@@ -32,6 +34,7 @@ export default class Kifu extends React.Component {
     constructor(props){
         super(props);
         this.state = {player: new JKFPlayer({header: {}, moves: [{}]}), reversed: false};
+        this.signature = Math.random();
 
         this.onClickDl = this.onClickDl.bind(this);
         this.clickDlAvailable = this.clickDlAvailable.bind(this);
@@ -148,7 +151,8 @@ export default class Kifu extends React.Component {
         this.state.player.go(tesuu);
         this.setState(this.state);
     }
-    render(){
+
+	render() {
         var data = this.state.player.kifu.header;
         var dds = [];
         for(var key in data){
@@ -171,8 +175,13 @@ export default class Kifu extends React.Component {
                 <tbody>
                 <tr>
                     <td>
+                        <Preview generator={(type, item, style) =>
+							(item.signature === this.signature)
+                                ? <img src={item.imgSrc} className="dragPreview" style={style}/>
+                                : null
+						}/>
                         <div className={"inlineblock players "+(this.state.player.kifu.moves.some(function(move){return move.forks&&move.forks.length>0;})?"withfork":"")}>
-                            <Hand color={reversed?0:1} data={state.hands[reversed?0:1]} playerName={players[reversed?0:1]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed}/>
+                            <Hand color={reversed?0:1} data={state.hands[reversed?0:1]} playerName={players[reversed?0:1]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed} signature={this.signature}/>
                             <div className="mochi">
                                 <KifuList onChange={this.onChangeKifuList} kifu={this.state.player.getReadableKifuState()} tesuu={this.state.player.tesuu} />
                                 <ul className="lines">
@@ -204,14 +213,14 @@ export default class Kifu extends React.Component {
                         </div>
                     </td>
                     <td style={{textAlign:"center"}}>
-                        <Board board={state.board} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed} />
+                        <Board board={state.board} lastMove={this.state.player.getMove()} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed} signature={this.signature} />
                     </td>
                     <td>
                         <div className="inlineblock players">
                             <div className="mochi info">
                                 {info}
                             </div>
-                            <Hand color={reversed?1:0} data={state.hands[reversed?1:0]} playerName={players[reversed?1:0]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed}/>
+                            <Hand color={reversed?1:0} data={state.hands[reversed?1:0]} playerName={players[reversed?1:0]} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.onInputMove} reversed={reversed} signature={this.signature}/>
                         </div>
                     </td>
                 </tr>

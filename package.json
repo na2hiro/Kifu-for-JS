@@ -29,11 +29,12 @@
   "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
   "dependencies": {
     "json-kifu-format": "^1.1.1",
-    "shogi.js": "^1.0.0",
-    "react": "^0.14.8",
-    "react-dnd": "^2.1.4",
+    "react": "^16.0.0",
+    "react-dnd": "^2.5.3",
     "react-dnd-html5-backend": "^2.1.2",
-    "react-dom": "^0.14.8"
+    "react-dnd-multi-backend": "^3.0.4",
+    "react-dom": "^16.0.0",
+    "shogi.js": "^1.0.0"
   },
   "devDependencies": {
     "babel-plugin-add-module-exports": "^0.1.4",

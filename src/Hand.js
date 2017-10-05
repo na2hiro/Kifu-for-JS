@@ -11,7 +11,7 @@ export default class Hand extends React.Component {
                 <div className="tebanname">{colorToMark(this.props.color)+(this.props.playerName||"")}</div>
                 <div className="mochimain">
                     {(virtualColor==0 ? kinds.reverse() : kinds).map((kind)=>
-                        <PieceHandGroup key={kind} value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed}/>
+                        <PieceHandGroup key={kind} value={this.props.data[kind]} data={{kind: kind, color: this.props.color}} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} signature={this.props.signature}/>
                     )}
                 </div>
             </div>

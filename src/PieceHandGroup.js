@@ -16,7 +16,7 @@ export default class PieceHandGroup extends React.Component {
         var pieces = [];
         for(var i=0; i<this.props.value; i++){
             pieces.push(<PieceHand key={i} data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
-                                   onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null} reversed={this.props.reversed}/>);
+                                   onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null} reversed={this.props.reversed} signature={this.props.signature}/>);
         }
         return (
             <span className={"mochigoma"+(this.props.value==0?"":(this.props.data.kind=="FU" ? " fu":" fu-else"))}>

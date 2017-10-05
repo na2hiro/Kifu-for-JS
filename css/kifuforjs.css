@@ -68,12 +68,19 @@
 	background-color:#FDD775;
 	padding:0px;
 }
-.kifuforjs table.ban td, .kifuforjs table.ban td img, .kifuforjs div.mochimain span.mochigoma img, .kifuforjs div.mochi div.mochimain span.mochigoma{
+.kifuforjs table.ban td,
+.kifuforjs table.ban td img,
+.kifuforjs div.mochimain span.mochigoma img,
+.kifuforjs div.mochi div.mochimain span.mochigoma,
+.kifuforjs .dragPreview{
 	padding: 0;
 	border-spacing:0;
 	width:32px;
 	height:36px;
 	vertical-align:middle;
+}
+.kifuforjs .dragPreview{
+    z-index: 100;
 }
 .kifuforjs table.ban td.lastto{background-color: #FF9900;}
 .kifuforjs table.ban td.lastfrom{background-color: #FFCC00;}

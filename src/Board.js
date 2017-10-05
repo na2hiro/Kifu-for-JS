@@ -18,7 +18,7 @@ export default class Board extends React.Component {
                     return <tr key={y}>
                         {nineX.map((logicalX)=>{
                             var x = this.props.reversed ? 10-logicalX : logicalX;
-                            return <Piece key={x} data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} />
+                            return <Piece key={x} data={this.props.board[x-1][y-1]} x={x} y={y} lastMove={this.props.lastMove} ImageDirectoryPath={this.props.ImageDirectoryPath} onInputMove={this.props.onInputMove} reversed={this.props.reversed} signature={this.props.signature} />
                         })}
                         <th>{JKFPlayer.numToKan(y)}</th>
                     </tr>;

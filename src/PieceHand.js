@@ -3,7 +3,7 @@ import {DropTarget, DragSource} from "react-dnd";
 
 @DragSource("piecehand", {
     beginDrag: function(props, monitor, component) {
-        return {piece: props.data.kind, color: props.data.color};
+        return {piece: props.data.kind, color: props.data.color, imgSrc: getPieceImage(props), signature: props.signature};
     },
     endDrag: function(props, monitor, component){
         props.onInputMove({piece: monitor.getItem().piece, color: monitor.getItem().color, to: monitor.getDropResult()});
@@ -16,16 +16,23 @@ import {DropTarget, DragSource} from "react-dnd";
 })
 export default class PieceHand extends React.Component {
     render(){
-        var virtualColor = this.props.reversed ? 1-this.props.data.color : this.props.data.color;
         var style = this.props.position==null
             ? {}
             : {top:0, left: this.props.position, position: "absolute", zIndex:100-this.props.index};
+        style.opacity = this.props.isDragging ? "0.4" : "1";
         return (this.props.connectDragSource(
-            <div><img src={this.getPieceImage(this.props.data.kind, virtualColor)}
+            <div><img src={this.getPieceImage()}
                       style={style}/></div>
         ));
     }
-    getPieceImage(kind, color){
-        return this.props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
+    getPieceImage(){
+        return getPieceImage(this.props);
     }
 }
+
+function getPieceImage(props){
+    var kind = props.data.kind;
+    var color = props.reversed ? 1-props.data.color : props.data.color;
+    return props.ImageDirectoryPath+"/"+(!kind?"blank":color+kind)+".png";
+}
+
