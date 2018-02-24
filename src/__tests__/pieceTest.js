@@ -1,88 +1,89 @@
-var assert = require('assert');
-var Piece = require('../Piece').default;
+const Piece = require('../Piece').default;
 
-function sortMove(moves){
-	return moves.sort(function(a, b){
-		return toNum(a)-toNum(b);
-	});
-	function toNum(move){
-		return move.from
-			? move.from.x*9*9*9 + move.from.y*9*9 + move.to.x*9 + move.to.y
-			: -kindToNum(move.kind)*9*9*2 + move.color*9*9 + move.to.x*9 + move.to.y;
-	}
-	function kindToNum(kind){
-		return ["FU","KY","KE","GI","KI","KA","HI","OU"];
-	}
+function sortMove(moves) {
+    return moves.sort(function (a, b) {
+        return toNum(a) - toNum(b);
+    });
+
+    function toNum(move) {
+        return move.from
+            ? move.from.x * 9 * 9 * 9 + move.from.y * 9 * 9 + move.to.x * 9 + move.to.y
+            : -kindToNum(move.kind) * 9 * 9 * 2 + move.color * 9 * 9 + move.to.x * 9 + move.to.y;
+    }
+
+    function kindToNum(kind) {
+        return ["FU", "KY", "KE", "GI", "KI", "KA", "HI", "OU"];
+    }
 }
 
-describe("promote", function(){
-    it("normal", function(){
-        var fu = new Piece("+FU");
+describe("promote", function () {
+    it("normal", function () {
+        const fu = new Piece("+FU");
         fu.promote();
-        assert.equal(new Piece("+TO").toCSAString(), fu.toCSAString());
+        expect(new Piece("+TO")).toEqual(fu);
         fu.promote();
-        assert.equal(new Piece("+TO").toCSAString(), fu.toCSAString());
+        expect(new Piece("+TO")).toEqual(fu);
     });
 });
-describe("unpromote", function(){
-    it("normal", function(){
-        var ky = new Piece("+KY");
+describe("unpromote", function () {
+    it("normal", function () {
+        const ky = new Piece("+KY");
         ky.promote();
         ky.unpromote();
-        assert.equal(new Piece("+KY").toCSAString(), ky.toCSAString());
+        expect(new Piece("+KY")).toEqual(ky);
         ky.unpromote();
-        assert.equal(new Piece("+KY").toCSAString(), ky.toCSAString());
+        expect(new Piece("+KY")).toEqual(ky);
     });
 });
-describe("unpromote", function(){
-    it("normal", function(){
-        var ke = new Piece("+KE");
+describe("unpromote", function () {
+    it("normal", function () {
+        const ke = new Piece("+KE");
         ke.inverse();
-        assert.equal(new Piece("-KE").toCSAString(), ke.toCSAString());
+        expect(new Piece("-KE")).toEqual(ke);
         ke.inverse();
-        assert.equal(new Piece("+KE").toCSAString(), ke.toCSAString());
+        expect(new Piece("+KE")).toEqual(ke);
     });
 });
-describe("toCSAString", function(){
-    it("normal", function(){
-        var gi = new Piece("+GI");
-        assert.equal(gi.toCSAString(), "+GI");
+describe("toCSAString", function () {
+    it("normal", function () {
+        const gi = new Piece("+GI");
+        expect(gi.toCSAString()).toBe("+GI");
     });
 });
-describe("toSFENString", function(){
-    it("normal", function(){
-        assert.equal(new Piece("+GI").toSFENString(), "S");
-        assert.equal(new Piece("-GI").toSFENString(), "s");
-        assert.equal(new Piece("+TO").toSFENString(), "+P");
-        assert.equal(new Piece("-TO").toSFENString(), "+p");
+describe("toSFENString", function () {
+    it("normal", function () {
+        expect(new Piece("+GI").toSFENString()).toBe("S");
+        expect(new Piece("-GI").toSFENString()).toBe("s");
+        expect(new Piece("+TO").toSFENString()).toBe("+P");
+        expect(new Piece("-TO").toSFENString()).toBe("+p");
     })
 });
-describe("static promote", function(){
-    it("normal", function(){
-        assert.equal(Piece.promote("KA"), "UM");
-        assert.equal(Piece.promote("UM"), "UM");
-        assert.equal(Piece.promote("KI"), "KI");
+describe("static promote", function () {
+    it("normal", function () {
+        expect(Piece.promote("KA")).toBe("UM");
+        expect(Piece.promote("UM")).toBe("UM");
+        expect(Piece.promote("KI")).toBe("KI");
     });
 });
-describe("static unpromote", function(){
-    it("normal", function(){
-        assert.equal(Piece.unpromote("RY"), "HI");
-        assert.equal(Piece.unpromote("HI"), "HI");
-        assert.equal(Piece.unpromote("OU"), "OU");
+describe("static unpromote", function () {
+    it("normal", function () {
+        expect(Piece.unpromote("RY")).toBe("HI");
+        expect(Piece.unpromote("HI")).toBe("HI");
+        expect(Piece.unpromote("OU")).toBe("OU");
     });
 });
-describe("static canPromote", function(){
-    it("normal", function(){
-        assert.equal(Piece.canPromote("KA"), true);
-        assert.equal(Piece.canPromote("UM"), false);
-        assert.equal(Piece.canPromote("KI"), false);
+describe("static canPromote", function () {
+    it("normal", function () {
+        expect(Piece.canPromote("KA")).toBe(true);
+        expect(Piece.canPromote("UM")).toBe(false);
+        expect(Piece.canPromote("KI")).toBe(false);
     });
 });
-describe("static fromSFENString", function(){
-    it("normal", function(){
-        assert.equal(Piece.fromSFENString("S").toCSAString(), "+GI");
-        assert.equal(Piece.fromSFENString("s").toCSAString(), "-GI");
-        assert.equal(Piece.fromSFENString("+P").toCSAString(), "+TO");
-        assert.equal(Piece.fromSFENString("+p").toCSAString(), "-TO");
+describe("static fromSFENString", function () {
+    it("normal", function () {
+        expect(Piece.fromSFENString("S").toCSAString()).toBe("+GI");
+        expect(Piece.fromSFENString("s").toCSAString()).toBe("-GI");
+        expect(Piece.fromSFENString("+P").toCSAString()).toBe("+TO");
+        expect(Piece.fromSFENString("+p").toCSAString()).toBe("-TO");
     });
 });

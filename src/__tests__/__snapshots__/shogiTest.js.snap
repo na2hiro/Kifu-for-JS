@@ -1,5 +1,365 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
+exports[`captureByColor normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00FU
+P-
++"
+`;
+
+exports[`captureByColor normal 2`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00FU
+P-00KA
++"
+`;
+
+exports[`drop editMode 1`] = `
+"P1-KY-KE-GI-KI-OU-KI * -KE-KY
+P2 * -HI *  *  *  *  * -GI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  * +KA *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-00KA
++"
+`;
+
+exports[`drop editMode 2`] = `
+"P1-KY-KE-GI-KI-OU-KI * -KE-KY
+P2 * -HI *  *  *  *  * -GI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  * -KA+KA *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`drop errors 1`] = `
+"P1-KY-KE-GI-KI-OU-KI * -KE-KY
+P2 * -HI *  *  *  *  * -GI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-00KA
++"
+`;
+
+exports[`drop normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI * -KE-KY
+P2 * -HI *  *  *  *  * -GI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  * +KA *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-00KA
+-"
+`;
+
+exports[`drop private popFromHand error 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`drop private popFromHand error 2`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`editMode example 1 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 *  *  *  *  *  *  * -HI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-00KA
++"
+`;
+
+exports[`editMode example 2 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * +UM * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-
+-"
+`;
+
+exports[`flip kin 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI-KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`flip kin 2`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`flip normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+TO+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`flip normal 2`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU-FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`flip normal 3`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU-TO+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`flip normal 4`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`initialize komaochi 1`] = `
+"P1 *  * -GI-KI-OU-KI-GI *  * 
+P2 *  *  *  *  *  *  *  *  * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
+-"
+`;
+
+exports[`initialize normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`initialize other, multiple initialize 1`] = `
+"P1 *  *  *  *  *  *  * -OU * 
+P2 *  *  *  *  *  *  *  *  * 
+P3 *  *  *  *  *  *  * +FU * 
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7 *  *  *  *  *  *  *  *  * 
+P8 *  *  *  *  *  *  *  *  * 
+P9 *  *  *  *  *  *  *  *  * 
+P+00KI
+P-
++"
+`;
+
+exports[`initialize other, multiple initialize 2`] = `
+"P1 *  *  *  *  *  *  *  *  * 
+P2 *  *  *  *  *  *  *  *  * 
+P3 *  *  *  *  *  *  *  *  * 
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  * -KE-KE
+P7 *  *  *  *  *  *  *  * -KE
+P8 *  *  *  *  *  *  *  *  * 
+P9 *  *  *  *  *  *  *  * +OU
+P+
+P-00KE
+-"
+`;
+
+exports[`initializeFromSFENString example 1 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`initializeFromSFENString example 2 1`] = `
+"P1 *  *  *  *  *  *  *  * -KY
+P2 * -KY+RY *  * +FU *  *  * 
+P3-FU *  * -FU+KA+KI * -FU-FU
+P4-OU-FU-GI * -FU *  *  *  * 
+P5+KE-KE * +FU *  * +KI *  * 
+P6+FU * +FU * +FU *  * +FU+FU
+P7 * +FU+GI *  *  *  *  *  * 
+P8 * +OU+GI+KI *  *  * -RY * 
+P9+KY+KE *  * -TO *  *  * +KY
+P+00GI
+P-00KA00KI00KE00FU00FU00FU
+-"
+`;
+
+exports[`move editMode 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 * +KA+FU *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`move errors 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
 exports[`move force promote at dead end 1`] = `
 "P1-KY * -GI-KI-OU-KI-GI * -KY
 P2 * -HI+FU+KY *  *  * -KA * 
@@ -28,4 +388,194 @@ P9+KY-NK+GI+KI+OU+KI+GI+KE *
 P+00GI00KI
 P-00KE
 +"
+`;
+
+exports[`move normal, promote 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * +UM * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-
+-"
+`;
+
+exports[`setTurn normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`setTurn normal 2`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
+-"
+`;
+
+exports[`toSFENString color 1`] = `"lnsgkgsn1/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL w - 1"`;
+
+exports[`toSFENString hands 1`] = `"lnsgkg1nl/1r5s1/pppppp1pp/6p2/9/2P6/PP1PPPPPP/7R1/LNSGKGSNL b Bb 5"`;
+
+exports[`toSFENString hands 2`] = `"l1sgkg1nl/2r4s1/p+P1ppp1pp/6p2/9/9/PP1PPPPPP/7R1/LNSGKGSNL w BN2Pb 12"`;
+
+exports[`toSFENString hands 3`] = `"l1sgkg1nl/7s1/p+P1ppp1pp/6p2/9/9/PP1PPPPPP/7R1/LN+rGKGSNL b BN2Pbs 13"`;
+
+exports[`toSFENString normal 1`] = `"lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"`;
+
+exports[`undrop errors 1`] = `
+"P1-KY-KE-GI-KI-OU-KI * -KE-KY
+P2 * -HI *  *  *  *  * -GI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  * +KA *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-00KA
+-"
+`;
+
+exports[`undrop normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI * -KE-KY
+P2 * -HI *  *  *  *  * -GI * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-00KA
++"
+`;
+
+exports[`unmove capture 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`unmove capture promoted 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * +UM * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-
+-"
+`;
+
+exports[`unmove error 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`unmove normal 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`unmove private prevTurn editMode 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`unmove promote 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
++"
+`;
+
+exports[`unmove promoteが間違ってtrueになっていても許容する 1`] = `
+"P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  * +UM * 
+P3-FU-FU-FU-FU-FU-FU * -FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-
+-"
 `;
