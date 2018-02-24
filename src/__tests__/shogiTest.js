@@ -1,5 +1,5 @@
 var assert = require('assert');
-var {sortMoves} = require('../../test/utils');
+var {boardBitMapToXYs, sortMoves} = require('../../test/utils');
 var Shogi = require('../shogi').default;
 var Color = require('../Color').default;
 
@@ -232,6 +232,20 @@ var Color = require('../Color').default;
 				"P-",
 				"+"].join("\n"));
 		});
+        it("force promote at dead end", function(){
+            shogi.editMode(true);
+            shogi.move(7, 7, 7, 2);
+            shogi.move(8, 1, 7, 7);
+            shogi.move(1, 9, 6, 2);
+            shogi.move(2, 1, 7, 6);
+            shogi.editMode(false);
+            expect(shogi.toCSAString()).toMatchSnapshot();
+            shogi.move(7, 2, 7, 1);
+            shogi.move(7, 7, 8, 9);
+            shogi.move(6, 2, 6, 1);
+            shogi.move(7, 6, 6, 8);
+            expect(shogi.toCSAString()).toMatchSnapshot();
+        });
 	});
 	describe("unmove", function(){
 		it("normal", function(){
@@ -630,6 +644,84 @@ var Color = require('../Color').default;
 				{to:{x:9,y:8}, color: Color.White, kind: "KA"},
 			]));
 		});
+        it("nifu", function () {
+            shogi.move(7, 7, 7, 6);
+            shogi.move(4, 3, 4, 4);
+            shogi.move(8, 8, 4, 4);
+            assert.deepEqual(sortMoves(shogi.getDropsBy(Color.Black)), []);
+            assert.deepEqual(shogi.getDropsBy(Color.White), []);
+            shogi.move(8, 2, 4, 2);
+            shogi.move(4, 4, 5, 3, true);
+            shogi.move(4, 2, 4, 7, true);
+            assert.deepEqual(
+                sortMoves(shogi.getDropsBy(Color.Black)),
+                sortMoves(boardBitMapToXYs(
+                    "_________\n" +
+                    "_____o___\n" +
+                    "_____o___\n" +
+                    "_____o___\n" +
+                    "_____o___\n" +
+                    "_____o___\n" +
+                    "_________\n" +
+                    "_____o___\n" +
+                    "_________"
+                )["o"].map((to)=>({to: to, color: Color.Black, kind: "FU"}))));
+            assert.deepEqual(
+                sortMoves(shogi.getDropsBy(Color.White)),
+                sortMoves(boardBitMapToXYs(
+                    "_________\n" +
+                    "____oo___\n" +
+                    "_____o___\n" +
+                    "____oo___\n" +
+                    "____oo___\n" +
+                    "____oo___\n" +
+                    "_________\n" +
+                    "____oo___\n" +
+                    "_________"
+                )["o"].map((to)=>({to: to, color: Color.White, kind: "FU"}))));
+        });
+        it("piece which can only move to out of board: KE", function () {
+            shogi.move(7, 7, 7, 6);
+            shogi.move(3, 3, 3, 4);
+            shogi.move(8, 9, 7, 7);
+            shogi.move(2, 2, 7, 7, true);
+            shogi.move(7, 9, 6, 8);
+            assert.deepEqual(
+                sortMoves(shogi.getDropsBy(Color.White)),
+                sortMoves(boardBitMapToXYs(
+                    "_________\n" +
+                    "o_ooooooo\n" +
+                    "______o__\n" +
+                    "oooooo_oo\n" +
+                    "ooooooooo\n" +
+                    "oo_oooooo\n" +
+                    "_________\n" +
+                    "_________\n" +
+                    "_________"
+                )["o"].map((to)=>({to: to, color: Color.White, kind: "KE"}))));
+        });
+        it("piece which can only move to out of board: KE", function () {
+            shogi.move(7, 7, 7, 6);
+            shogi.move(3, 3, 3, 4);
+            shogi.move(8, 8, 2, 2, true);
+            shogi.move(5, 1, 6, 2);
+            shogi.move(2, 2, 1, 1);
+            shogi.move(6, 1, 7, 2);
+            shogi.drop(7, 7, "KA", Color.Black);
+            assert.deepEqual(
+                sortMoves(shogi.getDropsBy(Color.Black)),
+                sortMoves(boardBitMapToXYs(
+                    "_________\n" +
+                    "o___ooooo\n" +
+                    "______o__\n" +
+                    "oooooo_oo\n" +
+                    "ooooooooo\n" +
+                    "oo_oooooo\n" +
+                    "_________\n" +
+                    "ooooooo_o\n" +
+                    "_________"
+                )["o"].map((to)=>({to: to, color: Color.Black, kind: "KY"}))));
+        });
 	});
 	describe("getMovesTo", function(){
 		it("just", function () {

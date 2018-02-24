@@ -141,12 +141,33 @@ exports["default"] = Piece;
 },{"./Color":1}],3:[function(require,module,exports){
 "use strict";
 exports.__esModule = true;
+if (!Array.prototype.some) {
+    Array.prototype.some = function (fun /*, thisp */) {
+        "use strict";
+        if (this == null)
+            throw new TypeError();
+        var t = Object(this), len = t.length >>> 0;
+        if (typeof fun != "function")
+            throw new TypeError();
+        var thisp = arguments[1];
+        for (var i = 0; i < len; i++) {
+            if (i in t && fun.call(thisp, t[i], i, t))
+                return true;
+        }
+        return false;
+    };
+}
+
+},{}],4:[function(require,module,exports){
+"use strict";
+exports.__esModule = true;
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+require("./polyfills");
 var Piece_1 = require("./Piece");
 var Color_1 = require("./Color");
 var Shogi = /** @class */ (function () {
@@ -262,8 +283,11 @@ var Shogi = /** @class */ (function () {
         }
         if (this.get(tox, toy) != null)
             this.capture(tox, toy);
-        if (promote)
+        // 行き所のない駒
+        var deadEnd = Shogi.getIllegalUnpromotedRow(piece.kind) >= Shogi.getRowToOppositeEnd(toy, piece.color);
+        if (promote || deadEnd) {
             piece.promote();
+        }
         this.set(tox, toy, piece);
         this.set(fromx, fromy, null);
         this.nextTurn();
@@ -299,6 +323,11 @@ var Shogi = /** @class */ (function () {
         this.checkTurn(color);
         if (this.get(tox, toy) != null)
             throw "there is a piece at " + tox + ", " + toy;
+        if (!this.getDropsBy(color).some(function (move) {
+            return move.to.x == tox && move.to.y == toy && move.kind == kind;
+        })) {
+            throw "Cannot move";
+        }
         var piece = this.popFromHand(kind, color);
         this.set(tox, toy, piece);
         this.nextTurn();
@@ -440,11 +469,19 @@ var Shogi = /** @class */ (function () {
     Shogi.prototype.getDropsBy = function (color) {
         var ret = [];
         var places = [];
+        var fuExistsArray = [];
         for (var i = 1; i <= 9; i++) {
+            var fuExists = false;
             for (var j = 1; j <= 9; j++) {
-                if (this.get(i, j) == null)
+                var piece = this.get(i, j);
+                if (piece == null) {
                     places.push({ x: i, y: j });
+                }
+                else if (piece.color == color && piece.kind == "FU") {
+                    fuExists = true;
+                }
             }
+            fuExistsArray.push(fuExists);
         }
         var done = {};
         for (var i = 0; i < this.hands[color].length; i++) {
@@ -452,11 +489,34 @@ var Shogi = /** @class */ (function () {
             if (done[kind])
                 continue;
             done[kind] = true;
+            var illegalUnpromotedRow = Shogi.getIllegalUnpromotedRow(kind);
             for (var j = 0; j < places.length; j++) {
-                ret.push({ to: places[j], color: color, kind: kind });
+                var place = places[j];
+                if (kind == "FU" && fuExistsArray[place.x - 1]) {
+                    continue; // 二歩
+                }
+                if (illegalUnpromotedRow >= Shogi.getRowToOppositeEnd(place.y, color)) {
+                    continue; // 行き所のない駒
+                }
+                ret.push({ to: place, color: color, kind: kind });
             }
         }
         return ret;
+    };
+    Shogi.getIllegalUnpromotedRow = function (kind) {
+        switch (kind) {
+            case "FU":
+            case "KY":
+                return 1;
+            case "KE":
+                return 2;
+            default:
+                return 0;
+        }
+    };
+    // 手番の相手側から数えた段数
+    Shogi.getRowToOppositeEnd = function (y, color) {
+        return color == Color_1["default"].Black ? y : 10 - y;
     };
     // (x, y)に行けるcolor側のkindの駒の動きを得る
     Shogi.prototype.getMovesTo = function (x, y, kind, color) {
@@ -784,4 +844,4 @@ var Shogi = /** @class */ (function () {
 exports["default"] = Shogi;
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
 
-},{"./Color":1,"./Piece":2}]},{},[3]);
+},{"./Color":1,"./Piece":2,"./polyfills":3}]},{},[4]);

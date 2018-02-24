@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+import "./polyfills";
 import Piece from "./Piece";
 import Color from "./Color";
 export default class Shogi {
@@ -315,7 +316,11 @@ export default class Shogi {
 			})) throw "cannot move from "+fromx+", "+fromy+" to "+tox+", "+toy;
 		}
 		if(this.get(tox, toy)!=null) this.capture(tox, toy);
-		if(promote) piece.promote();
+		// 行き所のない駒
+		var deadEnd = Shogi.getIllegalUnpromotedRow(piece.kind) >= Shogi.getRowToOppositeEnd(toy, piece.color);
+		if(promote || deadEnd){
+			piece.promote();
+		}
 		this.set(tox, toy, piece);
 		this.set(fromx, fromy, null);
 		this.nextTurn();
@@ -345,6 +350,11 @@ export default class Shogi {
 	drop(tox: number, toy: number, kind: string, color: Color = this.turn): void{
 		this.checkTurn(color);
 		if(this.get(tox, toy)!=null) throw "there is a piece at "+tox+", "+toy;
+		if(!this.getDropsBy(color).some(function(move: Move){
+			return move.to.x == tox && move.to.y == toy && move.kind == kind;
+		})) {
+			throw "Cannot move";
+		}
 		var piece = this.popFromHand(kind, color);
 		this.set(tox, toy, piece);
 		this.nextTurn();
@@ -471,22 +481,53 @@ export default class Shogi {
 	// colorが打てる動きを全て得る
 	getDropsBy(color: Color): Move[]{
 		var ret = [];
-		var places = [];
+		var places: {x: number, y: number}[] = [];
+		var fuExistsArray = [];
 		for(var i=1; i<=9; i++){
+			var fuExists = false;
 			for(var j=1; j<=9; j++){
-				if(this.get(i, j)==null) places.push({x: i, y: j});
+				var piece = this.get(i, j);
+				if (piece == null) {
+					places.push({x: i, y: j});
+				} else if (piece.color == color && piece.kind == "FU") {
+					fuExists = true;
+				}
 			}
+			fuExistsArray.push(fuExists);
 		}
 		var done: {[index:string]:boolean} = {};
 		for(var i=0; i<this.hands[color].length; i++){
 			var kind = this.hands[color][i].kind;
 			if(done[kind]) continue;
 			done[kind]=true;
+			var illegalUnpromotedRow = Shogi.getIllegalUnpromotedRow(kind);
 			for(var j=0; j<places.length; j++){
-				ret.push({to: places[j], color: color, kind: kind});
+				var place = places[j];
+				if (kind == "FU" && fuExistsArray[place.x - 1]) {
+					continue; // 二歩
+				}
+				if (illegalUnpromotedRow >= Shogi.getRowToOppositeEnd(place.y, color)){
+					continue; // 行き所のない駒
+				}
+				ret.push({to: place, color: color, kind: kind});
 			}
 		}
 		return ret;
+	}
+	static getIllegalUnpromotedRow(kind: string){
+		switch (kind){
+			case "FU":
+			case "KY":
+				return 1;
+			case "KE":
+				return 2;
+			default:
+				return 0;
+		}
+	}
+	// 手番の相手側から数えた段数
+	static getRowToOppositeEnd(y: number, color: Color) {
+		return color == Color.Black ? y : 10 - y;
 	}
 	// (x, y)に行けるcolor側のkindの駒の動きを得る
 	getMovesTo(x: number, y: number, kind: string, color: Color = this.turn): Move[]{

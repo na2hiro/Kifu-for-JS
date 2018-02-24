@@ -1,0 +1,31 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move force promote at dead end 1`] = `
+"P1-KY * -GI-KI-OU-KI-GI * -KY
+P2 * -HI+FU+KY *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * -KE *  *  *  *  *  * 
+P7+FU+FU-KE+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE * 
+P+
+P-
++"
+`;
+
+exports[`move force promote at dead end 2`] = `
+"P1-KY * +TO+NY-OU-KI-GI * -KY
+P2 * -HI *  *  *  *  * -KA * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU * +FU+FU+FU+FU+FU+FU
+P8 * +KA * -NK *  *  * +HI * 
+P9+KY-NK+GI+KI+OU+KI+GI+KE * 
+P+00GI00KI
+P-00KE
++"
+`;

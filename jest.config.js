@@ -12,5 +12,9 @@ module.exports = {
         "node"
     ],
     collectCoverage: true,
-    collectCoverageFrom: ["src/**"]
+    collectCoverageFrom: [
+        "src/**",
+        "!**/__tests__/**",
+        "!src/polyfills.ts"
+    ]
 };

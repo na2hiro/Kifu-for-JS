@@ -4,6 +4,7 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+import "./polyfills";
 import Piece from "./Piece";
 import Color from "./Color";
 export default class Shogi {
@@ -29,6 +30,8 @@ export default class Shogi {
     toSFENString(moveCount?: number): string;
     getMovesFrom(x: number, y: number): Move[];
     getDropsBy(color: Color): Move[];
+    static getIllegalUnpromotedRow(kind: string): 0 | 1 | 2;
+    static getRowToOppositeEnd(y: number, color: Color): number;
     getMovesTo(x: number, y: number, kind: string, color?: Color): Move[];
     get(x: number, y: number): Piece;
     getHandsSummary(color: Color): {
