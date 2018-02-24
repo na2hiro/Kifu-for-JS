@@ -4,11 +4,9 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-export declare enum Color {
-    Black = 0,
-    White = 1,
-}
-export declare class Shogi {
+import Piece from "./Piece";
+import Color from "./Color";
+export default class Shogi {
     static preset: {
         [index: string]: {
             board: string[];
@@ -71,25 +69,4 @@ export interface Move {
     };
     kind?: string;
     color?: Color;
-}
-export interface MoveDefinition {
-    just?: number[][];
-    fly?: number[][];
-}
-export declare class Piece {
-    color: Color;
-    kind: string;
-    constructor(csa: string);
-    promote(): void;
-    unpromote(): void;
-    inverse(): void;
-    toCSAString(): string;
-    toSFENString(): string;
-    static promote(kind: string): string;
-    static unpromote(kind: string): string;
-    static canPromote(kind: string): boolean;
-    static getMoveDef(kind: string): MoveDefinition;
-    static isPromoted(kind: string): boolean;
-    static oppositeColor(color: Color): Color;
-    static fromSFENString(sfen: string): Piece;
 }

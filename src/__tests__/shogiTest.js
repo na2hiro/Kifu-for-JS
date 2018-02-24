@@ -1,23 +1,8 @@
 var assert = require('assert');
-var ShogiJS = require('../lib/shogi.js');
-var Shogi = ShogiJS.Shogi;
-var Color = ShogiJS.Color;
+var {sortMoves} = require('../../test/utils');
+var Shogi = require('../shogi').default;
+var Color = require('../Color').default;
 
-function sortMove(moves){
-	return moves.sort(function(a, b){
-		return toNum(a)-toNum(b);
-	});
-	function toNum(move){
-		return move.from
-			? move.from.x*9*9*9 + move.from.y*9*9 + move.to.x*9 + move.to.y
-			: -kindToNum(move.kind)*9*9*2 + move.color*9*9 + move.to.x*9 + move.to.y;
-	}
-	function kindToNum(kind){
-		return ["FU","KY","KE","GI","KI","KA","HI","OU"];
-	}
-}
-
-describe("class Shogi", function(){
 	var shogi;
 	beforeEach(function(){
 		shogi = new Shogi();
@@ -459,12 +444,12 @@ describe("class Shogi", function(){
 	describe("getMovesFrom", function(){
 		it("just", function () {
 			assert.deepEqual(shogi.getMovesFrom(7, 7), [{from:{x:7,y:7},to:{x:7,y:6}}]);
-			assert.deepEqual(sortMove(shogi.getMovesFrom(5, 9)), sortMove([
+			assert.deepEqual(sortMoves(shogi.getMovesFrom(5, 9)), sortMoves([
 				{from:{x:5,y:9},to:{x:4,y:8}},
 				{from:{x:5,y:9},to:{x:5,y:8}},
 				{from:{x:5,y:9},to:{x:6,y:8}},
 			]));
-			assert.deepEqual(sortMove(shogi.getMovesFrom(4, 9)), sortMove([
+			assert.deepEqual(sortMoves(shogi.getMovesFrom(4, 9)), sortMoves([
 				{from:{x:4,y:9},to:{x:3,y:8}},
 				{from:{x:4,y:9},to:{x:4,y:8}},
 				{from:{x:4,y:9},to:{x:5,y:8}},
@@ -473,7 +458,7 @@ describe("class Shogi", function(){
 		});
 		it("fly", function () {
 			assert.deepEqual(shogi.getMovesFrom(1, 1), [{from:{x:1,y:1},to:{x:1,y:2}}]);
-			assert.deepEqual(sortMove(shogi.getMovesFrom(2, 8)), sortMove([
+			assert.deepEqual(sortMoves(shogi.getMovesFrom(2, 8)), sortMoves([
 				{from:{x:2,y:8},to:{x:1,y:8}},
 				{from:{x:2,y:8},to:{x:3,y:8}},
 				{from:{x:2,y:8},to:{x:4,y:8}},
@@ -486,7 +471,7 @@ describe("class Shogi", function(){
 			shogi.move(7, 7, 7, 6);
 			shogi.move(3, 3, 3, 4);
 			shogi.move(8, 8, 2, 2, true);
-			assert.deepEqual(sortMove(shogi.getMovesFrom(2, 2)), sortMove([
+			assert.deepEqual(sortMoves(shogi.getMovesFrom(2, 2)), sortMoves([
 				{from:{x:2,y:2},to:{x:1,y:1}},
 				{from:{x:2,y:2},to:{x:1,y:2}},
 				{from:{x:2,y:2},to:{x:1,y:3}},
@@ -523,7 +508,7 @@ describe("class Shogi", function(){
 				shogi.move(8, 2, 4, 2);
 				shogi.move(4, 4, 5, 3, true);
 				shogi.move(4, 2, 4, 7, true);
-				assert.deepEqual(sortMove(shogi.getMovesFrom(4, 7)), sortMove([
+				assert.deepEqual(sortMoves(shogi.getMovesFrom(4, 7)), sortMoves([
 					{from:{x:4,y:7},to:{x:4,y:2}},
 					{from:{x:4,y:7},to:{x:4,y:3}},
 					{from:{x:4,y:7},to:{x:4,y:4}},
@@ -546,7 +531,7 @@ describe("class Shogi", function(){
 			shogi.move(7, 7, 7, 6);
 			shogi.move(3, 3, 3, 4);
 			shogi.move(8, 8, 2, 2, true);
-			assert.deepEqual(sortMove(shogi.getDropsBy(Color.Black)), sortMove([
+			assert.deepEqual(sortMoves(shogi.getDropsBy(Color.Black)), sortMoves([
 				{to:{x:1,y:2}, color: Color.Black, kind: "KA"},
 				{to:{x:1,y:4}, color: Color.Black, kind: "KA"},
 				{to:{x:1,y:5}, color: Color.Black, kind: "KA"},
@@ -599,7 +584,7 @@ describe("class Shogi", function(){
 			shogi.move(3, 1, 2, 2);
 			shogi.drop(3, 3, "KA");
 			shogi.move(2, 2, 3, 3);
-			assert.deepEqual(sortMove(shogi.getDropsBy(Color.White)), sortMove([
+			assert.deepEqual(sortMoves(shogi.getDropsBy(Color.White)), sortMoves([
 				{to:{x:1,y:2}, color: Color.White, kind: "KA"},
 				{to:{x:1,y:4}, color: Color.White, kind: "KA"},
 				{to:{x:1,y:5}, color: Color.White, kind: "KA"},
@@ -862,4 +847,3 @@ describe("class Shogi", function(){
 			});
 		});
 	});
-});

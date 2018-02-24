@@ -8,7 +8,7 @@ var source = require('vinyl-source-stream');
 var merge = require('merge2');
 var del = require('del');
 
-var SRC_FILE = './src/shogi.ts';
+var SRC_FILE = './src/*.ts';
 var TEST_FILE = './test/*.js';
 var OUT_DIR = './out/';
 var LIB_DIR = './lib/';
