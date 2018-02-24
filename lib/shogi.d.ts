@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-import "./polyfills";
-import Piece from "./Piece";
 import Color from "./Color";
+import Piece from "./Piece";
+import "./polyfills";
 export default class Shogi {
     static preset: {
         [index: string]: {
@@ -14,12 +14,14 @@ export default class Shogi {
             turn: Color;
         };
     };
+    private static getIllegalUnpromotedRow(kind);
+    private static getRowToOppositeEnd(y, color);
     board: Piece[][];
     hands: Piece[][];
     turn: Color;
     flagEditMode: boolean;
-    constructor(setting?: SettingType);
-    initialize(setting?: SettingType): void;
+    constructor(setting?: ISettingType);
+    initialize(setting?: ISettingType): void;
     initializeFromSFENString(sfen: string): void;
     editMode(flag: boolean): void;
     move(fromx: number, fromy: number, tox: number, toy: number, promote?: boolean): void;
@@ -28,11 +30,9 @@ export default class Shogi {
     undrop(tox: number, toy: number): void;
     toCSAString(): string;
     toSFENString(moveCount?: number): string;
-    getMovesFrom(x: number, y: number): Move[];
-    getDropsBy(color: Color): Move[];
-    static getIllegalUnpromotedRow(kind: string): 0 | 1 | 2;
-    static getRowToOppositeEnd(y: number, color: Color): number;
-    getMovesTo(x: number, y: number, kind: string, color?: Color): Move[];
+    getMovesFrom(x: number, y: number): IMove[];
+    getDropsBy(color: Color): IMove[];
+    getMovesTo(x: number, y: number, kind: string, color?: Color): IMove[];
     get(x: number, y: number): Piece;
     getHandsSummary(color: Color): {
         [index: string]: number;
@@ -48,20 +48,20 @@ export default class Shogi {
     private prevTurn();
     private checkTurn(color);
 }
-export interface SettingType {
+export interface ISettingType {
     preset: string;
     data?: {
         color: Color;
-        board: {
+        board: Array<Array<{
             color?: Color;
             kind?: string;
-        }[][];
-        hands: {
+        }>>;
+        hands: Array<{
             [index: string]: number;
-        }[];
+        }>;
     };
 }
-export interface Move {
+export interface IMove {
     from?: {
         x: number;
         y: number;
