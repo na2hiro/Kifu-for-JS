@@ -11,6 +11,14 @@ module.exports = {
         "json",
         "node"
     ],
+    coverageThreshold: {
+        global: {
+            branches: -1,
+            functions: -1,
+            lines: -1,
+            statements: -1
+        }
+    },
     collectCoverage: true,
     collectCoverageFrom: [
         "src/**",
