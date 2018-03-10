@@ -1,0 +1,6 @@
+src/
+test/
+coverage/
+node_modules/
+npm-shrinkwrap.json
+tsconfig.json
