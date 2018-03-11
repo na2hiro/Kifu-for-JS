@@ -1,23 +1,22 @@
-const {boardBitMapToXYs, sortMoves} = require('../../test/utils');
-const Shogi = require('../shogi').default;
-const Color = require('../Color').default;
+import "jest";
+import {boardBitMapToXYs, sortMoves} from "../../test/utils";
+import Shogi, {Color} from "../shogi";
 
 let shogi;
-beforeEach(function () {
+beforeEach(() => {
     shogi = new Shogi();
 });
-describe("initialize", function () {
-    it("normal", function () {
+describe("initialize", () => {
+    it("normal", () => {
         shogi.initialize();
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("komaochi", function () {
+    it("komaochi", () => {
         shogi.initialize({preset: "6"});
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("other, multiple initialize", function () {
+    it("other, multiple initialize", () => {
         shogi.initialize({
-            preset: "OTHER",
             data: {
                 board: [
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -28,23 +27,23 @@ describe("initialize", function () {
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                    [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+                    [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                 ],
                 color: Color.Black,
                 hands: [
-                    {"KI": 1},
-                    {}
-                ]
-            }
+                    {KI: 1},
+                    {},
+                ],
+            },
+            preset: "OTHER",
         });
         expect(shogi.toCSAString()).toMatchSnapshot();
         shogi.initialize({
-            preset: "OTHER",
             data: {
                 board: [
                     [{}, {}, {}, {}, {}, {color: Color.White, kind: "KE"}, {
                         color: Color.White,
-                        kind: "KE"
+                        kind: "KE",
                     }, {}, {color: Color.Black, kind: "OU"}],
                     [{}, {}, {}, {}, {}, {color: Color.White, kind: "KE"}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -53,30 +52,32 @@ describe("initialize", function () {
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                    [{}, {}, {}, {}, {}, {}, {}, {}, {}]
+                    [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                 ],
                 color: Color.White,
                 hands: [
                     {},
-                    {"KE": 1}
-                ]
-            }
+                    {KE: 1},
+                ],
+            },
+            preset: "OTHER",
         });
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
 });
-describe("initializeFromSFENString", function () {
-    it("example 1", function () {
+describe("initializeFromSFENString", () => {
+    it("example 1", () => {
         shogi.initializeFromSFENString("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1");
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("example 2", function () {
-        shogi.initializeFromSFENString("8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124");
+    it("example 2", () => {
+        shogi.initializeFromSFENString(
+                "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124");
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
 });
-describe("editMode", function () {
-    it("example 1", function () {
+describe("editMode", () => {
+    it("example 1", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -96,7 +97,7 @@ describe("editMode", function () {
 
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("example 2", function () {
+    it("example 2", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -116,14 +117,14 @@ describe("editMode", function () {
         expect(shogi.toCSAString()).toBe(csa);
     });
 });
-describe("move", function () {
-    it("normal, promote", function () {
+describe("move", () => {
+    it("normal, promote", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("errors", function () {
+    it("errors", () => {
         const csa = shogi.toCSAString();
         expect(shogi.toCSAString()).toMatchSnapshot();
         expect(() => shogi.move(7, 6, 7, 5)).toThrow();
@@ -131,12 +132,12 @@ describe("move", function () {
         expect(() => shogi.move(7, 7, 7, 8)).toThrow();
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("editMode", function () {
+    it("editMode", () => {
         shogi.editMode(true);
         shogi.move(7, 7, 7, 8);
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("force promote at dead end", function () {
+    it("force promote at dead end", () => {
         shogi.editMode(true);
         shogi.move(7, 7, 7, 2);
         shogi.move(8, 1, 7, 7);
@@ -151,15 +152,15 @@ describe("move", function () {
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
 });
-describe("unmove", function () {
-    it("normal", function () {
+describe("unmove", () => {
+    it("normal", () => {
         const csa = shogi.toCSAString();
         expect(shogi.toCSAString()).toMatchSnapshot();
         shogi.move(7, 7, 7, 6);
         shogi.unmove(7, 7, 7, 6);
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("promote", function () {
+    it("promote", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         const csa = shogi.toCSAString();
@@ -168,7 +169,7 @@ describe("unmove", function () {
         shogi.unmove(8, 8, 3, 3, true);
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("capture", function () {
+    it("capture", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         const csa = shogi.toCSAString();
@@ -177,7 +178,7 @@ describe("unmove", function () {
         shogi.unmove(8, 8, 2, 2, true, "KA");
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("capture promoted", function () {
+    it("capture promoted", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -187,13 +188,13 @@ describe("unmove", function () {
         shogi.unmove(3, 1, 2, 2, false, "UM");
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("error", function () {
+    it("error", () => {
         const csa = shogi.toCSAString();
         expect(shogi.toCSAString()).toMatchSnapshot();
         expect(() => shogi.unmove(7, 7, 7, 6)).toThrow();
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("promoteが間違ってtrueになっていても許容する", function () {
+    it("promoteが間違ってtrueになっていても許容する", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -203,8 +204,8 @@ describe("unmove", function () {
         shogi.unmove(3, 1, 2, 2, true, "UM");
         expect(shogi.toCSAString()).toBe(csa);
     });
-    describe("private prevTurn", function () {
-        it("editMode", function () {
+    describe("private prevTurn", () => {
+        it("editMode", () => {
             shogi.editMode(true);
             const csa = shogi.toCSAString();
             expect(shogi.toCSAString()).toMatchSnapshot();
@@ -214,8 +215,8 @@ describe("unmove", function () {
         });
     });
 });
-describe("drop", function () {
-    it("normal", function () {
+describe("drop", () => {
+    it("normal", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -223,7 +224,7 @@ describe("drop", function () {
         shogi.drop(4, 5, "KA");
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("errors", function () {
+    it("errors", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -235,7 +236,7 @@ describe("drop", function () {
         expect(() => shogi.drop(3, 4, "KA")).toThrow();
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("editMode", function () {
+    it("editMode", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -246,13 +247,13 @@ describe("drop", function () {
         shogi.drop(5, 5, "KA", Color.White);
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    describe("private popFromHand", function () {
-        it("error", function () {
+    describe("private popFromHand", () => {
+        it("error", () => {
             expect(shogi.toCSAString()).toMatchSnapshot();
             expect(() => shogi.drop(5, 5, "FU")).toThrow();
             expect(shogi.toCSAString()).toMatchSnapshot();
         });
-        it("multiple hand", function () {
+        it("multiple hand", () => {
             shogi.move(7, 7, 7, 6);
             shogi.move(4, 3, 4, 4);
             shogi.move(8, 8, 4, 4);
@@ -265,8 +266,8 @@ describe("drop", function () {
         });
     });
 });
-describe("undrop", function () {
-    it("normal", function () {
+describe("undrop", () => {
+    it("normal", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -277,7 +278,7 @@ describe("undrop", function () {
         shogi.undrop(4, 5);
         expect(shogi.toCSAString()).toBe(csa);
     });
-    it("errors", function () {
+    it("errors", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -291,18 +292,18 @@ describe("undrop", function () {
         expect(shogi.toCSAString()).toBe(csa);
     });
 });
-describe("toCSAString", function () {
-
+describe("toCSAString", () => {
+    // TODO: add
 });
-describe("toSFENString", function () {
-    it("normal", function () {
+describe("toSFENString", () => {
+    it("normal", () => {
         expect(shogi.toSFENString()).toMatchSnapshot();
     });
-    it("color", function () {
+    it("color", () => {
         shogi.initialize({preset: "KY"});
         expect(shogi.toSFENString()).toMatchSnapshot();
     });
-    it("hands", function () {
+    it("hands", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -320,8 +321,8 @@ describe("toSFENString", function () {
         expect(shogi.toSFENString(13)).toMatchSnapshot();
     });
 });
-describe("getMovesFrom", function () {
-    it("just", function () {
+describe("getMovesFrom", () => {
+    it("just", () => {
         expect(shogi.getMovesFrom(7, 7)).toEqual([{from: {x: 7, y: 7}, to: {x: 7, y: 6}}]);
         expect(sortMoves(shogi.getMovesFrom(5, 9))).toEqual(sortMoves([
             {from: {x: 5, y: 9}, to: {x: 4, y: 8}},
@@ -335,7 +336,7 @@ describe("getMovesFrom", function () {
         ]));
         expect(shogi.getMovesFrom(8, 9)).toEqual([]);
     });
-    it("fly", function () {
+    it("fly", () => {
         expect(shogi.getMovesFrom(1, 1)).toEqual([{from: {x: 1, y: 1}, to: {x: 1, y: 2}}]);
         expect(sortMoves(shogi.getMovesFrom(2, 8))).toEqual(sortMoves([
             {from: {x: 2, y: 8}, to: {x: 1, y: 8}},
@@ -343,10 +344,10 @@ describe("getMovesFrom", function () {
             {from: {x: 2, y: 8}, to: {x: 4, y: 8}},
             {from: {x: 2, y: 8}, to: {x: 5, y: 8}},
             {from: {x: 2, y: 8}, to: {x: 6, y: 8}},
-            {from: {x: 2, y: 8}, to: {x: 7, y: 8}}
+            {from: {x: 2, y: 8}, to: {x: 7, y: 8}},
         ]));
     });
-    it("just & fly", function () {
+    it("just & fly", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -363,13 +364,13 @@ describe("getMovesFrom", function () {
             {from: {x: 2, y: 2}, to: {x: 5, y: 5}},
             {from: {x: 2, y: 2}, to: {x: 6, y: 6}},
             {from: {x: 2, y: 2}, to: {x: 7, y: 7}},
-            {from: {x: 2, y: 2}, to: {x: 8, y: 8}}
+            {from: {x: 2, y: 2}, to: {x: 8, y: 8}},
         ]));
     });
-    it("empty", function () {
+    it("empty", () => {
         expect(shogi.getMovesFrom(7, 6)).toEqual([]);
     });
-    it("初期局面の移動可能手", function () {
+    it("初期局面の移動可能手", () => {
         let movable = 0;
         for (let i = 1; i <= 9; i++) {
             for (let j = 1; j <= 9; j++) {
@@ -379,8 +380,8 @@ describe("getMovesFrom", function () {
         }
         expect(movable).toBe(60);
     });
-    describe("Piece.getMoveDef", function () {
-        it("RY", function () {
+    describe("Piece.getMoveDef", () => {
+        it("RY", () => {
             shogi.move(7, 7, 7, 6);
             shogi.move(4, 3, 4, 4);
             shogi.move(8, 8, 4, 4);
@@ -400,13 +401,13 @@ describe("getMovesFrom", function () {
                 {from: {x: 4, y: 7}, to: {x: 3, y: 8}},
                 {from: {x: 4, y: 7}, to: {x: 5, y: 6}},
                 {from: {x: 4, y: 7}, to: {x: 5, y: 7}},
-                {from: {x: 4, y: 7}, to: {x: 5, y: 8}}
+                {from: {x: 4, y: 7}, to: {x: 5, y: 8}},
             ]));
         });
     });
 });
-describe("getDropsBy", function () {
-    it("normal", function () {
+describe("getDropsBy", () => {
+    it("normal", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -456,7 +457,7 @@ describe("getDropsBy", function () {
         ]));
         expect(shogi.getDropsBy(Color.White)).toEqual([]);
     });
-    it("same pieces in hand", function () {
+    it("same pieces in hand", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -509,7 +510,7 @@ describe("getDropsBy", function () {
             {to: {x: 9, y: 8}, color: Color.White, kind: "KA"},
         ]));
     });
-    it("nifu", function () {
+    it("nifu", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(4, 3, 4, 4);
         shogi.move(8, 8, 4, 4);
@@ -528,8 +529,8 @@ describe("getDropsBy", function () {
                 "_____o___\n" +
                 "_________\n" +
                 "_____o___\n" +
-                "_________"
-            )["o"].map((to) => ({to: to, color: Color.Black, kind: "FU"}))));
+                "_________",
+            ).o.map((to) => ({to, color: Color.Black, kind: "FU"}))));
         expect(sortMoves(shogi.getDropsBy(Color.White)))
             .toEqual(sortMoves(boardBitMapToXYs(
                 "_________\n" +
@@ -540,10 +541,10 @@ describe("getDropsBy", function () {
                 "____oo___\n" +
                 "_________\n" +
                 "____oo___\n" +
-                "_________"
-            )["o"].map((to) => ({to: to, color: Color.White, kind: "FU"}))));
+                "_________",
+            ).o.map((to) => ({to, color: Color.White, kind: "FU"}))));
     });
-    it("piece which can only move to out of board: KE", function () {
+    it("piece which can only move to out of board: KE", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 9, 7, 7);
@@ -559,10 +560,10 @@ describe("getDropsBy", function () {
                 "oo_oooooo\n" +
                 "_________\n" +
                 "_________\n" +
-                "_________"
-            )["o"].map((to) => ({to: to, color: Color.White, kind: "KE"}))));
+                "_________",
+            ).o.map((to) => ({to, color: Color.White, kind: "KE"}))));
     });
-    it("piece which can only move to out of board: KE", function () {
+    it("piece which can only move to out of board: KE", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -580,74 +581,74 @@ describe("getDropsBy", function () {
                 "oo_oooooo\n" +
                 "_________\n" +
                 "ooooooo_o\n" +
-                "_________"
-            )["o"].map((to) => ({to: to, color: Color.Black, kind: "KY"}))));
+                "_________",
+            ).o.map((to) => ({to, color: Color.Black, kind: "KY"}))));
     });
 });
-describe("getMovesTo", function () {
-    it("just", function () {
+describe("getMovesTo", () => {
+    it("just", () => {
         expect(shogi.getMovesTo(7, 6, "FU")).toEqual([{from: {x: 7, y: 7}, to: {x: 7, y: 6}}]);
     });
-    it("fly", function () {
+    it("fly", () => {
         shogi.move(7, 7, 7, 6);
         expect(shogi.getMovesTo(1, 2, "KY")).toEqual([{from: {x: 1, y: 1}, to: {x: 1, y: 2}}]);
     });
-    it("color parameter", function () {
+    it("color parameter", () => {
         expect(shogi.getMovesTo(1, 2, "KY", Color.Black)).toEqual([]);
         expect(shogi.getMovesTo(1, 2, "KY", Color.White)).toEqual([{from: {x: 1, y: 1}, to: {x: 1, y: 2}}]);
     });
 });
-describe("getHandsSummary", function () {
-    it("normal", function () {
+describe("getHandsSummary", () => {
+    it("normal", () => {
         expect(shogi.getHandsSummary(Color.Black)).toEqual({
-            "FU": 0,
-            "KY": 0,
-            "KE": 0,
-            "GI": 0,
-            "KI": 0,
-            "KA": 0,
-            "HI": 0
+            FU: 0,
+            KY: 0,
+            KE: 0, // tslint:disable-line object-literal-sort-keys
+            GI: 0,
+            KI: 0,
+            KA: 0,
+            HI: 0,
         });
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
         shogi.move(3, 1, 2, 2);
         expect(shogi.getHandsSummary(Color.Black)).toEqual({
-            "FU": 0,
-            "KY": 0,
-            "KE": 0,
-            "GI": 0,
-            "KI": 0,
-            "KA": 1,
-            "HI": 0
+            FU: 0,
+            KY: 0,
+            KE: 0, // tslint:disable-line object-literal-sort-keys
+            GI: 0,
+            KI: 0,
+            KA: 1,
+            HI: 0,
         });
         shogi.drop(3, 3, "KA");
         shogi.move(2, 2, 3, 3);
         expect(shogi.getHandsSummary(Color.White)).toEqual({
-            "FU": 0,
-            "KY": 0,
-            "KE": 0,
-            "GI": 0,
-            "KI": 0,
-            "KA": 2,
-            "HI": 0
+            FU: 0,
+            KY: 0,
+            KE: 0, // tslint:disable-line object-literal-sort-keys
+            GI: 0,
+            KI: 0,
+            KA: 2,
+            HI: 0,
         });
     });
 });
-describe("captureByColor", function () {
-    it("normal", function () {
+describe("captureByColor", () => {
+    it("normal", () => {
         shogi.editMode(true);
         shogi.captureByColor(7, 7, Color.Black);
         expect(shogi.toCSAString()).toMatchSnapshot();
         shogi.captureByColor(8, 8, Color.White);
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("error", function () {
+    it("error", () => {
         expect(() => shogi.captureByColor(7, 7, Color.Black)).toThrow();
     });
 });
-describe("flip", function () {
-    it("normal", function () {
+describe("flip", () => {
+    it("normal", () => {
         shogi.editMode(true);
         expect(shogi.flip(7, 7)).toBe(true);
         expect(shogi.toCSAString()).toMatchSnapshot();
@@ -658,23 +659,23 @@ describe("flip", function () {
         expect(shogi.flip(7, 7)).toBe(true);
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("kin", function () {
+    it("kin", () => {
         shogi.editMode(true);
         expect(shogi.flip(6, 9)).toBe(true);
         expect(shogi.toCSAString()).toMatchSnapshot();
         expect(shogi.flip(6, 9)).toBe(true);
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
-    it("fail", function () {
+    it("fail", () => {
         shogi.editMode(true);
         expect(shogi.flip(7, 6)).toBe(false);
     });
-    it("error", function () {
+    it("error", () => {
         expect(() => shogi.flip(7, 7)).toThrow();
     });
 });
-describe("setTurn", function () {
-    it("normal", function () {
+describe("setTurn", () => {
+    it("normal", () => {
         const firstCsa = shogi.toCSAString();
         expect(shogi.toCSAString()).toMatchSnapshot();
         shogi.editMode(true);
@@ -683,7 +684,7 @@ describe("setTurn", function () {
         shogi.setTurn(Color.Black);
         expect(shogi.toCSAString()).toBe(firstCsa);
     });
-    it("error", function () {
+    it("error", () => {
         expect(() => shogi.setTurn(Color.White)).toThrow();
     });
 });

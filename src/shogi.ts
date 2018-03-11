@@ -5,8 +5,8 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import Color from "./Color";
-import Piece from "./Piece";
 import IMoveDefinition from "./IMoveDefinition";
+import Piece from "./Piece";
 import "./polyfills";
 
 export default class Shogi {
@@ -363,7 +363,7 @@ export default class Shogi {
                   tox: number,
                   toy: number,
                   promote: boolean = false,
-                  capture?: string,): void {
+                  capture?: string): void {
         const piece = this.get(tox, toy);
         if (piece == null) {
             throw new Error("no piece found at " + tox + ", " + toy);
@@ -493,14 +493,14 @@ export default class Shogi {
     // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
     public getMovesFrom(x: number, y: number): IMove[] {
         // 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
-        const legal = function (x: number, y: number, color: Color) {
+        const legal = function(x: number, y: number, color: Color) {
             if (x < 1 || 9 < x || y < 1 || 9 < y) {
                 return false;
             }
             const piece = this.get(x, y);
             return piece == null || piece.color !== color;
         }.bind(this);
-        const shouldStop = function (x: number, y: number, color: Color) {
+        const shouldStop = function(x: number, y: number, color: Color) {
             const piece = this.get(x, y);
             return piece != null && piece.color !== color;
         }.bind(this);
@@ -741,5 +741,6 @@ export interface IMove {
     kind?: string;
     color?: Color;
 }
+
 export {Color, Piece, IMoveDefinition};
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
