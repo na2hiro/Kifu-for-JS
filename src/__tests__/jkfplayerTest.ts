@@ -1,4 +1,7 @@
 import JKFPlayer from "../jkfplayer";
+/* tslint:disable:object-literal-sort-keys max-line-length no-unused-expression */
+
+// TODO Fix type errors
 
 function p(x, y) {
     return {x, y};
