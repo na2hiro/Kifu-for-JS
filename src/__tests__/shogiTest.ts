@@ -1,6 +1,6 @@
 import "jest";
 import {boardBitMapToXYs, sortMoves} from "../../test/utils";
-import Shogi, {Color} from "../shogi";
+import {Color, Shogi} from "../shogi";
 
 let shogi;
 beforeEach(() => {

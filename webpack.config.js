@@ -2,11 +2,12 @@ const path = require('path');
 const glob = require('glob');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
 
-const SRC_DIR = 'src';
-const DIST_DIR = 'dist';
+const DIST_DIR = path.resolve(__dirname, './dist');
 
 module.exports = {
-    entry: './' + SRC_DIR + '/shogi.ts',
+    entry: {
+        filename: path.resolve(__dirname, './src/shogi.ts')
+    },
     module: {
         rules: [
             {
@@ -20,8 +21,9 @@ module.exports = {
         extensions: ['.ts', '.js']
     },
     output: {
+        libraryTarget: "commonjs2",
         filename: 'shogi.js',
-        path: path.resolve(__dirname, DIST_DIR)
+        path: DIST_DIR
     },
     plugins: [
         new CleanWebpackPlugin([DIST_DIR])

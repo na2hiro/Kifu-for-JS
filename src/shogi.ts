@@ -9,7 +9,7 @@ import IMoveDefinition from "./IMoveDefinition";
 import Piece from "./Piece";
 import "./polyfills";
 
-export default class Shogi {
+export class Shogi {
     // 既定の初期局面
     public static preset: { [index: string]: { board: string[]; turn: Color; } } = {
         "HIRATE": {

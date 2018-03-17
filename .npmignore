@@ -4,3 +4,7 @@ coverage/
 node_modules/
 npm-shrinkwrap.json
 tsconfig.json
+jest.config.js
+*.iml
+tslint.json
+webpack.config.js
