@@ -1,10 +1,11 @@
-src/
-test/
+bundle/
 coverage/
 node_modules/
+src/
+test/
+*.iml
+jest.config.js
 npm-shrinkwrap.json
 tsconfig.json
-jest.config.js
-*.iml
 tslint.json
 webpack.config.js
