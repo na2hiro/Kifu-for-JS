@@ -34,7 +34,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します．
 
 ### JSONの形式 (Version 1.0)
-`JSONKifuFormat.d.ts`にある内容です．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．
+`IJSONKifuFormat.d.ts`にある内容です．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．
 
 * JKFが持つフィールドの定義
 	* header `string=>string` ヘッダ情報．キーはKI2，KIF等の日本語のものに準ずる．(例: "場所", "先手")
@@ -220,7 +220,7 @@ node.js用のファイルをbrowserifyで１つにまとめたJKFPlayerが用意
 libディレクトリの中とほぼ対応しています．
 
 * `src/`
-	* `src/JSONKifuFormat.d.ts`: JKF型宣言ファイル
+	* `src/IJSONKifuFormat.d.ts`: JKF型宣言ファイル
 	* `src/jkfplayer.ts`
 	* `src/normalizer.ts`
 	* `src/{kif,ki2,csa}-parser.pegjs`

@@ -1,5 +1,5 @@
 var assert = require('assert');
-var kifParser = require("../lib/kif-parser.js");
+var kifParser = require("../../lib/kif-parser.js");
 
 function p(x, y){
 	return {x:x,y:y};

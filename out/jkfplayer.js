@@ -6368,40 +6368,39 @@ module.exports = (function() {
 })();
 },{}],4:[function(require,module,exports){
 "use strict";
+exports.__esModule = true;
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-var ShogiJS = require("shogi.js/lib/shogi");
-var Shogi = ShogiJS.Shogi;
-var Piece = ShogiJS.Piece;
-var Color = ShogiJS.Color;
+var shogi_js_1 = require("shogi.js");
 function canPromote(place, color) {
-    return color == Color.Black ? place.y <= 3 : place.y >= 7;
+    return color === shogi_js_1.Color.Black ? place.y <= 3 : place.y >= 7;
 }
 exports.canPromote = canPromote;
 // 最小形式の棋譜をnormalizeする
 // 最小形式: (指し) from, to, promote; (打ち) piece, to
 function normalizeMinimal(obj) {
-    var shogi = new Shogi(obj.initial || undefined);
+    var shogi = new shogi_js_1.Shogi(obj.initial || undefined);
     normalizeMinimalMoves(shogi, obj.moves);
     return obj;
 }
 exports.normalizeMinimal = normalizeMinimal;
 function normalizeMinimalMoves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
-        var last = i == 0 ? lastMove : moves[i - 1];
+        var last = i === 0 ? lastMove : moves[i - 1];
         var move = moves[i].move;
-        if (!move)
+        if (!move) {
             continue;
+        }
         // 手番
         move.color = shogi.turn;
         if (move.from) {
             // move
             // toからsame復元
-            if (last && last.move && move.to.x == last.move.to.x && move.to.y == last.move.to.y) {
+            if (last && last.move && move.to.x === last.move.to.x && move.to.y === last.move.to.y) {
                 move.same = true;
             }
             // capture復元
@@ -6411,7 +6410,7 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
                 move.piece = shogi.get(move.from.x, move.from.y).kind;
             }
             // 不成復元
-            if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
+            if (!move.promote && !shogi_js_1.Piece.isPromoted(move.piece) && shogi_js_1.Piece.canPromote(move.piece)) {
                 // 成ってない
                 if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
                     move.promote = false;
@@ -6423,7 +6422,7 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
                 shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
             }
             catch (e) {
-                throw i + "手目で失敗しました: " + e;
+                throw new Error(i + "手目で失敗しました: " + e);
             }
         }
         else {
@@ -6445,41 +6444,44 @@ function normalizeMinimalMoves(shogi, moves, lastMove) {
                 shogi.undrop(move.to.x, move.to.y);
             }
         }
-        last = i <= 1 ? lastMove : moves[i - 1];
+        var last = i <= 1 ? lastMove : moves[i - 1];
         if (moves[i].forks) {
-            for (var j = 0; j < moves[i].forks.length; j++) {
-                normalizeMinimalMoves(shogi, moves[i].forks[j], last);
+            for (var _i = 0, _a = moves[i].forks; _i < _a.length; _i++) {
+                var fork = _a[_i];
+                normalizeMinimalMoves(shogi, fork, last);
             }
         }
     }
 }
 function normalizeKIF(obj) {
     // Kifu for iPhone bug
-    if (obj.initial && obj.initial.preset == "HIRATE" && obj.initial.data) {
+    if (obj.initial && obj.initial.preset === "HIRATE" && obj.initial.data) {
         obj.initial.preset = "OTHER";
     }
-    var shogi = new Shogi(obj.initial || undefined);
+    var shogi = new shogi_js_1.Shogi(obj.initial || undefined);
     normalizeKIFMoves(shogi, obj.moves);
     return obj;
 }
 exports.normalizeKIF = normalizeKIF;
 function normalizeKIFMoves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
-        var last = i == 0 ? lastMove : moves[i - 1];
+        var last = i === 0 ? lastMove : moves[i - 1];
         var move = moves[i].move;
-        if (!move)
+        if (!move) {
             continue;
+        }
         // 手番
         move.color = shogi.turn;
         if (move.from) {
             // move
             // sameからto復元
-            if (move.same)
+            if (move.same) {
                 move.to = last.move.to;
+            }
             // capture復元
             addCaptureInformation(shogi, move);
             // 不成復元
-            if (!move.promote && !Piece.isPromoted(move.piece) && Piece.canPromote(move.piece)) {
+            if (!move.promote && !shogi_js_1.Piece.isPromoted(move.piece) && shogi_js_1.Piece.canPromote(move.piece)) {
                 // 成ってない
                 if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
                     move.promote = false;
@@ -6491,7 +6493,7 @@ function normalizeKIFMoves(shogi, moves, lastMove) {
                 shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
             }
             catch (e) {
-                throw i + "手目で失敗しました: " + e;
+                throw new Error(i + "手目で失敗しました: " + e);
             }
         }
         else {
@@ -6513,43 +6515,48 @@ function normalizeKIFMoves(shogi, moves, lastMove) {
                 shogi.undrop(move.to.x, move.to.y);
             }
         }
-        last = i <= 1 ? lastMove : moves[i - 1];
+        var last = i <= 1 ? lastMove : moves[i - 1];
         if (moves[i].forks) {
-            for (var j = 0; j < moves[i].forks.length; j++) {
-                normalizeKIFMoves(shogi, moves[i].forks[j], last);
+            for (var _i = 0, _a = moves[i].forks; _i < _a.length; _i++) {
+                var fork = _a[_i];
+                normalizeKIFMoves(shogi, fork, last);
             }
         }
     }
 }
 function normalizeKI2(obj) {
-    var shogi = new Shogi(obj.initial || undefined);
+    var shogi = new shogi_js_1.Shogi(obj.initial || undefined);
     normalizeKI2Moves(shogi, obj.moves);
     return obj;
 }
 exports.normalizeKI2 = normalizeKI2;
 function normalizeKI2Moves(shogi, moves, lastMove) {
     for (var i = 0; i < moves.length; i++) {
-        var last = i == 0 ? lastMove : moves[i - 1];
+        var last = i === 0 ? lastMove : moves[i - 1];
         var move = moves[i].move;
-        if (!move)
+        if (!move) {
             continue;
+        }
         // 手番
         move.color = shogi.turn;
         // 同からto復元
-        if (move.same)
+        if (move.same) {
             move.to = last.move.to;
+        }
         // from復元
         var candMoves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
-        if (move.relative == "H" || candMoves.length == 0) {
+        if (move.relative === "H" || candMoves.length === 0) {
+            // ok
         }
-        else if (candMoves.length == 1) {
+        else if (candMoves.length === 1) {
             move.from = candMoves[0].from;
         }
         else {
             // 相対逆算
             var moveAns = filterMovesByRelatives(move.relative, shogi.turn, candMoves);
-            if (moveAns.length != 1)
-                throw "相対情報が不完全で複数の候補があります";
+            if (moveAns.length !== 1) {
+                throw new Error("相対情報が不完全で複数の候補があります");
+            }
             move.from = moveAns[0].from;
         }
         if (move.from) {
@@ -6560,7 +6567,7 @@ function normalizeKI2Moves(shogi, moves, lastMove) {
                 shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
             }
             catch (e) {
-                throw i + "手目で失敗しました: " + e;
+                throw new Error(i + "手目で失敗しました: " + e);
             }
         }
         else {
@@ -6571,49 +6578,53 @@ function normalizeKI2Moves(shogi, moves, lastMove) {
     restoreColorOfIllegalAction(moves, shogi);
     for (var i = moves.length - 1; i >= 0; i--) {
         var move = moves[i].move;
-        if (!move)
+        if (!move) {
             continue;
+        }
         if (move.from) {
             shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
         }
         else {
             shogi.undrop(move.to.x, move.to.y);
         }
-        last = i <= 1 ? lastMove : moves[i - 1];
+        var last = i <= 1 ? lastMove : moves[i - 1];
         if (moves[i].forks) {
-            for (var j = 0; j < moves[i].forks.length; j++) {
-                normalizeKI2Moves(shogi, moves[i].forks[j], last);
+            for (var _i = 0, _a = moves[i].forks; _i < _a.length; _i++) {
+                var fork = _a[_i];
+                normalizeKI2Moves(shogi, fork, last);
             }
         }
     }
 }
 function normalizeCSA(obj) {
     restorePreset(obj);
-    var shogi = new Shogi(obj.initial || undefined);
+    var shogi = new shogi_js_1.Shogi(obj.initial || undefined);
     for (var i = 0; i < obj.moves.length; i++) {
         restoreTotalTime(obj.moves[i].time, i >= 2 ? obj.moves[i - 2].time : void 0);
         var move = obj.moves[i].move;
-        if (!move)
+        if (!move) {
             continue;
+        }
         // 手番
         move.color = shogi.turn;
         if (move.from) {
             // move
             // same復元
-            if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x == move.to.x && obj.moves[i - 1].move.to.y == move.to.y) {
+            if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x === move.to.x
+                && obj.moves[i - 1].move.to.y === move.to.y) {
                 move.same = true;
             }
             // capture復元
             addCaptureInformation(shogi, move);
-            if (Piece.isPromoted(move.piece)) {
+            if (shogi_js_1.Piece.isPromoted(move.piece)) {
                 // 成かも
                 var from = shogi.get(move.from.x, move.from.y);
-                if (from.kind != move.piece) {
+                if (from.kind !== move.piece) {
                     move.piece = from.kind;
                     move.promote = true;
                 }
             }
-            else if (Piece.canPromote(move.piece)) {
+            else if (shogi_js_1.Piece.canPromote(move.piece)) {
                 // 不成かも
                 if (canPromote(move.to, shogi.turn) || canPromote(move.from, shogi.turn)) {
                     move.promote = false;
@@ -6625,7 +6636,7 @@ function normalizeCSA(obj) {
                 shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
             }
             catch (e) {
-                throw i + "手目で失敗しました: " + e;
+                throw new Error(i + "手目で失敗しました: " + e);
             }
         }
         else {
@@ -6640,56 +6651,63 @@ function normalizeCSA(obj) {
 }
 exports.normalizeCSA = normalizeCSA;
 function addRelativeInformation(shogi, move) {
-    var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece).map(function (mv) { return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)); });
+    var moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece)
+        .map(function (mv) { return flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)); });
     if (moveVectors.length >= 2) {
-        var realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
-        move.relative = function () {
+        var realVector_1 = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
+        move.relative = (function () {
             // 上下方向唯一
-            if (moveVectors.filter(function (mv) { return mv.y == realVector.y; }).length == 1)
-                return YToUMD(realVector.y);
+            if (moveVectors.filter(function (mv) { return mv.y === realVector_1.y; }).length === 1) {
+                return YToUMD(realVector_1.y);
+            }
             // 左右方向唯一
-            if (moveVectors.filter(function (mv) { return mv.x == realVector.x; }).length == 1) {
-                if ((move.piece == "UM" || move.piece == "RY") && realVector.x == 0) {
-                    //直はだめ
-                    return XToLCR(moveVectors.filter(function (mv) { return mv.x < 0; }).length == 0 ? -1 : 1);
+            if (moveVectors.filter(function (mv) { return mv.x === realVector_1.x; }).length === 1) {
+                if ((move.piece === "UM" || move.piece === "RY") && realVector_1.x === 0) {
+                    // 直はだめ
+                    return XToLCR(moveVectors.filter(function (mv) { return mv.x < 0; }).length === 0 ? -1 : 1);
                 }
                 else {
-                    return XToLCR(realVector.x);
+                    return XToLCR(realVector_1.x);
                 }
             }
-            //上下も左右も他の駒がいる
-            return XToLCR(realVector.x) + YToUMD(realVector.y);
-        }();
+            // 上下も左右も他の駒がいる
+            return XToLCR(realVector_1.x) + YToUMD(realVector_1.y);
+        })();
     }
 }
 function addCaptureInformation(shogi, move) {
     var to = shogi.get(move.to.x, move.to.y);
-    if (to)
+    if (to) {
         move.capture = to.kind;
+    }
 }
 function flipVector(color, vector) {
-    return color == Color.Black ? vector : { x: -vector.x, y: -vector.y };
+    return color === shogi_js_1.Color.Black ? vector : { x: -vector.x, y: -vector.y };
 }
 function spaceship(a, b) {
-    return a == b ? 0 : (a > b ? 1 : -1);
+    return a === b ? 0 : (a > b ? 1 : -1);
 }
 function spaceshipVector(a, b) {
     return { x: spaceship(a.x, b.x), y: spaceship(a.y, b.y) };
 }
 // yの段から移動した場合の相対情報
 function YToUMD(y) {
-    return y == 0 ? "M" : (y > 0 ? "D" : "U");
+    return y === 0 ? "M" : (y > 0 ? "D" : "U");
 }
 // xの行から移動した場合の相対情報
 function XToLCR(x) {
-    return x == 0 ? "C" : (x > 0 ? "R" : "L");
+    return x === 0 ? "C" : (x > 0 ? "R" : "L");
 }
 function filterMovesByRelatives(relative, color, moves) {
     var ret = [];
-    for (var i = 0; i < moves.length; i++) {
-        if (relative.split("").every(function (rel) { return moveSatisfiesRelative(rel, color, moves[i]); })) {
-            ret.push(moves[i]);
+    var _loop_1 = function (move) {
+        if (relative.split("").every(function (rel) { return moveSatisfiesRelative(rel, color, move); })) {
+            ret.push(move);
         }
+    };
+    for (var _i = 0, moves_1 = moves; _i < moves_1.length; _i++) {
+        var move = moves_1[_i];
+        _loop_1(move);
     }
     return ret;
 }
@@ -6699,44 +6717,50 @@ function moveSatisfiesRelative(relative, color, move) {
         case "U":
             return vec.y < 0;
         case "M":
-            return vec.y == 0;
+            return vec.y === 0;
         case "D":
             return vec.y > 0;
         case "L":
             return vec.x < 0;
         case "C":
-            return vec.x == 0;
+            return vec.x === 0;
         case "R":
             return vec.x > 0;
     }
 }
 // CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
 function restorePreset(obj) {
-    if (!obj.initial || obj.initial.preset != "OTHER")
+    if (!obj.initial || obj.initial.preset !== "OTHER") {
         return;
+    }
     var kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
     for (var i = 0; i < 2; i++) {
-        for (var j = 0; j < kinds.length; j++) {
-            if (obj.initial.data.hands[i][kinds[j]] != 0)
+        for (var _i = 0, kinds_1 = kinds; _i < kinds_1.length; _i++) {
+            var kind = kinds_1[_i];
+            if (obj.initial.data.hands[i][kind] !== 0) {
                 return;
+            }
         }
     }
+    /* tslint:disable:max-line-length */
     var hirate = [
-        [{ color: Color.White, kind: "KY" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KY" },],
-        [{ color: Color.White, kind: "KE" }, { color: Color.White, kind: "KA" }, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, { color: Color.Black, kind: "HI" }, { color: Color.Black, kind: "KE" },],
-        [{ color: Color.White, kind: "GI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "GI" },],
-        [{ color: Color.White, kind: "KI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KI" },],
-        [{ color: Color.White, kind: "OU" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "OU" },],
-        [{ color: Color.White, kind: "KI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KI" },],
-        [{ color: Color.White, kind: "GI" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "GI" },],
-        [{ color: Color.White, kind: "KE" }, { color: Color.White, kind: "HI" }, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, { color: Color.Black, kind: "KA" }, { color: Color.Black, kind: "KE" },],
-        [{ color: Color.White, kind: "KY" }, {}, { color: Color.White, kind: "FU" }, {}, {}, {}, { color: Color.Black, kind: "FU" }, {}, { color: Color.Black, kind: "KY" },],
+        [{ color: shogi_js_1.Color.White, kind: "KY" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "KY" }],
+        [{ color: shogi_js_1.Color.White, kind: "KE" }, { color: shogi_js_1.Color.White, kind: "KA" }, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, { color: shogi_js_1.Color.Black, kind: "HI" }, { color: shogi_js_1.Color.Black, kind: "KE" }],
+        [{ color: shogi_js_1.Color.White, kind: "GI" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "GI" }],
+        [{ color: shogi_js_1.Color.White, kind: "KI" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "KI" }],
+        [{ color: shogi_js_1.Color.White, kind: "OU" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "OU" }],
+        [{ color: shogi_js_1.Color.White, kind: "KI" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "KI" }],
+        [{ color: shogi_js_1.Color.White, kind: "GI" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "GI" }],
+        [{ color: shogi_js_1.Color.White, kind: "KE" }, { color: shogi_js_1.Color.White, kind: "HI" }, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, { color: shogi_js_1.Color.Black, kind: "KA" }, { color: shogi_js_1.Color.Black, kind: "KE" }],
+        [{ color: shogi_js_1.Color.White, kind: "KY" }, {}, { color: shogi_js_1.Color.White, kind: "FU" }, {}, {}, {}, { color: shogi_js_1.Color.Black, kind: "FU" }, {}, { color: shogi_js_1.Color.Black, kind: "KY" }],
     ];
+    /* tslint:enable:max-line-length */
     var diff = [];
     for (var i = 0; i < 9; i++) {
         for (var j = 0; j < 9; j++) {
-            if (!samePiece(obj.initial.data.board[i][j], hirate[i][j]))
+            if (!samePiece(obj.initial.data.board[i][j], hirate[i][j])) {
                 diff.push("" + (i + 1) + (j + 1));
+            }
         }
     }
     var presets = {};
@@ -6755,30 +6779,32 @@ function restorePreset(obj) {
     presets["1121223171818291"] = "8";
     presets["11212231416171818291"] = "10";
     var preset = presets[diff.sort().join("")];
-    if (preset == "HIRATE") {
-        if (obj.initial.data.color == Color.Black) {
+    if (preset === "HIRATE") {
+        if (obj.initial.data.color === shogi_js_1.Color.Black) {
             obj.initial.preset = "HIRATE";
             delete obj.initial.data;
         }
     }
-    else if (preset && obj.initial.data.color == Color.White) {
+    else if (preset && obj.initial.data.color === shogi_js_1.Color.White) {
         obj.initial.preset = preset;
         delete obj.initial.data;
     }
 }
 function samePiece(p1, p2) {
-    return (typeof p1.color == "undefined" && typeof p2.color == "undefined") ||
-        (typeof p1.color != "undefined" && typeof p2.color != "undefined" && p1.color == p2.color && p1.kind == p2.kind);
+    return (typeof p1.color === "undefined" && typeof p2.color === "undefined") ||
+        (typeof p1.color !== "undefined" && typeof p2.color !== "undefined" && p1.color === p2.color
+            && p1.kind === p2.kind);
 }
 function restoreColorOfIllegalAction(moves, shogi) {
-    if (moves.length >= 1 && moves[moves.length - 1].special == "ILLEGAL_ACTION") {
+    if (moves.length >= 1 && moves[moves.length - 1].special === "ILLEGAL_ACTION") {
         moves[moves.length - 1].special = (shogi.turn ? "+" : "-") + "ILLEGAL_ACTION";
     }
 }
 function restoreTotalTime(time, lastTime) {
     if (lastTime === void 0) { lastTime = { now: { m: 0, s: 0 }, total: { h: 0, m: 0, s: 0 } }; }
-    if (!time)
+    if (!time) {
         return;
+    }
     time.total = {
         h: (time.now.h || 0) + lastTime.total.h,
         m: time.now.m + lastTime.total.m,
@@ -6790,33 +6816,136 @@ function restoreTotalTime(time, lastTime) {
     time.total.m = time.total.m % 60;
 }
 
-},{"shogi.js/lib/shogi":5}],5:[function(require,module,exports){
+},{"shogi.js":5}],5:[function(require,module,exports){
+module.exports =
+/******/ (function(modules) { // webpackBootstrap
+/******/ 	// The module cache
+/******/ 	var installedModules = {};
+/******/
+/******/ 	// The require function
+/******/ 	function __webpack_require__(moduleId) {
+/******/
+/******/ 		// Check if module is in cache
+/******/ 		if(installedModules[moduleId]) {
+/******/ 			return installedModules[moduleId].exports;
+/******/ 		}
+/******/ 		// Create a new module (and put it into the cache)
+/******/ 		var module = installedModules[moduleId] = {
+/******/ 			i: moduleId,
+/******/ 			l: false,
+/******/ 			exports: {}
+/******/ 		};
+/******/
+/******/ 		// Execute the module function
+/******/ 		modules[moduleId].call(module.exports, module, module.exports, __webpack_require__);
+/******/
+/******/ 		// Flag the module as loaded
+/******/ 		module.l = true;
+/******/
+/******/ 		// Return the exports of the module
+/******/ 		return module.exports;
+/******/ 	}
+/******/
+/******/
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = modules;
+/******/
+/******/ 	// expose the module cache
+/******/ 	__webpack_require__.c = installedModules;
+/******/
+/******/ 	// define getter function for harmony exports
+/******/ 	__webpack_require__.d = function(exports, name, getter) {
+/******/ 		if(!__webpack_require__.o(exports, name)) {
+/******/ 			Object.defineProperty(exports, name, {
+/******/ 				configurable: false,
+/******/ 				enumerable: true,
+/******/ 				get: getter
+/******/ 			});
+/******/ 		}
+/******/ 	};
+/******/
+/******/ 	// getDefaultExport function for compatibility with non-harmony modules
+/******/ 	__webpack_require__.n = function(module) {
+/******/ 		var getter = module && module.__esModule ?
+/******/ 			function getDefault() { return module['default']; } :
+/******/ 			function getModuleExports() { return module; };
+/******/ 		__webpack_require__.d(getter, 'a', getter);
+/******/ 		return getter;
+/******/ 	};
+/******/
+/******/ 	// Object.prototype.hasOwnProperty.call
+/******/ 	__webpack_require__.o = function(object, property) { return Object.prototype.hasOwnProperty.call(object, property); };
+/******/
+/******/ 	// __webpack_public_path__
+/******/ 	__webpack_require__.p = "";
+/******/
+/******/ 	// Load entry module and return exports
+/******/ 	return __webpack_require__(__webpack_require__.s = 1);
+/******/ })
+/************************************************************************/
+/******/ ([
+/* 0 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var Color;
+(function (Color) {
+    Color[Color["Black"] = 0] = "Black";
+    Color[Color["White"] = 1] = "White";
+})(Color || (Color = {}));
+exports["default"] = Color;
+
+
+/***/ }),
+/* 1 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
 /** @license
  * Shogi.js
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-(function (Color) {
-    Color[Color["Black"] = 0] = "Black";
-    Color[Color["White"] = 1] = "White";
-})(exports.Color || (exports.Color = {}));
-var Color = exports.Color;
-var Shogi = (function () {
+var Color_1 = __webpack_require__(0);
+exports.Color = Color_1["default"];
+var Piece_1 = __webpack_require__(2);
+exports.Piece = Piece_1["default"];
+__webpack_require__(3);
+var Shogi = /** @class */ (function () {
     function Shogi(setting) {
         this.initialize(setting);
     }
+    Shogi.getIllegalUnpromotedRow = function (kind) {
+        switch (kind) {
+            case "FU":
+            case "KY":
+                return 1;
+            case "KE":
+                return 2;
+            default:
+                return 0;
+        }
+    };
+    // 手番の相手側から数えた段数
+    Shogi.getRowToOppositeEnd = function (y, color) {
+        return color === Color_1["default"].Black ? y : 10 - y;
+    };
     // 盤面を初期化する
     // 初期局面(なければ平手)
     Shogi.prototype.initialize = function (setting) {
         if (setting === void 0) { setting = { preset: "HIRATE" }; }
         this.board = [];
-        if (setting.preset != "OTHER") {
+        if (setting.preset !== "OTHER") {
             for (var i = 0; i < 9; i++) {
                 this.board[i] = [];
                 for (var j = 0; j < 9; j++) {
                     var csa = Shogi.preset[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
-                    this.board[i][j] = csa == " * " ? null : new Piece(csa);
+                    this.board[i][j] = csa === " * " ? null : new Piece_1["default"](csa);
                 }
             }
             this.turn = Shogi.preset[setting.preset].turn;
@@ -6827,21 +6956,74 @@ var Shogi = (function () {
                 this.board[i] = [];
                 for (var j = 0; j < 9; j++) {
                     var p = setting.data.board[i][j];
-                    this.board[i][j] = p.kind ? new Piece((p.color == Color.Black ? "+" : "-") + p.kind) : null;
+                    this.board[i][j] = p.kind ? new Piece_1["default"]((p.color === Color_1["default"].Black ? "+" : "-") + p.kind) : null;
                 }
             }
             this.turn = setting.data.color;
             this.hands = [[], []];
             for (var c = 0; c < 2; c++) {
                 for (var k in setting.data.hands[c]) {
-                    var csa = (c == 0 ? "+" : "-") + k;
-                    for (var i = 0; i < setting.data.hands[c][k]; i++) {
-                        this.hands[c].push(new Piece(csa));
+                    if (setting.data.hands[c].hasOwnProperty(k)) {
+                        var csa = (c === 0 ? "+" : "-") + k;
+                        for (var i = 0; i < setting.data.hands[c][k]; i++) {
+                            this.hands[c].push(new Piece_1["default"](csa));
+                        }
                     }
                 }
             }
         }
         this.flagEditMode = false;
+    };
+    // SFENによる盤面表現の文字列で盤面を初期化する
+    Shogi.prototype.initializeFromSFENString = function (sfen) {
+        this.board = [];
+        for (var i = 0; i < 9; i++) {
+            this.board[i] = [];
+            for (var j = 0; j < 9; j++) {
+                this.board[i][j] = null;
+            }
+        }
+        var segments = sfen.split(" ");
+        var sfenBoard = segments[0];
+        var x = 8;
+        var y = 0;
+        for (var i = 0; i < sfenBoard.length; i++) {
+            var c = sfenBoard[i];
+            var promoted = false;
+            if (c === "+") {
+                i++;
+                c += sfenBoard[i];
+            }
+            if (c.match(/^[1-9]$/)) {
+                x -= Number(c);
+            }
+            else if (c === "/") {
+                y++;
+                x = 8;
+            }
+            else {
+                this.board[x][y] = Piece_1["default"].fromSFENString(c);
+                x--;
+            }
+        }
+        this.turn = segments[1] === "b" ? Color_1["default"].Black : Color_1["default"].White;
+        this.hands = [[], []];
+        var sfenHands = segments[2];
+        if (sfenHands !== "-") {
+            while (sfenHands.length > 0) {
+                var count = 1;
+                var m = sfenHands.match(/^[0-9]+/);
+                if (m) {
+                    count = Number(m[0]);
+                    sfenHands = sfenHands.slice(m[0].length);
+                }
+                for (var i = 0; i < count; i++) {
+                    var piece = Piece_1["default"].fromSFENString(sfenHands[0]);
+                    this.hands[piece.color].push(piece);
+                }
+                sfenHands = sfenHands.slice(1);
+            }
+        }
     };
     // 編集モード切り替え
     // * 通常モード：移動時に手番と移動可能かどうかチェックし，移動可能範囲は手番側のみ返す．
@@ -6853,19 +7035,25 @@ var Shogi = (function () {
     Shogi.prototype.move = function (fromx, fromy, tox, toy, promote) {
         if (promote === void 0) { promote = false; }
         var piece = this.get(fromx, fromy);
-        if (piece == null)
-            throw "no piece found at " + fromx + ", " + fromy;
+        if (piece == null) {
+            throw new Error("no piece found at " + fromx + ", " + fromy);
+        }
         this.checkTurn(piece.color);
         if (!this.flagEditMode) {
             if (!this.getMovesFrom(fromx, fromy).some(function (move) {
-                return move.to.x == tox && move.to.y == toy;
-            }))
-                throw "cannot move from " + fromx + ", " + fromy + " to " + tox + ", " + toy;
+                return move.to.x === tox && move.to.y === toy;
+            })) {
+                throw new Error("cannot move from " + fromx + ", " + fromy + " to " + tox + ", " + toy);
+            }
         }
-        if (this.get(tox, toy) != null)
+        if (this.get(tox, toy) != null) {
             this.capture(tox, toy);
-        if (promote)
+        }
+        // 行き所のない駒
+        var deadEnd = Shogi.getIllegalUnpromotedRow(piece.kind) >= Shogi.getRowToOppositeEnd(toy, piece.color);
+        if (promote || deadEnd) {
             piece.promote();
+        }
         this.set(tox, toy, piece);
         this.set(fromx, fromy, null);
         this.nextTurn();
@@ -6874,22 +7062,25 @@ var Shogi = (function () {
     Shogi.prototype.unmove = function (fromx, fromy, tox, toy, promote, capture) {
         if (promote === void 0) { promote = false; }
         var piece = this.get(tox, toy);
-        if (piece == null)
-            throw "no piece found at " + tox + ", " + toy;
-        this.checkTurn(Piece.oppositeColor(piece.color));
+        if (piece == null) {
+            throw new Error("no piece found at " + tox + ", " + toy);
+        }
+        this.checkTurn(Piece_1["default"].oppositeColor(piece.color));
         var captured;
         if (capture) {
-            captured = this.popFromHand(Piece.unpromote(capture), piece.color);
+            captured = this.popFromHand(Piece_1["default"].unpromote(capture), piece.color);
             captured.inverse();
         }
         var editMode = this.flagEditMode;
         this.editMode(true);
         this.move(tox, toy, fromx, fromy);
-        if (promote)
+        if (promote) {
             piece.unpromote();
+        }
         if (capture) {
-            if (Piece.isPromoted(capture))
+            if (Piece_1["default"].isPromoted(capture)) {
                 captured.promote();
+            }
             this.set(tox, toy, captured);
         }
         this.editMode(editMode);
@@ -6899,8 +7090,14 @@ var Shogi = (function () {
     Shogi.prototype.drop = function (tox, toy, kind, color) {
         if (color === void 0) { color = this.turn; }
         this.checkTurn(color);
-        if (this.get(tox, toy) != null)
-            throw "there is a piece at " + tox + ", " + toy;
+        if (this.get(tox, toy) != null) {
+            throw new Error("there is a piece at " + tox + ", " + toy);
+        }
+        if (!this.getDropsBy(color).some(function (move) {
+            return move.to.x === tox && move.to.y === toy && move.kind === kind;
+        })) {
+            throw new Error("Cannot move");
+        }
         var piece = this.popFromHand(kind, color);
         this.set(tox, toy, piece);
         this.nextTurn();
@@ -6908,9 +7105,10 @@ var Shogi = (function () {
     // dropの逆を行う，つまり(tox, toy)の駒を駒台に戻す．
     Shogi.prototype.undrop = function (tox, toy) {
         var piece = this.get(tox, toy);
-        if (piece == null)
-            throw "there is no piece at " + tox + ", " + toy;
-        this.checkTurn(Piece.oppositeColor(piece.color));
+        if (piece == null) {
+            throw new Error("there is no piece at " + tox + ", " + toy);
+        }
+        this.checkTurn(Piece_1["default"].oppositeColor(piece.color));
         this.pushToHand(piece);
         this.set(tox, toy, null);
         this.prevTurn();
@@ -6928,57 +7126,116 @@ var Shogi = (function () {
         }
         for (var i = 0; i < 2; i++) {
             var line = "P" + "+-"[i];
-            for (var j = 0; j < this.hands[i].length; j++) {
-                line += "00" + this.hands[i][j].kind;
+            for (var _i = 0, _a = this.hands[i]; _i < _a.length; _i++) {
+                var hand = _a[_i];
+                line += "00" + hand.kind;
             }
             ret.push(line);
         }
-        ret.push(this.turn == Color.Black ? "+" : "-");
+        ret.push(this.turn === Color_1["default"].Black ? "+" : "-");
         return ret.join("\n");
+    };
+    // SFENによる盤面表現の文字列を返す
+    Shogi.prototype.toSFENString = function (moveCount) {
+        if (moveCount === void 0) { moveCount = 1; }
+        var ret = [];
+        var sfenBoard = [];
+        for (var y = 0; y < 9; y++) {
+            var line = "";
+            var empty = 0;
+            for (var x = 8; x >= 0; x--) {
+                var piece = this.board[x][y];
+                if (piece == null) {
+                    empty++;
+                }
+                else {
+                    if (empty > 0) {
+                        line += "" + empty;
+                        empty = 0;
+                    }
+                    line += piece.toSFENString();
+                }
+            }
+            if (empty > 0) {
+                line += "" + empty;
+            }
+            sfenBoard.push(line);
+        }
+        ret.push(sfenBoard.join("/"));
+        ret.push(this.turn === Color_1["default"].Black ? "b" : "w");
+        if (this.hands[0].length === 0 && this.hands[1].length === 0) {
+            ret.push("-");
+        }
+        else {
+            var sfenHands = "";
+            var kinds = ["R", "B", "G", "S", "N", "L", "P", "r", "b", "g", "s", "n", "l", "p"];
+            var count = {};
+            for (var i = 0; i < 2; i++) {
+                for (var _i = 0, _a = this.hands[i]; _i < _a.length; _i++) {
+                    var hand = _a[_i];
+                    var key = hand.toSFENString();
+                    count[key] = (count[key] || 0) + 1;
+                }
+            }
+            for (var _b = 0, kinds_1 = kinds; _b < kinds_1.length; _b++) {
+                var kind = kinds_1[_b];
+                if (count[kind] > 0) {
+                    sfenHands += (count[kind] > 1 ? count[kind] : "") + kind;
+                }
+            }
+            ret.push(sfenHands);
+        }
+        ret.push("" + moveCount);
+        return ret.join(" ");
     };
     // (x, y)の駒の移動可能な動きをすべて得る
     // 盤外，自分の駒取りは除外．二歩，王手放置などはチェックせず．
     Shogi.prototype.getMovesFrom = function (x, y) {
         // 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
         var legal = function (x, y, color) {
-            if (x < 1 || 9 < x || y < 1 || 9 < y)
+            if (x < 1 || 9 < x || y < 1 || 9 < y) {
                 return false;
+            }
             var piece = this.get(x, y);
-            return piece == null || piece.color != color;
+            return piece == null || piece.color !== color;
         }.bind(this);
         var shouldStop = function (x, y, color) {
             var piece = this.get(x, y);
-            return piece != null && piece.color != color;
+            return piece != null && piece.color !== color;
         }.bind(this);
         var piece = this.get(x, y);
-        if (piece == null)
+        if (piece == null) {
             return [];
-        var moveDef = Piece.getMoveDef(piece.kind);
-        var ret = [], from = { x: x, y: y };
+        }
+        var moveDef = Piece_1["default"].getMoveDef(piece.kind);
+        var ret = [];
+        var from = { x: x, y: y };
         if (moveDef.just) {
-            for (var i = 0; i < moveDef.just.length; i++) {
-                var def = moveDef.just[i];
-                if (piece.color == Color.White) {
+            for (var _i = 0, _a = moveDef.just; _i < _a.length; _i++) {
+                var def = _a[_i];
+                if (piece.color === Color_1["default"].White) {
                     def[0] *= -1;
                     def[1] *= -1;
                 }
                 var to = { x: from.x + def[0], y: from.y + def[1] };
-                if (legal(to.x, to.y, piece.color))
+                if (legal(to.x, to.y, piece.color)) {
                     ret.push({ from: from, to: to });
+                }
             }
         }
         if (moveDef.fly) {
-            for (var i = 0; i < moveDef.fly.length; i++) {
-                var def = moveDef.fly[i];
-                if (piece.color == Color.White) {
+            for (var _b = 0, _c = moveDef.fly; _b < _c.length; _b++) {
+                var def = _c[_b];
+                if (piece.color === Color_1["default"].White) {
                     def[0] *= -1;
                     def[1] *= -1;
                 }
                 var to = { x: from.x + def[0], y: from.y + def[1] };
                 while (legal(to.x, to.y, piece.color)) {
                     ret.push({ from: from, to: { x: to.x, y: to.y } });
-                    if (shouldStop(to.x, to.y, piece.color))
+                    if (shouldStop(to.x, to.y, piece.color)) {
                         break;
+                    }
                     to.x += def[0];
                     to.y += def[1];
                 }
@@ -6990,20 +7247,38 @@ var Shogi = (function () {
     Shogi.prototype.getDropsBy = function (color) {
         var ret = [];
         var places = [];
+        var fuExistsArray = [];
         for (var i = 1; i <= 9; i++) {
+            var fuExists = false;
             for (var j = 1; j <= 9; j++) {
-                if (this.get(i, j) == null)
+                var piece = this.get(i, j);
+                if (piece == null) {
                     places.push({ x: i, y: j });
+                }
+                else if (piece.color === color && piece.kind === "FU") {
+                    fuExists = true;
+                }
             }
+            fuExistsArray.push(fuExists);
         }
         var done = {};
-        for (var i = 0; i < this.hands[color].length; i++) {
-            var kind = this.hands[color][i].kind;
-            if (done[kind])
+        for (var _i = 0, _a = this.hands[color]; _i < _a.length; _i++) {
+            var hand = _a[_i];
+            var kind = hand.kind;
+            if (done[kind]) {
                 continue;
+            }
             done[kind] = true;
-            for (var j = 0; j < places.length; j++) {
-                ret.push({ to: places[j], color: color, kind: kind });
+            var illegalUnpromotedRow = Shogi.getIllegalUnpromotedRow(kind);
+            for (var _b = 0, places_1 = places; _b < places_1.length; _b++) {
+                var place = places_1[_b];
+                if (kind === "FU" && fuExistsArray[place.x - 1]) {
+                    continue; // 二歩
+                }
+                if (illegalUnpromotedRow >= Shogi.getRowToOppositeEnd(place.y, color)) {
+                    continue; // 行き所のない駒
+                }
+                ret.push({ to: place, color: color, kind: kind });
             }
         }
         return ret;
@@ -7016,10 +7291,11 @@ var Shogi = (function () {
         for (var i = 1; i <= 9; i++) {
             for (var j = 1; j <= 9; j++) {
                 var piece = this.get(i, j);
-                if (!piece || piece.kind != kind || piece.color != color)
+                if (!piece || piece.kind !== kind || piece.color !== color) {
                     continue;
+                }
                 var moves = this.getMovesFrom(i, j);
-                if (moves.some(function (move) { return move.to.x == x && move.to.y == y; })) {
+                if (moves.some(function (move) { return move.to.x === x && move.to.y === y; })) {
                     ret.push({ from: { x: i, y: j }, to: to });
                 }
             }
@@ -7033,44 +7309,49 @@ var Shogi = (function () {
     // keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
     Shogi.prototype.getHandsSummary = function (color) {
         var ret = {
-            "FU": 0,
-            "KY": 0,
-            "KE": 0,
-            "GI": 0,
-            "KI": 0,
-            "KA": 0,
-            "HI": 0
+            FU: 0,
+            KY: 0,
+            KE: 0,
+            GI: 0,
+            KI: 0,
+            KA: 0,
+            HI: 0
         };
-        for (var i = 0; i < this.hands[color].length; i++) {
-            ret[this.hands[color][i].kind]++;
+        for (var _i = 0, _a = this.hands[color]; _i < _a.length; _i++) {
+            var hand = _a[_i];
+            ret[hand.kind]++;
         }
         return ret;
     };
     // 以下editModeでの関数
     // (x, y)の駒を取ってcolorの持ち駒に加える
     Shogi.prototype.captureByColor = function (x, y, color) {
-        if (!this.flagEditMode)
-            throw "cannot edit board without editMode";
+        if (!this.flagEditMode) {
+            throw new Error("cannot edit board without editMode");
+        }
         var piece = this.get(x, y);
         this.set(x, y, null);
         piece.unpromote();
-        if (piece.color != color)
+        if (piece.color !== color) {
             piece.inverse();
+        }
         this.pushToHand(piece);
     };
     // (x, y)の駒をフリップする(先手→先手成→後手→後手成→)
     // 成功したらtrueを返す
     Shogi.prototype.flip = function (x, y) {
-        if (!this.flagEditMode)
-            throw "cannot edit board without editMode";
+        if (!this.flagEditMode) {
+            throw new Error("cannot edit board without editMode");
+        }
         var piece = this.get(x, y);
-        if (!piece)
+        if (!piece) {
             return false;
-        if (Piece.isPromoted(piece.kind)) {
+        }
+        if (Piece_1["default"].isPromoted(piece.kind)) {
             piece.unpromote();
             piece.inverse();
         }
-        else if (Piece.canPromote(piece.kind)) {
+        else if (Piece_1["default"].canPromote(piece.kind)) {
             piece.promote();
         }
         else {
@@ -7080,8 +7361,9 @@ var Shogi = (function () {
     };
     // 手番を設定する
     Shogi.prototype.setTurn = function (color) {
-        if (!this.flagEditMode)
-            throw "cannot set turn without editMode";
+        if (!this.flagEditMode) {
+            throw new Error("cannot set turn without editMode");
+        }
         this.turn = color;
     };
     // 以下private method
@@ -7105,30 +7387,34 @@ var Shogi = (function () {
     Shogi.prototype.popFromHand = function (kind, color) {
         var hand = this.hands[color];
         for (var i = 0; i < hand.length; i++) {
-            if (hand[i].kind != kind)
+            if (hand[i].kind !== kind) {
                 continue;
+            }
             var piece = hand[i];
             hand.splice(i, 1); // remove at i
             return piece;
         }
-        throw color + " has no " + kind;
+        throw new Error(color + " has no " + kind);
     };
     // 次の手番に行く
     Shogi.prototype.nextTurn = function () {
-        if (this.flagEditMode)
+        if (this.flagEditMode) {
             return;
-        this.turn = this.turn == Color.Black ? Color.White : Color.Black;
+        }
+        this.turn = this.turn === Color_1["default"].Black ? Color_1["default"].White : Color_1["default"].Black;
     };
     // 前の手番に行く
     Shogi.prototype.prevTurn = function () {
-        if (this.flagEditMode)
+        if (this.flagEditMode) {
             return;
+        }
         this.nextTurn();
     };
     // colorの手番で問題ないか確認する．編集モードならok．
     Shogi.prototype.checkTurn = function (color) {
-        if (!this.flagEditMode && color != this.turn)
-            throw "cannot move opposite piece";
+        if (!this.flagEditMode && color !== this.turn) {
+            throw new Error("cannot move opposite piece");
+        }
     };
     // 既定の初期局面
     Shogi.preset = {
@@ -7144,7 +7430,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.Black
+            turn: Color_1["default"].Black
         },
         "KY": {
             board: [
@@ -7158,7 +7444,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "KY_R": {
             board: [
@@ -7172,7 +7458,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "KA": {
             board: [
@@ -7186,7 +7472,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "HI": {
             board: [
@@ -7200,7 +7486,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "HIKY": {
             board: [
@@ -7214,7 +7500,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "2": {
             board: [
@@ -7228,7 +7514,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "3": {
             board: [
@@ -7242,7 +7528,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "4": {
             board: [
@@ -7256,7 +7542,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "5": {
             board: [
@@ -7270,7 +7556,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "5_L": {
             board: [
@@ -7284,7 +7570,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "6": {
             board: [
@@ -7298,7 +7584,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "8": {
             board: [
@@ -7312,7 +7598,7 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         },
         "10": {
             board: [
@@ -7326,35 +7612,29 @@ var Shogi = (function () {
                 " * +KA *  *  *  *  * +HI * ",
                 "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
             ],
-            turn: Color.White
+            turn: Color_1["default"].White
         }
     };
     return Shogi;
-})();
+}());
 exports.Shogi = Shogi;
 // enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}
-var Piece = (function () {
+
+
+/***/ }),
+/* 2 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+var Color_1 = __webpack_require__(0);
+var Piece = /** @class */ (function () {
     // "+FU"などのCSAによる駒表現から駒オブジェクトを作成
     function Piece(csa) {
-        this.color = csa.slice(0, 1) == "+" ? Color.Black : Color.White;
+        this.color = csa.slice(0, 1) === "+" ? Color_1["default"].Black : Color_1["default"].White;
         this.kind = csa.slice(1);
     }
-    // 成る
-    Piece.prototype.promote = function () {
-        this.kind = Piece.promote(this.kind);
-    };
-    // 不成にする
-    Piece.prototype.unpromote = function () {
-        this.kind = Piece.unpromote(this.kind);
-    };
-    // 駒の向きを反転する
-    Piece.prototype.inverse = function () {
-        this.color = this.color == Color.Black ? Color.White : Color.Black;
-    };
-    // CSAによる駒表現の文字列を返す
-    Piece.prototype.toCSAString = function () {
-        return (this.color == Color.Black ? "+" : "-") + this.kind;
-    };
     // 成った時の種類を返す．なければそのまま．
     Piece.promote = function (kind) {
         return {
@@ -7381,18 +7661,18 @@ var Piece = (function () {
     };
     // 成れる駒かどうかを返す
     Piece.canPromote = function (kind) {
-        return Piece.promote(kind) != kind;
+        return Piece.promote(kind) !== kind;
     };
     Piece.getMoveDef = function (kind) {
         switch (kind) {
             case "FU":
-                return { just: [[0, -1],] };
+                return { just: [[0, -1]] };
             case "KY":
-                return { fly: [[0, -1],] };
+                return { fly: [[0, -1]] };
             case "KE":
-                return { just: [[-1, -2], [1, -2],] };
+                return { just: [[-1, -2], [1, -2]] };
             case "GI":
-                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1],] };
+                return { just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1]] };
             case "KI":
             case "TO":
             case "NY":
@@ -7400,27 +7680,114 @@ var Piece = (function () {
             case "NG":
                 return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]] };
             case "KA":
-                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
+                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1]] };
             case "HI":
                 return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
             case "OU":
                 return { just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]] };
             case "UM":
-                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1],], just: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
+                return { fly: [[-1, -1], [1, -1], [-1, 1], [1, 1]], just: [[0, -1], [-1, 0], [1, 0], [0, 1]] };
             case "RY":
-                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1],] };
+                return { fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1]] };
         }
     };
     Piece.isPromoted = function (kind) {
         return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
     };
     Piece.oppositeColor = function (color) {
-        return color == Color.Black ? Color.White : Color.Black;
+        return color === Color_1["default"].Black ? Color_1["default"].White : Color_1["default"].Black;
+    };
+    // SFENによる文字列表現から駒オブジェクトを作成
+    Piece.fromSFENString = function (sfen) {
+        var promoted = sfen[0] === "+";
+        if (promoted) {
+            sfen = sfen.slice(1);
+        }
+        var color = sfen.match(/[A-Z]/) ? "+" : "-";
+        var kind = {
+            P: "FU",
+            L: "KY",
+            N: "KE",
+            S: "GI",
+            G: "KI",
+            B: "KA",
+            R: "HI",
+            K: "OU"
+        }[sfen.toUpperCase()];
+        var piece = new Piece(color + kind);
+        if (promoted) {
+            piece.promote();
+        }
+        return piece;
+    };
+    // 成る
+    Piece.prototype.promote = function () {
+        this.kind = Piece.promote(this.kind);
+    };
+    // 不成にする
+    Piece.prototype.unpromote = function () {
+        this.kind = Piece.unpromote(this.kind);
+    };
+    // 駒の向きを反転する
+    Piece.prototype.inverse = function () {
+        this.color = this.color === Color_1["default"].Black ? Color_1["default"].White : Color_1["default"].Black;
+    };
+    // CSAによる駒表現の文字列を返す
+    Piece.prototype.toCSAString = function () {
+        return (this.color === Color_1["default"].Black ? "+" : "-") + this.kind;
+    };
+    // SFENによる駒表現の文字列を返す
+    Piece.prototype.toSFENString = function () {
+        var sfenPiece = {
+            FU: "P",
+            KY: "L",
+            // tslint:disable-next-line object-literal-sort-keys
+            KE: "N",
+            GI: "S",
+            KI: "G",
+            KA: "B",
+            HI: "R",
+            OU: "K"
+        }[Piece.unpromote(this.kind)];
+        return (Piece.isPromoted(this.kind) ? "+" : "") +
+            (this.color === Color_1["default"].Black ? sfenPiece : sfenPiece.toLowerCase());
     };
     return Piece;
-})();
-exports.Piece = Piece;
+}());
+exports["default"] = Piece;
 
+
+/***/ }),
+/* 3 */
+/***/ (function(module, exports, __webpack_require__) {
+
+"use strict";
+
+exports.__esModule = true;
+/* tslint:disable */
+if (!Array.prototype.some) {
+    Array.prototype.some = function (fun /*, thisp */) {
+        "use strict";
+        if (this == null) {
+            throw new TypeError();
+        }
+        var t = Object(this), len = t.length >>> 0;
+        if (typeof fun != "function") {
+            throw new TypeError();
+        }
+        var thisp = arguments[1];
+        for (var i = 0; i < len; i++) {
+            if (i in t && fun.call(thisp, t[i], i, t)) {
+                return true;
+            }
+        }
+        return false;
+    };
+}
+
+
+/***/ })
+/******/ ]);
 },{}],"JKFPlayer":[function(require,module,exports){
 "use strict";
 /** @license
@@ -7429,39 +7796,33 @@ exports.Piece = Piece;
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-var ShogiJS = require('shogi.js/lib/shogi');
-var Color = ShogiJS.Color;
-var Piece = ShogiJS.Piece;
-var Shogi = ShogiJS.Shogi;
-var Normalizer = require('./normalizer');
-var kifParser = require("../lib/kif-parser");
-var ki2Parser = require("../lib/ki2-parser");
-var csaParser = require("../lib/csa-parser");
-var JKFPlayer = (function () {
+exports.__esModule = true;
+var shogi_js_1 = require("shogi.js");
+var csa_parser_1 = require("../lib/csa-parser");
+var ki2_parser_1 = require("../lib/ki2-parser");
+var kif_parser_1 = require("../lib/kif-parser");
+var normalizer_1 = require("./normalizer");
+var JKFPlayer = /** @class */ (function () {
     function JKFPlayer(kifu) {
-        this.shogi = new Shogi(kifu.initial || undefined);
+        this.shogi = new shogi_js_1.Shogi(kifu.initial || undefined);
         this.initialize(kifu);
     }
     JKFPlayer.log = function () {
         var lg = [];
         for (var _i = 0; _i < arguments.length; _i++) {
-            lg[_i - 0] = arguments[_i];
+            lg[_i] = arguments[_i];
         }
         if (JKFPlayer.debug) {
-            console.log(lg);
+            console.log(lg); // tslint:disable-line no-console
         }
         else {
-            JKFPlayer._log.push(lg);
+            JKFPlayer.logs.push(lg);
         }
-    };
-    JKFPlayer.prototype.initialize = function (kifu) {
-        this.kifu = kifu;
-        this.tesuu = 0;
-        this.forks = [{ te: 0, moves: this.kifu.moves }];
     };
     JKFPlayer.parse = function (kifu, filename) {
         if (filename) {
-            var tmp = filename.split("."), ext = tmp[tmp.length - 1].toLowerCase();
+            var tmp = filename.split(".");
+            var ext = tmp[tmp.length - 1].toLowerCase();
             switch (ext) {
                 case "jkf":
                     return JKFPlayer.parseJKF(kifu);
@@ -7500,7 +7861,7 @@ var JKFPlayer = (function () {
         catch (e) {
             JKFPlayer.log("failed to parse as csa", e);
         }
-        throw "JKF, KIF, KI2, CSAいずれの形式でも失敗しました";
+        throw new Error("JKF, KIF, KI2, CSAいずれの形式でも失敗しました");
     };
     JKFPlayer.parseJKF = function (kifu) {
         JKFPlayer.log("parseJKF", kifu);
@@ -7508,19 +7869,20 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.parseKIF = function (kifu) {
         JKFPlayer.log("parseKIF", kifu);
-        return new JKFPlayer(Normalizer.normalizeKIF(kifParser.parse(JKFPlayer.addLastNewLine(kifu))));
+        return new JKFPlayer(normalizer_1.normalizeKIF(kif_parser_1.parse(JKFPlayer.addLastNewLine(kifu))));
     };
     JKFPlayer.parseKI2 = function (kifu) {
         JKFPlayer.log("parseKI2", kifu);
-        return new JKFPlayer(Normalizer.normalizeKI2(ki2Parser.parse(JKFPlayer.addLastNewLine(kifu))));
+        return new JKFPlayer(normalizer_1.normalizeKI2(ki2_parser_1.parse(JKFPlayer.addLastNewLine(kifu))));
     };
     JKFPlayer.parseCSA = function (kifu) {
         JKFPlayer.log("parseCSA", kifu);
-        return new JKFPlayer(Normalizer.normalizeCSA(csaParser.parse(JKFPlayer.addLastNewLine(kifu))));
+        return new JKFPlayer(normalizer_1.normalizeCSA(csa_parser_1.parse(JKFPlayer.addLastNewLine(kifu))));
     };
     JKFPlayer.addLastNewLine = function (kifu) {
-        if (kifu.substr(kifu.length - 1) == "\n")
+        if (kifu.substr(kifu.length - 1) === "\n") {
             return kifu;
+        }
         return kifu + "\n";
     };
     JKFPlayer.numToZen = function (n) {
@@ -7531,31 +7893,31 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.kindToKan = function (kind) {
         return {
-            "FU": "歩",
-            "KY": "香",
-            "KE": "桂",
-            "GI": "銀",
-            "KI": "金",
-            "KA": "角",
-            "HI": "飛",
-            "OU": "玉",
-            "TO": "と",
-            "NY": "成香",
-            "NK": "成桂",
-            "NG": "成銀",
-            "UM": "馬",
-            "RY": "龍"
+            FU: "歩",
+            KY: "香",
+            KE: "桂",
+            GI: "銀",
+            KI: "金",
+            KA: "角",
+            HI: "飛",
+            OU: "玉",
+            TO: "と",
+            NY: "成香",
+            NK: "成桂",
+            NG: "成銀",
+            UM: "馬",
+            RY: "龍"
         }[kind];
     };
     JKFPlayer.relativeToKan = function (relative) {
         return {
-            "L": "左",
-            "C": "直",
-            "R": "右",
-            "U": "上",
-            "M": "寄",
-            "D": "引",
-            "H": "打"
+            L: "左",
+            C: "直",
+            R: "右",
+            U: "上",
+            M: "寄",
+            D: "引",
+            H: "打"
         }[relative];
     };
     JKFPlayer.specialToKan = function (special) {
@@ -7581,7 +7943,7 @@ var JKFPlayer = (function () {
             return JKFPlayer.specialToKan(mv.special);
         }
         var move = mv.move;
-        var ret = move.color == Color.Black ? "☗" : "☖";
+        var ret = move.color === shogi_js_1.Color.Black ? "☗" : "☖";
         if (move.same) {
             ret += "同　";
         }
@@ -7598,18 +7960,20 @@ var JKFPlayer = (function () {
         return ret;
     };
     JKFPlayer.doMove = function (shogi, move) {
-        if (!move)
+        if (!move) {
             return;
+        }
         if (move.from) {
             shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
         }
         else {
-            shogi.drop(move.to.x, move.to.y, move.piece, typeof move.color != "undefined" ? move.color : void 0);
+            shogi.drop(move.to.x, move.to.y, move.piece, typeof move.color !== "undefined" ? move.color : void 0);
         }
     };
     JKFPlayer.undoMove = function (shogi, move) {
-        if (!move)
+        if (!move) {
             return;
+        }
         if (move.from) {
             shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
         }
@@ -7619,19 +7983,52 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.getState = function (shogi) {
         return {
-            color: shogi.turn,
             board: JKFPlayer.getBoardState(shogi),
+            color: shogi.turn,
             hands: JKFPlayer.getHandsState(shogi)
         };
     };
+    JKFPlayer.sameMoveMinimal = function (move1, move2) {
+        return (move1.to.x === move2.to.x && move1.to.y === move2.to.y
+            && (move1.from && move2.from
+                ? move1.from.x === move2.from.x
+                    && move1.from.y === move2.from.y
+                    && move1.promote === move2.promote
+                : move1.piece === move2.piece));
+    };
+    JKFPlayer.getBoardState = function (shogi) {
+        var ret = [];
+        for (var i = 1; i <= 9; i++) {
+            var arr = [];
+            for (var j = 1; j <= 9; j++) {
+                var piece = shogi.get(i, j);
+                arr.push(piece ? { color: piece.color, kind: piece.kind } : {});
+            }
+            ret.push(arr);
+        }
+        return ret;
+    };
+    JKFPlayer.getHandsState = function (shogi) {
+        return [
+            shogi.getHandsSummary(shogi_js_1.Color.Black),
+            shogi.getHandsSummary(shogi_js_1.Color.White),
+        ];
+    };
+    JKFPlayer.prototype.initialize = function (kifu) {
+        this.kifu = kifu;
+        this.tesuu = 0;
+        this.forks = [{ te: 0, moves: this.kifu.moves }];
+    };
     // 1手進める
     JKFPlayer.prototype.forward = function () {
-        if (!this.getMoveFormat(this.tesuu + 1))
+        if (!this.getMoveFormat(this.tesuu + 1)) {
             return false;
+        }
         this.tesuu++;
         var move = this.getMoveFormat(this.tesuu).move;
-        if (!move)
+        if (!move) {
             return true;
+        }
         JKFPlayer.log("forward", this.tesuu, move);
         this.doMove(move);
         return true;
@@ -7639,8 +8036,9 @@ var JKFPlayer = (function () {
     // 1手戻す
     JKFPlayer.prototype.backward = function () {
         var _this = this;
-        if (this.tesuu <= 0)
+        if (this.tesuu <= 0) {
             return false;
+        }
         var move = this.getMoveFormat(this.tesuu).move;
         JKFPlayer.log("backward", this.tesuu - 1, move);
         this.undoMove(move);
@@ -7652,15 +8050,16 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.goto = function (tesuu) {
         var limit = 10000; // for safe
         if (this.tesuu < tesuu) {
-            while (this.tesuu != tesuu && this.forward() && limit-- > 0)
-                ;
+            // tslint:disable-next-line no-empty
+            while (this.tesuu !== tesuu && this.forward() && limit-- > 0) { }
         }
         else {
-            while (this.tesuu != tesuu && this.backward() && limit-- > 0)
-                ;
+            // tslint:disable-next-line no-empty
+            while (this.tesuu !== tesuu && this.backward() && limit-- > 0) { }
         }
-        if (limit == 0)
-            throw "tesuu overflows";
+        if (limit === 0) {
+            throw new Error("tesuu overflows");
+        }
     };
     // tesuu手前後に移動する
     JKFPlayer.prototype.go = function (tesuu) {
@@ -7669,8 +8068,9 @@ var JKFPlayer = (function () {
     // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
     JKFPlayer.prototype.forkAndForward = function (num) {
         var forks = this.getMoveFormat(this.tesuu + 1).forks;
-        if (!forks || forks.length <= num)
+        if (!forks || forks.length <= num) {
             return false;
+        }
         this.forks.push({ te: this.tesuu + 1, moves: forks[num] });
         return this.forward();
     };
@@ -7680,12 +8080,15 @@ var JKFPlayer = (function () {
     // もしpromoteの可能性があればfalseを返して何もしない
     // 成功すればその局面に移動してtrueを返す．
     JKFPlayer.prototype.inputMove = function (move) {
-        if (this.getMoveFormat().special)
-            throw "終了局面へ棋譜を追加することは出来ません";
+        if (this.getMoveFormat().special) {
+            throw new Error("終了局面へ棋譜を追加することは出来ません");
+        }
         if (move.from != null && move.promote == null) {
             var piece = this.shogi.get(move.from.x, move.from.y);
-            if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind) && (Normalizer.canPromote(move.from, piece.color) || Normalizer.canPromote(move.to, piece.color)))
+            if (!shogi_js_1.Piece.isPromoted(piece.kind) && shogi_js_1.Piece.canPromote(piece.kind)
+                && (normalizer_1.canPromote(move.from, piece.color) || normalizer_1.canPromote(move.to, piece.color))) {
                 return false;
+            }
         }
         var nextMove = this.getMoveFormat(this.tesuu + 1);
         if (nextMove) {
@@ -7705,21 +8108,23 @@ var JKFPlayer = (function () {
                 }
             }
         }
-        this.doMove(move); //動かしてみる(throwされうる)
+        this.doMove(move); // 動かしてみる(throwされうる)
         var newMove = { move: move };
         var addToFork = this.tesuu < this.getMaxTesuu();
+        var next;
         if (addToFork) {
             // 最終手でなければ分岐に追加
-            var next = this.getMoveFormat(this.tesuu + 1);
-            if (!next.forks)
+            next = this.getMoveFormat(this.tesuu + 1);
+            if (!next.forks) {
                 next.forks = [];
+            }
             next.forks.push([newMove]);
         }
         else {
             // 最終手に追加
             this.forks[this.forks.length - 1].moves.push(newMove);
         }
-        Normalizer.normalizeMinimal(this.kifu); // 復元
+        normalizer_1.normalizeMinimal(this.kifu); // 復元
         this.undoMove(move);
         // 考え改めて再生
         if (addToFork) {
@@ -7744,8 +8149,9 @@ var JKFPlayer = (function () {
     };
     JKFPlayer.prototype.getReadableKifu = function (tesuu) {
         if (tesuu === void 0) { tesuu = this.tesuu; }
-        if (tesuu == 0)
+        if (tesuu === 0) {
             return "開始局面";
+        }
         return JKFPlayer.moveToReadableKifu(this.getMoveFormat(tesuu));
     };
     JKFPlayer.prototype.getReadableForkKifu = function (tesuu) {
@@ -7766,11 +8172,14 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.getReadableKifuState = function () {
         var ret = [];
         for (var i = 0; i <= this.getMaxTesuu(); i++) {
-            ret.push({ kifu: this.getReadableKifu(i), forks: this.getReadableForkKifu(i - 1), comments: this.getComments(i) });
+            ret.push({
+                comments: this.getComments(i),
+                forks: this.getReadableForkKifu(i - 1),
+                kifu: this.getReadableKifu(i)
+            });
         }
         return ret;
     };
-    // private
     // 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る
     JKFPlayer.prototype.getMoveFormat = function (tesuu) {
         if (tesuu === void 0) { tesuu = this.tesuu; }
@@ -7780,7 +8189,7 @@ var JKFPlayer = (function () {
                 return fork.moves[tesuu - fork.te];
             }
         }
-        throw "指定した手数が異常です";
+        throw new Error("指定した手数が異常です");
     };
     JKFPlayer.prototype.getNextFork = function (tesuu) {
         if (tesuu === void 0) { tesuu = this.tesuu; }
@@ -7793,34 +8202,10 @@ var JKFPlayer = (function () {
     JKFPlayer.prototype.undoMove = function (move) {
         JKFPlayer.undoMove(this.shogi, move);
     };
-    JKFPlayer.sameMoveMinimal = function (move1, move2) {
-        return (move1.to.x == move2.to.x && move1.to.y == move2.to.y
-            && (move1.from && move2.from
-                ? move1.from.x == move2.from.x && move1.from.y == move2.from.y && move1.promote == move2.promote
-                : move1.piece == move2.piece));
-    };
-    JKFPlayer.getBoardState = function (shogi) {
-        var ret = [];
-        for (var i = 1; i <= 9; i++) {
-            var arr = [];
-            for (var j = 1; j <= 9; j++) {
-                var piece = shogi.get(i, j);
-                arr.push(piece ? { color: piece.color, kind: piece.kind } : {});
-            }
-            ret.push(arr);
-        }
-        return ret;
-    };
-    JKFPlayer.getHandsState = function (shogi) {
-        return [
-            shogi.getHandsSummary(Color.Black),
-            shogi.getHandsSummary(Color.White),
-        ];
-    };
     JKFPlayer.debug = false;
-    JKFPlayer._log = [];
+    JKFPlayer.logs = [];
     return JKFPlayer;
 }());
-module.exports = JKFPlayer;
+exports["default"] = JKFPlayer;
 
-},{"../lib/csa-parser":1,"../lib/ki2-parser":2,"../lib/kif-parser":3,"./normalizer":4,"shogi.js/lib/shogi":5}]},{},[]);
+},{"../lib/csa-parser":1,"../lib/ki2-parser":2,"../lib/kif-parser":3,"./normalizer":4,"shogi.js":5}]},{},[]);

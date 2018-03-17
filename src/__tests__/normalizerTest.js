@@ -1,5 +1,5 @@
 var assert = require('assert');
-var Normalizer = require('../lib/normalizer.js');
+var Normalizer = require('../normalizer');
 
 function p(x, y){
 	return {x:x,y:y};
