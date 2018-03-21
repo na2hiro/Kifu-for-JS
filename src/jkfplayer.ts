@@ -6,11 +6,9 @@
  */
 
 import {Color, Piece, Shogi} from "shogi.js";
-import {parse as parseCSA} from "../lib/csa-parser";
-import {parse as parseKI2} from "../lib/ki2-parser";
-import {parse as parseKIF} from "../lib/kif-parser";
 import IJSONKifuFormat, {IMoveFormat, IMoveMoveFormat, IStateFormat} from "./IJSONKifuFormat";
 import {canPromote, normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "./normalizer";
+import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 
 export default class JKFPlayer {
     public static debug = false;

@@ -24,6 +24,6 @@ module.exports = {
         "src/**",
         "!**/__tests__/**",
         "!**/*.d.ts",
-        "!src/polyfills.ts"
+        "!src/main.ts"
     ]
 };
