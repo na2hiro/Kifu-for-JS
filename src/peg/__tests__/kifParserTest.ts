@@ -1,5 +1,5 @@
 import "jest";
-import {parse} from "../../lib/kif-parser";
+import {parseKIF as parse} from "../parsers";
 /* tslint:disable:object-literal-sort-keys max-line-length */
 
 function p(x, y) {

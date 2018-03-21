@@ -1,5 +1,5 @@
 import "jest";
-import {parse} from "../../lib/csa-parser";
+import {parseCSA as parse} from "../parsers";
 /* tslint:disable:object-literal-sort-keys max-line-length */
 
 function p(x, y) {

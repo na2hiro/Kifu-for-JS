@@ -1,6 +1,7 @@
 module.exports = {
     "transform": {
-        "^.+\\.tsx?$": "ts-jest"
+        "^.+\\.tsx?$": "ts-jest",
+        "^.+\\.pegjs$": "<rootDir>/test/pegjs-jest.js"
     },
     "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     "moduleFileExtensions": [
@@ -24,6 +25,7 @@ module.exports = {
         "src/**",
         "!**/__tests__/**",
         "!**/*.d.ts",
-        "!src/main.ts"
+        "!src/main.ts",
+        "!src/peg/**"
     ]
 };
