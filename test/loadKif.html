@@ -3,20 +3,18 @@
 <title>Kifu for JS example</title>
 <meta charset="utf-8">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../out/kifuforjs.js" charset="utf-8"></script>
-<script>var Kifu = require("Kifu");</script>
-<script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
+<script src="../bundle/kifu-for-js.js" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
 </head>
 
 <body>
 <script>
-var kifu1 = Kifu.load("../node_modules/json-kifu-format/test/files/kif/jt201409130101.kif");
-var kifu2 = Kifu.load("../node_modules/json-kifu-format/test/files/kif/no_henka.kifu");
-var kifu3 = Kifu.load("../node_modules/json-kifu-format/test/files/kif/9fu.kif");
-var kifu4 = Kifu.load("../node_modules/json-kifu-format/test/files/kif/fork-test.kif");
-var kifu4 = Kifu.load("../node_modules/json-kifu-format/test/files/kif/fork.kif");
-var kifu5 = Kifu.loadString("\
+var kifu1 = KifuForJS.load("../node_modules/json-kifu-format/test/files/kif/jt201409130101.kif");
+var kifu2 = KifuForJS.load("../node_modules/json-kifu-format/test/files/kif/no_henka.kifu");
+var kifu3 = KifuForJS.load("../node_modules/json-kifu-format/test/files/kif/9fu.kif");
+var kifu4 = KifuForJS.load("../node_modules/json-kifu-format/test/files/kif/fork-test.kif");
+var kifu4 = KifuForJS.load("../node_modules/json-kifu-format/test/files/kif/fork.kif");
+var kifu5 = KifuForJS.loadString("\
    1 ７六歩(77)   ( 0:02/00:00:02)+\n\
 *初手のコメント\n\
    2 ８四歩(83)   ( 0:01/00:00:01)+\n\

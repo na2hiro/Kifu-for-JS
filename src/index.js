@@ -9,7 +9,29 @@ import React from "react";
 import {render} from "react-dom";
 import {ajax} from "./util.js";
 
-export default class KifuController{
+export function loadCallback(callback, id){
+    var controller = new KifuController(id);
+    controller.changeCallback(callback);
+    return controller;
+}
+export function loadString(kifu, id){
+    var controller = new KifuController(id);
+    controller.loadKifu(kifu);
+    return controller;
+}
+export function load(filename, id){
+    loadCallback(done => {
+        ajax(filename, (data, err) => {
+            if(err){
+                this.logError(err);
+                return;
+            }
+            done(data, filename);
+        });
+    }, id);
+}
+
+class KifuController{
 	constructor(id){
 		if(!id){
 			id = "kifuforjs_"+Math.random().toString(36).slice(2);
@@ -20,8 +42,9 @@ export default class KifuController{
 	loadKifu(kifu){
 		$(document).ready(() => {
 			var container = document.getElementById(this.id);
+            console.log("settings", settings);
 			render(
-				<Kifu kifu={kifu} ImageDirectoryPath={KifuController.settings.ImageDirectoryPath}/>,
+				<Kifu kifu={kifu} ImageDirectoryPath={settings.ImageDirectoryPath}/>,
 				container
 			);
 		});
@@ -30,33 +53,14 @@ export default class KifuController{
 		$(document).ready(() => {
 			var container = document.getElementById(this.id);
 			render(
-				<Kifu callback={callback} ImageDirectoryPath={KifuController.settings.ImageDirectoryPath}/>,
+				<Kifu callback={callback} ImageDirectoryPath={settings.ImageDirectoryPath}/>,
 				container
 			);
 		});
 	}
-	static loadCallback(callback, id){
-		var controller = new KifuController(id);
-		controller.changeCallback(callback);
-		return controller;
-	}
-	static loadString(kifu, id){
-		var controller = new KifuController(id);
-		controller.loadKifu(kifu);
-		return controller;
-	}
-	static load(filename, id){
-		KifuController.loadCallback(done => {
-			ajax(filename, (data, err) => {
-				if(err){
-					this.logError(err);
-					return;
-				}
-				done(data, filename);
-			});
-		}, id);
-	}
 }
 
-KifuController.settings = {};
+export var settings = {
+	ImageDirectoryPath: "../images" // TODO This cannot be modified
+};
 

@@ -3,12 +3,11 @@
 <title>Kifu for JS example</title>
 <meta charset="utf-8">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../out/kifuforjs.js" charset="utf-8"></script>
+<script src="../bundle/kifu-for-js.js" charset="utf-8"></script>
 <script>
-var Kifu = require("Kifu");
+	var Kifu = KifuForJS;
 Kifu.settings={ImageDirectoryPath: "../images"};
 </script>
-<link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
 <script>Kifu.load("../node_modules/json-kifu-format/test/files/ki2/9fu.ki2", "ki2dom");</script>
 </head>
 

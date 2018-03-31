@@ -4,12 +4,19 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-var KifuForJS; // 二度読み込まないようにする
 (function() {
 	function start() {
-		try{
-			var Kifu = KifuForJS = require("Kifu");
-			Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
+        if(window.getSelection && getSelection().toString()!=""){
+            replaceSelected().catch(fail);
+        }else{
+            replaceAll().catch(fail);
+        }
+        function fail(e){
+            console.log(e);
+            alert("読込失敗: "+e);
+        }
+
+        async function replaceAll(){
 			var targetList = [];
 			$("applet param[name=KIFU]").each(function(index){
 				// applet方式
@@ -69,31 +76,37 @@ var KifuForJS; // 二度読み込まないようにする
 					}
 				});
 			}
-			if(window.getSelection && getSelection().toString()!=""){
-				var selection=getSelection();
-				var id = makeRandomString();
-				$("<div id='"+id+"'>").insertAfter($(selection.focusNode));
-				try{
-					Kifu.loadString(selection.toString(), id);
-				}catch(e){
-					//alert("選択された棋譜の形式エラー: "+e);
-					console.log(e);
-				}
-			}else if(targetList.length==0){
-				throw "将棋盤が見つかりませんでした";
-			}
-			console.log("load start", targetList);
-			targetList.forEach(function(target){
-				try{
-					Kifu.load(target.kifuPath.replace(/\.(z|gz)$/ig, ""), target.targetId);
-				}catch(e){
-					console.log("error", e);
-				}
-			});
-		}catch(e){
-			console.log(e);
-			alert("読込失敗: "+e);
-		}
+
+            if(targetList.length==0){
+                throw "将棋盤が見つかりませんでした";
+            }
+
+            const Kifu = await loadKifuForJS();
+
+            console.log("load start", targetList);
+            targetList.forEach(function(target){
+                try{
+                    console.log("Kifu", Kifu)
+                    Kifu.load(target.kifuPath.replace(/\.(z|gz)$/ig, ""), target.targetId);
+                }catch(e){
+                    console.log("error", e);
+                }
+            });
+        }
+
+
+        async function replaceSelected(){
+            const Kifu = await loadKifuForJS();
+            var selection=getSelection();
+            var id = makeRandomString();
+            $("<div id='"+id+"'>").insertAfter($(selection.focusNode));
+            try{
+                Kifu.loadString(selection.toString(), id);
+            }catch(e){
+                //alert("選択された棋譜の形式エラー: "+e);
+                console.log(e);
+            }
+        }
 	}
 	function makeRandomString(){
 		return Math.random().toString(36).slice(2);
@@ -112,21 +125,12 @@ var KifuForJS; // 二度読み込まないようにする
 		};
 		document.body.appendChild(scr);
 	}
-	if(!KifuForJS){
-		cnt++;
-		var scr = document.createElement("script");
-		scr.src = "https://na2hiro.github.io/Kifu-for-JS/out/kifuforjs.js";
-		scr.charset="utf-8";
-		scr.onload = function(){
-			console.log("Kifu for JS loaded");
-			if(--cnt==0) start();
-		};
-		document.body.appendChild(scr);
-	}
-	var link = document.createElement('link');
-	link.type='text/css';
-	link.href='https://na2hiro.github.io/Kifu-for-JS/css/kifuforjs.css';
-	link.rel='stylesheet';
-	document.getElementsByTagName('head')[0].appendChild(link);
 	if(cnt==0) start(); // いずれも読み込み済み
+
+	async function loadKifuForJS(){
+		const Kifu = (await import(/* webpackChunkName: "KifuInBookmarklet" */"./index.js"));
+        Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
+        return Kifu;
+	}
 })();
+

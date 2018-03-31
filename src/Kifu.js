@@ -11,6 +11,8 @@ import KifuList from "./KifuList.js";
 import Hand from "./Hand.js";
 import {loadFile, version} from "./util.js"
 
+import "../css/kifuforjs.css";
+
 @DragDropContext(MultiBackend(HTML5toTouch))
 @DropTarget(NativeTypes.FILE, {
     drop(props, monitor, component){

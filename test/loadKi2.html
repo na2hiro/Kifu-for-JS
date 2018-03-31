@@ -3,14 +3,12 @@
 <title>Kifu for JS example</title>
 <meta charset="utf-8">
 <script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../out/kifuforjs.js" charset="utf-8"></script>
-<script>var Kifu = require("Kifu");</script>
-<script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
+<script src="../bundle/kifu-for-js.js" charset="utf-8"></script>
 <link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
 </head>
 
 <body>
-<script>var kifu = Kifu.load("../node_modules/json-kifu-format/test/files/ki2/20091203.ki2");</script>
-<script>var kifu2 = Kifu.load("../node_modules/json-kifu-format/test/files/ki2/denou3-1.ki2");</script>
+<script>var kifu = KifuForJS.load("../node_modules/json-kifu-format/test/files/ki2/20091203.ki2");</script>
+<script>var kifu2 = KifuForJS.load("../node_modules/json-kifu-format/test/files/ki2/denou3-1.ki2");</script>
 </body>
 </html>
