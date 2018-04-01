@@ -9,6 +9,7 @@
   "scripts": {
     "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
     "build": "./node_modules/webpack/bin/webpack.js --env.production",
+    "build:watch": "./node_modules/webpack/bin/webpack.js --watch",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -45,6 +46,11 @@
     "@babel/preset-es2015": "^7.0.0-beta.42",
     "@babel/preset-es2017": "^7.0.0-beta.42",
     "@babel/preset-react": "^7.0.0-beta.42",
+    "@types/react": "^16.1.0",
+    "@types/react-dnd": "^2.0.36",
+    "@types/react-dnd-html5-backend": "^2.1.9",
+    "@types/react-dnd-multi-backend": "^3.0.1",
+    "@types/react-dom": "^16.0.4",
     "babel-loader": "^8.0.0-beta.2",
     "babel-plugin-syntax-dynamic-import": "^6.18.0",
     "babel-plugin-transform-decorators-legacy": "^1.3.4",
@@ -52,9 +58,12 @@
     "clean-webpack-plugin": "^0.1.19",
     "core-js": "^2.5.4",
     "css-loader": "^0.28.11",
+    "prop-types": "^15.6.1",
     "style-loader": "^0.20.3",
+    "ts-loader": "^3.5.0",
+    "typescript": "^2.8.1",
     "webpack": "^3.11.0",
-    "webpack-merge": "^4.1.2",
-    "webpack-dev-server": "^2.11.2"
+    "webpack-dev-server": "^2.11.2",
+    "webpack-merge": "^4.1.2"
   }
 }

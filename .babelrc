@@ -1,0 +1,19 @@
+{
+  "presets": [
+    //"babel/preset-es2015",
+    "@babel/preset-es2017",
+    "@babel/preset-react",
+    [
+      "@babel/preset-env",
+      {
+        "useBuiltIns": "usage"
+      }
+    ]
+  ],
+  "plugins": [
+    //"add-module-exports",
+    "syntax-dynamic-import",
+    "transform-decorators-legacy",
+    "transform-regenerator"
+  ]
+}

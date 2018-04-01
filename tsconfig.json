@@ -1,0 +1,13 @@
+{
+  "include": ["./src"],
+  "exclude": ["**/__tests__/**/*"],
+  "compilerOptions": {
+    "declaration": true,
+    "experimentalDecorators": true,
+    "module": "esnext",
+    "moduleResolution": "node",
+    "noEmitOnError": true,
+    "jsx": "react",
+    "target": "es2015"
+  }
+}
