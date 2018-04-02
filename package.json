@@ -10,6 +10,8 @@
     "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
     "build": "./node_modules/webpack/bin/webpack.js --env.production",
     "build:watch": "./node_modules/webpack/bin/webpack.js --watch",
+    "lint": "./node_modules/tslint/bin/tslint -p ./",
+    "lint:fix": "./node_modules/.bin/prettier ./src/** --write && ./node_modules/tslint/bin/tslint -p ./ --fix",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -58,12 +60,20 @@
     "clean-webpack-plugin": "^0.1.19",
     "core-js": "^2.5.4",
     "css-loader": "^0.28.11",
+    "pre-push": "^0.1.1",
+    "prettier": "^1.11.1",
     "prop-types": "^15.6.1",
     "style-loader": "^0.20.3",
     "ts-loader": "^3.5.0",
+    "tslint": "^5.9.1",
+    "tslint-config-prettier": "^1.10.0",
+    "tslint-react": "^3.5.1",
     "typescript": "^2.8.1",
     "webpack": "^3.11.0",
     "webpack-dev-server": "^2.11.2",
     "webpack-merge": "^4.1.2"
-  }
+  },
+  "pre-push": [
+    "lint"
+  ]
 }

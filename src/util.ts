@@ -1,4 +1,4 @@
-import {Color} from "shogi.js";
+import { Color } from "shogi.js";
 
 declare var $; // jQuery
 

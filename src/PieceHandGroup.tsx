@@ -1,4 +1,4 @@
-import {Component} from "react";
+import { Component } from "react";
 import * as React from "react";
 import PieceHand from "./PieceHand";
 
@@ -26,18 +26,22 @@ export default class PieceHandGroup extends Component<IProps, any> {
         const pieces = [];
         for (let i = 0; i < this.props.value; i++) {
             pieces.push(
-                <PieceHand key={i} data={this.props.data} ImageDirectoryPath={this.props.ImageDirectoryPath} index={i}
-                           onInputMove={this.props.onInputMove} position={positioner ? positioner(i) : null}
-                           reversed={this.props.reversed} signature={this.props.signature}/>);
+                <PieceHand
+                    key={i}
+                    data={this.props.data}
+                    ImageDirectoryPath={this.props.ImageDirectoryPath}
+                    index={i}
+                    onInputMove={this.props.onInputMove}
+                    position={positioner ? positioner(i) : null}
+                    reversed={this.props.reversed}
+                    signature={this.props.signature}
+                />,
+            );
         }
         const classNames = ["mochigoma"];
         if (this.props.value > 0) {
             classNames.push(this.props.data.kind === "FU" ? " fu" : " fu-else");
         }
-        return (
-            <span className={classNames.join(" ")}>
-                {pieces}
-            </span>
-        );
+        return <span className={classNames.join(" ")}>{pieces}</span>;
     }
 }

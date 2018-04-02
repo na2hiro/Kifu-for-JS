@@ -1,5 +1,5 @@
 import * as React from "react";
-import {DragSource, DropTarget} from "react-dnd";
+import { DragSource, DropTarget } from "react-dnd";
 
 export interface IProps {
     data: any; // TODO
@@ -16,36 +16,49 @@ export interface IProps {
     isDragging?: boolean;
 }
 
-@DragSource("piece", {
-    beginDrag(props: IProps, monitor, component) {
-        return {x: props.x, y: props.y, imgSrc: getPieceImage(props), signature: props.signature};
+@DragSource(
+    "piece",
+    {
+        beginDrag(props: IProps, monitor, component) {
+            return { x: props.x, y: props.y, imgSrc: getPieceImage(props), signature: props.signature };
+        },
+        endDrag(props: IProps, monitor, component) {
+            props.onInputMove({ from: monitor.getItem(), to: monitor.getDropResult() });
+        },
     },
-    endDrag(props: IProps, monitor, component) {
-        props.onInputMove({from: monitor.getItem(), to: monitor.getDropResult()});
+    function collect(connect, monitor) {
+        return {
+            connectDragSource: connect.dragSource(),
+            isDragging: monitor.isDragging(),
+        };
     },
-}, function collect(connect, monitor) {
-    return {
-        connectDragSource: connect.dragSource(),
-        isDragging: monitor.isDragging(),
-    };
-})
-@DropTarget(["piece", "piecehand"], {
-    drop(props: IProps, monitor, component) {
-        return {x: props.x, y: props.y};
+)
+@DropTarget(
+    ["piece", "piecehand"],
+    {
+        drop(props: IProps, monitor, component) {
+            return { x: props.x, y: props.y };
+        },
     },
-}, (connect, monitor) => ({
-    connectDropTarget: connect.dropTarget(),
-}))
+    (connect, monitor) => ({
+        connectDropTarget: connect.dropTarget(),
+    }),
+)
 export default class Piece extends React.Component<IProps, any> {
     public render(): React.ReactNode {
         const color = this.props.data.color;
+
+        const div = this.props.connectDropTarget(
+            this.props.connectDragSource(
+                <div>
+                    <img src={getPieceImage(this.props)} style={{ opacity: this.props.isDragging ? 0.4 : 1 }} />
+                </div>,
+            ),
+        );
+
         return (
             <td className={this.props.lastMove && equalsPos(this.props.lastMove.to, this.props) ? "lastto" : ""}>
-                {this.props.connectDropTarget(this.props.connectDragSource(
-                    <div><img src={getPieceImage(this.props)}
-                        style={{opacity: this.props.isDragging ? 0.4 : 1}}/>
-                    </div>,
-                ))}
+                {div}
             </td>
         );
     }

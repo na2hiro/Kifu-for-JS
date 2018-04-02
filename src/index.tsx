@@ -7,9 +7,9 @@
 declare var $; // jQuery
 
 import * as React from "react";
-import {render} from "react-dom";
+import { render } from "react-dom";
 import Kifu from "./Kifu";
-import {ajax} from "./util";
+import { ajax } from "./util";
 
 export function loadCallback(callback, id): KifuController {
     const controller = new KifuController(id);
@@ -37,7 +37,11 @@ export class KifuController {
     private id: string;
     constructor(id) {
         if (!id) {
-            id = "kifuforjs_" + Math.random().toString(36).slice(2);
+            id =
+                "kifuforjs_" +
+                Math.random()
+                    .toString(36)
+                    .slice(2);
             document.write("<div id='" + id + "'></div>");
         }
         this.id = id;
@@ -45,19 +49,13 @@ export class KifuController {
     public loadKifu(kifu) {
         $(document).ready(() => {
             const container = document.getElementById(this.id);
-            render(
-                <Kifu kifu={kifu} ImageDirectoryPath={settings.ImageDirectoryPath}/>,
-                container,
-            );
+            render(<Kifu kifu={kifu} ImageDirectoryPath={settings.ImageDirectoryPath} />, container);
         });
     }
     public changeCallback(callback) {
         $(document).ready(() => {
             const container = document.getElementById(this.id);
-            render(
-                <Kifu callback={callback} ImageDirectoryPath={settings.ImageDirectoryPath}/>,
-                container,
-            );
+            render(<Kifu callback={callback} ImageDirectoryPath={settings.ImageDirectoryPath} />, container);
         });
     }
 }

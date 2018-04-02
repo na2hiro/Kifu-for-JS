@@ -23,24 +23,28 @@ export default class Board extends React.Component<IProps, any> {
 
         const trs = nineY.map((logicalY) => {
             const y = this.props.reversed ? 10 - logicalY : logicalY;
-            return <tr key={y}>
-                {nineX.map((logicalX) => {
-                    const x = this.props.reversed ? 10 - logicalX : logicalX;
-                    return (
-                        <Piece
-                            key={x}
-                            data={this.props.board[x - 1][y - 1]}
-                            x={x}
-                            y={y}
-                            lastMove={this.props.lastMove}
-                            ImageDirectoryPath={this.props.ImageDirectoryPath}
-                            onInputMove={this.props.onInputMove}
-                            reversed={this.props.reversed}
-                            signature={this.props.signature}/>
-                    );
-                })}
-                <th>{JKFPlayer.numToKan(y)}</th>
-            </tr>;
+            const pieces = nineX.map((logicalX) => {
+                const x = this.props.reversed ? 10 - logicalX : logicalX;
+                return (
+                    <Piece
+                        key={x}
+                        data={this.props.board[x - 1][y - 1]}
+                        x={x}
+                        y={y}
+                        lastMove={this.props.lastMove}
+                        ImageDirectoryPath={this.props.ImageDirectoryPath}
+                        onInputMove={this.props.onInputMove}
+                        reversed={this.props.reversed}
+                        signature={this.props.signature}
+                    />
+                );
+            });
+            return (
+                <tr key={y}>
+                    {pieces}
+                    <th>{JKFPlayer.numToKan(y)}</th>
+                </tr>
+            );
         });
 
         return (
