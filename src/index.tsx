@@ -49,17 +49,15 @@ export class KifuController {
     public loadKifu(kifu) {
         $(document).ready(() => {
             const container = document.getElementById(this.id);
-            render(<Kifu kifu={kifu} ImageDirectoryPath={settings.ImageDirectoryPath} />, container);
+            render(<Kifu kifu={kifu} />, container);
         });
     }
     public changeCallback(callback) {
         $(document).ready(() => {
             const container = document.getElementById(this.id);
-            render(<Kifu callback={callback} ImageDirectoryPath={settings.ImageDirectoryPath} />, container);
+            render(<Kifu callback={callback} />, container);
         });
     }
 }
 
-export let settings = {
-    ImageDirectoryPath: "../images", // TODO This cannot be modified
-};
+export let settings = {};

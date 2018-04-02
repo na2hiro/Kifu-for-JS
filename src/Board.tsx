@@ -6,7 +6,6 @@ export interface IProps {
     reversed: boolean;
     board: any[][]; // TODO
     lastMove: any; // TODO
-    ImageDirectoryPath: string;
     onInputMove: (obj: any) => void; // TODO
     signature: any; // TODO
 }
@@ -32,7 +31,6 @@ export default class Board extends React.Component<IProps, any> {
                         x={x}
                         y={y}
                         lastMove={this.props.lastMove}
-                        ImageDirectoryPath={this.props.ImageDirectoryPath}
                         onInputMove={this.props.onInputMove}
                         reversed={this.props.reversed}
                         signature={this.props.signature}

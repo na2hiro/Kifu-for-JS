@@ -7,7 +7,6 @@ export interface IProps {
     color: number; // TODO: Color?
     playerName: string;
     data: any; // TODO
-    ImageDirectoryPath: string;
     onInputMove: (input: any) => void;
     signature: number;
 }
@@ -22,7 +21,6 @@ export default class Hand extends React.Component<IProps, any> {
                 key={kind}
                 value={this.props.data[kind]}
                 data={{ kind, color: this.props.color }}
-                ImageDirectoryPath={this.props.ImageDirectoryPath}
                 onInputMove={this.props.onInputMove}
                 reversed={this.props.reversed}
                 signature={this.props.signature}

@@ -27,16 +27,20 @@ module.exports = env => {
                     exclude: /node_modules/
                 },
                 {
-                    test: /\.css/,
+                    test: /\.css$/,
                     use: [
                         'style-loader',
                         'css-loader'
                     ]
-                }
+                },
+                {
+                    test: /\.png$/,
+                    use: 'url-loader'
+                },
             ]
         },
         resolve: {
-            extensions: ['.js', '.ts', '.tsx']
+            extensions: ['.js', '.ts', '.tsx', '.png']
         },
         plugins: [
             new CleanWebpackPlugin([BUNDLE_DIR]),

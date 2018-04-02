@@ -137,7 +137,5 @@ if (cnt === 0) {
 } // いずれも読み込み済み
 
 async function loadKifuForJS(): Promise<{ load: any; loadString: any }> {
-    const Kifu = await import(/* webpackChunkName: "KifuInBookmarklet" */ "./index");
-    Kifu.settings.ImageDirectoryPath = "https://na2hiro.github.io/Kifu-for-JS/images";
-    return Kifu;
+    return await import(/* webpackChunkName: "KifuInBookmarklet" */ "./index");
 }

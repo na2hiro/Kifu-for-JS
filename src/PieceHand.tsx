@@ -2,10 +2,10 @@ import * as React from "react";
 import { CSSProperties } from "react";
 import { DragSource, DropTarget } from "react-dnd";
 import { Color } from "shogi.js";
+import { getUrlWithReverse } from "./images/PieceImage";
 
 export interface IProps {
     data: any;
-    ImageDirectoryPath: string;
     index: number;
     onInputMove: (input: any) => void;
     position: number;
@@ -58,7 +58,5 @@ export default class PieceHand extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    const kind = props.data.kind;
-    const color = props.reversed ? 1 - props.data.color : props.data.color;
-    return props.ImageDirectoryPath + "/" + (!kind ? "blank" : color + kind) + ".png";
+    return getUrlWithReverse(props.data.kind, props.data.color, props.reversed);
 }

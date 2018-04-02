@@ -19,7 +19,6 @@ export interface IProps {
     callback?: (callback: (data: string, filename: string) => void) => void;
     kifu?: string;
     isOver?: boolean;
-    ImageDirectoryPath: string;
 
     connectDropTarget?: (element: any) => any; // TODO
 }
@@ -239,7 +238,6 @@ Kifu for JS (ver. ${version})
                             color={reversed ? 0 : 1}
                             data={state.hands[reversed ? 0 : 1]}
                             playerName={players[reversed ? 0 : 1]}
-                            ImageDirectoryPath={this.props.ImageDirectoryPath}
                             onInputMove={this.onInputMove}
                             reversed={reversed}
                             signature={this.signature}
@@ -280,7 +278,6 @@ Kifu for JS (ver. ${version})
                     <Board
                         board={state.board}
                         lastMove={this.state.player.getMove()}
-                        ImageDirectoryPath={this.props.ImageDirectoryPath}
                         onInputMove={this.onInputMove}
                         reversed={reversed}
                         signature={this.signature}
@@ -293,7 +290,6 @@ Kifu for JS (ver. ${version})
                             color={reversed ? 1 : 0}
                             data={state.hands[reversed ? 1 : 0]}
                             playerName={players[reversed ? 1 : 0]}
-                            ImageDirectoryPath={this.props.ImageDirectoryPath}
                             onInputMove={this.onInputMove}
                             reversed={reversed}
                             signature={this.signature}

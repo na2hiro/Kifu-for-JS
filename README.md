@@ -55,16 +55,13 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 ### 設置方法
 右の"Download ZIP"よりダウンロード
 
-jQuery(2.1以降で動作確認), kifuforjs.js, kifuforjs.cssを読み込む．
-ImageDirectoryPathには駒画像ファイルのあるディレクトリを指定する．(`test/loadKif.html`にコード例)
+jQuery(2.1以降で動作確認), kifuforjs.js (`test/loadKif.html`にコード例)
 
 (ver. 1.0.8よりkifuforjs.jsの所在がsrcからoutへ変更されました)
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<link rel="stylesheet" type="text/css" href="../css/kifuforjs.css">
 <script src="../out/kifuforjs.js" charset="utf-8"></script>
-<script>Kifu.settings={ImageDirectoryPath: "../images"};</script>
 ```
 
 Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．

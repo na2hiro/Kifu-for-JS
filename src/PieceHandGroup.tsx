@@ -7,7 +7,6 @@ export interface IProps {
     value: number;
     signature: number;
     reversed: boolean;
-    ImageDirectoryPath: string;
     onInputMove: (input: any) => void;
 }
 
@@ -29,7 +28,6 @@ export default class PieceHandGroup extends Component<IProps, any> {
                 <PieceHand
                     key={i}
                     data={this.props.data}
-                    ImageDirectoryPath={this.props.ImageDirectoryPath}
                     index={i}
                     onInputMove={this.props.onInputMove}
                     position={positioner ? positioner(i) : null}

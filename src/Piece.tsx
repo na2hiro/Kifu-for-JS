@@ -1,5 +1,6 @@
 import * as React from "react";
 import { DragSource, DropTarget } from "react-dnd";
+import { getUrlWithReverse } from "./images/PieceImage";
 
 export interface IProps {
     data: any; // TODO
@@ -8,7 +9,6 @@ export interface IProps {
     signature: number;
     x: number;
     y: number;
-    ImageDirectoryPath: string;
     onInputMove: (obj: any) => void;
 
     connectDropTarget?: (obj: any) => Element;
@@ -65,8 +65,7 @@ export default class Piece extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    const color = props.reversed ? 1 - props.data.color : props.data.color;
-    return props.ImageDirectoryPath + "/" + (!props.data.kind ? "blank" : color + props.data.kind) + ".png";
+    return getUrlWithReverse(props.data.kind, props.data.color, props.reversed);
 }
 
 function equalsPos(pos1, pos2) {
