@@ -3,14 +3,13 @@ import { CSSProperties } from "react";
 import { DragSource, DropTarget } from "react-dnd";
 import { Color } from "shogi.js";
 import { getUrlWithReverse } from "./images/PieceImage";
+import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
+    kifuStore: KifuStore;
     data: any;
     index: number;
-    onInputMove: (input: any) => void;
     position: number;
-    reversed: boolean;
-    signature: number;
     connectDragSource?: (element: any) => any;
     isDragging?: boolean;
 }
@@ -23,12 +22,12 @@ export interface IProps {
                 color: props.data.color,
                 imgSrc: getPieceImage(props),
                 piece: props.data.kind,
-                signature: props.signature,
+                signature: props.kifuStore.signature,
             };
         },
         endDrag(props, monitor, component) {
             const item = monitor.getItem() as { color: Color; piece: string };
-            props.onInputMove({
+            props.kifuStore.onInputMove({
                 color: item.color,
                 piece: item.piece,
                 to: monitor.getDropResult(),
@@ -58,5 +57,5 @@ export default class PieceHand extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    return getUrlWithReverse(props.data.kind, props.data.color, props.reversed);
+    return getUrlWithReverse(props.data.kind, props.data.color, props.kifuStore.reversed);
 }

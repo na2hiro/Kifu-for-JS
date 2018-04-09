@@ -1,29 +1,30 @@
+import { observer } from "mobx-react";
 import * as React from "react";
 import { DragSource, DropTarget } from "react-dnd";
 import { getUrlWithReverse } from "./images/PieceImage";
+import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
     data: any; // TODO
     lastMove: any; // TODO
-    reversed: boolean;
-    signature: number;
     x: number;
     y: number;
-    onInputMove: (obj: any) => void;
+    kifuStore: KifuStore;
 
     connectDropTarget?: (obj: any) => Element;
     connectDragSource?: (obj: any) => Element;
     isDragging?: boolean;
 }
 
+@observer
 @DragSource(
     "piece",
     {
         beginDrag(props: IProps, monitor, component) {
-            return { x: props.x, y: props.y, imgSrc: getPieceImage(props), signature: props.signature };
+            return { x: props.x, y: props.y, imgSrc: getPieceImage(props), signature: props.kifuStore.signature };
         },
         endDrag(props: IProps, monitor, component) {
-            props.onInputMove({ from: monitor.getItem(), to: monitor.getDropResult() });
+            props.kifuStore.onInputMove({ from: monitor.getItem(), to: monitor.getDropResult() });
         },
     },
     function collect(connect, monitor) {
@@ -65,7 +66,7 @@ export default class Piece extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    return getUrlWithReverse(props.data.kind, props.data.color, props.reversed);
+    return getUrlWithReverse(props.data.kind, props.data.color, props.kifuStore.reversed);
 }
 
 function equalsPos(pos1, pos2) {

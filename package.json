@@ -34,12 +34,14 @@
   "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
   "dependencies": {
     "json-kifu-format": "^1.1.1",
+    "mobx": "^4.1.1",
+    "mobx-react": "^5.0.0",
     "react": "^16.0.0",
     "react-dnd": "^2.5.3",
     "react-dnd-html5-backend": "^2.1.2",
     "react-dnd-multi-backend": "^3.0.4",
     "react-dom": "^16.0.0",
-    "shogi.js": "^1.0.0"
+    "shogi.js": "^2.0.0"
   },
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.42",
@@ -60,6 +62,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "core-js": "^2.5.4",
     "css-loader": "^0.28.11",
+    "mobx-react-devtools": "^5.0.1",
     "pre-push": "^0.1.1",
     "prettier": "^1.11.1",
     "prop-types": "^15.6.1",

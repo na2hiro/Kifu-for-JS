@@ -1,11 +1,12 @@
+import { JKFPlayer } from "json-kifu-format";
+import { observer } from "mobx-react";
 import * as React from "react";
 
 export interface IProps {
-    forks: string[];
-    onChange: (value: number) => void;
-    nowMove: string;
+    player: JKFPlayer;
 }
 
+@observer
 export default class ForkList extends React.Component<IProps, any> {
     constructor(props) {
         super(props);
@@ -13,13 +14,15 @@ export default class ForkList extends React.Component<IProps, any> {
     }
 
     public render() {
+        const { player } = this.props;
+        const nowMove = player.tesuu < player.getMaxTesuu() ? player.getReadableKifu(player.tesuu + 1) : null;
         // 分岐
-        const forks = this.props.forks;
+        const forks = this.props.player.getReadableForkKifu();
         let options;
         if (forks.length > 0) {
             options = [
-                <option key={this.props.nowMove} value="top">
-                    {this.props.nowMove}
+                <option key={nowMove} value="top">
+                    {nowMove}
                 </option>,
             ].concat(
                 forks.map((fork, i) => (
@@ -39,6 +42,6 @@ export default class ForkList extends React.Component<IProps, any> {
     }
 
     private onChange(e) {
-        this.props.onChange(parseInt(e.target.value, 10));
+        this.props.player.forkAndForward(e.target.value);
     }
 }

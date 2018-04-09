@@ -1,35 +1,36 @@
+import { observer } from "mobx-react";
 import * as React from "react";
+import { Color } from "shogi.js";
 import PieceHandGroup from "./PieceHandGroup";
+import KifuStore from "./stores/KifuStore";
 import { colorToMark } from "./util";
 
 export interface IProps {
-    reversed: boolean;
-    color: number; // TODO: Color?
-    playerName: string;
-    data: any; // TODO
-    onInputMove: (input: any) => void;
-    signature: number;
+    kifuStore: KifuStore;
+    defaultColor: Color;
 }
 
+@observer
 export default class Hand extends React.Component<IProps, any> {
     public render() {
+        const { reversed, player } = this.props.kifuStore;
+        const { defaultColor } = this.props;
         const kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
-        const virtualColor = this.props.reversed ? 1 - this.props.color : this.props.color;
+        const color = reversed ? 1 - defaultColor : defaultColor;
+        const state = player.getState();
+        const hand = state.hands[color];
+        const playerName = [
+            player.kifu.header.先手 || player.kifu.header.下手 || "",
+            player.kifu.header.後手 || player.kifu.header.上手 || "",
+        ][color];
 
-        const handGroups = (virtualColor === 0 ? kinds.reverse() : kinds).map((kind) => (
-            <PieceHandGroup
-                key={kind}
-                value={this.props.data[kind]}
-                data={{ kind, color: this.props.color }}
-                onInputMove={this.props.onInputMove}
-                reversed={this.props.reversed}
-                signature={this.props.signature}
-            />
+        const handGroups = (defaultColor === 0 ? kinds.reverse() : kinds).map((kind) => (
+            <PieceHandGroup key={kind} value={hand[kind]} data={{ kind, color }} kifuStore={this.props.kifuStore} />
         ));
 
         return (
-            <div className={"mochi mochi" + this.props.color}>
-                <div className="tebanname">{colorToMark(this.props.color) + (this.props.playerName || "")}</div>
+            <div className={"mochi mochi" + color}>
+                <div className="tebanname">{colorToMark(color) + playerName}</div>
                 <div className="mochimain">{handGroups}</div>
             </div>
         );

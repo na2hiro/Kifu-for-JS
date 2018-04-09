@@ -1,13 +1,12 @@
 import { Component } from "react";
 import * as React from "react";
 import PieceHand from "./PieceHand";
+import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
     data: any; // TODO
     value: number;
-    signature: number;
-    reversed: boolean;
-    onInputMove: (input: any) => void;
+    kifuStore: KifuStore;
 }
 
 export default class PieceHandGroup extends Component<IProps, any> {
@@ -29,10 +28,8 @@ export default class PieceHandGroup extends Component<IProps, any> {
                     key={i}
                     data={this.props.data}
                     index={i}
-                    onInputMove={this.props.onInputMove}
+                    kifuStore={this.props.kifuStore}
                     position={positioner ? positioner(i) : null}
-                    reversed={this.props.reversed}
-                    signature={this.props.signature}
                 />,
             );
         }
