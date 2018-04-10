@@ -1,5 +1,5 @@
 import { JKFPlayer, Parsers } from "json-kifu-format";
-import { decorate, observable } from "mobx";
+import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { DragDropContext, DropTarget } from "react-dnd";
@@ -33,41 +33,14 @@ const FORMAT_ERROR_MESSAGE =
 
 @observer
 class Kifu extends React.Component<IProps, {}> {
-    public static extendPlayer(player: JKFPlayer) {
-        decorate(player, {
-            forks: observable,
-            kifu: observable,
-            tesuu: observable,
-        });
-        decorate(player.shogi, {
-            board: observable,
-            hands: observable,
-            turn: observable,
-        });
-
-        return player;
-    }
-
-    private kifuStore: KifuStore;
+    public kifuStore: KifuStore;
 
     constructor(props) {
         super(props);
         this.kifuStore = new KifuStore();
-
-        const player = new JKFPlayer({ header: {}, moves: [{}] });
-        Kifu.extendPlayer(player);
-        this.kifuStore.player = player;
-        // window.player = player;
-
-        this.state = {};
+        this.kifuStore.player = new JKFPlayer({ header: {}, moves: [{}] });
 
         this.reload = this.reload.bind(this);
-    }
-
-    public setPlayer(player: JKFPlayer) {
-        this.kifuStore.player = player;
-        this.setState({}); // TODO remove
-        // window.player = player;
     }
 
     public componentDidMount() {
@@ -75,14 +48,14 @@ class Kifu extends React.Component<IProps, {}> {
             this.props.callback((data, filename) => {
                 try {
                     this.kifuStore.filename = filename;
-                    this.setPlayer(Kifu.extendPlayer(JKFPlayer.parse(data, filename)));
+                    this.kifuStore.player = JKFPlayer.parse(data, filename);
                 } catch (e) {
                     this.logError(FORMAT_ERROR_MESSAGE + data);
                 }
             });
         } else {
             try {
-                this.setPlayer(Kifu.extendPlayer(JKFPlayer.parse(this.props.kifu)));
+                this.kifuStore.player = JKFPlayer.parse(this.props.kifu);
             } catch (e) {
                 this.logError(FORMAT_ERROR_MESSAGE + this.props.kifu);
             }
@@ -96,9 +69,8 @@ class Kifu extends React.Component<IProps, {}> {
                 const oldPlayer = this.kifuStore.player;
                 const tesuu = oldPlayer.tesuu === oldPlayer.getMaxTesuu() ? Infinity : oldPlayer.tesuu;
                 const player = JKFPlayer.parse(nextProps.kifu);
-                Kifu.extendPlayer(player);
                 player.goto(tesuu);
-                this.setPlayer(player);
+                this.kifuStore.player = player;
             } catch (e) {
                 this.logError(FORMAT_ERROR_MESSAGE + this.props.kifu);
             }
@@ -121,10 +93,9 @@ class Kifu extends React.Component<IProps, {}> {
                 const oldPlayer = this.kifuStore.player;
                 const tesuu = oldPlayer.tesuu === oldPlayer.getMaxTesuu() ? Infinity : oldPlayer.tesuu;
                 const player = JKFPlayer.parse(data, filename);
-                Kifu.extendPlayer(player);
                 player.goto(tesuu);
                 this.kifuStore.filename = filename;
-                this.setPlayer(player);
+                this.kifuStore.player = player;
             });
         }
     }
@@ -182,7 +153,7 @@ const DropTargetKifu = DropTarget<IProps>(
             if (item.files[0]) {
                 loadFile(item.files[0], (data, name) => {
                     try {
-                        component.setPlayer(Kifu.extendPlayer(JKFPlayer.parse(data, name)));
+                        component.kifuStore.player = JKFPlayer.parse(data, name);
                     } catch (e) {
                         component.logError(FORMAT_ERROR_MESSAGE + data);
                     }

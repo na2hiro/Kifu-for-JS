@@ -1,11 +1,30 @@
 import {JKFPlayer} from "json-kifu-format";
-import {observable} from "mobx";
+import {decorate, observable, toJS} from "mobx";
 
 export default class KifuStore {
+    public signature = Math.random();
     @observable public reversed: boolean;
     @observable public filename: string;
-    @observable public player: JKFPlayer;
-    public signature = Math.random();
+    // tslint:disable-next-line:variable-name
+    @observable private player_: JKFPlayer;
+
+    get player () {
+        return this.player_;
+    }
+
+    set player (player: JKFPlayer) {
+        decorate(player, {
+            forks: observable,
+            kifu: observable,
+            tesuu: observable,
+        });
+        decorate(player.shogi, {
+            board: observable,
+            hands: observable,
+            turn: observable,
+        });
+        this.player_ = player;
+    }
 
     public flip(){
         this.reversed = !this.reversed;
