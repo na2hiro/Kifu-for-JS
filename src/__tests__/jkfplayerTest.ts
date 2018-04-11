@@ -1,3 +1,4 @@
+import "jest";
 import JKFPlayer from "../jkfplayer";
 /* tslint:disable:object-literal-sort-keys max-line-length no-unused-expression */
 
@@ -181,6 +182,30 @@ P-\n\
         expect(player.tesuu).toBe(2);
         expect(player.shogi.toCSAString()).toBe(second);
     });
+    it("goto, go with string and invalid values", () => {
+        const player = new JKFPlayer({
+            header: {},
+            moves: [
+                {},
+                {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
+                {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
+                {special: "CHUDAN"},
+            ],
+        });
+        expect(player.tesuu).toBe(0);
+        player.goto("2");
+        expect(player.tesuu).toBe(2);
+        player.goto("foo");
+        expect(player.tesuu).toBe(2);
+        player.go("-1");
+        expect(player.tesuu).toBe(1);
+        player.go("bar");
+        expect(player.tesuu).toBe(1);
+        player.go("Infinity");
+        expect(player.tesuu).toBe(3);
+        player.go("-Infinity");
+        expect(player.tesuu).toBe(0);
+    });
     it("goto Infinity", () => {
         const player = new JKFPlayer({
             header: {},
@@ -253,6 +278,7 @@ P-\n\
             expect(player.backward()).toBeTruthy();
             expect(player.backward()).toBeTruthy();
             expect(player.shogi.toCSAString()).toBe(beforeFork);
+            expect(player.forkAndForward("0")).toBeTruthy();
         });
     });
     describe("inputMove", () => {

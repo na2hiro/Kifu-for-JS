@@ -236,7 +236,13 @@ export default class JKFPlayer {
         return true;
     }
     // tesuu手目へ行く
-    public goto(tesuu: number) {
+    public goto(tesuu: number|string) {
+        if (typeof tesuu === "string") {
+            tesuu = Number(tesuu);
+        }
+        if (isNaN(tesuu)) {
+            return;
+        }
         let limit = 10000; // for safe
         if (this.tesuu < tesuu) {
             // tslint:disable-next-line no-empty
@@ -248,11 +254,20 @@ export default class JKFPlayer {
         if (limit === 0) { throw new Error("tesuu overflows"); }
     }
     // tesuu手前後に移動する
-    public go(tesuu: number) {
+    public go(tesuu: number|string) {
+        if (typeof tesuu === "string") {
+            tesuu = Number(tesuu);
+        }
+        if (isNaN(tesuu)) {
+            return;
+        }
         this.goto(this.tesuu + tesuu);
     }
     // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
-    public forkAndForward(num: number): boolean {
+    public forkAndForward(num: number|string): boolean {
+        if (typeof num === "string") {
+            num = parseInt(num, 10);
+        }
         const forks = this.getMoveFormat(this.tesuu + 1).forks;
         if (!forks || forks.length <= num) { return false; }
         this.forks.push({te: this.tesuu + 1, moves: forks[num]});
@@ -341,7 +356,7 @@ export default class JKFPlayer {
     public getState() {
         return JKFPlayer.getState(this.shogi);
     }
-    public getReadableKifuState(): Array<{kifu: string; forks: string[]}> {
+    public getReadableKifuState(): Array<{kifu: string; forks: string[]; comments: string[] }> {
         const ret = [];
         for (let i = 0; i <= this.getMaxTesuu(); i++) {
             ret.push({

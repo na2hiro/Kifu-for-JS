@@ -1,5 +1,6 @@
 import fs = require("fs");
 import {Iconv} from "iconv";
+import "jest";
 import jschardet = require("jschardet");
 import JKFPlayer from "../jkfplayer";
 
