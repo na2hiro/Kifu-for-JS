@@ -205,7 +205,16 @@ export default class JKFPlayer {
     public shogi: Shogi;
     public kifu: IJSONKifuFormat;
     public tesuu: number;
-    public forks: Array<{te: number; moves: IMoveFormat[]}>;
+    public forkPointers: Array<{te: number, forkIndex: number}> = [];
+    // tslint:disable-next-line:variable-name
+    private forks_ = null;
+    get forks(): Array<{te: number; moves: IMoveFormat[]}> {
+        if (this.forks_ === null) {
+            this.forks_ = this.buildForks();
+        }
+        return this.forks_;
+    }
+
     constructor(kifu: IJSONKifuFormat) {
         this.shogi = new Shogi(kifu.initial || undefined);
         this.initialize(kifu);
@@ -213,7 +222,7 @@ export default class JKFPlayer {
     public initialize(kifu: IJSONKifuFormat) {
         this.kifu = kifu;
         this.tesuu = 0;
-        this.forks = [{te: 0, moves: this.kifu.moves}];
+        this.forkPointers = [];
     }
     // 1手進める
     public forward() {
@@ -232,7 +241,8 @@ export default class JKFPlayer {
         JKFPlayer.log("backward", this.tesuu - 1, move);
         this.undoMove(move);
         this.tesuu--;
-        this.forks = this.forks.filter((fork) => fork.te <= this.tesuu);
+        this.forkPointers = this.forkPointers.filter((fork) => fork.te <= this.tesuu);
+        this.forks_ = this.buildForks();
         return true;
     }
     // tesuu手目へ行く
@@ -270,7 +280,8 @@ export default class JKFPlayer {
         }
         const forks = this.getMoveFormat(this.tesuu + 1).forks;
         if (!forks || forks.length <= num) { return false; }
-        this.forks.push({te: this.tesuu + 1, moves: forks[num]});
+        this.forkPointers.push({te: this.tesuu + 1, forkIndex: num});
+        this.forks_ = this.buildForks();
         return this.forward();
     }
     // 現在の局面から新しいかもしれない手を1手動かす．
@@ -366,6 +377,19 @@ export default class JKFPlayer {
             });
         }
         return ret;
+    }
+
+    private buildForks() {
+        const moves: Array<{te: number, moves: IMoveFormat[]}> = [];
+        let currentFork = this.kifu.moves;
+        let tesuuOffset = 0;
+        for (const pointer of this.forkPointers) {
+            moves.push({te: tesuuOffset, moves: currentFork});
+            currentFork = currentFork[pointer.te].forks[pointer.forkIndex];
+            tesuuOffset = pointer.te;
+        }
+        moves.push({te: tesuuOffset, moves: currentFork});
+        return moves;
     }
 
     // 現在の局面から分岐を遡った初手から，現在の局面からの本譜の中から棋譜を得る

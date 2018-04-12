@@ -4,6 +4,7 @@
   "compilerOptions": {
     "declaration": true,
     "module": "commonjs",
-    "noEmitOnError": true
+    "noEmitOnError": true,
+    "target": "es5"
   }
 }
