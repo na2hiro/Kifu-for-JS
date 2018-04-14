@@ -5,21 +5,40 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import {Color} from "shogi.js";
-export default interface IJSONKifuFormat {
-    header: {[index: string]: string; };
+
+/**
+ * Kifu format
+ */
+export interface IJSONKifuFormat {
+    header: { [index: string]: string; };
     initial?: {
         preset: string;
         data?: IStateFormat;
     };
     moves: IMoveFormat[];
 }
-// 盤面
+
+/**
+ * Game state
+ */
 export interface IStateFormat {
     color: Color;
-    board: Array<Array<{ color?: Color; kind?: string; }>>;
-    hands: Array<{[index: string]: number}>;
+    board: IPiece[][];
+    hands: Array<{ [index: string]: number }>;
 }
-// 動作
+
+/**
+ * Piece
+ * TODO: Make color and kind nonnull
+ */
+export interface IPiece {
+    color?: Color;
+    kind?: string;
+}
+
+/**
+ * Abstract Move
+ */
 export interface IMoveMoveFormat {
     color: Color;
     from?: IPlaceFormat;
@@ -30,7 +49,10 @@ export interface IMoveMoveFormat {
     capture?: string;
     relative?: string;
 }
-// 棋譜(一手)
+
+/**
+ * Move
+ */
 export interface IMoveFormat {
     comments?: string[];
     move?: IMoveMoveFormat;
@@ -41,13 +63,19 @@ export interface IMoveFormat {
     special?: string;
     forks?: IMoveFormat[][];
 }
-// 時間
+
+/**
+ * Elapsed Time
+ */
 export interface ITimeFormat {
     h?: number;
     m: number;
     s: number;
 }
-// 座標
+
+/**
+ * Position on boards
+ */
 export interface IPlaceFormat {
     x: number;
     y: number;

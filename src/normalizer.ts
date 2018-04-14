@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import {Color, IMove, Piece, Shogi} from "shogi.js";
-import IJSONKifuFormat, {IMoveFormat, IMoveMoveFormat, IPlaceFormat, ITimeFormat} from "./IJSONKifuFormat";
+import {IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IPlaceFormat, ITimeFormat} from "./Formats";
 
 export function canPromote(place: IPlaceFormat, color: Color) {
     return color === Color.Black ? place.y <= 3 : place.y >= 7;

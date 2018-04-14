@@ -1,4 +1,4 @@
-import IJSONKifuFormat from "../IJSONKifuFormat";
+import {IJSONKifuFormat} from "../Formats";
 import "./ambient";
 import * as CSAParser from "./csa-parser.pegjs";
 import * as KI2Parser from "./ki2-parser.pegjs";

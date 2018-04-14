@@ -6,7 +6,7 @@
  */
 
 import {Color, Piece, Shogi} from "shogi.js";
-import IJSONKifuFormat, {IMoveFormat, IMoveMoveFormat, IStateFormat} from "./IJSONKifuFormat";
+import {IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
 import {canPromote, normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "./normalizer";
 import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 
