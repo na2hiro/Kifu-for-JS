@@ -14,7 +14,7 @@ export default class KifuStore {
 
     set player (player: JKFPlayer) {
         decorate(player, {
-            forks: observable,
+            forkPointers: observable,
             kifu: observable,
             tesuu: observable,
         });

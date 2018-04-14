@@ -57,5 +57,5 @@ export default class PieceHand extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    return getUrlWithReverse(props.data.kind, props.data.color, props.kifuStore.reversed);
+    return getUrlWithReverse(props.data, props.kifuStore.reversed);
 }

@@ -46,8 +46,12 @@ const MAP = {
     RY: [RY0, RY1],
 };
 
-export function getUrlWithReverse(kind: string, color: number, reversed: boolean) {
-    return getUrl(kind, reversed ? 1 - color : color);
+export function getUrlWithReverse(piece: {kind: string, color: number}, reversed: boolean) {
+    if(piece && piece.kind) {
+        return getUrl(piece.kind, reversed ? 1 - piece.color : piece.color);
+    } else {
+        return blank;
+    }
 }
 
 export function getUrl(kind: string, color: number) {

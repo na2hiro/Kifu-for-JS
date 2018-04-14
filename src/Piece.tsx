@@ -1,11 +1,12 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import { DragSource, DropTarget } from "react-dnd";
+import { Color } from "shogi.js";
 import { getUrlWithReverse } from "./images/PieceImage";
 import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
-    data: any; // TODO
+    data: { color?: Color; kind?: string }; // TODO
     lastMove: any; // TODO
     x: number;
     y: number;
@@ -47,8 +48,6 @@ export interface IProps {
 )
 export default class Piece extends React.Component<IProps, any> {
     public render(): React.ReactNode {
-        const color = this.props.data.color;
-
         const div = this.props.connectDropTarget(
             this.props.connectDragSource(
                 <div>
@@ -66,7 +65,7 @@ export default class Piece extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    return getUrlWithReverse(props.data.kind, props.data.color, props.kifuStore.reversed);
+    return getUrlWithReverse(props.data, props.kifuStore.reversed);
 }
 
 function equalsPos(pos1, pos2) {
