@@ -31,32 +31,53 @@ function getEncodingFromFileName(filename) {
     return ["jkf", "kifu", "ki2u"].indexOf(ext) >= 0 ? "UTF-8" : "Shift_JIS";
 }
 
-export function ajax(filename, onSuccess) {
-    const encoding = getEncodingFromFileName(filename);
-    $.ajax(filename, {
-        success(data, textStatus) {
-            if (textStatus === "notmodified") {
-                return;
+export function fetchFile(filePath) {
+    return new Promise((resolve, reject) => {
+        const encoding = getEncodingFromFileName(filePath);
+        /*
+        // TODO: Cannot enforce encoding
+        return fetch(filePath, {
+            headers: {
+                "Content-Type": "text/html;charset=" + encoding
             }
-            onSuccess(data);
-        },
-        error(jqXHR, textStatus) {
-            if (textStatus !== "notmodified") {
-                let message = "棋譜の取得に失敗しました: " + filename;
-                if (document.location.protocol === "file:") {
-                    message += `
+        })
+            .then((response) => response.text());
+        // ignore if notmodified
+        */
+
+        $.ajax(filePath, {
+            success(data, textStatus) {
+                resolve(textStatus === "notmodified" ? null : data);
+            },
+            error(jqXHR, textStatus) {
+                if (textStatus !== "notmodified") {
+                    let message = "棋譜の取得に失敗しました: " + filePath;
+                    if (document.location.protocol === "file:") {
+                        message += `
 
 【備考】
 Ajaxのセキュリティ制約により，ローカルの棋譜の読み込みが制限されている可能性があります．
 サーバ上にアップロードして動作をご確認下さい．
 もしくは，棋譜ファイルのドラッグ&ドロップによる読み込み機能をお試し下さい．`;
+                    }
+                    reject(message);
                 }
-                onSuccess(null, message);
-            }
-        },
-        beforeSend(xhr) {
-            xhr.overrideMimeType("text/html;charset=" + encoding);
-        },
-        ifModified: true,
+            },
+            beforeSend(xhr) {
+                xhr.overrideMimeType("text/html;charset=" + encoding);
+            },
+            ifModified: true,
+        });
     });
+}
+
+export function onDomReady(callback) {
+    if (
+        document.readyState === "complete" ||
+        (document.readyState !== "loading" && !(document.documentElement as any).doScroll)
+    ) {
+        callback();
+    } else {
+        document.addEventListener("DOMContentLoaded", callback);
+    }
 }

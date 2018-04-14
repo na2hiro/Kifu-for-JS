@@ -49,7 +49,12 @@ export default class Control extends React.Component<IProps> {
                         <button onClick={this.onClickCredit}>credit</button>
                     </li>
                 </ul>
-                <textarea rows={10} className="comment" disabled={true} value={player.getComments().join("\n")} />
+                <textarea
+                    rows={10}
+                    className="comment"
+                    disabled={true}
+                    value={this.props.kifuStore.errors.join("\n") || player.getComments().join("\n")}
+                />
             </div>
         );
     }
@@ -58,7 +63,7 @@ export default class Control extends React.Component<IProps> {
         if ((e.target as Element).tagName !== "BUTTON") {
             return;
         }
-        this.props.kifuStore.player.go($(e.target).data("go"));
+        this.props.kifuStore.player.go(e.target.dataset.go);
     }
 
     private onChangeTesuu(e) {

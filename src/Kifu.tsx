@@ -1,5 +1,3 @@
-import { JKFPlayer, Parsers } from "json-kifu-format";
-import { toJS } from "mobx";
 import { observer } from "mobx-react";
 import * as React from "react";
 import { DragDropContext, DropTarget } from "react-dnd";
@@ -18,18 +16,14 @@ import { loadFile } from "./util";
 import DevTools from "mobx-react-devtools";
 import "../css/kifuforjs.css";
 
-declare var $; // jQuery
-
 export interface IProps {
-    callback?: (callback: (data: string, filename: string) => void) => void;
+    filePath?: string;
     kifu?: string;
     isOver?: boolean;
+    kifuStore?: KifuStore;
 
     connectDropTarget?: (element: any) => any; // TODO
 }
-
-const FORMAT_ERROR_MESSAGE =
-    "棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n";
 
 @observer
 class Kifu extends React.Component<IProps, {}> {
@@ -37,66 +31,24 @@ class Kifu extends React.Component<IProps, {}> {
 
     constructor(props) {
         super(props);
-        this.kifuStore = new KifuStore();
-        this.kifuStore.player = new JKFPlayer({ header: {}, moves: [{}] });
-
-        this.reload = this.reload.bind(this);
+        this.kifuStore = props.kifuStore || new KifuStore();
     }
 
     public componentDidMount() {
-        if (this.props.callback) {
-            this.props.callback((data, filename) => {
-                try {
-                    this.kifuStore.filename = filename;
-                    this.kifuStore.player = JKFPlayer.parse(data, filename);
-                } catch (e) {
-                    this.logError(FORMAT_ERROR_MESSAGE + data);
-                }
-            });
+        const { filePath } = this.props;
+        if (filePath) {
+            this.kifuStore.loadFile(filePath);
         } else {
-            try {
-                this.kifuStore.player = JKFPlayer.parse(this.props.kifu);
-            } catch (e) {
-                this.logError(FORMAT_ERROR_MESSAGE + this.props.kifu);
-            }
+            this.kifuStore.loadKifu(this.props.kifu);
         }
     }
 
-    public componentWillReceiveProps(nextProps) {
+    public componentWillReceiveProps(nextProps: IProps) {
+        if (this.props.filePath !== nextProps.filePath) {
+            this.kifuStore.loadFile(this.props.filePath);
+        }
         if (this.props.kifu !== nextProps.kifu) {
-            try {
-                JKFPlayer.log("reload");
-                const oldPlayer = this.kifuStore.player;
-                const tesuu = oldPlayer.tesuu === oldPlayer.getMaxTesuu() ? Infinity : oldPlayer.tesuu;
-                const player = JKFPlayer.parse(nextProps.kifu);
-                player.goto(tesuu);
-                this.kifuStore.player = player;
-            } catch (e) {
-                this.logError(FORMAT_ERROR_MESSAGE + this.props.kifu);
-            }
-        }
-    }
-
-    public logError(errs) {
-        const move = this.kifuStore.player.kifu.moves[0];
-        if (move.comments) {
-            move.comments = errs.split("\n").concat(move.comments);
-        } else {
-            move.comments = errs.split("\n");
-        }
-    }
-
-    public reload() {
-        if (this.props.callback) {
-            this.props.callback((data, filename) => {
-                JKFPlayer.log("reload");
-                const oldPlayer = this.kifuStore.player;
-                const tesuu = oldPlayer.tesuu === oldPlayer.getMaxTesuu() ? Infinity : oldPlayer.tesuu;
-                const player = JKFPlayer.parse(data, filename);
-                player.goto(tesuu);
-                this.kifuStore.filename = filename;
-                this.kifuStore.player = player;
-            });
+            this.kifuStore.loadKifu(this.props.kifu);
         }
     }
 
@@ -120,7 +72,7 @@ class Kifu extends React.Component<IProps, {}> {
                                 <DevTools />
                                 <div className={handClassName}>
                                     <Hand kifuStore={this.kifuStore} defaultColor={1} />
-                                    <LeftControl kifuStore={this.kifuStore} reload={this.reload} />
+                                    <LeftControl kifuStore={this.kifuStore} />
                                 </div>
                             </td>
                             <td style={{ textAlign: "center" }}>
@@ -152,11 +104,7 @@ const DropTargetKifu = DropTarget<IProps>(
             const item = monitor.getItem() as HTMLInputElement;
             if (item.files[0]) {
                 loadFile(item.files[0], (data, name) => {
-                    try {
-                        component.kifuStore.player = JKFPlayer.parse(data, name);
-                    } catch (e) {
-                        component.logError(FORMAT_ERROR_MESSAGE + data);
-                    }
+                    component.kifuStore.loadKifu(data, name);
                 });
             }
         },

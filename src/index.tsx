@@ -4,38 +4,22 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-declare var $; // jQuery
-
 import * as React from "react";
 import { render } from "react-dom";
 import Kifu from "./Kifu";
-import { ajax } from "./util";
+import KifuStore from "./stores/KifuStore";
+import { onDomReady } from "./util";
 
-export function loadCallback(callback, id): KifuController {
-    const controller = new KifuController(id);
-    controller.changeCallback(callback);
-    return controller;
-}
-export function loadString(kifu, id): KifuController {
-    const controller = new KifuController(id);
-    controller.loadKifu(kifu);
-    return controller;
-}
-export function load(filename, id) {
-    loadCallback((done) => {
-        ajax(filename, (data, err) => {
-            if (err) {
-                this.logError(err);
-                return;
-            }
-            done(data, filename);
-        });
-    }, id);
+export function loadString(kifu: string, id?: string): Promise<KifuStore> {
+    return loadCommon(null, kifu, id);
 }
 
-export class KifuController {
-    private id: string;
-    constructor(id) {
+export function load(filePath: string, id?: string): Promise<KifuStore> {
+    return loadCommon(filePath, null, id);
+}
+
+function loadCommon(filePath, kifu, id): Promise<KifuStore> {
+    return new Promise((resolve) => {
         if (!id) {
             id =
                 "kifuforjs_" +
@@ -44,20 +28,11 @@ export class KifuController {
                     .slice(2);
             document.write("<div id='" + id + "'></div>");
         }
-        this.id = id;
-    }
-    public loadKifu(kifu) {
-        $(document).ready(() => {
-            const container = document.getElementById(this.id);
-            render(<Kifu kifu={kifu} />, container);
+        onDomReady(() => {
+            const container = document.getElementById(id);
+            const kifuStore = new KifuStore();
+            render(<Kifu kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+            resolve(kifuStore);
         });
-    }
-    public changeCallback(callback) {
-        $(document).ready(() => {
-            const container = document.getElementById(this.id);
-            render(<Kifu callback={callback} />, container);
-        });
-    }
+    });
 }
-
-export let settings = {};

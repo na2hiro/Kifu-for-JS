@@ -6,13 +6,10 @@ import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
     kifuStore: KifuStore;
-    reload: () => void;
 }
 
 @observer
 export default class LeftControl extends React.Component<IProps, {}> {
-    private timerAutoload: number;
-
     constructor(props) {
         super(props);
         this.onClickDl = this.onClickDl.bind(this);
@@ -48,24 +45,16 @@ export default class LeftControl extends React.Component<IProps, {}> {
     }
 
     public onClickDl() {
-        if (this.props.kifuStore.filename) {
-            window.open(this.props.kifuStore.filename);
+        if (this.props.kifuStore.filePath) {
+            window.open(this.props.kifuStore.filePath);
         }
     }
 
     public clickDlAvailable() {
-        return this.props.kifuStore.filename;
+        return this.props.kifuStore.filePath;
     }
 
     private onChangeTimer(e) {
-        if (this.timerAutoload) {
-            window.clearInterval(this.timerAutoload);
-        }
-        const s = parseInt(e.target.value, 10);
-        if (!isNaN(s)) {
-            this.timerAutoload = window.setInterval(() => {
-                this.props.reload();
-            }, s * 1000);
-        }
+        this.props.kifuStore.setReloadInterval(e.target.value);
     }
 }
