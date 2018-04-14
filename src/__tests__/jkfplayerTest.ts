@@ -281,6 +281,194 @@ P-\n\
             expect(player.forkAndForward("0")).toBeTruthy();
         });
     });
+    describe("forkPointers, forks, currentStream", () => {
+        function duplicate(obj) {
+            return JSON.parse(JSON.stringify(obj));
+        }
+        it("one fork", () => {
+            const player = new JKFPlayer({
+                header: {},
+                moves: [
+                    {},
+                    {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
+                    {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
+                    {
+                        move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}, forks: [
+                            [
+                                {
+                                    move: {
+                                        from: p(8, 8),
+                                        to: p(2, 2),
+                                        color: 0,
+                                        piece: "KA",
+                                        capture: "KA",
+                                        promote: false,
+                                    },
+                                },
+                                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
+                                {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                            ],
+                        ],
+                    },
+                    {
+                        move: {
+                            from: p(2, 2),
+                            to: p(7, 7),
+                            color: 1,
+                            piece: "KA",
+                            capture: "KE",
+                            promote: true,
+                            same: true,
+                        },
+                    },
+                    {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
+                    {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                ],
+            });
+            expect(player.forkPointers.length).toBe(0);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(1);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+            expect(player.currentStream.length).toBe(7);
+            const firstForkPointers = duplicate(player.forkPointers);
+            const firstForks = duplicate(player.forks);
+            const firstCurrentStream = duplicate(player.currentStream);
+            player.goto(2);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+            expect(player.forkPointers).toEqual(firstForkPointers);
+            expect(player.forks).toEqual(firstForks);
+            expect(player.currentStream).toEqual(firstCurrentStream);
+            player.forkAndForward(0);
+            expect(player.forkPointers.length).toBe(1);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(2);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream.length).toBe(6);
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+            const secondForkPointers = duplicate(player.forkPointers);
+            const secondForks = duplicate(player.forks);
+            const secondCurrentStream = duplicate(player.currentStream);
+            player.goto(Infinity);
+            expect(player.forkPointers).toEqual(secondForkPointers);
+            expect(player.forks).toEqual(secondForks);
+            expect(player.currentStream).toEqual(secondCurrentStream);
+        });
+        it("nested fork", () => {
+            const player = new JKFPlayer({
+                header: {},
+                moves: [
+                    {},
+                    {
+                        move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}, forks: [
+                            [
+                                {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
+                                {
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                        [
+                                            {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
+                                        ],
+                                    ],
+                                },
+                            ],
+                        ],
+                    },
+                    {
+                        move: {from: p(5, 3), to: p(5, 4), color: 1, piece: "FU"}, forks: [
+                            [
+                                {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
+                                {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
+                                {
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                        [
+                                            {move: {from: p(8, 4), to: p(8, 5), color: 1, piece: "FU"}},
+                                            {move: {from: p(8, 8), to: p(7, 7), color: 1, piece: "KA"}},
+                                        ],
+                                    ],
+                                },
+                            ],
+                        ],
+                    },
+                    {
+                        move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}, forks: [
+                            [
+                                {
+                                    move: {
+                                        from: p(8, 8),
+                                        to: p(2, 2),
+                                        color: 0,
+                                        piece: "KA",
+                                        capture: "KA",
+                                        promote: false,
+                                    },
+                                },
+                            ],
+                        ],
+                    },
+                ],
+            });
+            const firstForkPointers = duplicate(player.forkPointers);
+            const firstForks = duplicate(player.forks);
+            const firstCurrentStream = duplicate(player.currentStream);
+
+            expect(player.forkPointers.length).toBe(0);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(1);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+            expect(player.currentStream.length).toBe(4);
+
+            // +2726FU
+            player.forkAndForward(0);
+            expect(player.forkPointers.length).toBe(1);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(2);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream.length).toBe(3);
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+            // -8384FU
+            player.forkAndForward(0);
+            expect(player.forkPointers.length).toBe(2);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(3);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream.length).toBe(3);
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+
+            player.goto(0);
+            expect(player.forkPointers).toEqual(firstForkPointers);
+            expect(player.forks).toEqual(firstForks);
+            expect(player.currentStream).toEqual(firstCurrentStream);
+
+            // +7776FU
+            player.goto(1);
+            expect(player.forkPointers).toEqual(firstForkPointers);
+            expect(player.forks).toEqual(firstForks);
+            expect(player.currentStream).toEqual(firstCurrentStream);
+
+            // -8384FU
+            player.forkAndForward(0);
+            expect(player.forkPointers.length).toBe(1);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(2);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream.length).toBe(5);
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+
+            // +2726FU
+            player.goto(3);
+            // -8485FU
+            player.forkAndForward(0);
+            expect(player.forkPointers.length).toBe(2);
+            expect(player.forkPointers).toMatchSnapshot("forkPointers");
+            expect(player.forks.length).toBe(3);
+            expect(player.forks).toMatchSnapshot("forks");
+            expect(player.currentStream.length).toBe(6);
+            expect(player.currentStream).toMatchSnapshot("currentStream");
+        });
+    });
     describe("inputMove", () => {
         it("new input", () => {
             const player = new JKFPlayer({
@@ -468,8 +656,17 @@ P-\n\
             expect(jkf).toEqual(JSON.parse(player2.toJKF()));
         });
         it("getMoveFormat", () => {
+            expect(player.getMoveFormat(0)).toEqual({comments: ["hoge"]});
+            expect(player.getMoveFormat(1)).toEqual({
+                move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}, forks: [
+                    [{move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}}],
+                ],
+            });
             player.forkAndForward(0);
             expect(player.getMoveFormat(0)).toEqual({comments: ["hoge"]});
+            expect(player.getMoveFormat(1)).toEqual({
+                move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0},
+            });
         });
     });
     it("static sameMoveMinimal", () => {
@@ -491,5 +688,22 @@ P-\n\
             to: p(2, 6),
             piece: "KA",
         })).toBe(false);
+    });
+    describe("getMoveFormat", () => {
+        it("only one", () => {
+            const player = new JKFPlayer({
+                header: {},
+                moves: [
+                    {comments: ["hoge"]},
+                    {
+                        move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+                    },
+                ],
+            });
+            expect(player.getMoveFormat(0)).toEqual({comments: ["hoge"]});
+            expect(player.getMoveFormat(1)).toEqual({
+                move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+            });
+        });
     });
 });
