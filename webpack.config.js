@@ -2,12 +2,14 @@ const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const CleanWebpackPlugin = require('clean-webpack-plugin');
+const BundleAnalyzerPlugin = require('webpack-bundle-analyzer').BundleAnalyzerPlugin;
 const package = require('./package.json');
 
 const DEV_SERVER_PORT = 8080;
 
 module.exports = env => {
     const IS_PROD = env && env.production;
+    const IS_ANALYZE = env && env.analyze;
     const BUNDLE_DIR = path.resolve(__dirname, './bundle');
     const common = {
         module: {
@@ -35,7 +37,13 @@ module.exports = env => {
                 },
                 {
                     test: /\.png$/,
-                    use: 'url-loader'
+                    use: [
+                        'url-loader',
+                        {
+                            loader: 'img-loader',
+                            options: {}
+                        }
+                    ]
                 },
             ]
         },
@@ -49,12 +57,19 @@ module.exports = env => {
 
     if (IS_PROD){
         common.plugins.push(new webpack.optimize.UglifyJsPlugin());
+        common.plugins.push(new webpack.DefinePlugin({
+            'process.env.NOVE_ENV': JSON.stringify('production')
+        }))
     } else {
         common.devServer = {
             progress: true,
             port: DEV_SERVER_PORT,
         };
         common.devtool = "cheap-module-eval-source-map";
+    }
+
+    if (IS_ANALYZE) {
+        common.plugins.push(new BundleAnalyzerPlugin());
     }
 
     // For browsers

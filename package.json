@@ -8,7 +8,8 @@
   },
   "scripts": {
     "start": "./node_modules/webpack-dev-server/bin/webpack-dev-server.js --open",
-    "build": "./node_modules/webpack/bin/webpack.js --env.production",
+    "build": "./node_modules/webpack/bin/webpack.js -p --env.production",
+    "build:analyze": "./node_modules/webpack/bin/webpack.js -p --env.production --env.analyze",
     "build:watch": "./node_modules/webpack/bin/webpack.js --watch",
     "lint": "./node_modules/tslint/bin/tslint -p ./",
     "lint:fix": "./node_modules/.bin/prettier ./src/** --write && ./node_modules/tslint/bin/tslint -p ./ --fix",
@@ -62,6 +63,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "core-js": "^2.5.4",
     "css-loader": "^0.28.11",
+    "img-loader": "^2.0.1",
     "mobx-react-devtools": "^5.0.1",
     "pre-push": "^0.1.1",
     "prettier": "^1.11.1",
@@ -74,6 +76,7 @@
     "typescript": "^2.8.1",
     "url-loader": "^1.0.1",
     "webpack": "^3.11.0",
+    "webpack-bundle-analyzer": "^2.11.1",
     "webpack-dev-server": "^2.11.2",
     "webpack-merge": "^4.1.2"
   },

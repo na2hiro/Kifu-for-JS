@@ -13,8 +13,10 @@ import LeftControl from "./LeftControl";
 import KifuStore from "./stores/KifuStore";
 import { loadFile } from "./util";
 
-import DevTools from "mobx-react-devtools";
 import "../css/kifuforjs.css";
+
+// tslint:disable-next-line:no-var-requires
+const DevTools = process.env.NODE_ENV !== "production" ? require("mobx-react-devtools").default : () => <span />;
 
 export interface IProps {
     filePath?: string;
