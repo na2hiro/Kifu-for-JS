@@ -4,11 +4,11 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 ## 概要
 
 * 現状の問題として，既存のKIF, KI2, CSA形式が持つ情報はバラバラであり，アプリケーション側の対応に手間がかかる．
-* 上記形式の情報に加え，棋譜再生や表示に必要な情報を持った形式をJSONで表し，これを流通用の**JSON棋譜フォーマット(JKF)**とする．
+* 上記形式の情報に加え，棋譜再生や表示に必要な情報を持った形式をJSONで表し，これを流通用の **JSON棋譜フォーマット(JKF)** とする．
 	* JKFが一般的になれば，棋譜再生を行うアプリケーションの作成が容易になる．
 	* 一例として，JKFを元に棋譜再生を行うJKFPlayerクラス(JavaScript)を提供する．
 * KIF, KI2, CSA各形式のパーサ(JavaScript)を用意し，JKFへ変換できるようにする．
-	* これはパーサジェネレータによるパーサである．つまり，**KIF, KI2, CSA形式のEBNF表現**を提供している．これは将棋界において画期的である．
+	* これはパーサジェネレータによるパーサである．つまり， **KIF, KI2, CSA形式のEBNF表現** を提供している．これは将棋界において画期的である．
 
 ### 棋譜形式の比較
 
@@ -24,9 +24,9 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 
 ○=棋譜だけで可能 △=現在の局面を見れば可能 ×=不可能か，以前の局面を見れば可能
 
-* 0) 局面を1手進めるために必要な情報
-* 1) 局面を1手戻すために必要な情報
-* 2) 可読棋譜にするために必要な情報
+* 0: 局面を1手進めるために必要な情報
+* 1: 局面を1手戻すために必要な情報
+* 2: 可読棋譜にするために必要な情報
 * 相対情報: 上下左右など，同じ座標に複数の駒が移動できる場合に駒を区別するための情報．
 * 相対逆算: 局面と座標と相対情報から，その位置に移動する駒を特定すること．
 
@@ -191,70 +191,73 @@ JSONで一般的なUTF-8を使用するものとします．
 ```
 
 ## プログラム
+### ブラウザ向け
 
-インストールは
+[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．`json-kifu-format-*.*.*.min.js`を読み込むと，`JSONKifuFormat` が使えるようになります．
 
+### node.js用
 ```
 npm install json-kifu-format
 ```
 
-または右のDownload ZIPボタンから．
+exportされているクラス群は次の通りです
 
-### ブラウザ用
-node.js用のファイルをbrowserifyで１つにまとめたJKFPlayerが用意されています．`require("JKFPlayer")`で読み込むことができます．
-
-* `out/`
-	* `jkfplayer.js`: KIF/KI2/CSA/JKFから棋譜再生を行うライブラリ
-
-### node.js用
-`d.ts`ファイルはTypeScriptで使用するための型宣言ファイルです．
-
-* `lib/`
-	* `kif-parser.{d.ts/js}`: KIFをJSON形式に一対一変換するパーサ
-	* `ki2-parser.{d.ts/js}`: KI2をJSON形式に一対一変換するパーサ
-	* `csa-parser.{d.ts/js}`: CSA(V1, V2, V2.1, V2.2)をJSON形式に一対一変換するパーサ
-	* `normalizer.{d.ts/js}`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
-	* `jkfplayer.{d.ts/js}`: JKFを扱う棋譜再生盤の例
-
-### 開発用
-libディレクトリの中とほぼ対応しています．
-
-* `src/`
-	* `src/Formats.ts`: JKF型宣言ファイル
-	* `src/jkfplayer.ts`
-	* `src/normalizer.ts`
-	* `src/{kif,ki2,csa}-parser.pegjs`
+* `Parsers`
+    * `parseKIF`: KIFをJSON形式に一対一変換するパーサ
+    * `parseKI2`: KI2をJSON形式に一対一変換するパーサ
+    * `parseCSA`: CSA(V1, V2, V2.1, V2.2)をJSON形式に一対一変換するパーサ
+* `Normalizer`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
+* `JKFPlayer`: JKFを扱う棋譜再生盤の例
 
 ## 開発環境
-package.jsonに必要モジュールが書いてあります．パッケージマネージャnpmを使用し，
-
 ```
 $ npm install
-
 ```
 
-を実行することで下記のモジュールをインストールできます．
+上記コマンドを実行することで開発に必要なパッケージをインストールできます．
 
-* TypeScript 1.5
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
-* gulp 3.9 (自動化ツール)
-	* gulp-typescript 2.8
-	* gulp-peg ([PEG.js](http://pegjs.majda.cz/): パーサジェネレータ)
-	* gulp-mocha 2.1 (テストフレームワーク)
-	* gulp-istanbul 0.10 (カバレッジ計測)
-	* gulp-webserver 0.9 (ライブリロード付きサーバ)
-* browserify 11.0 (ブラウザ用require)
+* [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
+* TypeScript 2.0
+* Webpack 3 (バンドルツール)
+* Browserify (JSバンドルツール)
+* Jest (テストフレームワーク，カバレッジ計測)
+* TSLint (Linter)
 * iconv, jschardet (文字コード関連)
 
+### コマンド
+
 ```
-$ ./node_modules/.bin/gulp # パスが通っている場合は単にgulp
+$ npm run build
+$ npm run build:watch
+$ npm run build:analyze
 ```
 
-を起動すると，コンソールでテスト結果が表示され，カバレッジレポートが立ち上がります．ソースコードを変更するとTypeScriptのコンパイルとテストが，テストを変更するとテストが走り，カバレッジレポートがリロードされます．
+ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
 
-開発時にこれを起動しておくと，テストの通過具合とカバレッジの網羅具合を確認しながら開発できます．テストがすべて通過していることとカバレッジが十分高いことを確認できたらコミットしてください．
+```
+$ npm run test:watch
+```
 
-コンパイルは`gulp build`，テストは`gulp test`でも実行できます．
+コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
+
+```
+$ npm run test
+```
+
+全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
+
+```
+$ npm run lint
+```
+
+コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
+
+```
+$ npm run lint:fix
+```
+
+自動的に修正可能な問題(インデント等)を直してくれます．
 
 ## TODO
 
