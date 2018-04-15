@@ -5,10 +5,11 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import Color from "./Color";
-import {MOVE_DEF, PRESET} from "./Constants";
+import {MOVE_DEF} from "./Constants";
 import IMoveDefinition from "./IMoveDefinition";
 import Piece from "./Piece";
 import "./polyfills";
+import {fromPreset, fromSfen, toCSA, toSfen} from "./Serialization";
 
 export class Shogi {
     private static getIllegalUnpromotedRow(kind: string) {
@@ -36,92 +37,38 @@ export class Shogi {
         this.initialize(setting);
     }
 
-    // 盤面を初期化する
-    // 初期局面(なければ平手)
+    /**
+     * 盤面を初期化する
+     * @param {ISettingType} setting 初期局面(なければ平手)
+     */
     public initialize(setting: ISettingType = {preset: "HIRATE"}): void {
-        this.board = [];
-        if (setting.preset !== "OTHER") {
-            for (let i = 0; i < 9; i++) {
-                this.board[i] = [];
-                for (let j = 0; j < 9; j++) {
-                    const csa: string = PRESET[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
-                    this.board[i][j] = csa === " * " ? null : new Piece(csa);
-                }
-            }
-            this.turn = PRESET[setting.preset].turn;
-            this.hands = [[], []];
-        } else {
-            for (let i = 0; i < 9; i++) {
-                this.board[i] = [];
-                for (let j = 0; j < 9; j++) {
-                    const p = setting.data.board[i][j];
-                    this.board[i][j] = p.kind ? new Piece((p.color === Color.Black ? "+" : "-") + p.kind) : null;
-                }
-            }
-            this.turn = setting.data.color;
-            this.hands = [[], []];
-            for (let c = 0; c < 2; c++) {
-                for (const k in setting.data.hands[c]) {
-                    if (setting.data.hands[c].hasOwnProperty(k)) {
-                        const csa = (c === 0 ? "+" : "-") + k;
-                        for (let i = 0; i < setting.data.hands[c][k]; i++) {
-                            this.hands[c].push(new Piece(csa));
-                        }
-                    }
-                }
-            }
-        }
+        fromPreset(this, setting);
         this.flagEditMode = false;
     }
 
-    // SFENによる盤面表現の文字列で盤面を初期化する
+    /**
+     * SFENによる盤面表現の文字列で盤面を初期化する
+     * @param {string} sfen
+     */
     public initializeFromSFENString(sfen: string): void {
-        this.board = [];
-        for (let i = 0; i < 9; i++) {
-            this.board[i] = [];
-            for (let j = 0; j < 9; j++) {
-                this.board[i][j] = null;
-            }
-        }
-        const segments = sfen.split(" ");
-        const sfenBoard = segments[0];
-        let x = 8;
-        let y = 0;
-        for (let i = 0; i < sfenBoard.length; i++) {
-            let c = sfenBoard[i];
-            const promoted = false;
-            if (c === "+") {
-                i++;
-                c += sfenBoard[i];
-            }
-            if (c.match(/^[1-9]$/)) {
-                x -= Number(c);
-            } else if (c === "/") {
-                y++;
-                x = 8;
-            } else {
-                this.board[x][y] = Piece.fromSFENString(c);
-                x--;
-            }
-        }
-        this.turn = segments[1] === "b" ? Color.Black : Color.White;
-        this.hands = [[], []];
-        let sfenHands = segments[2];
-        if (sfenHands !== "-") {
-            while (sfenHands.length > 0) {
-                let count = 1;
-                const m = sfenHands.match(/^[0-9]+/);
-                if (m) {
-                    count = Number(m[0]);
-                    sfenHands = sfenHands.slice(m[0].length);
-                }
-                for (let i = 0; i < count; i++) {
-                    const piece = Piece.fromSFENString(sfenHands[0]);
-                    this.hands[piece.color].push(piece);
-                }
-                sfenHands = sfenHands.slice(1);
-            }
-        }
+        fromSfen(this, sfen);
+    }
+
+    /**
+     * CSAによる盤面表現の文字列を返す
+     * @returns {string}
+     */
+    public toCSAString(): string {
+        return toCSA(this);
+    }
+
+    /**
+     * SFENによる盤面表現の文字列を返す
+     * @param {number} moveCount
+     * @returns {string}
+     */
+    public toSFENString(moveCount = 1): string {
+        return toSfen(this, moveCount);
     }
 
     // 編集モード切り替え
@@ -217,77 +164,6 @@ export class Shogi {
         this.pushToHand(piece);
         this.set(tox, toy, null);
         this.prevTurn();
-    }
-
-    // CSAによる盤面表現の文字列を返す
-    public toCSAString(): string {
-        const ret = [];
-        for (let y = 0; y < 9; y++) {
-            let line = "P" + (y + 1);
-            for (let x = 8; x >= 0; x--) {
-                const piece = this.board[x][y];
-                line += piece == null ? " * " : piece.toCSAString();
-            }
-            ret.push(line);
-        }
-        for (let i = 0; i < 2; i++) {
-            let line = "P" + "+-"[i];
-            for (const hand of this.hands[i]) {
-                line += "00" + hand.kind;
-            }
-            ret.push(line);
-        }
-        ret.push(this.turn === Color.Black ? "+" : "-");
-        return ret.join("\n");
-    }
-
-    // SFENによる盤面表現の文字列を返す
-    public toSFENString(moveCount = 1): string {
-        const ret = [];
-        const sfenBoard = [];
-        for (let y = 0; y < 9; y++) {
-            let line = "";
-            let empty = 0;
-            for (let x = 8; x >= 0; x--) {
-                const piece = this.board[x][y];
-                if (piece == null) {
-                    empty++;
-                } else {
-                    if (empty > 0) {
-                        line += "" + empty;
-                        empty = 0;
-                    }
-                    line += piece.toSFENString();
-                }
-            }
-            if (empty > 0) {
-                line += "" + empty;
-            }
-            sfenBoard.push(line);
-        }
-        ret.push(sfenBoard.join("/"));
-        ret.push(this.turn === Color.Black ? "b" : "w");
-        if (this.hands[0].length === 0 && this.hands[1].length === 0) {
-            ret.push("-");
-        } else {
-            let sfenHands = "";
-            const kinds = ["R", "B", "G", "S", "N", "L", "P", "r", "b", "g", "s", "n", "l", "p"];
-            const count = {};
-            for (let i = 0; i < 2; i++) {
-                for (const hand of this.hands[i]) {
-                    const key = hand.toSFENString();
-                    count[key] = (count[key] || 0) + 1;
-                }
-            }
-            for (const kind of kinds) {
-                if (count[kind] > 0) {
-                    sfenHands += (count[kind] > 1 ? count[kind] : "") + kind;
-                }
-            }
-            ret.push(sfenHands);
-        }
-        ret.push("" + moveCount);
-        return ret.join(" ");
     }
 
     // (x, y)の駒の移動可能な動きをすべて得る
