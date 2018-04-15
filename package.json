@@ -8,7 +8,8 @@
     "test": "test"
   },
   "scripts": {
-    "build": "./node_modules/webpack/bin/webpack.js",
+    "build": "./node_modules/webpack/bin/webpack.js -p",
+    "build:analyze": "./node_modules/webpack/bin/webpack.js -p --env.analyze",
     "build:watch": "./node_modules/webpack/bin/webpack.js --watch",
     "lint": "./node_modules/tslint/bin/tslint -p ./",
     "lint:fix": "./node_modules/tslint/bin/tslint -p ./ --fix",
@@ -46,10 +47,11 @@
     "tslint": "^5.9.1",
     "typescript": "^2.0.0",
     "webpack": "^3.11.0",
+    "webpack-bundle-analyzer": "^2.11.1",
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "shogi.js": "^2.0.0"
+    "shogi.js": "^2.0.1"
   },
   "peerDependencies": {},
   "pre-push": [
