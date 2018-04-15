@@ -5,211 +5,12 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import Color from "./Color";
+import {MOVE_DEF, PRESET} from "./Constants";
 import IMoveDefinition from "./IMoveDefinition";
 import Piece from "./Piece";
 import "./polyfills";
 
 export class Shogi {
-    // 既定の初期局面
-    public static preset: { [index: string]: { board: string[]; turn: Color; } } = {
-        "HIRATE": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " * -HI *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.Black,
-        },
-        "KY": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
-                " * -HI *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "KY_R": {
-            board: [
-                " * -KE-GI-KI-OU-KI-GI-KE-KY",
-                " * -HI *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "KA": { // tslint:disable-line object-literal-sort-keys
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " * -HI *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "HI": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " *  *  *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "HIKY": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  * -KA * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "2": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "3": {
-            board: [
-                "-KY-KE-GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "4": {
-            board: [
-                " * -KE-GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "5": {
-            board: [
-                " *  * -GI-KI-OU-KI-GI-KE * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "5_L": {
-            board: [
-                " * -KE-GI-KI-OU-KI-GI *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "6": {
-            board: [
-                " *  * -GI-KI-OU-KI-GI *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "8": {
-            board: [
-                " *  *  * -KI-OU-KI *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-        "10": {
-            board: [
-                " *  *  *  * -OU *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                " *  *  *  *  *  *  *  *  * ",
-                "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
-                " * +KA *  *  *  *  * +HI * ",
-                "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
-            ],
-            turn: Color.White,
-        },
-    };
-
     private static getIllegalUnpromotedRow(kind: string) {
         switch (kind) {
             case "FU":
@@ -243,11 +44,11 @@ export class Shogi {
             for (let i = 0; i < 9; i++) {
                 this.board[i] = [];
                 for (let j = 0; j < 9; j++) {
-                    const csa: string = Shogi.preset[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
+                    const csa: string = PRESET[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
                     this.board[i][j] = csa === " * " ? null : new Piece(csa);
                 }
             }
-            this.turn = Shogi.preset[setting.preset].turn;
+            this.turn = PRESET[setting.preset].turn;
             this.hands = [[], []];
         } else {
             for (let i = 0; i < 9; i++) {
@@ -508,16 +309,13 @@ export class Shogi {
         if (piece == null) {
             return [];
         }
-        const moveDef = Piece.getMoveDef(piece.kind);
+        const moveDef = MOVE_DEF[piece.kind];
         const ret = [];
         const from = {x, y};
+        const unit = piece.color === Color.Black ? 1 : -1;
         if (moveDef.just) {
             for (const def of moveDef.just) {
-                if (piece.color === Color.White) {
-                    def[0] *= -1;
-                    def[1] *= -1;
-                }
-                const to = {x: from.x + def[0], y: from.y + def[1]};
+                const to = {x: from.x + def[0] * unit, y: from.y + def[1] * unit};
                 if (legal(to.x, to.y, piece.color)) {
                     ret.push({from, to});
                 }
@@ -525,18 +323,14 @@ export class Shogi {
         }
         if (moveDef.fly) {
             for (const def of moveDef.fly) {
-                if (piece.color === Color.White) {
-                    def[0] *= -1;
-                    def[1] *= -1;
-                }
-                const to = {x: from.x + def[0], y: from.y + def[1]};
+                const to = {x: from.x + def[0] * unit, y: from.y + def[1] * unit};
                 while (legal(to.x, to.y, piece.color)) {
                     ret.push({from, to: {x: to.x, y: to.y}});
                     if (shouldStop(to.x, to.y, piece.color)) {
                         break;
                     }
-                    to.x += def[0];
-                    to.y += def[1];
+                    to.x += def[0] * unit;
+                    to.y += def[1] * unit;
                 }
             }
         }

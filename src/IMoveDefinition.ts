@@ -1,6 +1,6 @@
 interface IMoveDefinition {
-    just?: number[][];
-    fly?: number[][];
+    readonly just?: ReadonlyArray<ReadonlyArray<number>>;
+    readonly fly?: ReadonlyArray<ReadonlyArray<number>>;
 }
 
 export default IMoveDefinition;

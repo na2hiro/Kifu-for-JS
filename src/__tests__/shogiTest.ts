@@ -380,7 +380,7 @@ describe("getMovesFrom", () => {
         }
         expect(movable).toBe(60);
     });
-    describe("Piece.getMoveDef", () => {
+    describe("MOVE_DEF", () => {
         it("RY", () => {
             shogi.move(7, 7, 7, 6);
             shogi.move(4, 3, 4, 4);

@@ -1,5 +1,4 @@
 import Color from "./Color";
-import IMoveDefinition from "./IMoveDefinition";
 
 export default class Piece {
     // 成った時の種類を返す．なければそのまま．
@@ -29,30 +28,6 @@ export default class Piece {
     // 成れる駒かどうかを返す
     public static canPromote(kind: string): boolean {
         return Piece.promote(kind) !== kind;
-    }
-    public static getMoveDef(kind: string): IMoveDefinition {
-        switch (kind) {
-            case "FU":
-                return {just: [[0, -1]]};
-            case "KY":
-                return {fly: [[0, -1]]};
-            case "KE":
-                return {just: [[-1, -2], [1, -2]]};
-            case "GI":
-                return {just: [[-1, -1], [0, -1], [1, -1], [-1, 1], [1, 1]]};
-            case "KI": case "TO": case "NY": case "NK": case "NG":
-            return {just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [0, 1]]};
-            case "KA":
-                return {fly: [[-1, -1], [1, -1], [-1, 1], [1, 1]]};
-            case "HI":
-                return {fly: [[0, -1], [-1, 0], [1, 0], [0, 1]]};
-            case "OU":
-                return {just: [[-1, -1], [0, -1], [1, -1], [-1, 0], [1, 0], [-1, 1], [0, 1], [1, 1]]};
-            case "UM":
-                return {fly: [[-1, -1], [1, -1], [-1, 1], [1, 1]], just: [[0, -1], [-1, 0], [1, 0], [0, 1]]};
-            case "RY":
-                return {fly: [[0, -1], [-1, 0], [1, 0], [0, 1]], just: [[-1, -1], [1, -1], [-1, 1], [1, 1]]};
-        }
     }
     public static isPromoted(kind: string): boolean {
         return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
