@@ -1,0 +1,199 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`kif-parser same at first fork 1`] = `
+Object {
+  "header": Object {},
+  "moves": Array [
+    Object {},
+    Object {
+      "move": Object {
+        "from": Object {
+          "x": 7,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 7,
+          "y": 6,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "from": Object {
+          "x": 3,
+          "y": 3,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 3,
+          "y": 4,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "forks": Array [
+        Array [
+          Object {
+            "move": Object {
+              "from": Object {
+                "x": 8,
+                "y": 8,
+              },
+              "piece": "KA",
+              "promote": true,
+              "to": Object {
+                "x": 2,
+                "y": 2,
+              },
+            },
+            "time": Object {
+              "now": Object {
+                "m": 0,
+                "s": 0,
+              },
+              "total": Object {
+                "h": 0,
+                "m": 0,
+                "s": 0,
+              },
+            },
+          },
+          Object {
+            "forks": Array [
+              Array [
+                Object {
+                  "move": Object {
+                    "from": Object {
+                      "x": 8,
+                      "y": 2,
+                    },
+                    "piece": "HI",
+                    "same": true,
+                  },
+                  "time": Object {
+                    "now": Object {
+                      "m": 0,
+                      "s": 0,
+                    },
+                    "total": Object {
+                      "h": 0,
+                      "m": 0,
+                      "s": 0,
+                    },
+                  },
+                },
+                Object {
+                  "special": "CHUDAN",
+                  "time": Object {
+                    "now": Object {
+                      "m": 0,
+                      "s": 0,
+                    },
+                    "total": Object {
+                      "h": 0,
+                      "m": 0,
+                      "s": 0,
+                    },
+                  },
+                },
+              ],
+            ],
+            "move": Object {
+              "from": Object {
+                "x": 3,
+                "y": 1,
+              },
+              "piece": "GI",
+              "same": true,
+            },
+            "time": Object {
+              "now": Object {
+                "m": 0,
+                "s": 0,
+              },
+              "total": Object {
+                "h": 0,
+                "m": 0,
+                "s": 0,
+              },
+            },
+          },
+          Object {
+            "special": "CHUDAN",
+            "time": Object {
+              "now": Object {
+                "m": 0,
+                "s": 0,
+              },
+              "total": Object {
+                "h": 0,
+                "m": 0,
+                "s": 0,
+              },
+            },
+          },
+        ],
+      ],
+      "move": Object {
+        "from": Object {
+          "x": 2,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 2,
+          "y": 6,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "special": "CHUDAN",
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+  ],
+}
+`;

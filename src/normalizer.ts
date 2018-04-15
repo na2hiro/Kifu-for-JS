@@ -141,7 +141,7 @@ function normalizeKIFMoves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IMoveF
                 shogi.undrop(move.to.x, move.to.y);
             }
         }
-        const last = i <= 1 ? lastMove : moves[i - 1];
+        const last = i === 0 ? lastMove : moves[i - 1]; // When first fork has fork, use lastMove of this fork
         if (moves[i].forks) {
             for (const fork of moves[i].forks) {
                 normalizeKIFMoves(shogi, fork, last);

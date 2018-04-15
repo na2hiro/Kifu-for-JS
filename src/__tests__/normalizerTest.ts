@@ -233,6 +233,39 @@ describe("module Normalizer", () => {
                 normalizeKIF(actual);
             }).toThrow();
         });
+        it("same at first fork", () => {
+            actual.moves.push(
+                {move: {from: {x: 7, y: 7}, piece: "FU", to: {x: 7, y: 6}}},
+                {move: {from: {x: 3, y: 3}, piece: "FU", to: {x: 3, y: 4}}},
+                {
+                    move: {from: {x: 2, y: 7}, piece: "FU", to: {x: 2, y: 6}},
+                    forks: [
+                        [
+                            {
+                                move: {
+                                    from: {x: 8, y: 8},
+                                    piece: "KA",
+                                    promote: true,
+                                    to: {x: 2, y: 2},
+                                },
+                            },
+                            {
+                                move: {from: {x: 3, y: 1}, piece: "GI", same: true},
+                                forks: [
+                                    [
+                                        {move: {from: {x: 8, y: 2}, piece: "HI", same: true}},
+                                        {special: "JISHOGI"},
+                                    ],
+                                ],
+                            },
+                            {special: "CHUDAN"},
+                        ],
+                    ],
+                },
+                {special: "TORYO"},
+            );
+            expect(normalizeKIF(actual)).toMatchSnapshot();
+        });
     });
     describe("normalizeKI2", () => {
         let actual;

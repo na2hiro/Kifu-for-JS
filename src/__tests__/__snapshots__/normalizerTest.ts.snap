@@ -1,0 +1,117 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`module Normalizer normalizeKIF same at first fork 1`] = `
+Object {
+  "header": Object {},
+  "moves": Array [
+    Object {},
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 7,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 7,
+          "y": 6,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 3,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 3,
+          "y": 4,
+        },
+      },
+    },
+    Object {
+      "forks": Array [
+        Array [
+          Object {
+            "move": Object {
+              "capture": "KA",
+              "color": 0,
+              "from": Object {
+                "x": 8,
+                "y": 8,
+              },
+              "piece": "KA",
+              "promote": true,
+              "to": Object {
+                "x": 2,
+                "y": 2,
+              },
+            },
+          },
+          Object {
+            "forks": Array [
+              Array [
+                Object {
+                  "move": Object {
+                    "capture": "UM",
+                    "color": 1,
+                    "from": Object {
+                      "x": 8,
+                      "y": 2,
+                    },
+                    "piece": "HI",
+                    "same": true,
+                    "to": Object {
+                      "x": 2,
+                      "y": 2,
+                    },
+                  },
+                },
+                Object {
+                  "special": "JISHOGI",
+                },
+              ],
+            ],
+            "move": Object {
+              "capture": "UM",
+              "color": 1,
+              "from": Object {
+                "x": 3,
+                "y": 1,
+              },
+              "piece": "GI",
+              "same": true,
+              "to": Object {
+                "x": 2,
+                "y": 2,
+              },
+            },
+          },
+          Object {
+            "special": "CHUDAN",
+          },
+        ],
+      ],
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 2,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 2,
+          "y": 6,
+        },
+      },
+    },
+    Object {
+      "special": "TORYO",
+    },
+  ],
+}
+`;
