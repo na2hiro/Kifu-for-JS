@@ -20,11 +20,11 @@ export default class LeftControl extends React.Component<IProps, {}> {
     public render() {
         const { player } = this.props.kifuStore;
         return (
-            <div className="mochi">
+            <div className="mochi panel">
                 <KifuList player={player} />
                 <ul className="lines">
                     <li className="fork">
-                        <ForkList player={player} />
+                        <ForkList kifuStore={this.props.kifuStore} />
                     </li>
                     <li>
                         <button className="dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>

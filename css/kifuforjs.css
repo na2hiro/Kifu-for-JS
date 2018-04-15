@@ -25,6 +25,10 @@
 .kifuforjs .mochi.info dl dd{
 	margin-left:20px;
 }
+.kifuforjs .mochi.panel {
+	display: flex;
+	flex-direction: column;
+}
 
 .kifuforjs div.players select.kifulist{
 	font-size:12px;
@@ -32,15 +36,6 @@
 	height:70%;
 	overflow: scroll;
 /*	font-family: Consolas, 'Courier New', Courier, Monaco, monospace;*/
-}
-.kifuforjs div.players.withfork select.kifulist{
-	height: 60%;
-}
-.kifuforjs div.players li.fork{
-	display: none;
-}
-.kifuforjs div.players.withfork li.fork{
-	display: block;
 }
 .kifuforjs ul.lines{
 	margin: 0px;

@@ -60,10 +60,6 @@ class Kifu extends React.Component<IProps, {}> {
                 <img src={item.imgSrc} className="dragPreview" style={style} />
             ) : null;
 
-        const handClassName =
-            "inlineblock players " +
-            (this.kifuStore.player.kifu.moves.some((move) => move.forks && move.forks.length > 0) ? "withfork" : "");
-
         return this.props.connectDropTarget(
             <div>
                 <table className="kifuforjs" style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
@@ -72,7 +68,7 @@ class Kifu extends React.Component<IProps, {}> {
                             <td>
                                 <Preview generator={previewGenerator} />
                                 <DevTools />
-                                <div className={handClassName}>
+                                <div className="inlineblock players">
                                     <Hand kifuStore={this.kifuStore} defaultColor={1} />
                                     <LeftControl kifuStore={this.kifuStore} />
                                 </div>

@@ -97,6 +97,10 @@ export default class KifuStore {
             }, s * 1000);
         }
     }
+
+    get hasFork() {
+        return this.player.kifu.moves.some((move) => move.forks && move.forks.length > 0);
+    }
 }
 
 /**
