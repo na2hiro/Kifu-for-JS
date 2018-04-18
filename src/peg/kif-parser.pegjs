@@ -187,7 +187,7 @@ line = " "* te " "* move:(fugou:fugou from:from {
 
 te = [0-9]+
 fugou = pl:place pi:piece pro:"成"? {return {to:pl, piece: pi,promote:!!pro};}
-place = x:num y:numkan {return {x:x,y:y}} / "同　" {return null}
+place = x:num y:numkan {return {x:x,y:y}} / "同" "　"? {return null}
 
 num = n:[１２３４５６７８９] {return zenToN(n);}
 numkan = n:[一二三四五六七八九] {return kanToN(n);}
