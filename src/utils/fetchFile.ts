@@ -1,37 +1,8 @@
-import { Color } from "shogi.js";
+import {getEncodingFromFileName} from "./util";
 
 declare var $; // jQuery
 
-export function colorToMark(color) {
-    return color === Color.Black ? "☗" : "☖";
-}
-// length <= 10
-export function pad(str, space, length) {
-    let ret = "";
-    for (let i = str.length; i < length; i++) {
-        ret += space;
-    }
-    return ret + str;
-}
-
-// ファイルオブジェクトと読み込み完了後のコールバック関数を渡す
-// 読み込み完了後，callback(ファイル内容, ファイル名)を呼ぶ
-export function loadFile(file, callback) {
-    const reader = new FileReader();
-    const encoding = getEncodingFromFileName(file.name);
-    reader.onload = () => {
-        callback(reader.result, file.name);
-    };
-    reader.readAsText(file, encoding);
-}
-
-function getEncodingFromFileName(filename) {
-    const tmp = filename.split(".");
-    const ext = tmp[tmp.length - 1];
-    return ["jkf", "kifu", "ki2u"].indexOf(ext) >= 0 ? "UTF-8" : "Shift_JIS";
-}
-
-export function fetchFile(filePath) {
+export default function fetchFile(filePath): Promise<string> {
     return new Promise((resolve, reject) => {
         const encoding = getEncodingFromFileName(filePath);
         /*
@@ -51,7 +22,7 @@ export function fetchFile(filePath) {
             },
             error(jqXHR, textStatus) {
                 if (textStatus !== "notmodified") {
-                    let message = "棋譜の取得に失敗しました: " + filePath;
+                    let message = `棋譜ファイルが見つかりません: ${filePath}`;
                     if (document.location.protocol === "file:") {
                         message += `
 
@@ -69,15 +40,4 @@ Ajaxのセキュリティ制約により，ローカルの棋譜の読み込み�
             ifModified: true,
         });
     });
-}
-
-export function onDomReady(callback) {
-    if (
-        document.readyState === "complete" ||
-        (document.readyState !== "loading" && !(document.documentElement as any).doScroll)
-    ) {
-        callback();
-    } else {
-        document.addEventListener("DOMContentLoaded", callback);
-    }
 }

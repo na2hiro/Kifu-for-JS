@@ -1,12 +1,14 @@
-import {JKFPlayer} from "json-kifu-format";
-import {decorate, observable, toJS} from "mobx";
-import {fetchFile} from "../util";
+import { JKFPlayer } from "json-kifu-format";
+import { decorate, observable, toJS } from "mobx";
+import fetchFile from "../utils/fetchFile";
 
-const FORMAT_ERROR_MESSAGE =
-    "棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．\n=== 棋譜 ===\n";
+const formatErrorMessage = (kifu, error) =>
+    `棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．
+${error}
+=== 棋譜 ===
+${kifu}`;
 
 export default class KifuStore {
-
     public signature = Math.random();
     @observable public errors: string[] = [];
     @observable public reversed: boolean;
@@ -16,7 +18,7 @@ export default class KifuStore {
     private timerAutoload: number;
 
     constructor() {
-        this.player = new JKFPlayer({header: {}, moves: [{}]});
+        this.player = new JKFPlayer({ header: {}, moves: [{}] });
     }
 
     get player() {
@@ -54,23 +56,29 @@ export default class KifuStore {
         }
     }
 
-    public loadKifu(kifu: string, fileName?: string) {
+    public loadKifu(kifu: string, fileName?: string): Promise<void> {
+        return new Promise(()=>{
+            return this.loadKifuSync(kifu, fileName);
+        })
+    }
+
+    public loadKifuSync(kifu: string, fileName?: string) {
         this.errors = [];
         try {
             const newPlayer = JKFPlayer.parse(kifu, fileName);
             takeOverState(newPlayer, this.player);
             this.player = newPlayer;
-        } catch (e) {
-            this.errors.push(FORMAT_ERROR_MESSAGE + kifu);
+        } catch (syntaxOrSemanticsError) {
+            this.errors.push(formatErrorMessage(kifu, syntaxOrSemanticsError));
+            throw syntaxOrSemanticsError;
         }
     }
 
-    public loadFile(filePath) {
+    public loadFile(filePath): Promise<void> {
         this.errors = [];
         this.filePath = filePath;
-        fetchFile(filePath)
-            .catch((error) => this.errors.push(error))
-            .then((data: string) => {
+        return fetchFile(filePath).then(
+            (data: string) => {
                 try {
                     if (data === null) {
                         // skip
@@ -79,11 +87,16 @@ export default class KifuStore {
                     const newPlayer = JKFPlayer.parse(data, filePath);
                     takeOverState(newPlayer, this.player);
                     this.player = newPlayer;
-                } catch (e) {
-                    this.errors.push(FORMAT_ERROR_MESSAGE + data);
-                    throw e;
+                } catch (syntaxOrSemanticsError) {
+                    this.errors.push(formatErrorMessage(data, syntaxOrSemanticsError));
+                    throw syntaxOrSemanticsError;
                 }
-            });
+            },
+            (fetchError) => {
+                this.errors.push(fetchError);
+                throw fetchError;
+            }
+        );
     }
 
     public setReloadInterval(interval) {
@@ -109,7 +122,7 @@ export default class KifuStore {
  * @param {JKFPlayer} currentPlayer
  */
 function takeOverState(newPlayer: JKFPlayer, currentPlayer?: JKFPlayer) {
-    if (currentPlayer.tesuu === 0){
+    if (currentPlayer.tesuu === 0) {
         return;
     }
     const tesuu = currentPlayer.tesuu === currentPlayer.getMaxTesuu() ? Infinity : currentPlayer.tesuu;

@@ -3,7 +3,7 @@ import * as React from "react";
 import { Color } from "shogi.js";
 import PieceHandGroup from "./PieceHandGroup";
 import KifuStore from "./stores/KifuStore";
-import { colorToMark } from "./util";
+import { colorToMark } from "./utils/util";
 
 export interface IProps {
     kifuStore: KifuStore;

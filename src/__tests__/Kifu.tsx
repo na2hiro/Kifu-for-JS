@@ -12,6 +12,7 @@ const selectFlipButton = (wrapper: ReactWrapper) => wrapper
             .at(0)
             .find("button");
 const selectForwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="1"]');
+const selectBackwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="-1"]');
 
 describe("<Kifu />", () => {
     const SAMPLE_KI2 = "▲７六歩△８四歩";
@@ -37,6 +38,28 @@ describe("<Kifu />", () => {
         expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("1");
         expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({});
         expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({ color: 0, kind: "FU" });
+
+        selectForwardButton(wrapper).simulate("click");
+
+        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("2");
+    });
+    it("backward", () => {
+        const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
+        const kifuList = selectKifuList(wrapper);
+        expect(kifuList.children().length).toBe(3);
+
+        selectForwardButton(wrapper).simulate("click");
+        selectForwardButton(wrapper).simulate("click");
+
+        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("2");
+
+        selectBackwardButton(wrapper).simulate("click");
+
+        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("1");
+
+        selectBackwardButton(wrapper).simulate("click");
+
+        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("0");
     });
     it("flip", () => {
         const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);

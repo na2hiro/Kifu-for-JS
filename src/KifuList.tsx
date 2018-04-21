@@ -1,7 +1,7 @@
 import { JKFPlayer } from "json-kifu-format";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { pad } from "./util";
+import { pad } from "./utils/util";
 
 export interface IProps {
     player: JKFPlayer;
