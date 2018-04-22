@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 1.2.0)
+# Kifu for JS (ver. 2.0.0)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -53,15 +53,13 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 	* 棋譜ファイルをドラッグ&ドロップで読み込み
 
 ### 設置方法
-右の"Download ZIP"よりダウンロード
+[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．`kifu-for-js-*.*.*.min.js`を読み込むと，`KifuForJS` が使えるようになります．
 
 jQuery(2.1以降で動作確認), kifuforjs.js (`test/loadKif.html`にコード例)
 
-(ver. 1.0.8よりkifuforjs.jsの所在がsrcからoutへ変更されました)
-
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="../out/kifuforjs.js" charset="utf-8"></script>
+<script src="./kifu-for-js-2.0.0.min.js" charset="utf-8"></script>
 ```
 
 Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
@@ -102,27 +100,61 @@ Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，�
 
 ## 開発環境
 
-package.jsonに必要モジュールが書いてあります．パッケージマネージャnpmを使用し，
-
 ```
 $ npm install
-
 ```
 
-を実行することで下記のモジュールをインストールできます．
+上記コマンドを実行することで開発に必要なパッケージをインストールできます．
 
 * [na2hiro/json-kifu-format](https://github.com/na2hiro/json-kifu-format) 1.0: 将棋の盤駒を扱うライブラリ
-* gulp 3.9 (自動化ツール)
-* react 0.13, react-dnd 1.1 (GUIフレームワーク)
-* browserify 11.0 (ブラウザ用require)
-* babelify 6.1 (ES6, JSXトランスパイラ)
-* uglify(ify) (ソースコード圧縮)
+* [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
+* TypeScript 2
+* React 16
+* React DnD
+* MobX
+* Webpack 3 (バンドルツール)
+* Jest (テストフレームワーク，カバレッジ計測)
+* TSLint (Linter)
+
+### コマンド
 
 ```
-$ ./node_modules/.bin/gulp build # パスが通っている場合は単にgulp build
+$ npm run start
 ```
 
-を起動すると，JSXのトランスパイルとブックマークレットのuglifyが行われます．
+開発用サーバが立ち上がり，`examples/`以下の`example.html`や`loadJkf.html`にアクセスすることで動作を確認できます．
+
+```
+$ npm run build
+$ npm run build:watch
+$ npm run build:analyze
+```
+
+ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
+
+```
+$ npm run test:watch
+```
+
+コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
+
+```
+$ npm run test
+```
+
+全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
+
+```
+$ npm run lint
+```
+
+コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
+
+```
+$ npm run lint:fix
+```
+
+自動的に修正可能な問題(インデント等)を直してくれます．
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
