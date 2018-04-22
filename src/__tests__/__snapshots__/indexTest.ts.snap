@@ -1,0 +1,46 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`loadFile shows an error about illegal kifu 1`] = `
+Array [
+  "棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．
+Error: 3手目で失敗しました: Error: cannot move from 8, 8 to 2, 1
+=== 棋譜 ===
+#KIF version=2.0 encoding=Shift_JIS
+# ---- Kifu for Windows V7 V7.08 棋譜ファイル ----
+開始日時：2014/10/12 14:46:51
+終了日時：2014/10/12 14:47:55
+手合割：平手　　
+先手：sente
+後手：gote
+手数----指手---------消費時間--
+   1 ７六歩(77)   ( 0:02/00:00:02)
+   2 ３四歩(33)   ( 0:05/00:00:05)
+   3 ２一角成(88) ( 0:06/00:00:08)
+   4 中断         ( 0:51/00:00:56)
+まで3手で中断",
+]
+`;
+
+exports[`loadFile shows an error about invalid kifu (wrong extension) 1`] = `
+Array [
+  "棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．
+SyntaxError: Expected \\"：\\" or [^：\\\\r\\\\n] but \\"\\\\n\\" found.
+=== 棋譜 ===
+▲７六歩△３四歩",
+]
+`;
+
+exports[`loadFile shows an error file not found 1`] = `
+Array [
+  "棋譜ファイルが見つかりません: ./not-found.kif",
+]
+`;
+
+exports[`loadString shows and error about invalid kifu 1`] = `
+Array [
+  "棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．
+Error: JKF, KIF, KI2, CSAいずれの形式でも失敗しました
+=== 棋譜 ===
+▲七六歩",
+]
+`;

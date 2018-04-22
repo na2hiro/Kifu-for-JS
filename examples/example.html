@@ -1,0 +1,51 @@
+<html>
+<head>
+<title>Kifu for JS example</title>
+<meta charset="utf-8">
+<script src="http://ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../bundle/kifu-for-js.js" charset="utf-8"></script>
+<script>
+	var Kifu = KifuForJS;
+</script>
+<script>Kifu.load("./files/ki2/9fu.ki2", "ki2dom");</script>
+</head>
+
+<body>
+<h1>Kifu for JS 動作例</h1>
+JavaもFlashも使わない，JavaScriptだけで動く<a href="https://github.com/na2hiro/Kifu-for-JS">Kifu for JS</a>の動作例です．
+
+<h2>主な機能</h2>
+<ul>
+	<li>対応棋譜形式: <b>kif</b>, <b>ki2</b>, kifu, ki2u, <b>csa</b>, jkf
+	<li>駒落ちや詰将棋等の初期局面指定にも対応
+	<li>変化手順の再生が可能
+	<li>棋譜中継のための自動更新機能
+	<li>棋譜クリックや矢印キーでの再生
+	<li>棋譜入力機能
+		<ul>
+			<li>再生中に本譜以外の手を進めることができる
+			<li>進めた手は変化手順(分岐)として格納
+		</ul>
+	<li>棋譜読み込み機能
+		<ul>
+			<li>棋譜ファイルをドラッグ&ドロップで読み込み
+		</ul>
+</ul>
+<h2>KIFファイル読み込み</h2>
+<script>var kifu1 = Kifu.load("./files/kif/jt201409130101.kif");</script>
+<h3>分岐棋譜</h3>
+<script>Kifu.load("./files/kif/fork.kif");</script>
+<h2>KI2ファイル読み込み (DOM id 指定)</h2>
+<div id="ki2dom"></div>
+<h2>CSAファイル読み込み</h2>
+<script>Kifu.load("./files/csa/8mai.csa");</script>
+<h2>JKFファイル読み込み</h2>
+<script>Kifu.load("./files/jkf/ryuou201409020101.jkf");</script>
+<h2>テキスト読み込み＆JSからのテキスト再読み込み</h2>
+<script>var kifu = Kifu.loadString("▲７六歩  △８四歩  ▲６八銀");</script>
+<textarea id="kifuString">
+▲７六歩  △８四歩  ▲６八銀
+</textarea>
+<button onclick="kifu.then(kifuStore => kifuStore.loadKifu(document.getElementById('kifuString').value))">読み込み</button>
+</body>
+</html>
