@@ -1,0 +1,51 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<HTML>
+<HEAD>
+	<META http-equiv="Content-Style-Type" content="text/css">
+	<TITLE>Kifu for Flash による棋譜再現例</TITLE>
+	<script type="text/javascript">
+        <!--
+        function wOpen()	{
+            window.open("resize.html", "test", "status=no,width=600,height=520,scrollbars=yes,location=no,menubar=no,resizable");
+        }
+        //-->
+	</script>
+
+
+
+
+
+
+
+
+</HEAD>
+<BODY>Kifu for Flash による棋譜再現例（<A href="http://www.adobe.com/go/getflashplayer">Flash Player 9</A>が必要です）<BR>
+
+<a href="JavaScript:wOpen()">別のウィンドウで開く（Unicode棋譜）</a>
+<BR>
+
+<object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000"
+		id="Kifu" width="580" height="500"
+		codebase="http://fpdownload.macromedia.com/get/flashplayer/current/swflash.cab">
+	<param name="movie" value="Kifu.swf" />
+	<!-- *** パラメータを記述する ***-->
+	<param name="FlashVars" value="kifu=./files/kif/jt201409130101.kif&&minute=1" />
+	<param name="quality" value="high" />
+	<param name="bgcolor" value="#f0f0f0" />
+	<param name="allowScriptAccess" value="sameDomain" />
+	<!-- *** パラメータを記述する ***-->
+	<embed src="Kifu.swf"
+		   FlashVars="kifu=henka.kif&minute=1"
+		   width="580" height="500" name="Kifu" align="middle"
+		   quality="high" bgcolor="#f0f0f0"
+		   play="true"
+		   loop="false"
+		   quality="high"
+		   allowScriptAccess="sameDomain"
+		   type="application/x-shockwave-flash"
+		   pluginspage="http://www.adobe.com/go/getflashplayer">
+	</embed>
+</object>
+<script src="../bundle/public-bookmarklet.min.js"></script>
+</BODY>
+</HTML>

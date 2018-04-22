@@ -1,0 +1,31 @@
+<!-- swfobject.js を使う方法 -->
+<HTML>
+<HEAD>
+	<META HTTP-EQUIV="Content-Type" CONTENT="text/html; charset=Shift_JIS">
+	<TITLE>Kifu for Flash Resize</TITLE>
+	<!-- *** HEAD内で、swfobject.jsを読み込む ***-->
+	<script type="text/javascript" src="swfobject.js"></script>
+</HEAD>
+<BODY>
+Kifu for Flash Free<BR>
+
+
+<!-- 代替文字 -->
+<div id="flashcontent"><A href="http://www.adobe.com/go/getflashplayer">Flash Player 9</A>が必要です</div>
+<!-- ページに複数の盤面を表示する場合、idを変える -->
+<script type="text/javascript">
+    var so = new SWFObject("Kifu.swf", "Kifu", "580", "90%", "9", "#f0f0f0");
+    // *** パラメータを記述する ***
+    so.addVariable("kifu", "no_henka.kifu");	// 棋譜ファイル名
+    //so.addVariable("no_mokume", "1");	// 木目なし
+    so.addVariable("minute", "1");	// 分単位
+    //so.addVariable("auto_update", "1");	// 自動更新30秒
+    so.addVariable("resize", "1");	// コメント欄の高さが変わる
+    so.write("flashcontent");
+</script>
+
+ウィンドウの高さを変えると、コメント欄の高さが変わります。
+<script src="../bundle/public-bookmarklet.min.js"></script>
+</BODY>
+</HTML>
+
