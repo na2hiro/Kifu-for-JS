@@ -93,7 +93,7 @@ module.exports = env => {
             filename: `[name].min.js`,
             chunkFilename: `[name].min.js`,
             path: BUNDLE_DIR,
-            publicPath: IS_PROD ? "https://na2hiro.github.io/Kifu-for-JS/" : `http://localhost:${DEV_SERVER_PORT}/bundle/`
+            publicPath: IS_PROD ? "https://na2hiro.github.io/Kifu-for-JS/out/" : `http://localhost:${DEV_SERVER_PORT}/bundle/`
         },
     });
 
