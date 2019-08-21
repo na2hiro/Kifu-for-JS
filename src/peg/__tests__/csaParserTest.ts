@@ -347,7 +347,7 @@ PI\n\
             ],
         });
     });
-    it("separator -- csa file can contain multiple kifus");
+    it.todo("separator -- csa file can contain multiple kifus");
 });
 describe("csa-parser V1", () => {
     let initial;
