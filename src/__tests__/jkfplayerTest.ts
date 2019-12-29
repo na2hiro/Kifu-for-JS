@@ -478,7 +478,9 @@ P-\n\
                 ],
             });
             const first = player.shogi.toCSAString();
+            // @ts-ignore
             expect(player.inputMove({from: p(7, 7), to: p(7, 6)})).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(3, 3), to: p(3, 4)})).toBeTruthy();
             expect(player.backward()).toBeTruthy();
             expect(player.backward()).toBeTruthy();
@@ -491,11 +493,15 @@ P-\n\
                     {},
                 ],
             });
+            // @ts-ignore
             expect(player.inputMove({from: p(7, 7), to: p(7, 6)})).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(3, 3), to: p(3, 4)})).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(2, 7), to: p(2, 6)})).toBeTruthy();
             const leaf = player.shogi.toCSAString();
             player.goto(1);
+            // @ts-ignore
             expect(player.inputMove({from: p(3, 3), to: p(3, 4)})).toBeTruthy();
             expect(player.forward()).toBeTruthy();
             expect(player.shogi.toCSAString()).toBe(leaf);
@@ -509,15 +515,21 @@ P-\n\
                     {},
                 ],
             });
+            // @ts-ignore
             expect(player.inputMove({from: p(7, 7), to: p(7, 6)})).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(3, 3), to: p(3, 4)})).toBeTruthy();
             expect(player.backward()).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(1, 3), to: p(1, 4)})).toBeTruthy();
             expect(player.backward()).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(8, 3), to: p(8, 4)})).toBeTruthy();
+            // @ts-ignore
             expect(player.inputMove({from: p(2, 7), to: p(2, 6)})).toBeTruthy();
             const leaf = player.shogi.toCSAString();
             player.goto(1);
+            // @ts-ignore
             expect(player.inputMove({from: p(8, 3), to: p(8, 4)})).toBeTruthy();
             expect(player.forward()).toBeTruthy();
             expect(player.shogi.toCSAString()).toBe(leaf);
@@ -534,6 +546,7 @@ P-\n\
             });
             expect(() => {
                 player.forward();
+                // @ts-ignore
                 player.inputMove({from: p(7, 7), to: p(7, 6)});
             }).toThrow();
         });
@@ -547,9 +560,12 @@ P-\n\
                 ],
             });
             player.goto(2);
+            // @ts-ignore
             expect(player.inputMove({from: p(8, 8), to: p(2, 2)})).toBe(false);
+            // @ts-ignore
             expect(player.inputMove({from: p(8, 8), to: p(2, 2), promote: true})).toBeTruthy();
             player.backward();
+            // @ts-ignore
             expect(player.inputMove({from: p(8, 8), to: p(2, 2), promote: false})).toBeTruthy();
         });
     });
@@ -670,20 +686,25 @@ P-\n\
         });
     });
     it("static sameMoveMinimal", () => {
+        // @ts-ignore
         expect(JKFPlayer.sameMoveMinimal({from: p(2, 3), to: p(2, 2), promote: true}, {
             from: p(2, 3),
             to: p(2, 2),
             promote: true,
             piece: "FU",
         })).toBeTruthy();
+        // @ts-ignore
         expect(JKFPlayer.sameMoveMinimal({to: p(2, 3), piece: "KY"}, {to: p(2, 3), piece: "KY"})).toBeTruthy();
+        // @ts-ignore
         expect(JKFPlayer.sameMoveMinimal({from: p(2, 3), to: p(2, 2), promote: false}, {
             from: p(2, 3),
             to: p(2, 2),
             promote: true,
             piece: "FU",
         })).toBe(false);
+        // @ts-ignore
         expect(JKFPlayer.sameMoveMinimal({to: p(2, 3), piece: "KE"}, {to: p(2, 3), piece: "KY"})).toBeFalsy();
+        // @ts-ignore
         expect(JKFPlayer.sameMoveMinimal({from: p(2, 7), to: p(2, 6), piece: "FU"}, {
             to: p(2, 6),
             piece: "KA",
@@ -700,7 +721,9 @@ P-\n\
                     },
                 ],
             });
+            // @ts-ignore
             expect(player.getMoveFormat(0)).toEqual({comments: ["hoge"]});
+            // @ts-ignore
             expect(player.getMoveFormat(1)).toEqual({
                 move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
             });

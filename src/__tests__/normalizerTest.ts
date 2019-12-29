@@ -996,7 +996,8 @@ describe("module Normalizer", () => {
                     {special: "+ILLEGAL_ACTION"},
                 ],
             };
-            expect(normalizeKIF(actual)).toEqual(expected); // TODO: Fix type error
+            // @ts-ignore
+            expect(normalizeKIF(actual)).toEqual(expected);
         });
         it("fork", () => {
             const actual = {
@@ -1021,6 +1022,7 @@ describe("module Normalizer", () => {
                     {special: "+ILLEGAL_ACTION"},
                 ],
             };
+            // @ts-ignore
             expect(normalizeKIF(actual)).toEqual(expected); // TODO: Fix type error
         });
     });

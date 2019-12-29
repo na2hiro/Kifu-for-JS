@@ -82,7 +82,10 @@ function normalizeMinimalMoves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IM
         }
     }
 }
-
+/**
+ * Normalize JKF
+ * @param obj JKF. TODO: Introduce a type which is not a normalized KIF
+ */
 export function normalizeKIF(obj: IJSONKifuFormat): IJSONKifuFormat {
     // Kifu for iPhone bug
     if (obj.initial && obj.initial.preset === "HIRATE" && obj.initial.data) {
