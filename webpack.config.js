@@ -14,14 +14,19 @@ module.exports = env => {
         module: {
             rules: [
                 {
-                    test: /\.ts$/,
-                    use: 'ts-loader',
-                    exclude: /node_modules/
+                    test: /\.tsx?$/,
+                    use: {
+                        loader: 'ts-loader',
+                        options: {
+
+                        }
+                    },
+                    exclude: /node_modules/,
                 }
             ]
         },
         resolve: {
-            extensions: ['.ts', '.js']
+            extensions: ['.tsx', '.ts', '.js']
         },
     };
 
@@ -34,9 +39,11 @@ module.exports = env => {
             path: BUNDLE_DIR
         },
         plugins: [
-            new CleanWebpackPlugin([BUNDLE_DIR]),
-            new webpack.optimize.UglifyJsPlugin()
-        ]
+            new CleanWebpackPlugin([BUNDLE_DIR])
+        ],
+        optimization: {
+            minimize: true
+        }
     });
 
     if (IS_ANALYZE) {

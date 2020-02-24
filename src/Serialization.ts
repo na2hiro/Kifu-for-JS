@@ -1,7 +1,7 @@
 import Color from "./Color";
 import {PRESET} from "./Constants";
 import Piece from "./Piece";
-import {ISettingType, Shogi} from "./Shogi";
+import {ISettingType, Shogi} from "./shogi";
 
 export function fromPreset(shogi: Shogi, setting: ISettingType) {
     const board = [];
