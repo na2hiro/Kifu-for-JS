@@ -19,7 +19,7 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 ### 使い方(Java/Flash置換)
 
 1. あらかじめ次のコードをブックマークへ追加しておく→
-`javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/out/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
+`javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
 2. Kifu for FlashやKifu for Javaが使われているページ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html))を開く
 ![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/1.png)
 3. ブックマークレットを開く
