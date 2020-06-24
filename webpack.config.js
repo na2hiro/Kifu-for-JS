@@ -77,7 +77,7 @@ module.exports = env => {
         entry: path.resolve(__dirname, './src/index.tsx'),
         output: {
             library: "KifuForJS",
-            filename: IS_PROD ? `kifu-for-js-${package.version}.min.js` : 'kifu-for-js.js',
+            filename: IS_PROD && !env.ghpages ? `kifu-for-js-${package.version}.min.js` : 'kifu-for-js.js',
             path: BUNDLE_DIR,
             publicPath: "/bundle/"
         },
