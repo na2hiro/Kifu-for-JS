@@ -80,7 +80,7 @@ export default class Control extends React.Component<IProps> {
     private onClickCredit() {
         if (
             confirm(`*** CREDIT ***
-Kifu for JS (ver. 2.1.0)
+Kifu for JS (ver. 2.1.1)
     by na2hiro
     under the MIT License
 
