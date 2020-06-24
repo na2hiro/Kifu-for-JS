@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 2.1.1)
+# Kifu for JS (ver. 2.1.2)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -59,7 +59,7 @@ jQuery(2.1以降で動作確認), kifuforjs.js (`test/loadKif.html`にコード�
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="./kifu-for-js-2.1.1.min.js" charset="utf-8"></script>
+<script src="./kifu-for-js-2.1.2.min.js" charset="utf-8"></script>
 ```
 
 `KifuForJS.load` (v1では`Kifu.load`)関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
