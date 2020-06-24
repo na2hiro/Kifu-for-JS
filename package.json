@@ -7,7 +7,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "webpack-dev-server --open",
+    "start": "webpack-dev-server --open-page examples/example.html",
     "build": "webpack -p --env.production",
     "build:analyze": "webpack -p --env.production --env.analyze",
     "build:watch": "webpack --watch",
