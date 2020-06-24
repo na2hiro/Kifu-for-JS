@@ -14,11 +14,11 @@ export default class PieceHandGroup extends Component<IProps, any> {
         let positioner;
         if (this.props.data.kind === "FU") {
             if (this.props.value >= 4) {
-                positioner = (i) => (120 - 32) * i / (this.props.value - 1);
+                positioner = (i) => ((120 - 32) * i) / (this.props.value - 1);
             }
         } else {
             if (this.props.value >= 2) {
-                positioner = (i) => (60 - 32) * i / (this.props.value - 1);
+                positioner = (i) => ((60 - 32) * i) / (this.props.value - 1);
             }
         }
         const pieces = [];

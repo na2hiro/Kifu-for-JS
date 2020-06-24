@@ -4,11 +4,13 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
+import { autorun, reaction, when } from "mobx";
 import * as React from "react";
 import { render } from "react-dom";
 import Kifu from "./Kifu";
 import KifuStore from "./stores/KifuStore";
 import { onDomReady } from "./utils/util";
+export const mobx = { autorun, when, reaction };
 
 export function loadString(kifu: string, id?: string): Promise<KifuStore> {
     return loadCommon(null, kifu, id);

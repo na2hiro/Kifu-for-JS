@@ -31,5 +31,6 @@ module.exports = {
         "!**/*.d.ts",
         "!src/main.ts",
         "!src/peg/**"
-    ]
+    ],
+    testURL: "http://localhost"
 };

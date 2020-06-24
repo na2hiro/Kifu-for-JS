@@ -102,9 +102,11 @@ async function start(): Promise<KifuStore[]> {
 
         const Kifu = await loadKifuForJS();
 
-        return Promise.all(targetList.map((target) => {
-            return Kifu.load(target.kifuPath.replace(/\.(z|gz)$/gi, ""), target.targetId)
-        }));
+        return Promise.all(
+            targetList.map((target) => {
+                return Kifu.load(target.kifuPath.replace(/\.(z|gz)$/gi, ""), target.targetId);
+            }),
+        );
     }
 
     async function replaceSelected(): Promise<KifuStore[]> {
@@ -117,24 +119,30 @@ async function start(): Promise<KifuStore[]> {
 }
 
 function makeRandomId() {
-    return "kifuforjs_" + Math.random()
-        .toString(36)
-        .slice(2);
+    return (
+        "kifuforjs_" +
+        Math.random()
+            .toString(36)
+            .slice(2)
+    );
 }
 
 let promise = Promise.resolve();
 
 if (typeof $ === "undefined" || !$.fn || !$.fn.jquery) {
-    promise = promise.then(() => new Promise<void>((resolve => {
-        const scr = document.createElement("script");
-        scr.src = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
-        scr.charset = "utf-8";
-        scr.onload = () => {
-            $ = jQuery;
-            resolve();
-        };
-        document.body.appendChild(scr);
-    })));
+    promise = promise.then(
+        () =>
+            new Promise<void>((resolve) => {
+                const scr = document.createElement("script");
+                scr.src = "//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js";
+                scr.charset = "utf-8";
+                scr.onload = () => {
+                    $ = jQuery;
+                    resolve();
+                };
+                document.body.appendChild(scr);
+            }),
+    );
 }
 
 module.exports = promise.then(start);

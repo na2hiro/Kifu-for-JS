@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 2.0.0)
+# Kifu for JS (ver. 2.1.2)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -10,7 +10,7 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 * Flash, Javaなどを必要としないため，iOSやAndroidでも表示できる
 
 ## 動作例
-[**こちら**](http://na2hiro.github.io/Kifu-for-JS/test/example.html)
+[**こちら**](http://na2hiro.github.io/Kifu-for-JS/examples/example.html)
 
 ## Kifu for JS ブックマークレット
 1クリックでKifu for {Flash/Java}をKifu for JSに置き換えて盤面を表示します．
@@ -59,19 +59,19 @@ jQuery(2.1以降で動作確認), kifuforjs.js (`test/loadKif.html`にコード�
 
 ```html
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
-<script src="./kifu-for-js-2.0.0.min.js" charset="utf-8"></script>
+<script src="./kifu-for-js-2.1.2.min.js" charset="utf-8"></script>
 ```
 
-Kifu.load関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
+`KifuForJS.load` (v1では`Kifu.load`)関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
 
 ```html
-<script>Kifu.load("../json-kifu-format/jt201409130101.kif");</script>
+<script>KifuForJS.load("../json-kifu-format/jt201409130101.kif");</script>
 ```
 
 第二引数にidを渡すと，このコードがある場所ではなく，そのidを持つ要素の子の位置に盤面を挿入する．この方法の場合，ひと通り読み込みが済んでから挿入されるため，scriptはhead内などにあってもよい．
 
 ```html
-<script>Kifu.load("../json-kifu-format/jt201409130101.kif", "board");</script>
+<script>KifuForJS.load("../json-kifu-format/jt201409130101.kif", "board");</script>
 〜
 <div id="board"></div>
 ```
