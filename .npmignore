@@ -1,0 +1,4 @@
+/test/
+/**/__tests__/
+/.idea/
+/coverage/
