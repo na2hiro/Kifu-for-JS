@@ -14,7 +14,8 @@
     "lint": "tslint -p ./",
     "lint:fix": "tslint -p ./ --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
