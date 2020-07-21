@@ -40,9 +40,11 @@ module.exports = env => {
             path: BUNDLE_DIR
         },
         plugins: [
-            new CleanWebpackPlugin([BUNDLE_DIR]),
-            new webpack.optimize.UglifyJsPlugin()
-        ]
+            new CleanWebpackPlugin([BUNDLE_DIR])
+        ],
+        optimization: {
+            minimize: true
+        }
     });
     if (IS_ANALYZE) {
         bundle.plugins.push(new BundleAnalyzerPlugin());
