@@ -134,8 +134,9 @@ komabetsuline = "P" teban:teban pieces:(xypiece)+ nl {return {teban: teban, piec
 moves = hd:firstboard tl:move* comment* {tl.unshift(hd); return tl;}
 firstboard = c:comment* {return c.length>0?{comments:c}:{}}
 
-move = move:(normalmove / specialmove) time:time? comments:comment* {
+move = move:(normalmove / specialmove) comments1:comment* time:time? comments2:comment* {
 	var ret = {};
+	const comments = comments1.concat(comments2);
 	if(comments.length>0){ret.comments=comments;}
 	if(time){ret.time=time;}
 	if(move.special){ret.special=move.special}else{ret.move=move};
