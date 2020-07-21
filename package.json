@@ -14,7 +14,8 @@
     "lint": "./node_modules/tslint/bin/tslint -p ./",
     "lint:fix": "./node_modules/tslint/bin/tslint -p ./ --fix",
     "test": "jest",
-    "test:watch": "jest --watch"
+    "test:watch": "jest --watch",
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",
