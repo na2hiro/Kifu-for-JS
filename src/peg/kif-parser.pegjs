@@ -48,6 +48,7 @@
 	function specialToCSA(str){
 		return {
 			"中断": "CHUDAN",
+			"封じ手": "CHUDAN", // とりあえず
 			"投了": "TORYO",
 			"持将棋": "JISHOGI",
 			"千日手": "SENNICHITE",
@@ -210,6 +211,7 @@ result = "まで" [0-9]+ "手" res:(
 			/ "負け" {return "ILLEGAL_MOVE"}) {return res}) {return res}
 	/ "で時間切れにより" win:turn "手の勝ち" {return "TIME_UP"}
 	/ "で中断" {return "CHUDAN"}
+	/ "で封じ手" {return "CHUDAN"} // とりあえず
 	/ "で持将棋" {return "JISHOGI"}
 	/ "で千日手" {return "SENNICHITE"}
 	/ "で"? "詰" "み"? {return "TSUMI"}
