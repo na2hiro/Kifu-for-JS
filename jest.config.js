@@ -21,7 +21,7 @@ module.exports = {
             statements: -91,
             branches: -65,
             lines: -86,
-            functions: -26,
+            functions: -34,
         }
     },
     collectCoverage: true,
