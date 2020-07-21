@@ -4,3 +4,4 @@
 *.swp
 /bundle/
 /coverage/
+.DS_Store
