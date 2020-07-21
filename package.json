@@ -53,7 +53,7 @@
     "webpack-merge": "^4.1.2"
   },
   "dependencies": {
-    "shogi.js": "^2.0.1"
+    "shogi.js": "^2.0.3"
   },
   "peerDependencies": {},
   "pre-push": [
