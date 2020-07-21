@@ -35,7 +35,7 @@
   },
   "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
   "dependencies": {
-    "json-kifu-format": "^1.2.1",
+    "json-kifu-format": "^1.2.2",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
     "react": "^16.0.0",
