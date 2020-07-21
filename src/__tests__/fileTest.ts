@@ -28,9 +28,10 @@ function makeTest(ext, fileNameToLoadFunc) {
                             }
                             data = data.replace(/^\ufeff/, ""); // delete BOM
                             try {
-                                const player = JKFPlayer["parse" + ext.toUpperCase()](data);
+                                const player: JKFPlayer = JKFPlayer["parse" + ext.toUpperCase()](data);
                                 player.goto(Infinity);
                                 player.goto(0);
+                                expect(player.kifu).toMatchSnapshot();
                                 done();
                             } catch (e) {
                                 done(e);
