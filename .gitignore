@@ -5,3 +5,5 @@
 /bundle/
 /coverage/
 .DS_Store
+/public
+/src/public-bookmarklet.min.js
