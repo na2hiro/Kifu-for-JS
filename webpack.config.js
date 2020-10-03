@@ -56,10 +56,12 @@ module.exports = env => {
     };
 
     if (IS_PROD){
-        common.plugins.push(new webpack.optimize.UglifyJsPlugin());
         common.plugins.push(new webpack.DefinePlugin({
             'process.env.NOVE_ENV': JSON.stringify('production')
         }))
+        common.optimization = {
+            minimize: true
+        }
     } else {
         common.devServer = {
             progress: true,
