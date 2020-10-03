@@ -16,7 +16,7 @@
     "lint:fix": "prettier ./src/** --write && tslint -p ./ --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "deploy:ghpages": "npm run build:ghpages && npm run postdeploy:ghpages",
+    "deploy:ghpages": "mkdir -p out & npm run build:ghpages",
     "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./src/ && mv ./bundle/KifuInBookmarklet.min.js ./out/"
   },
   "repository": {
