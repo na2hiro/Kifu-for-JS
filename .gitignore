@@ -1,9 +1,0 @@
-/.idea
-*.iml
-/node_modules
-*.swp
-/bundle/src/
-/bundle/bookmarklet.min.js
-/bundle/vendors~KifuInBookmarklet.min.js
-/coverage/
-.DS_Store

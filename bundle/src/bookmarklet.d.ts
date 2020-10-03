@@ -1,0 +1,1 @@
+declare let s: HTMLScriptElement;
