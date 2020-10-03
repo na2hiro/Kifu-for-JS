@@ -57,8 +57,9 @@ export default class KifuStore {
     }
 
     public loadKifu(kifu: string, fileName?: string): Promise<void> {
-        return new Promise(()=>{
-            return this.loadKifuSync(kifu, fileName);
+        return new Promise((resolve)=>{
+            this.loadKifuSync(kifu, fileName);
+            resolve();
         })
     }
 
