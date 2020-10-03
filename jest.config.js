@@ -27,6 +27,7 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "src/**",
+        "!src/**/*.min.js",
         "!**/__tests__/**",
         "!**/*.d.ts",
         "!src/main.ts",
