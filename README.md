@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 2.1.5)
+# Kifu for JS (ver. 2.1.6)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
