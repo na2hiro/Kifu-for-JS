@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Kifu for js: Parser tester</title>
+</head>
+<body>
+<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+<script src="../bundle/kifu-for-js.js" charset="utf-8"></script>
+
+<textarea id="text" cols="80" rows="20"></textarea>
+<div>
+    <button id="button">test</button>
+</div>
+
+<div id="shogi"></div>
+<div id="result"></div>
+
+<script>
+    init();
+    async function init() {
+        const kifuStore = await KifuForJS.loadString("", "shogi");
+        let popped;
+
+        const button = document.getElementById("button");
+        button.addEventListener("click", () => {
+            popped = [];
+            const kifu = document.getElementById("text").value;
+            loadLine(kifu)
+        })
+
+        function loadLine(text) {
+            if(text==="") return;
+            kifuStore.loadKifu(text)
+                .then(() => {
+
+                    const poppedText = popped.reverse().join("\n")
+                    console.log(text)
+                    console.error(poppedText)
+                    const result = document.getElementById("result");
+                    result.textContent = "";
+                    result.appendChild((()=>{
+                        const pre = document.createElement("pre");
+                        pre.textContent = text;
+                        return pre;
+                    })());
+                    result.appendChild((()=>{
+                        const pre = document.createElement("pre");
+                        pre.style.color="red";
+                        pre.textContent = poppedText;
+                        return pre;
+                    })());
+
+                }, (e) => {
+                    const newTexts = text.split("\n");
+                    popped.push(newTexts.pop());
+                    loadLine(newTexts.join("\n"));
+                })
+        }
+    }
+
+</script>
+</body>
+</html>
