@@ -265,7 +265,8 @@ export function normalizeCSA(obj: IJSONKifuFormat): IJSONKifuFormat {
     }
     return obj;
 }
-function addRelativeInformation(shogi: Shogi, move: IMoveMoveFormat) {
+// export for testing
+export function addRelativeInformation(shogi: Shogi, move: IMoveMoveFormat) {
     const moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece)
             .map((mv) => flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)));
     if (moveVectors.length >= 2) {
@@ -283,6 +284,10 @@ function addRelativeInformation(shogi: Shogi, move: IMoveMoveFormat) {
                 }
             }
             // 上下も左右も他の駒がいる
+            if (realVector.x === 0) {
+                // 直は上下とは使わない
+                return XToLCR(realVector.x);
+            }
             return XToLCR(realVector.x) + YToUMD(realVector.y);
         })();
     }
@@ -309,17 +314,35 @@ function YToUMD(y: number) {
 function XToLCR(x: number) {
     return x === 0 ? "C" : (x > 0 ? "R" : "L");
 }
-function filterMovesByRelatives(relative: string, color: Color, moves: IMove[]): IMove[] {
-    const ret = [];
-    for (const move of moves) {
-        if (relative.split("").every((rel) => moveSatisfiesRelative(rel, color, move))) {
-            ret.push(move);
-        }
+export function filterMovesByRelatives(relative: string, color: Color, moves: IMove[]): IMove[] {
+    let candidates = moves
+        .map((move) => ({
+            move,
+            vec: flipVector(color, {x: move.to.x - move.from.x, y: move.to.y - move.from.y}),
+        }))
+        .filter(({move, vec}) => relative.split("").every((rel) => moveSatisfiesRelative(rel, color, vec)));
+    if (relative.indexOf("C") >= 0) {
+        // 直は上がる時だけ
+        candidates = candidates
+            .filter(({move, vec}) => vec.y < 0);
     }
-    return ret;
+    if (relative.indexOf("L") >= 0) {
+        let min = Infinity;
+        candidates.forEach(({move, vec}) => min = Math.min(min, vec.x));
+        return candidates
+            .filter(({move, vec}) => vec.x == min)
+            .map(({move, vec}) => move);
+    }
+    if (relative.indexOf("R") >= 0) {
+        let max = -Infinity;
+        candidates.forEach(({move, vec}) => max = Math.max(max, vec.x));
+        return candidates
+            .filter(({move, vec}) => vec.x == max)
+            .map(({move, vec}) => move);
+    }
+    return candidates.map(({move, vec}) => move);
 }
-function moveSatisfiesRelative(relative: string, color: Color, move: IMove): boolean {
-    const vec = flipVector(color, {x: move.to.x - move.from.x, y: move.to.y - move.from.y});
+function moveSatisfiesRelative(relative: string, color: Color, vec: {x: number, y: number}): boolean {
     switch (relative) {
         case "U":
             return vec.y < 0;
@@ -327,12 +350,12 @@ function moveSatisfiesRelative(relative: string, color: Color, move: IMove): boo
             return vec.y === 0;
         case "D":
             return vec.y > 0;
-        case "L":
-            return vec.x < 0;
         case "C":
             return vec.x === 0;
+        case "L":
         case "R":
-            return vec.x > 0;
+            // 移動先ではなく他の駒との相対的な位置関係のため後で判定
+            return true;
     }
 }
 // CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
