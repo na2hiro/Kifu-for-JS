@@ -17,7 +17,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "deploy:ghpages": "mkdir -p out & npm run build:ghpages",
-    "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./src/ && mv ./bundle/KifuInBookmarklet.min.js ./out/"
+    "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./src/ && mv ./bundle/KifuInBookmarklet.min.js ./out/ && mv ./bundle/vendors~KifuInBookmarklet.min.js ./out/"
   },
   "repository": {
     "type": "git",
