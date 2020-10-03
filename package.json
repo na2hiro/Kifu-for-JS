@@ -1,6 +1,6 @@
 {
   "name": "kifu-for-js",
-  "version": "2.1.5",
+  "version": "2.1.6",
   "description": "Shogi Kifu viewer for JavaScript",
   "main": "index.js",
   "directories": {
