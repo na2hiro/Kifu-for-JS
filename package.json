@@ -16,7 +16,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepublishOnly": "npm run build",
-    "doc": "typedoc --out doc --exclude '**/__tests__/**/*' src"
+    "docs": "typedoc --exclude '**/__tests__/**/*' src"
   },
   "repository": {
     "type": "git",
