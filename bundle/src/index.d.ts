@@ -1,9 +1,3 @@
-/** @license
- * Kifu for JS
- * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
- * This software is released under the MIT License.
- * http://opensource.org/licenses/mit-license.php
- */
 import { autorun, reaction, when } from "mobx";
 import KifuStore from "./stores/KifuStore";
 export declare const mobx: {
