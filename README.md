@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 2.2.1)
+# Kifu for JS (ver. 2.2.2)
 JavaScriptで動く棋譜再生盤とそのブックマークレット
 
 ## 概要
@@ -55,12 +55,13 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 ### 設置方法
 Update: jQueryは不要になりました。
 
-[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
-`kifu-for-js-*.*.*.min.js`を読み込むと，`KifuForJS` が使えるようになります．
-(`test/loadKif.html`にコード例)
+Kifu for JSファイルをページに読み込みます。（jsDelivrの提供するCDNを利用しています）
+
+`@2`の部分では、`2.*.*`の最新を読み込むという指定で、機能追加・バグ修正更新が自動で反映されます。
+[Semantic Versioning](https://semver.org/) を採用しているため、後方互換性のない変更がある場合は`3.*.*`台にするつもりですが、不安がある場合は`@2.2.2`にするなどバージョンを固定して下さい。
 
 ```html
-<script src="./kifu-for-js-(バージョン).min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/kifu-for-js@2/bundle/kifu-for-js.min.js" charset="utf-8"></script>
 ```
 
 `KifuForJS.load` (v1では`Kifu.load`)関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
@@ -76,6 +77,11 @@ Update: jQueryは不要になりました。
 〜
 <div id="board"></div>
 ```
+
+これ以外の使用例は`examples/example.html` にあります。
+
+## 更新ログ / バージョン
+[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
 
 ## 動作環境
 以下は確認済み．
