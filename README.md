@@ -53,12 +53,13 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 	* 棋譜ファイルをドラッグ&ドロップで読み込み
 
 ### 設置方法
-[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．`kifu-for-js-*.*.*.min.js`を読み込むと，`KifuForJS` が使えるようになります．
+Update: jQueryは不要になりました。
 
-jQuery(2.1以降で動作確認), kifuforjs.js (`test/loadKif.html`にコード例)
+[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
+`kifu-for-js-*.*.*.min.js`を読み込むと，`KifuForJS` が使えるようになります．
+(`test/loadKif.html`にコード例)
 
 ```html
-<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 <script src="./kifu-for-js-(バージョン).min.js" charset="utf-8"></script>
 ```
 
