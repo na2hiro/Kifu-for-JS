@@ -257,6 +257,30 @@ export default class JKFPlayer {
     // tesuu手目へ行く
     public goto(tesuu: number|string) {
         if (typeof tesuu === "string") {
+            const commaPos = tesuu.indexOf(",");
+            if (commaPos > 0) {
+                // Specify tesuu pointer
+                const te = Number(tesuu.slice(0, commaPos));
+                const destPointers = JSON.parse(tesuu.slice(commaPos + 1));
+                let matchingSoFar = true;
+                for (let i = 0; i < destPointers.length; i++) {
+                    const dest = destPointers[i];
+                    const current = this.forkPointers[i];
+                    if (matchingSoFar && current && current.te === dest.te && current.forkIndex === dest.forkIndex) {
+                        // We don't need to repeat the same forking as currently while it's matching
+                        continue;
+                    }
+                    matchingSoFar = false;
+                    this.goto(dest.te - 1);
+                    this.forkAndForward(dest.forkIndex);
+                }
+                // Rewind if current fork is deeper than the destination
+                if (matchingSoFar && destPointers.length < this.forkPointers.length) {
+                    this.goto(this.forkPointers[destPointers.length].te - 1);
+                }
+                this.goto(te);
+                return;
+            }
             tesuu = Number(tesuu);
         }
         if (isNaN(tesuu)) {
@@ -292,6 +316,16 @@ export default class JKFPlayer {
         this.forkPointers.push({te: this.tesuu + 1, forkIndex: num});
         this.updateForksAndCurrentStream();
         return this.forward();
+    }
+
+    /**
+     * Return a tesuu pointer string which can be used to call goto()
+     */
+    public getTesuuPointer(tesuu?: number): string {
+        if (isNaN(tesuu)) {
+            tesuu = this.tesuu;
+        }
+        return `${tesuu},${JSON.stringify(this.forkPointers.filter((p) => p.te <= tesuu))}`;
     }
     // TODO: Distinguish minimal move and full move
     // 現在の局面から新しいかもしれない手を1手動かす．

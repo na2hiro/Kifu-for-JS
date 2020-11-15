@@ -330,14 +330,14 @@ export function filterMovesByRelatives(relative: string, color: Color, moves: IM
         let min = Infinity;
         candidates.forEach(({move, vec}) => min = Math.min(min, vec.x));
         return candidates
-            .filter(({move, vec}) => vec.x == min)
+            .filter(({move, vec}) => vec.x === min)
             .map(({move, vec}) => move);
     }
     if (relative.indexOf("R") >= 0) {
         let max = -Infinity;
         candidates.forEach(({move, vec}) => max = Math.max(max, vec.x));
         return candidates
-            .filter(({move, vec}) => vec.x == max)
+            .filter(({move, vec}) => vec.x === max)
             .map(({move, vec}) => move);
     }
     return candidates.map(({move, vec}) => move);

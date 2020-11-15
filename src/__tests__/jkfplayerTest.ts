@@ -468,6 +468,114 @@ P-\n\
             expect(player.currentStream.length).toBe(6);
             expect(player.currentStream).toMatchSnapshot("currentStream");
         });
+        it("goto fork", () => {
+            const player = new JKFPlayer({
+                header: {},
+                moves: [
+                    {},
+                    {
+                        move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}, forks: [
+                            [
+                                {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
+                                {
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                        [
+                                            {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
+                                        ],
+                                    ],
+                                },
+                            ],
+                        ],
+                    },
+                    {
+                        move: {from: p(5, 3), to: p(5, 4), color: 1, piece: "FU"}, forks: [
+                            [
+                                {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
+                                {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
+                                {
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                        [
+                                            {move: {from: p(8, 4), to: p(8, 5), color: 1, piece: "FU"}},
+                                            {move: {from: p(8, 8), to: p(7, 7), color: 1, piece: "KA"}},
+                                        ],
+                                    ],
+                                },
+                            ],
+                        ],
+                    },
+                    {
+                        move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}, forks: [
+                            [
+                                {
+                                    move: {
+                                        from: p(8, 8),
+                                        to: p(2, 2),
+                                        color: 0,
+                                        piece: "KA",
+                                        capture: "KA",
+                                        promote: false,
+                                    },
+                                },
+                            ],
+                        ],
+                    },
+                ],
+            });
+
+            // first -> +7776FU
+            //       |- +2726FU (branched) -> -3334FU (branchedMain)
+            //                             |- -8384FU (branchedBranched)
+
+            const first = player.getTesuuPointer();
+            // Move +2726FU in branch
+            expect(player.forkAndForward(0)).toBe(true);
+            const branched = player.getTesuuPointer();
+
+            // Move -8384FU in branch in branch
+            player.forkAndForward(0);
+            const branchedBranched = player.getTesuuPointer();
+
+            player.goto(1);
+            player.goto(2);
+            const branchedMain = player.getTesuuPointer();
+            expect(branchedMain).not.toEqual(branchedBranched);
+
+            // Verify go to first
+            player.goto(first);
+            expect(player.getTesuuPointer()).toEqual(first);
+
+            // Verify go to a branch
+            player.goto(first);
+            gotoAndVerifyPointer(branched);
+
+            // Verify go to a branch recursively
+            player.goto(first);
+            gotoAndVerifyPointer(branchedBranched);
+
+            // Verify pointer can be taken by giving tesuu
+            // TODO: JSON can be different. Provide a equal function?
+            expect(player.getTesuuPointer(2)).toEqual(branchedBranched);
+            expect(player.getTesuuPointer(1)).toEqual(branched);
+
+            // Verify go to sibling (branch to main) under branch
+            gotoAndVerifyPointer(branchedMain);
+
+            // Verify pointer can be taken by giving tesuu (again)
+            expect(player.getTesuuPointer(2)).toEqual(branchedMain);
+            expect(player.getTesuuPointer(1)).toEqual(branched);
+
+            // Verify go to sibling (main to branch) under branch
+            gotoAndVerifyPointer(branchedBranched);
+
+            // Verify go to a node under the same branch
+            // player.goto(branched);
+            gotoAndVerifyPointer(branchedBranched);
+
+            function gotoAndVerifyPointer(pointer: string) {
+                player.goto(pointer);
+                expect(player.getTesuuPointer()).toEqual(pointer);
+            }
+        });
     });
     describe("inputMove", () => {
         it("new input", () => {
