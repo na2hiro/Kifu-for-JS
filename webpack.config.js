@@ -52,6 +52,12 @@ module.exports = env => {
         },
         plugins: [
             new CleanWebpackPlugin([BUNDLE_DIR]),
+            new webpack.BannerPlugin({
+                banner: `Kifu for JS (${package.version})
+Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+This software is released under the MIT License.
+http://opensource.org/licenses/mit-license.php`
+            })
         ]
     };
 
@@ -79,7 +85,7 @@ module.exports = env => {
         entry: path.resolve(__dirname, './src/index.tsx'),
         output: {
             library: "KifuForJS",
-            filename: IS_PROD && !env.ghpages ? `kifu-for-js-${package.version}.min.js` : 'kifu-for-js.js',
+            filename: `kifu-for-js.min.js`,
             path: BUNDLE_DIR,
             publicPath: "/bundle/"
         },
