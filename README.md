@@ -91,6 +91,12 @@ $ npm run lint:fix
 
 自動的に修正可能な問題(インデント等)を直してくれます．
 
+```
+$ npm run docs
+```
+
+`docs/` 以下にドキュメントを生成します．
+
 ## license
 
 MIT License (see LICENSE.txt)

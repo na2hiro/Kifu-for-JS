@@ -1,7 +1,12 @@
 import Color from "./Color";
 
+/**
+ * 駒を表すクラス
+ */
 export default class Piece {
-    // 成った時の種類を返す．なければそのまま．
+    /**
+     * 成った時の種類を返す．なければそのまま．
+     */
     public static promote(kind: string): string {
         return {
             FU: "TO",
@@ -12,7 +17,9 @@ export default class Piece {
             HI: "RY",
         }[kind] || kind;
     }
-    // 表に返した時の種類を返す．表の場合はそのまま．
+    /**
+     * 表に返した時の種類を返す．表の場合はそのまま．
+     */
     public static unpromote(kind: string): string {
         return {
             TO: "FU",
@@ -25,7 +32,9 @@ export default class Piece {
             OU: "OU",
         }[kind] || kind;
     }
-    // 成れる駒かどうかを返す
+    /**
+     * 成れる駒かどうかを返す
+     */
     public static canPromote(kind: string): boolean {
         return Piece.promote(kind) !== kind;
     }
@@ -35,7 +44,9 @@ export default class Piece {
     public static oppositeColor(color: Color): Color {
         return color === Color.Black ? Color.White : Color.Black;
     }
-    // SFENによる文字列表現から駒オブジェクトを作成
+    /**
+     * SFENによる文字列表現から駒オブジェクトを作成
+     */
     public static fromSFENString(sfen: string): Piece {
         const promoted = sfen[0] === "+";
         if (promoted) {
@@ -59,30 +70,48 @@ export default class Piece {
         return piece;
     }
 
-    public color: Color; // 先後
-    public kind: string; // 駒の種類
-    // "+FU"などのCSAによる駒表現から駒オブジェクトを作成
+    /**
+     * 先後
+     */
+    public color: Color;
+    /**
+     * 駒の種類
+     */
+    public kind: string;
+    /**
+     * "+FU"などのCSAによる駒表現から駒オブジェクトを作成
+     */
     constructor(csa: string) {
         this.color = csa.slice(0, 1) === "+" ? Color.Black : Color.White;
         this.kind = csa.slice(1);
     }
-    // 成る
+    /**
+     * 成る
+     */
     public promote(): void {
         this.kind = Piece.promote(this.kind);
     }
-    // 不成にする
+    /**
+     * 不成にする
+     */
     public unpromote(): void {
         this.kind = Piece.unpromote(this.kind);
     }
-    // 駒の向きを反転する
+    /**
+     * 駒の向きを反転する
+     */
     public inverse(): void {
         this.color = this.color === Color.Black ? Color.White : Color.Black;
     }
-    // CSAによる駒表現の文字列を返す
+    /**
+     * CSAによる駒表現の文字列を返す
+     */
     public toCSAString(): string {
         return (this.color === Color.Black ? "+" : "-") + this.kind;
     }
-    // SFENによる駒表現の文字列を返す
+    /**
+     * SFENによる駒表現の文字列を返す
+     */
     public toSFENString(): string {
         const sfenPiece = {
             FU: "P", // Pawn
