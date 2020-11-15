@@ -16,7 +16,7 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "prepublishOnly": "npm run build",
-    "docs": "typedoc --exclude '**/__tests__/**/*' src",
+    "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
   },
   "repository": {
@@ -42,7 +42,7 @@
     "ts-jest": "^26.4.3",
     "ts-loader": "^4.3.1",
     "tslint": "^5.9.1",
-    "typedoc": "^0.19.2",
+    "typedoc": "^0.20.0-beta.8",
     "typescript": "^4.0.5",
     "webpack": "^4.43.0",
     "webpack-bundle-analyzer": "^3.8.0",

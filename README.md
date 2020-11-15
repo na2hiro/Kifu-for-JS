@@ -26,19 +26,13 @@ npm install shogi.js
 
 通常モードは棋譜再生および対局を，編集モードは盤面編集をモデル化するものである．
 
-## クラス概要
-各クラスのメソッドの概要についてはコメントを確認されたい．
+## Docs
+
+[TypeDoc ドキュメンテーション](http://apps.81.la/Shogi.js/docs/modules.html) を参照のこと。
 また，`test`ディレクトリ以下のテストで実際の挙動を確認されたい．
 
-* class Shogi
-	* 将棋盤を管理するクラス
-* enum Color
-	* Black=0, White=1
-* class Piece
-	* 駒を表すクラス
-
 ## TODO
-* 駒箱
+https://github.com/na2hiro/Shogi.js/issues
 
 ## 開発
 
@@ -46,7 +40,6 @@ npm install shogi.js
 
 ```
 $ npm install
-
 ```
 
 上記コマンドを実行することで開発に必要なパッケージをインストールできます．
