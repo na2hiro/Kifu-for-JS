@@ -197,7 +197,7 @@ piece = pro:"成"? p:[歩香桂銀金角飛王玉と杏圭全馬竜龍] {return 
 
 from = "打" {return null} / "(" x:[1-9] y:[1-9] ")" {return {x:parseInt(x),y:parseInt(y)}}
 
-time = "(" " "* now:ms "/" total:hms ")" {return {now: now, total: total}}
+time = "(" " "* now:ms " "* "/" " "* total:hms ")" {return {now: now, total: total}}
 
 hms = h:[0-9]+ ":" m:[0-9]+ ":" s:[0-9]+ {return {h:toN(h),m:toN(m),s:toN(s)}}
 ms = m:[0-9]+ ":" s:[0-9]+ {return {m:toN(m),s:toN(s)}}

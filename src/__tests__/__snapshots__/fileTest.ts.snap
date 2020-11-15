@@ -68746,6 +68746,628 @@ Object {
 }
 `;
 
+exports[`kif file shogidokoro.kifu 1`] = `
+Object {
+  "header": Object {
+    "先手": "",
+    "後手": "",
+  },
+  "initial": Object {
+    "data": Object {
+      "board": Array [
+        Array [
+          Object {},
+          Object {},
+          Object {},
+          Object {
+            "color": 1,
+            "kind": "FU",
+          },
+          Object {
+            "color": 0,
+            "kind": "FU",
+          },
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {
+            "color": 1,
+            "kind": "KE",
+          },
+          Object {
+            "color": 1,
+            "kind": "OU",
+          },
+          Object {
+            "color": 1,
+            "kind": "FU",
+          },
+          Object {
+            "color": 1,
+            "kind": "KI",
+          },
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {},
+          Object {},
+          Object {
+            "color": 1,
+            "kind": "FU",
+          },
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {
+            "color": 0,
+            "kind": "UM",
+          },
+          Object {},
+          Object {},
+          Object {},
+          Object {
+            "color": 0,
+            "kind": "FU",
+          },
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+        Array [
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+          Object {},
+        ],
+      ],
+      "color": 0,
+      "hands": Array [
+        Object {
+          "FU": 0,
+          "GI": 1,
+          "HI": 1,
+          "KA": 1,
+          "KE": 1,
+          "KI": 0,
+          "KY": 0,
+        },
+        Object {
+          "FU": 13,
+          "GI": 3,
+          "HI": 1,
+          "KA": 0,
+          "KE": 2,
+          "KI": 3,
+          "KY": 4,
+        },
+      ],
+    },
+    "preset": "OTHER",
+  },
+  "moves": Array [
+    Object {},
+    Object {
+      "move": Object {
+        "color": 0,
+        "piece": "HI",
+        "to": Object {
+          "x": 5,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 31,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "piece": "KI",
+        "to": Object {
+          "x": 3,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "piece": "KA",
+        "to": Object {
+          "x": 3,
+          "y": 1,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "KA",
+        "color": 1,
+        "from": Object {
+          "x": 2,
+          "y": 2,
+        },
+        "piece": "OU",
+        "same": true,
+        "to": Object {
+          "x": 3,
+          "y": 1,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 5,
+          "y": 1,
+        },
+        "piece": "UM",
+        "to": Object {
+          "x": 4,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "UM",
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 2,
+        },
+        "piece": "KI",
+        "same": true,
+        "to": Object {
+          "x": 4,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "piece": "KE",
+        "to": Object {
+          "x": 4,
+          "y": 3,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 1,
+        },
+        "piece": "OU",
+        "to": Object {
+          "x": 2,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "KI",
+        "color": 0,
+        "from": Object {
+          "x": 5,
+          "y": 2,
+        },
+        "piece": "HI",
+        "promote": true,
+        "to": Object {
+          "x": 4,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "piece": "HI",
+        "to": Object {
+          "x": 3,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "piece": "GI",
+        "to": Object {
+          "x": 3,
+          "y": 1,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 2,
+          "y": 2,
+        },
+        "piece": "OU",
+        "to": Object {
+          "x": 1,
+          "y": 3,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "piece": "KI",
+        "to": Object {
+          "x": 1,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "KI",
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 2,
+        },
+        "piece": "HI",
+        "same": true,
+        "to": Object {
+          "x": 1,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "HI",
+        "color": 0,
+        "from": Object {
+          "x": 4,
+          "y": 2,
+        },
+        "piece": "RY",
+        "same": true,
+        "to": Object {
+          "x": 1,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "RY",
+        "color": 1,
+        "from": Object {
+          "x": 1,
+          "y": 3,
+        },
+        "piece": "OU",
+        "same": true,
+        "to": Object {
+          "x": 1,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "piece": "HI",
+        "to": Object {
+          "x": 3,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 1,
+          "y": 2,
+        },
+        "piece": "OU",
+        "to": Object {
+          "x": 1,
+          "y": 3,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 3,
+          "y": 2,
+        },
+        "piece": "HI",
+        "promote": true,
+        "to": Object {
+          "x": 2,
+          "y": 2,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 31,
+        },
+      },
+    },
+  ],
+}
+`;
+
 exports[`kif file taichitsume.kif 1`] = `
 Object {
   "header": Object {
