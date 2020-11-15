@@ -8,7 +8,7 @@ export default function fetchFile(filePath): Promise<string> {
         request.open('GET', filePath, true);
         request.overrideMimeType("text/html;charset=" + encoding);
 
-        request.onload = () => {
+        request.onload = function() {
             if (this.status === 304) {
                 resolve(null);
             } else if (this.status >= 200 && this.status < 400) {
