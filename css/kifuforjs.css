@@ -1,71 +1,72 @@
 .kifuforjs{
 	width: 570px;
+    display: flex;
+	flex-direction: column;
 }
-.kifuforjs .inlineblock{
-	display:inline-block;
-	*display: inline;
-	*zoom: 1;
+
+.kifuforjs-columns {
+	display: flex;
+	align-items: stretch;
 }
-.kifuforjs .mochi.info{
-	overflow: scroll;
+.kifuforjs-column {
+	flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+}
+
+.kifuforjs-info {
+	overflow-y: scroll;
 	font-size: small;
+	margin-bottom: 2px;
 }
-.kifuforjs .mochi.info dl{
+.kifuforjs-info dl{
 	margin-top:0;
 	margin-bottom:0;
 	text-align:left;
 }
-.kifuforjs .mochi.info dl dt{
+.kifuforjs-info dt {
 	font-weight: bold;
 	clear: both;
 	float : left;
 	margin-right: 3px;
 	background-color: #eee;
 }
-.kifuforjs .mochi.info dl dd{
+.kifuforjs-info dd {
 	margin-left:20px;
 }
-.kifuforjs .mochi.panel {
+
+.kifuforjs-kifulist {
+	font-size:12px;
+	overflow: auto;
+	flex-grow: 1;
+}
+.kifuforjs-leftcontrol {
 	display: flex;
 	flex-direction: column;
+	margin-top: 1px;
 }
-
-.kifuforjs div.players select.kifulist{
-	font-size:12px;
-	width:100%;
-	height:70%;
-	overflow-x: auto;
-/*	font-family: Consolas, 'Courier New', Courier, Monaco, monospace;*/
+.kifuforjs-leftcontrol > * {
+	margin-top: 1px;
 }
-.kifuforjs ul.lines{
-	margin: 0px;
-	padding-left: 0;
-	padding-top: 2px;
-	list-style:none;
+.kifuforjs-board {
+	margin: 2px;
+	border-collapse: collapse;
 }
-.kifuforjs ul.lines li{
-	padding: 1px;
-}
-.kifuforjs ul.lines button, .kifuforjs ul.lines select{
-	width: 100%;
-	padding: 1px;
-}
-.kifuforjs table.ban{border-collapse: collapse;}
-.kifuforjs table.ban th{
+.kifuforjs-board th {
 	white-space:nowrap;
 	text-align: center;
 	vertical-align: middle;
 	font-weight: bold;
 }
-.kifuforjs table.ban td{
+.kifuforjs-cell {
 	border: 1px #000000 solid;
 	background-color:#FDD775;
 	padding:0px;
 }
-.kifuforjs table.ban td,
-.kifuforjs table.ban td img,
-.kifuforjs div.mochimain span.mochigoma img,
-.kifuforjs div.mochi div.mochimain span.mochigoma,
+.kifuforjs-cell,
+.kifuforjs-cell img,
+.kifuforjs-pieceinhand img,
+.kifuforjs-pieceinhand,
 .kifuforjs .dragPreview{
 	padding: 0;
 	border-spacing:0;
@@ -76,73 +77,56 @@
 .kifuforjs .dragPreview{
     z-index: 100;
 }
-.kifuforjs table.ban td.lastto{background-color: #FF9900;}
-.kifuforjs table.ban td.lastfrom{background-color: #FFCC00;}
-.kifuforjs table.ban td.movable{background-color: #AAAAFF;}
-.kifuforjs div.mochi{
-	height:180px;width:120px;
+.kifuforjs-cell--lastto {
+	background-color: #FF9900;
 }
-.kifuforjs div.mochi div.mochimain{
-	width:100%;
-	height:156px;
-	margin-bottom:0;
-	margin-top:auto;
+/*.kifuforjs-cell--lastfrom{background-color: #FFCC00;}
+.kifuforjs-cell--movable{background-color: #AAAAFF;}*/
+.kifuforjs-halfofcolumn {
+    flex: 1 1 0;
+	display: flex;
+	flex-direction: column;
+}
+.kifuforjs-hand-body {
+    flex: 100%;
 	background-color: #eee;
 }
-.kifuforjs div.mochi div.mochimain span.mochigoma{
-	position: relative;
-	display: inline-block;
-}
-.kifuforjs div.mochi div.mochimain span.mochigoma{
+.kifuforjs-pieceinhand {
 	display: none;
 	position: relative;
 }
-.kifuforjs div.mochi div.mochimain span.mochigoma div{
+
+.kifuforjs-pieceinhand div {
 	display: inline-block;
 }
-.kifuforjs div.mochi div.mochimain span.mochigoma.fu{
+.kifuforjs-pieceinhand--multipleFu {
 	display: inline-block;
-	width: 120px;
+	width: 100%;
 }
-.kifuforjs div.mochi div.mochimain span.mochigoma.fu-else{
+.kifuforjs-pieceinhand--multiple {
 	display: inline-block;
-	width: 60px;
+	width: 50%;
 }
-.kifuforjs div.players{
-	height:100%;width:120px;
-}
-.kifuforjs div.players div.mochi div.tebanname{
+.kifuforjs-hand-head {
+	flex: 0;
 	text-align: center;background-color: silver;
-	margin-bottom:0;margin-top:auto;width:100%;
-}
-.kifuforjs div.players div.mochi.teban{
-	background-color: #ddd;
-}
-.kifuforjs div.players div.mochi.teban div.tebanname{
-	text-align: center;background-color: blue; color:white;
-}
-.kifuforjs div.players div.mochi.teban div.tebanname a{
-	color:white;
 }
 
-.kifuforjs ul.inline{
-	display:inline;
-	padding-left: 0;
+.kifuforjs-control {
+	display: flex;
+	justify-content: center;
+	margin: 2px 0;
 }
-.kifuforjs ul.inline li{
-	display:inline;
-}
-.kifuforjs ul.inline button, .kifuforjs ul.inline input{
+.kifuforjs-control button, .kifuforjs-control input {
 	height: 30px;
 	width: 55px;
 	font-size: 18px;
 	text-align: center;
 	vertical-align: bottom;
 }
-.kifuforjs ul.inline.tools button{
+.kifuforjs .tools button{
 	font-size: 15px;
 }
-.kifuforjs textarea{
+.kifuforjs-comment {
 	color: black;
-	width: 100%;
 }

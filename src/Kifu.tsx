@@ -14,6 +14,7 @@ import KifuStore from "./stores/KifuStore";
 import { loadFile } from "./utils/util";
 
 import "../css/kifuforjs.css";
+import Comment from "./Comment";
 
 // tslint:disable-next-line:no-var-requires
 const DevTools = process.env.NODE_ENV !== "production" ? require("mobx-react-devtools").default : () => <span />;
@@ -68,35 +69,22 @@ class Kifu extends React.Component<IProps, {}> {
             ) : null;
 
         return this.props.connectDropTarget(
-            <div>
-                <table className="kifuforjs" style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
-                    <tbody>
-                        <tr>
-                            <td>
-                                <Preview generator={previewGenerator} />
-                                <DevTools />
-                                <div className="inlineblock players">
-                                    <Hand kifuStore={this.kifuStore} defaultColor={1} />
-                                    <LeftControl kifuStore={this.kifuStore} />
-                                </div>
-                            </td>
-                            <td style={{ textAlign: "center" }}>
-                                <Board kifuStore={this.kifuStore} />
-                            </td>
-                            <td>
-                                <div className="inlineblock players">
-                                    <Info player={this.kifuStore.player} />
-                                    <Hand kifuStore={this.kifuStore} defaultColor={0} />
-                                </div>
-                            </td>
-                        </tr>
-                        <tr>
-                            <td colSpan={3} style={{ textAlign: "center" }}>
-                                <Control kifuStore={this.kifuStore} />
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+            <div className="kifuforjs" style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
+                <Preview generator={previewGenerator} />
+                <DevTools />
+                <div className="kifuforjs-columns">
+                    <div className="kifuforjs-column">
+                        <Hand kifuStore={this.kifuStore} defaultColor={1} />
+                        <LeftControl kifuStore={this.kifuStore} />
+                    </div>
+                    <Board kifuStore={this.kifuStore} />
+                    <div className="kifuforjs-column">
+                        <Info player={this.kifuStore.player} />
+                        <Hand kifuStore={this.kifuStore} defaultColor={0} />
+                    </div>
+                </div>
+                <Control kifuStore={this.kifuStore} />
+                <Comment kifuStore={this.kifuStore} />
             </div>,
         );
     }

@@ -33,10 +33,10 @@ export default class PieceHandGroup extends Component<IProps, any> {
                 />,
             );
         }
-        const classNames = ["mochigoma"];
+        const classNames = ["kifuforjs-pieceinhand"];
         if (this.props.value > 0) {
-            classNames.push(this.props.data.kind === "FU" ? " fu" : " fu-else");
+            classNames.push(this.props.data.kind === "FU" ? " kifuforjs-pieceinhand--multipleFu" : " kifuforjs-pieceinhand--multiple");
         }
-        return <span className={classNames.join(" ")}>{pieces}</span>;
+        return <div className={classNames.join(" ")}>{pieces}</div>;
     }
 }

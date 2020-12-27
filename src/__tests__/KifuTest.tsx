@@ -7,12 +7,11 @@ import Piece from "../Piece";
 import Hand from "../Hand";
 import PieceHandGroup from "../PieceHandGroup";
 
-const selectKifuList = (wrapper: ReactWrapper) => wrapper.find("select.kifulist");
+const selectKifuList = (wrapper: ReactWrapper) => wrapper.find(".kifuforjs-kifulist");
 const selectPiece = (wrapper: ReactWrapper, x: number, y: number) => wrapper.find(Piece).at((y - 1) * 9 + (9 - x));
 const selectFlipButton = (wrapper: ReactWrapper) => wrapper
-            .find(".inline.tools li")
-            .at(0)
-            .find("button");
+            .find(".tools button")
+            .at(0);
 const selectForwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="1"]');
 const selectBackwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="-1"]');
 
@@ -22,7 +21,7 @@ const SAMPLE_HANDS_KI2 = "▲７六歩△３四歩▲２二角成△同銀";
 describe("<Kifu />", () => {
     it("renders empty state", () => {
         const wrapper = mount(<Kifu/>);
-        expect(wrapper.find("table.kifuforjs").exists()).toBeTruthy();
+        expect(wrapper.find(".kifuforjs").exists()).toBeTruthy();
         expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({color: 0, kind: "FU"});
         expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({});
     });

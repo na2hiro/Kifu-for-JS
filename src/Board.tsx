@@ -46,7 +46,7 @@ export default class Board extends React.Component<IProps, any> {
         });
 
         return (
-            <table className="ban">
+            <table className="kifuforjs-board">
                 <tbody>
                     <tr>{ths}</tr>
                     {trs}

@@ -29,10 +29,11 @@ module.exports = env => {
                     exclude: /node_modules/
                 },
                 {
-                    test: /\.css$/,
+                    test: /\.s?css$/,
                     use: [
                         'style-loader',
-                        'css-loader'
+                        'css-loader',
+                        'sass-loader'
                     ]
                 },
                 {
@@ -72,6 +73,7 @@ http://opensource.org/licenses/mit-license.php`
         common.devServer = {
             progress: true,
             port: DEV_SERVER_PORT,
+            host: '0.0.0.0'
         };
         common.devtool = "cheap-module-eval-source-map";
     }

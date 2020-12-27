@@ -17,44 +17,20 @@ export default class Control extends React.Component<IProps> {
     public render() {
         const { player } = this.props.kifuStore;
         return (
-            <div>
-                <ul className="inline go" style={{ margin: "0 auto" }} onClick={this.onClickGoTo}>
-                    <li>
-                        <button data-go="-Infinity">|&lt;</button>
-                    </li>
-                    <li>
-                        <button data-go="-10">&lt;&lt;</button>
-                    </li>
-                    <li>
-                        <button data-go="-1">&lt;</button>
-                    </li>
-                    <li>
-                        <input type="text" name="tesuu" size={3} value={player.tesuu} onChange={this.onChangeTesuu} />
-                    </li>
-                    <li>
-                        <button data-go="1">&gt;</button>
-                    </li>
-                    <li>
-                        <button data-go="10">&gt;&gt;</button>
-                    </li>
-                    <li>
-                        <button data-go="Infinity">&gt;|</button>
-                    </li>
-                </ul>
-                <ul className="inline tools">
-                    <li>
-                        <button onClick={this.onClickReverse}>反転</button>
-                    </li>
-                    <li>
-                        <button onClick={this.onClickCredit}>credit</button>
-                    </li>
-                </ul>
-                <textarea
-                    rows={10}
-                    className="comment"
-                    disabled={true}
-                    value={this.props.kifuStore.errors.join("\n") || player.getComments().join("\n")}
-                />
+            <div className="kifuforjs-control">
+                <div className="go" onClick={this.onClickGoTo}>
+                    <button data-go="-Infinity">|&lt;</button>
+                    <button data-go="-10">&lt;&lt;</button>
+                    <button data-go="-1">&lt;</button>
+                    <input type="text" name="tesuu" size={3} value={player.tesuu} onChange={this.onChangeTesuu} />
+                    <button data-go="1">&gt;</button>
+                    <button data-go="10">&gt;&gt;</button>
+                    <button data-go="Infinity">&gt;|</button>
+                </div>
+                <div className="tools">
+                    <button onClick={this.onClickReverse}>反転</button>
+                    <button onClick={this.onClickCredit}>credit</button>
+                </div>
             </div>
         );
     }

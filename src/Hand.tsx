@@ -29,9 +29,9 @@ export default class Hand extends React.Component<IProps, any> {
         ));
 
         return (
-            <div className={"mochi mochi" + color}>
-                <div className="tebanname">{colorToMark(color) + playerName}</div>
-                <div className="mochimain">{handGroups}</div>
+            <div className="kifuforjs-halfofcolumn">
+                <div className="kifuforjs-hand-head">{colorToMark(color) + playerName}</div>
+                <div className="kifuforjs-hand-body">{handGroups}</div>
             </div>
         );
     }

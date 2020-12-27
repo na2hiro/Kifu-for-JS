@@ -20,26 +20,18 @@ export default class LeftControl extends React.Component<IProps, {}> {
     public render() {
         const { player } = this.props.kifuStore;
         return (
-            <div className="mochi panel">
+            <div className="kifuforjs-halfofcolumn kifuforjs-leftcontrol">
                 <KifuList player={player} />
-                <ul className="lines">
-                    <li className="fork">
-                        <ForkList kifuStore={this.props.kifuStore} />
-                    </li>
-                    <li>
-                        <button className="dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
-                            棋譜保存
-                        </button>
-                    </li>
-                    <li>
-                        <select className="autoload" onChange={this.onChangeTimer}>
-                            <option value="NaN">自動更新しない</option>
-                            <option value="30">自動更新30秒毎</option>
-                            <option value="60">自動更新1分毎</option>
-                            <option value="180">自動更新3分毎</option>
-                        </select>
-                    </li>
-                </ul>
+                <ForkList kifuStore={this.props.kifuStore} />
+                <button className="dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
+                    棋譜保存
+                </button>
+                <select className="autoload" onChange={this.onChangeTimer}>
+                    <option value="NaN">自動更新しない</option>
+                    <option value="30">自動更新30秒毎</option>
+                    <option value="60">自動更新1分毎</option>
+                    <option value="180">自動更新3分毎</option>
+                </select>
             </div>
         );
     }
