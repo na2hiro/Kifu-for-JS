@@ -33,7 +33,7 @@ export default class KifuList extends React.Component<IProps, any> {
             );
         }
         return (
-            <select className="kifuforjs-kifulist" size={5} onChange={this.onChange} value={this.props.player.tesuu}>
+            <select className="kifuforjs-kifulist" size={2} onChange={this.onChange} value={this.props.player.tesuu}>
                 {options}
             </select>
         );

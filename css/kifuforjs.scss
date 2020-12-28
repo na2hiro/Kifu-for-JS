@@ -77,6 +77,7 @@
   &-board {
     margin: 2px;
     border-collapse: collapse;
+    align-self: center;
 
     th {
       white-space: nowrap;
@@ -182,6 +183,7 @@
     height: 36px;
     vertical-align: middle;
 
+    // TODO: Pieces overflow
     @media(min-width: 700px) {
       .kifuforjs--responsive & {
         width: 40px;
@@ -193,6 +195,53 @@
       .kifuforjs--responsive & {
         width: 48px;
         height: 54px;
+      }
+    }
+  }
+
+  // Portrait view
+  &--responsive {
+    // TODO: too high case
+    @media (max-aspect-ratio: 2/3) {
+      min-width: 320px;
+
+      .kifuforjs {
+        &-columns{
+          flex-direction: column;
+        }
+        &-column{
+          flex-direction: row;
+        }
+
+        &-pieceinhand {
+          flex: 0 0 25%;
+
+          &--fu {
+            flex: 0 0 50%;
+          }
+        }
+
+        &-cell,
+        &-cell img,
+        &-pieceinhand img,
+        &-pieceinhand,
+        &-dragPreview {
+          padding: 0;
+          border-spacing: 0;
+          width: 32px;
+          height: 36px;
+          vertical-align: middle;
+
+          @media(min-width: 400px) {
+            width: 40px;
+            height: 45px;
+          }
+
+          @media(min-width: 480px) {
+            width: 48px;
+            height: 54px;
+          }
+        }
       }
     }
   }

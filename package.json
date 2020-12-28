@@ -49,6 +49,7 @@
     "react-dnd-multi-backend": "^3.0.4",
     "react-dnd-touch-backend": "^0.8.3",
     "react-dom": "^16.0.0",
+    "react-responsive": "^8.2.0",
     "shogi.js": "^2.0.0"
   },
   "devDependencies": {

@@ -29,7 +29,7 @@ export default class Hand extends React.Component<IProps, any> {
         ));
 
         return (
-            <div className={"kifuforjs-halfofcolumn"+(defaultColor === 1 ? " kifuforjs-hand--reverse" : "")}>
+            <div className={"kifuforjs-halfofcolumn kifuforjs-hand"+(defaultColor === 1 ? " kifuforjs-hand--reverse" : "")}>
                 <div className="kifuforjs-hand-head">{colorToMark(color) + playerName}</div>
                 <div className={"kifuforjs-hand-body"}>{handGroups}</div>
             </div>

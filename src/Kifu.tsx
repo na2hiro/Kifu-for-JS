@@ -12,6 +12,7 @@ import Info from "./Info";
 import LeftControl from "./LeftControl";
 import KifuStore from "./stores/KifuStore";
 import { loadFile } from "./utils/util";
+import MediaQuery from "react-responsive";
 
 import "../css/kifuforjs.scss";
 import Comment from "./Comment";
@@ -69,6 +70,9 @@ class Kifu extends React.Component<IProps, {}> {
                 <img src={item.imgSrc} className="kifuforjs-dragPreview" style={style} />
             ) : null;
 
+        const leftControl = <LeftControl kifuStore={this.kifuStore} />;
+        const info = <Info player={this.kifuStore.player} />;
+
         return this.props.connectDropTarget(
             <div className={"kifuforjs"+(this.props.responsive ? " kifuforjs--responsive" : "")} style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
                 <Preview generator={previewGenerator} />
@@ -76,11 +80,15 @@ class Kifu extends React.Component<IProps, {}> {
                 <div className="kifuforjs-columns">
                     <div className="kifuforjs-column">
                         <Hand kifuStore={this.kifuStore} defaultColor={1} />
-                        <LeftControl kifuStore={this.kifuStore} />
+                        <MediaQuery query={"(max-aspect-ratio: 2/3)"}>
+                            {isPortrait => this.props.responsive && isPortrait ? info : leftControl}
+                        </MediaQuery>
                     </div>
                     <Board kifuStore={this.kifuStore} />
                     <div className="kifuforjs-column">
-                        <Info player={this.kifuStore.player} />
+                        <MediaQuery query={"(max-aspect-ratio: 2/3)"}>
+                            {isPortrait => this.props.responsive && isPortrait ? leftControl : info}
+                        </MediaQuery>
                         <Hand kifuStore={this.kifuStore} defaultColor={0} />
                     </div>
                 </div>
