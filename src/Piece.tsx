@@ -50,8 +50,8 @@ export default class Piece extends React.Component<IProps, any> {
     public render(): React.ReactNode {
         const div = this.props.connectDropTarget(
             this.props.connectDragSource(
-                <div>
-                    <img src={getPieceImage(this.props)} style={{ opacity: this.props.isDragging ? 0.4 : 1 }} />
+                <div style={{ opacity: this.props.isDragging ? 0.4 : 1 }}>
+                    <img src={getPieceImage(this.props)} />
                 </div>,
             ),
         );

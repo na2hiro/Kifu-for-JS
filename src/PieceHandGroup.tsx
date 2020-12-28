@@ -34,8 +34,8 @@ export default class PieceHandGroup extends Component<IProps, any> {
             );
         }
         const classNames = ["kifuforjs-pieceinhand"];
-        if (this.props.value > 0) {
-            classNames.push(this.props.data.kind === "FU" ? " kifuforjs-pieceinhand--multipleFu" : " kifuforjs-pieceinhand--multiple");
+        if (this.props.data.kind === "FU") {
+            classNames.push("kifuforjs-pieceinhand--fu");
         }
         return <div className={classNames.join(" ")}>{pieces}</div>;
     }

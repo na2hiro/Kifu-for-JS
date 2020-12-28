@@ -49,8 +49,8 @@ export default class PieceHand extends React.Component<IProps, any> {
                 : { top: 0, left: this.props.position, position: "absolute", zIndex: 100 - this.props.index };
         style.opacity = this.props.isDragging ? 0.4 : 1;
         return this.props.connectDragSource(
-            <div>
-                <img src={getPieceImage(this.props)} style={style} />
+            <div style={style}>
+                <img src={getPieceImage(this.props)} />
             </div>,
         );
     }

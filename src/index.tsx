@@ -6,15 +6,37 @@ import KifuStore from "./stores/KifuStore";
 import { onDomReady } from "./utils/util";
 export const mobx = { autorun, when, reaction };
 
-export function loadString(kifu: string, id?: string): Promise<KifuStore> {
-    return loadCommon(null, kifu, id);
+export type Options = {
+    responsive?: boolean;
 }
 
-export function load(filePath: string, id?: string): Promise<KifuStore> {
-    return loadCommon(filePath, null, id);
+export function loadString(kifu: string, idOrOptions?: string | Options, options?: Options): Promise<KifuStore> {
+    let id: string | undefined;
+    if (typeof idOrOptions === "object") {
+        options = idOrOptions;
+        id = undefined;
+    } else {
+        id = idOrOptions;
+    }
+    return loadCommon(undefined, kifu, id, options);
 }
 
-function loadCommon(filePath, kifu, id): Promise<KifuStore> {
+export function load(filePath: string, idOrOptions?: string | Options, options?: Options): Promise<KifuStore> {
+    let id: string | undefined;
+    if (typeof idOrOptions === "object") {
+        options = idOrOptions;
+        id = undefined;
+    } else {
+        id = idOrOptions;
+    }
+    return loadCommon(filePath, undefined, id, options);
+}
+
+function loadCommon(
+    filePath: string | undefined,
+    kifu: string | undefined,
+    id: string | undefined,
+    options: Options | undefined): Promise<KifuStore> {
     return new Promise((resolve) => {
         if (!id) {
             id =
@@ -27,7 +49,7 @@ function loadCommon(filePath, kifu, id): Promise<KifuStore> {
         onDomReady(() => {
             const container = document.getElementById(id);
             const kifuStore = new KifuStore();
-            render(<Kifu kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+            render(<Kifu {...options} kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
             resolve(kifuStore);
         });
     });

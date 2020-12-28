@@ -17,26 +17,22 @@ export default class Control extends React.Component<IProps> {
     public render() {
         const { player } = this.props.kifuStore;
         return (
-            <div className="kifuforjs-control">
-                <div className="go" onClick={this.onClickGoTo}>
-                    <button data-go="-Infinity">|&lt;</button>
-                    <button data-go="-10">&lt;&lt;</button>
-                    <button data-go="-1">&lt;</button>
-                    <input type="text" name="tesuu" size={3} value={player.tesuu} onChange={this.onChangeTesuu} />
-                    <button data-go="1">&gt;</button>
-                    <button data-go="10">&gt;&gt;</button>
-                    <button data-go="Infinity">&gt;|</button>
-                </div>
-                <div className="tools">
-                    <button onClick={this.onClickReverse}>反転</button>
-                    <button onClick={this.onClickCredit}>credit</button>
-                </div>
+            <div className="kifuforjs-control" onClick={this.onClickGoTo}>
+                <button data-go="-Infinity">|&lt;</button>
+                <button data-go="-10">&lt;&lt;</button>
+                <button data-go="-1">&lt;</button>
+                <input type="text" name="tesuu" size={3} value={player.tesuu} onChange={this.onChangeTesuu} />
+                <button data-go="1">&gt;</button>
+                <button data-go="10">&gt;&gt;</button>
+                <button data-go="Infinity">&gt;|</button>
+                <button className="kifuforjs-control-tools" onClick={this.onClickReverse}>反転</button>
+                <button className="kifuforjs-control-tools" onClick={this.onClickCredit}>credit</button>
             </div>
         );
     }
 
     private onClickGoTo(e) {
-        if ((e.target as Element).tagName !== "BUTTON") {
+        if ((e.target as Element).tagName !== "BUTTON" || !e.target.dataset.go) {
             return;
         }
         this.props.kifuStore.player.go(e.target.dataset.go);

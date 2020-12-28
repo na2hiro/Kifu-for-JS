@@ -13,7 +13,7 @@ import LeftControl from "./LeftControl";
 import KifuStore from "./stores/KifuStore";
 import { loadFile } from "./utils/util";
 
-import "../css/kifuforjs.css";
+import "../css/kifuforjs.scss";
 import Comment from "./Comment";
 
 // tslint:disable-next-line:no-var-requires
@@ -24,6 +24,7 @@ export interface IProps {
     kifu?: string;
     isOver?: boolean;
     kifuStore?: KifuStore;
+    responsive?: boolean;
 
     connectDropTarget?: (element: any) => any; // TODO
 }
@@ -65,11 +66,11 @@ class Kifu extends React.Component<IProps, {}> {
     public render() {
         const previewGenerator = (type, item, style) =>
             item.signature === this.kifuStore.signature ? (
-                <img src={item.imgSrc} className="dragPreview" style={style} />
+                <img src={item.imgSrc} className="kifuforjs-dragPreview" style={style} />
             ) : null;
 
         return this.props.connectDropTarget(
-            <div className="kifuforjs" style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
+            <div className={"kifuforjs"+(this.props.responsive ? " kifuforjs--responsive" : "")} style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
                 <Preview generator={previewGenerator} />
                 <DevTools />
                 <div className="kifuforjs-columns">
