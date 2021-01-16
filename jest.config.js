@@ -2,6 +2,9 @@ module.exports = {
     transform: {
         "^.+\\.tsx?$": "ts-jest",
     },
+    transformIgnorePatterns: [
+        "/node_modules/", ".scss$"
+    ],
     testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     moduleFileExtensions: [
         "ts",
@@ -12,7 +15,7 @@ module.exports = {
         "node"
     ],
     moduleNameMapper: {
-        "\\.(png|css)$": "<rootDir>/__mocks__/fileMock.js",
+        "\\.(png|scss)$": "<rootDir>/__mocks__/fileMock.js",
     },
     setupFiles: ["./test/jestsetup.ts"],
     snapshotSerializers: ["enzyme-to-json/serializer"],

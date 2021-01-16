@@ -13,9 +13,11 @@ import LeftControl from "./LeftControl";
 import KifuStore from "./stores/KifuStore";
 import { loadFile } from "./utils/util";
 import MediaQuery from "react-responsive";
+import fscreen from "fscreen";
 
 import "../css/kifuforjs.scss";
 import Comment from "./Comment";
+import {createRef} from "react";
 
 // tslint:disable-next-line:no-var-requires
 const DevTools = process.env.NODE_ENV !== "production" ? require("mobx-react-devtools").default : () => <span />;
@@ -30,13 +32,20 @@ export interface IProps {
     connectDropTarget?: (element: any) => any; // TODO
 }
 
+const PORTRAIT_VIEW_QUERY = "(max-aspect-ratio: 2/3), (max-width: 570px)";
+
 @observer
-class Kifu extends React.Component<IProps, {}> {
+class Kifu extends React.Component<IProps, {isFullscreen: boolean}> {
     public kifuStore: KifuStore;
+    private ref: React.RefObject<HTMLDivElement>;
+    private fullscreenListener: number;
 
     constructor(props) {
         super(props);
         this.kifuStore = props.kifuStore || new KifuStore();
+        this.ref = createRef();
+        this.state = {isFullscreen: false};
+        this.onFullscreenChange = this.onFullscreenChange.bind(this);
     }
 
     public componentDidMount() {
@@ -50,6 +59,20 @@ class Kifu extends React.Component<IProps, {}> {
         loadPromise.catch(() => {
             // ok
         });
+        if (!this.fullscreenListener) {
+            this.fullscreenListener = fscreen.addEventListener("fullscreenchange", this.onFullscreenChange);
+        }
+    }
+
+    onFullscreenChange() {
+        this.setState({isFullscreen: !!fscreen.fullscreenElement});
+    }
+
+    componentWillUnmount() {
+        if (this.fullscreenListener) {
+            fscreen.removeEventListener("fullscreenchange", this.onFullscreenChange);
+            this.fullscreenListener = null;
+        }
     }
 
     public componentWillReceiveProps(nextProps: IProps) {
@@ -70,31 +93,48 @@ class Kifu extends React.Component<IProps, {}> {
                 <img src={item.imgSrc} className="kifuforjs-dragPreview" style={style} />
             ) : null;
 
-        const leftControl = <LeftControl kifuStore={this.kifuStore} />;
         const info = <Info player={this.kifuStore.player} />;
 
         return this.props.connectDropTarget(
-            <div className={"kifuforjs"+(this.props.responsive ? " kifuforjs--responsive" : "")} style={{ backgroundColor: this.props.isOver ? "silver" : "" }}>
-                <Preview generator={previewGenerator} />
-                <DevTools />
-                <div className="kifuforjs-columns">
-                    <div className="kifuforjs-column">
-                        <Hand kifuStore={this.kifuStore} defaultColor={1} />
-                        <MediaQuery query={"(max-aspect-ratio: 2/3)"}>
-                            {isPortrait => this.props.responsive && isPortrait ? info : leftControl}
-                        </MediaQuery>
+            <div className="kifuforjs-wrapper" ref={this.ref}>
+                <div className={"kifuforjs"+(this.props.responsive || this.state.isFullscreen ? " kifuforjs--responsive" : "")} style={{ backgroundColor: this.props.isOver ? "silver" : "", position: "relative" }}>
+                    <Preview generator={previewGenerator} />
+                    {/*fscreen.fullscreenEnabled && (
+                        <div style={{position: fscreen.fullscreenElement ? "fixed" : "absolute", right: 0, bottom: 0, width: "100px", height: "100px"}}
+                             onClick={() => {
+                                 if (fscreen.fullscreenElement) {
+                                     fscreen.exitFullscreen();
+                                 } else {
+                                     fscreen.requestFullscreen(this.ref.current);
+                                 }
+                             }}>
+                            {fscreen.fullscreenElement ? "Finish fullscreen" : "Enter fullscreen"}
+                        </div>
+                    )*/}
+                    <DevTools />
+                    <div className="kifuforjs-columns">
+                        <div className="kifuforjs-column">
+                            <Hand kifuStore={this.kifuStore} defaultColor={1} />
+                            <MediaQuery query={PORTRAIT_VIEW_QUERY}>
+                                {isPortrait => this.props.responsive && isPortrait ? info :
+                                    <LeftControl kifuStore={this.kifuStore} isPortrait={isPortrait}/>}
+                            </MediaQuery>
+                        </div>
+                        <Board kifuStore={this.kifuStore} />
+                        <div className="kifuforjs-column">
+                            <MediaQuery query={PORTRAIT_VIEW_QUERY}>
+                                {isPortrait => this.props.responsive && isPortrait ? <LeftControl kifuStore={this.kifuStore} isPortrait={isPortrait} /> : info}
+                            </MediaQuery>
+                            <Hand kifuStore={this.kifuStore} defaultColor={0} />
+                        </div>
                     </div>
-                    <Board kifuStore={this.kifuStore} />
-                    <div className="kifuforjs-column">
-                        <MediaQuery query={"(max-aspect-ratio: 2/3)"}>
-                            {isPortrait => this.props.responsive && isPortrait ? leftControl : info}
-                        </MediaQuery>
-                        <Hand kifuStore={this.kifuStore} defaultColor={0} />
-                    </div>
+                    <MediaQuery query={PORTRAIT_VIEW_QUERY}>
+                        {isPortrait => <Control kifuStore={this.kifuStore} isPortrait={this.props.responsive && isPortrait} />}
+                    </MediaQuery>
+
+                    <Comment kifuStore={this.kifuStore} />
                 </div>
-                <Control kifuStore={this.kifuStore} />
-                <Comment kifuStore={this.kifuStore} />
-            </div>,
+            </div>
         );
     }
 }

@@ -6,6 +6,7 @@ import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
     kifuStore: KifuStore;
+    isPortrait: boolean;
 }
 
 @observer
@@ -21,7 +22,7 @@ export default class LeftControl extends React.Component<IProps, {}> {
         const { player } = this.props.kifuStore;
         return (
             <div className="kifuforjs-halfofcolumn kifuforjs-leftcontrol">
-                <KifuList player={player} />
+                <KifuList player={player} isPortrait={this.props.isPortrait} />
                 <ForkList kifuStore={this.props.kifuStore} />
                 <button className="dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
                     棋譜保存

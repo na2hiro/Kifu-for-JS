@@ -7,10 +7,12 @@ import Piece from "../Piece";
 import Hand from "../Hand";
 import PieceHandGroup from "../PieceHandGroup";
 
-const selectKifuList = (wrapper: ReactWrapper) => wrapper.find(".kifuforjs-kifulist");
+const selectKifuList = (wrapper: ReactWrapper) => wrapper.find(".kifuforjs-kifulist-inner");
+const KIFU_LIST_PADDER_COUNT = 2;
+const selectCurrentRow = (kifuList: ReactWrapper) => kifuList.find(".kifuforjs-kifulist-row--selected");
 const selectPiece = (wrapper: ReactWrapper, x: number, y: number) => wrapper.find(Piece).at((y - 1) * 9 + (9 - x));
 const selectFlipButton = (wrapper: ReactWrapper) => wrapper
-            .find(".tools button")
+            .find("button.kifuforjs-control-tools")
             .at(0);
 const selectForwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="1"]');
 const selectBackwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="-1"]');
@@ -28,8 +30,8 @@ describe("<Kifu />", () => {
     it("renders with kifu", () => {
         const wrapper = mount(<Kifu kifu={SAMPLE_KI2}/>);
         const kifuList = selectKifuList(wrapper);
-        expect(kifuList.children()).toHaveLength(3);
-        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("0");
+        expect(kifuList.children()).toHaveLength(3 + KIFU_LIST_PADDER_COUNT);
+        expect(selectCurrentRow(kifuList).text()).toBe("\xa0\xa0\xa00 開始局面 ");
     });
     it("renders hands", () => {
         const wrapper = mount(<Kifu kifu={SAMPLE_HANDS_KI2} />);
@@ -47,35 +49,36 @@ describe("Control panel", () => {
     it("forward", () => {
         const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
         const kifuList = selectKifuList(wrapper);
-        expect(kifuList.children().length).toBe(3);
+        expect(kifuList.children().length).toBe(3 + KIFU_LIST_PADDER_COUNT);
 
-        selectForwardButton(wrapper).simulate("click");
+        const reactWrapper = selectForwardButton(wrapper);
+        reactWrapper.simulate("click");
 
-        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("1");
+        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa01 ☗７六歩 ");
         expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({});
         expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({ color: 0, kind: "FU" });
 
         selectForwardButton(wrapper).simulate("click");
 
-        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("2");
+        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa02 ☖８四歩 ");
     });
     it("backward", () => {
         const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
         const kifuList = selectKifuList(wrapper);
-        expect(kifuList.children().length).toBe(3);
+        expect(kifuList.children().length).toBe(3 + KIFU_LIST_PADDER_COUNT);
 
         selectForwardButton(wrapper).simulate("click");
         selectForwardButton(wrapper).simulate("click");
 
-        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("2");
+        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa02 ☖８四歩 ");
 
         selectBackwardButton(wrapper).simulate("click");
 
-        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("1");
+        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa01 ☗７六歩 ");
 
         selectBackwardButton(wrapper).simulate("click");
 
-        expect((kifuList.getDOMNode() as HTMLSelectElement).value).toBe("0");
+        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa00 開始局面 ");
     });
     it("flip", () => {
         const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
