@@ -53,6 +53,9 @@ module.exports = env => {
         },
         plugins: [
             new CleanWebpackPlugin([BUNDLE_DIR]),
+            new webpack.DefinePlugin({
+                __VERSION__: JSON.stringify(package.version)
+            }),
             new webpack.BannerPlugin({
                 banner: `Kifu for JS (${package.version})
 Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -63,9 +66,6 @@ http://opensource.org/licenses/mit-license.php`
     };
 
     if (IS_PROD){
-        common.plugins.push(new webpack.DefinePlugin({
-            'process.env.NOVE_ENV': JSON.stringify('production')
-        }))
         common.optimization = {
             minimize: true
         }

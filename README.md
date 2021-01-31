@@ -1,47 +1,17 @@
-# Kifu for JS (ver. 2.2.2)
-JavaScriptで動く棋譜再生盤とそのブックマークレット
+# Kifu for JS (ver. 3.0.0)
+モバイルで使いやすい(ことを目指す)将棋の棋譜再生盤とそのブックマークレット
 
-## 概要
-* Kifu for JSは，Kifu for FlashやJava同様，HTML内で棋譜を読み込み表示，再生を行う．
-	* **KIF**, **KI2**, **CSA**, [**JKF**](https://github.com/na2hiro/json-kifu-format)形式に対応．
-* Kifu for JSブックマークレットは，1クリックで
-	* Kifu for FlashやKifu for JavaをKifu for JSに置き換えて盤面を表示する．
-	* 選択された棋譜テキストから盤面を表示する．
-* Flash, Javaなどを必要としないため，iOSやAndroidでも表示できる
+## Kifu for JS 将棋再生盤
+Kifu for JSは，Kifu for Flash同様，Webページ内で棋譜を読み込み表示，再生を行います．
 
-## 動作例
-[**こちら**](http://na2hiro.github.io/Kifu-for-JS/examples/example.html)
+<img src="http://na2hiro.github.io/Kifu-for-JS/readme-ss/k4j-main.jpg" width="744">
 
-## Kifu for JS ブックマークレット
-1クリックでKifu for {Flash/Java}をKifu for JSに置き換えて盤面を表示します．
-また，棋譜テキストを選択してブックマークレットを開くことで，盤面を表示できます．
+[**Demoはこちら**](http://na2hiro.github.io/Kifu-for-JS/examples/example.html)
 
-### 使い方(Java/Flash置換)
-
-1. あらかじめ次のコードをブックマークへ追加しておく→
-`javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
-2. Kifu for FlashやKifu for Javaが使われているページ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html))を開く
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/1.png)
-3. ブックマークレットを開く
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/2.png)
-4. FlashやJava部分が置き換えられ，Kifu for JSの再生盤になる
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/3.png)
-
-### 使い方(棋譜テキスト)
-
-1. あらかじめブックマークレットを追加しておく
-2. 棋譜テキストが書かれているページ([例](http://shogikakolog.web.fc2.com/part121.htm))を開く
-3. 棋譜テキストを選択する
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/select-1.png)
-4. ブックマークレットを開く
-5. 棋譜テキストの直後にKifu for JSの再生盤が表示される
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/select-2.png)
-
-## Kifu for JS
 ### 機能
-既にKifu for Flashとほぼ同等以上の機能を備えています．
+既にKifu for Flashと同等程度の機能を備えています．
 
-* 対応棋譜形式: **kif**, **ki2**, kifu, ki2u, **csa**, jkf
+* 対応棋譜形式: **kif**, **ki2**, kifu, ki2u, **csa**, [**jkf**](https://github.com/na2hiro/json-kifu-format)
 * 駒落ちや詰将棋等の初期局面指定にも対応
 * 変化手順の再生が可能
 * 棋譜中継のための自動更新機能
@@ -53,18 +23,16 @@ JavaScriptで動く棋譜再生盤とそのブックマークレット
 	* 棋譜ファイルをドラッグ&ドロップで読み込み
 
 ### 設置方法
-Update: jQueryは不要になりました。
-
-Kifu for JSファイルをページに読み込みます。（jsDelivrの提供するCDNを利用しています）
-
-`@2`の部分では、`2.*.*`の最新を読み込むという指定で、機能追加・バグ修正更新が自動で反映されます。
-[Semantic Versioning](https://semver.org/) を採用しているため、後方互換性のない変更がある場合は`3.*.*`台にするつもりですが、不安がある場合は`@2.2.2`にするなどバージョンを固定して下さい。
+1. Kifu for JSファイルをページに読み込みます。（jsDelivrの提供するCDNを利用しています）
 
 ```html
-<script src="https://cdn.jsdelivr.net/npm/kifu-for-js@2/bundle/kifu-for-js.min.js" charset="utf-8"></script>
+<script src="https://cdn.jsdelivr.net/npm/kifu-for-js@3/bundle/kifu-for-js.min.js" charset="utf-8"></script>
 ```
 
-`KifuForJS.load` (v1では`Kifu.load`)関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
+`@3`の部分では、`3.*.*`の最新を読み込むという指定で、機能追加・バグ修正更新が自動で反映されます。
+[Semantic Versioning](https://semver.org/) を採用しているため、後方互換性のない変更がある場合は`4.*.*`台にするつもりですが、不安がある場合は`@3.0.0`にするなどバージョンを固定して下さい。
+
+2. `KifuForJS.load` (v1では`Kifu.load`)関数にkifファイルのアドレスを渡して呼び出すと，この場所に盤面を表示する．
 
 ```html
 <script>KifuForJS.load("../json-kifu-format/jt201409130101.kif");</script>
@@ -78,7 +46,22 @@ Kifu for JSファイルをページに読み込みます。（jsDelivrの提供�
 <div id="board"></div>
 ```
 
-これ以外の使用例は`examples/example.html` にあります。
+これ以外の使用例は [**Demo**](http://na2hiro.github.io/Kifu-for-JS/examples/example.html) をご覧ください。
+
+## Kifu for JS ブックマークレット
+
+Kifu for JSブックマークレットは，古いKifu for {Flash/Java}が設置されているページで実行すると、Kifu for JSに置き換えて盤面を表示します．
+
+### 使い方
+
+1. あらかじめ次のコードをブックマークへ追加しておく→
+`javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
+2. Kifu for FlashやKifu for Javaが使われている古いページ ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html)) を開く
+![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/1.png)
+3. ブックマークレットを開く
+![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/2.png)
+4. FlashやJava部分が置き換えられ，Kifu for JSの再生盤になる
+![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/3.png)
 
 ## 更新ログ / バージョン
 [Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
@@ -94,10 +77,6 @@ Kifu for JSファイルをページに読み込みます。（jsDelivrの提供�
 * Android Firefox 32
 * Android Habit 1.1
 * iOS 8 Safari
-
-以下は手元に確認環境がありません．情報を[@na2hiro](https://twitter.com/na2hiro)までお待ちしています．
-
-* Internet Explorer 10以下
 
 ## お願い
 
@@ -115,11 +94,11 @@ $ npm install
 
 * [na2hiro/json-kifu-format](https://github.com/na2hiro/json-kifu-format) 1.0: 将棋の盤駒を扱うライブラリ
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
-* TypeScript 2
-* React 16
+* TypeScript
+* React
 * React DnD
 * MobX
-* Webpack 3 (バンドルツール)
+* Webpack (バンドルツール)
 * Jest (テストフレームワーク，カバレッジ計測)
 * TSLint (Linter)
 

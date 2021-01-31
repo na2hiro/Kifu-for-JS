@@ -2,6 +2,8 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import KifuStore from "./stores/KifuStore";
 
+declare const __VERSION__: string;
+
 export interface IProps {
     kifuStore: KifuStore;
     isPortrait: boolean;
@@ -65,7 +67,7 @@ export default class Control extends React.Component<IProps> {
     private onClickCredit() {
         if (
             confirm(`*** CREDIT ***
-Kifu for JS (ver. 2.1.6)
+Kifu for JS (ver. ${__VERSION__})
     by na2hiro
     under the MIT License
 

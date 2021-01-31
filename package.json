@@ -9,7 +9,7 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open-page examples/example.html",
-    "build": "webpack -p --env.production",
+    "build": "NODE_ENV=production webpack -p --env.production",
     "build:ghpages": "webpack -p --env.production --env.ghpages",
     "build:analyze": "webpack -p --env.production --env.analyze",
     "build:watch": "webpack --watch",
