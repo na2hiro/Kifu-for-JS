@@ -5,5 +5,8 @@ export declare const mobx: {
     when: typeof when;
     reaction: typeof reaction;
 };
-export declare function loadString(kifu: string, id?: string): Promise<KifuStore>;
-export declare function load(filePath: string, id?: string): Promise<KifuStore>;
+export interface IOptions {
+    responsive?: boolean;
+}
+export declare function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore>;
+export declare function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore>;
