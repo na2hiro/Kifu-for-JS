@@ -54,14 +54,21 @@ Kifu for JSブックマークレットは，古いKifu for {Flash/Java}が設置
 
 ### 使い方
 
-1. あらかじめ次のコードをブックマークへ追加しておく→
-`javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;`
+1. あらかじめ次のコードをブックマークへ追加しておく
+```
+javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;
+```
 2. Kifu for FlashやKifu for Javaが使われている古いページ ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html)) を開く
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/1.png)
+
+<img src="http://na2hiro.github.io/Kifu-for-JS/readme-ss/bookmarklet-1.jpg" width="800">
+
 3. ブックマークレットを開く
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/2.png)
+
+<img src="http://na2hiro.github.io/Kifu-for-JS/readme-ss/bookmarklet-2.jpg" width="800">
+
 4. FlashやJava部分が置き換えられ，Kifu for JSの再生盤になる
-![](https://na2hiro.github.io/Kifu-for-JS/readme-ss/3.png)
+
+<img src="http://na2hiro.github.io/Kifu-for-JS/readme-ss/bookmarklet-3.jpg" width="800">
 
 ## 更新ログ / バージョン
 [Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
