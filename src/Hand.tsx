@@ -24,12 +24,18 @@ export default class Hand extends React.Component<IProps, any> {
             player.kifu.header.後手 || player.kifu.header.上手 || "",
         ][color];
 
-        const handGroups = kinds.reverse().map((kind) => (
-            <PieceHandGroup key={kind} value={hand[kind]} data={{ kind, color }} kifuStore={this.props.kifuStore} />
-        ));
+        const handGroups = kinds
+            .reverse()
+            .map((kind) => (
+                <PieceHandGroup key={kind} value={hand[kind]} data={{ kind, color }} kifuStore={this.props.kifuStore} />
+            ));
 
         return (
-            <div className={"kifuforjs-halfofcolumn kifuforjs-hand"+(defaultColor === 1 ? " kifuforjs-hand--reverse" : "")}>
+            <div
+                className={
+                    "kifuforjs-halfofcolumn kifuforjs-hand" + (defaultColor === 1 ? " kifuforjs-hand--reverse" : "")
+                }
+            >
                 <div className="kifuforjs-hand-head">{colorToMark(color) + playerName}</div>
                 <div className={"kifuforjs-hand-body"}>{handGroups}</div>
             </div>

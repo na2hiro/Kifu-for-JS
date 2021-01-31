@@ -58,14 +58,10 @@ export default class Piece extends React.Component<IProps, any> {
 
         const className = [
             "kifuforjs-cell",
-            this.props.lastMove && equalsPos(this.props.lastMove.to, this.props) ? "kifuforjs-cell--lastto" : ""
+            this.props.lastMove && equalsPos(this.props.lastMove.to, this.props) ? "kifuforjs-cell--lastto" : "",
         ].join(" ");
 
-        return (
-            <td className={className}>
-                {div}
-            </td>
-        );
+        return <td className={className}>{div}</td>;
     }
 }
 

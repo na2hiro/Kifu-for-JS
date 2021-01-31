@@ -1,6 +1,6 @@
-import KifuStore from "./stores/KifuStore";
-import {observer} from "mobx-react";
+import { observer } from "mobx-react";
 import * as React from "react";
+import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
     kifuStore: KifuStore;
@@ -8,7 +8,7 @@ export interface IProps {
 
 @observer
 export default class Comment extends React.Component<IProps> {
-    render() {
+    public render() {
         const { player } = this.props.kifuStore;
         return (
             <textarea

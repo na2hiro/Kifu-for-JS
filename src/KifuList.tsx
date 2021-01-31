@@ -1,8 +1,8 @@
-import {JKFPlayer} from "json-kifu-format";
-import {observer} from "mobx-react";
+import { JKFPlayer } from "json-kifu-format";
+import { observer } from "mobx-react";
 import * as React from "react";
-import {pad} from "./utils/util";
-import {FunctionComponent, SyntheticEvent, useCallback, useEffect, useRef, useState} from "react";
+import { FunctionComponent, SyntheticEvent, useCallback, useEffect, useRef, useState } from "react";
+import { pad } from "./utils/util";
 
 export interface IProps {
     player: JKFPlayer;
@@ -16,31 +16,30 @@ export default class KifuList extends React.Component<IProps, any> {
         this.onChange = this.onChange.bind(this);
     }
 
-    onChange(tesuu: number) {
+    public onChange(tesuu: number) {
         this.props.player.goto(tesuu);
     }
 
     public render() {
-        const {player} = this.props;
-        const options = player.getReadableKifuState()
-            .map((kifu, i) => {
-                const text =
-                    (kifu.comments.length > 0 ? "*" : "\xa0") +
-                    pad(i.toString(), "\xa0", 3) +
-                    " " +
-                    kifu.kifu +
-                    " " +
-                    kifu.forks.join(" ");
-                return {
-                    text,
-                    value: i
-                };
-            });
-        return <DivList options={options} onChange={this.onChange} tesuu={player.tesuu}/>;
+        const { player } = this.props;
+        const options = player.getReadableKifuState().map((kifu, i) => {
+            const text =
+                (kifu.comments.length > 0 ? "*" : "\xa0") +
+                pad(i.toString(), "\xa0", 3) +
+                " " +
+                kifu.kifu +
+                " " +
+                kifu.forks.join(" ");
+            return {
+                text,
+                value: i,
+            };
+        });
+        return <DivList options={options} onChange={this.onChange} tesuu={player.tesuu} />;
     }
 }
 
-const DivList: FunctionComponent<KifuProps> = ({options, onChange, tesuu}) => {
+const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) => {
     const [containerHeight, setContainerHeight] = useState<number | null>(null);
     const [paddingHeight, setPaddingHeight] = useState<string>("");
     const [rowHeight, setRowHeight] = useState<number | null>(null);
@@ -55,17 +54,17 @@ const DivList: FunctionComponent<KifuProps> = ({options, onChange, tesuu}) => {
             }
             setTesuuInitiatedByScroll(null);
         }
-    }, [tesuu, containerHeight])
+    }, [tesuu, containerHeight]);
     useEffect(() => {
         if (containerRef.current && ref.current) {
             let newRowHeight = rowHeight;
             if (rowHeight === null) {
-                newRowHeight = ref.current.getBoundingClientRect().height
+                newRowHeight = ref.current.getBoundingClientRect().height;
                 // Only set at first
                 setRowHeight(newRowHeight);
             }
 
-            const {height} = containerRef.current.getBoundingClientRect();
+            const { height } = containerRef.current.getBoundingClientRect();
             if (containerHeight !== height) {
                 setContainerHeight(height);
             }
@@ -74,20 +73,28 @@ const DivList: FunctionComponent<KifuProps> = ({options, onChange, tesuu}) => {
                 setPaddingHeight(newPaddingHeight);
             }
         }
-    })
+    });
     const onScroll = useCallback(() => {
-        if (containerHeight === null) return;
+        if (containerHeight === null) {
+            return;
+        }
         const scrollTop = containerRef.current.scrollTop + containerHeight / 2;
         if (ref.current.offsetTop > scrollTop) {
             let cursor = ref.current;
             let count = 1;
-            while (cursor.previousElementSibling && (cursor.previousElementSibling as HTMLDivElement).offsetTop > scrollTop) {
+            while (
+                cursor.previousElementSibling &&
+                (cursor.previousElementSibling as HTMLDivElement).offsetTop > scrollTop
+            ) {
                 cursor = cursor.previousElementSibling as HTMLDivElement;
                 count++;
             }
             onChange(tesuu - count);
             setTesuuInitiatedByScroll(tesuu - count);
-        } else if (ref.current.nextElementSibling && (ref.current.nextElementSibling as HTMLDivElement).offsetTop < scrollTop) {
+        } else if (
+            ref.current.nextElementSibling &&
+            (ref.current.nextElementSibling as HTMLDivElement).offsetTop < scrollTop
+        ) {
             let cursor = ref.current.nextElementSibling;
             let count = 1;
             while (cursor.nextElementSibling && (cursor.nextElementSibling as HTMLDivElement).offsetTop < scrollTop) {
@@ -98,40 +105,49 @@ const DivList: FunctionComponent<KifuProps> = ({options, onChange, tesuu}) => {
             setTesuuInitiatedByScroll(tesuu + count);
         }
     }, [tesuu, containerHeight, containerRef.current, ref.current]);
-    const onKeyDown = useCallback<(e: React.KeyboardEvent<HTMLDivElement>) => void>((e) => {
-        if (e.key === "ArrowDown") {
-            onChange(tesuu + 1);
-            e.preventDefault();
-        } else if (e.key === "ArrowUp") {
-            onChange(tesuu - 1);
-            e.preventDefault();
-        }
-    }, [tesuu]);
+    const onKeyDown = useCallback<(e: React.KeyboardEvent<HTMLDivElement>) => void>(
+        (e) => {
+            if (e.key === "ArrowDown") {
+                onChange(tesuu + 1);
+                e.preventDefault();
+            } else if (e.key === "ArrowUp") {
+                onChange(tesuu - 1);
+                e.preventDefault();
+            }
+        },
+        [tesuu],
+    );
     return (
         <div className="kifuforjs-kifulist" onScroll={onScroll} onKeyDown={onKeyDown} ref={containerRef} tabIndex={0}>
-            <div
-                className="kifuforjs-kifulist-inner">
-                <div style={{height: paddingHeight}}/>
-                {options.map(({text, value}) => (
-                    <div key={value} onClick={() => onChange(value)}
-                         className={value===tesuu ? "kifuforjs-kifulist-row--selected" : ""}
-                         ref={value === tesuu ? ref : null}>{text}</div>
+            <div className="kifuforjs-kifulist-inner">
+                <div style={{ height: paddingHeight }} />
+                {options.map(({ text, value }) => (
+                    <div
+                        key={value}
+                        // tslint:disable-next-line jsx-no-lambda
+                        onClick={() => onChange(value)}
+                        className={value === tesuu ? "kifuforjs-kifulist-row--selected" : ""}
+                        ref={value === tesuu ? ref : null}
+                    >
+                        {text}
+                    </div>
                 ))}
-                <div style={{height: paddingHeight}}/>
+                <div style={{ height: paddingHeight }} />
             </div>
         </div>
     );
-}
+};
 
 function scrollToCenter(element, container) {
-    container.scrollTop = element.offsetTop + element.getBoundingClientRect().height / 2 - container.getBoundingClientRect().height / 2;
+    container.scrollTop =
+        element.offsetTop + element.getBoundingClientRect().height / 2 - container.getBoundingClientRect().height / 2;
 }
 
-type KifuProps = {
-    options: {
+interface IKifuProps {
+    options: Array<{
         text: string;
         value: number;
-    }[];
+    }>;
     onChange: (tesuu: number) => void;
     tesuu: number;
 }

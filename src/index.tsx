@@ -6,11 +6,11 @@ import KifuStore from "./stores/KifuStore";
 import { onDomReady } from "./utils/util";
 export const mobx = { autorun, when, reaction };
 
-export type Options = {
+export interface IOptions {
     responsive?: boolean;
 }
 
-export function loadString(kifu: string, idOrOptions?: string | Options, options?: Options): Promise<KifuStore> {
+export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
         options = idOrOptions;
@@ -21,7 +21,7 @@ export function loadString(kifu: string, idOrOptions?: string | Options, options
     return loadCommon(undefined, kifu, id, options);
 }
 
-export function load(filePath: string, idOrOptions?: string | Options, options?: Options): Promise<KifuStore> {
+export function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
         options = idOrOptions;
@@ -36,7 +36,8 @@ function loadCommon(
     filePath: string | undefined,
     kifu: string | undefined,
     id: string | undefined,
-    options: Options | undefined): Promise<KifuStore> {
+    options: IOptions | undefined,
+): Promise<KifuStore> {
     return new Promise((resolve) => {
         if (!id) {
             id =
