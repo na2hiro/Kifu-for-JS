@@ -1,6 +1,5 @@
-import {lastCellShouldBe, end, forward1, forward10, selectTesuu, tesuuShouldBe, goto} from "../utils";
+import {lastCellShouldBe, end, forward1, forward10, selectTesuu, tesuuShouldBe, goto, kifuList} from "../utils";
 
-const kifuList = () => cy.get(".kifuforjs-kifulist")
 const activeRow = () => cy.get(".kifuforjs-kifulist-row--selected")
 const dl = () => cy.get(".kifuforjs-dl")
 const autoload = () => cy.get(".kifuforjs-autoload")

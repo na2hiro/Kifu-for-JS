@@ -139,7 +139,8 @@ if (typeof $ === "undefined" || !$.fn || !$.fn.jquery) {
     );
 }
 
-module.exports = promise.then(start);
+const exp = promise.then(start);
+export default exp;
 
 async function loadKifuForJS(): Promise<{ load: any; loadString: any }> {
     return await import(/* webpackChunkName: "KifuInBookmarklet" */ "./index");

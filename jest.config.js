@@ -21,10 +21,10 @@ module.exports = {
     snapshotSerializers: ["enzyme-to-json/serializer"],
     coverageThreshold: {
         global: {
-            statements: -128,
-            branches: -94,
-            lines: -125,
-            functions: -38,
+            statements: -179,
+            branches: -115,
+            lines: -175,
+            functions: -51,
         }
     },
     collectCoverage: true,

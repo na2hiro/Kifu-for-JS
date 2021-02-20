@@ -11,6 +11,8 @@ export const credit = () => cy.contains("credit");
 
 export const comment = () => cy.get(".kifuforjs-comment");
 
+export const kifuList = () => cy.get(".kifuforjs-kifulist")
+
 export const selectCell = (x: number, y: number) =>
     cy.get(`table tr:nth-child(${y + 1}) td:nth-child(${10 - x})`);
 
