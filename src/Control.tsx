@@ -70,7 +70,7 @@ export default class Control extends React.Component<IProps> {
     }
 
     private onClickGoTo(e) {
-        const go = parseInt(e.target.dataset.go || e.target.parentNode.dataset.go, 10);
+        const go = Number(e.target.dataset.go || e.target.parentNode.dataset.go);
         if (!isNaN(go)) {
             this.props.kifuStore.player.go(go);
         }
