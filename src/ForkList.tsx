@@ -36,7 +36,7 @@ export default class ForkList extends React.Component<IProps, any> {
         }
         return (
             this.props.kifuStore.hasFork && (
-                <select value="top" onChange={this.onChange} disabled={forks.length === 0}>
+                <select value="top" onChange={this.onChange} disabled={forks.length === 0} data-testid="forklist">
                     {options}
                 </select>
             )

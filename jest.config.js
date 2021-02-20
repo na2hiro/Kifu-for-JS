@@ -5,7 +5,7 @@ module.exports = {
     transformIgnorePatterns: [
         "/node_modules/", ".scss$"
     ],
-    testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    testRegex: "(/__tests__/.*|src/.*(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     moduleFileExtensions: [
         "ts",
         "tsx",

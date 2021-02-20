@@ -24,10 +24,10 @@ export default class LeftControl extends React.Component<IProps, {}> {
             <div className="kifuforjs-halfofcolumn kifuforjs-leftcontrol">
                 <KifuList player={player} isPortrait={this.props.isPortrait} />
                 <ForkList kifuStore={this.props.kifuStore} />
-                <button className="dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
+                <button className="kifuforjs-dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
                     棋譜保存
                 </button>
-                <select className="autoload" onChange={this.onChangeTimer}>
+                <select className="kifuforjs-autoload" onChange={this.onChangeTimer}>
                     <option value="NaN">自動更新しない</option>
                     <option value="30">自動更新30秒毎</option>
                     <option value="60">自動更新1分毎</option>

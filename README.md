@@ -118,14 +118,6 @@ $ npm run start
 開発用サーバが立ち上がり，`examples/`以下の`example.html`や`loadJkf.html`にアクセスすることで動作を確認できます．
 
 ```
-$ npm run build
-$ npm run build:watch
-$ npm run build:analyze
-```
-
-ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
-
-```
 $ npm run test:watch
 ```
 
@@ -136,6 +128,14 @@ $ npm run test
 ```
 
 全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
+
+
+```
+$ npm run cypress:open
+$ npm run cypress:run
+```
+
+`npm run start` で開発サーバが立ち上がっている状態でCypressによるend-to-end (E2E)テストを行えます。 `:open` は、実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。 `:run` は、コマンドライン上で確認できるものです。
 
 ```
 $ npm run lint
@@ -148,6 +148,13 @@ $ npm run lint:fix
 ```
 
 自動的に修正可能な問題(インデント等)を直してくれます．
+```
+$ npm run build
+$ npm run build:watch
+$ npm run build:analyze
+```
+
+これらはpublish時にのみ必要なものです：ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
 
 ## license
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
