@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 3.0.1)
+# Kifu for JS (ver. 3.0.1) [![Build Status](https://travis-ci.com/na2hiro/Kifu-for-JS.svg?branch=master)](https://travis-ci.com/na2hiro/Kifu-for-JS)
 モバイルで使いやすい(ことを目指す)将棋の棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS 将棋再生盤
@@ -87,6 +87,14 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 
 ## 開発環境
 
+### セットアップ
+
+```sh
+$ nvm install && nvm use
+```
+
+Node Version Manager (NVM) で目的のバージョンのnodeに切り替えます。nvmがなければこちらからダウンロードできます。 https://github.com/nvm-sh/nvm
+
 ```
 $ npm install
 ```
@@ -101,56 +109,45 @@ $ npm install
 * MobX
 * Webpack (バンドルツール)
 * Jest (テストフレームワーク，カバレッジ計測)
+* Cypress (end-to-endテスト)
 * TSLint (Linter)
 
-### コマンド
+### 開発サーバ
 
 ```
 $ npm run start
 ```
 
-開発用サーバが立ち上がり，`examples/`以下の`example.html`や`loadJkf.html`にアクセスすることで動作を確認できます．
+開発用サーバが立ち上がり，`examples/`以下の`example.html`や`loadJkf.html`にアクセスすることで動作を確認できます．コード変更時には自動で反映されます。
+
+### テスト
+
+```
+$ npm run cypress:open
+```
+
+開発サーバが立ち上がっている状態でCypressによるend-to-end (E2E)テストを行えます。 実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。
 
 ```
 $ npm run test:watch
 ```
 
-コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
+単体テストを実行します．コードが変更されるたびに影響を受けるテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
 
 ```
 $ npm run test
 ```
 
-全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
-
-
-```
-$ npm run cypress:open
-$ npm run cypress:run
-```
-
-`npm run start` で開発サーバが立ち上がっている状態でCypressによるend-to-end (E2E)テストを行えます。 `:open` は、実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。 `:run` は、コマンドライン上で確認できるものです。
+全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．
 
 ```
 $ npm run lint
-```
-
-コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
-
-```
 $ npm run lint:fix
 ```
 
-自動的に修正可能な問題(インデント等)を直してくれます．
-```
-$ npm run build
-$ npm run build:watch
-$ npm run build:analyze
-```
+コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます． `:fix`をつけると、自動的に修正可能な問題(インデント等)を直してくれます．
 
-これらはpublish時にのみ必要なものです：ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
-
-## license
+## License
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
 
 Other files are released under MIT license. See LICENSE.txt.
