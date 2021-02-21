@@ -74,16 +74,10 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 [Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
 
 ## 動作環境
-以下は確認済み．
+以下の環境で自動テストによる動作確認を行っています。
 
-* Mac Chrome 37
-* Mac Firefox 32
-* Mac Safari 8
-* Windows Internet Explorer 11
-* Android Chrome 37
-* Android Firefox 32
-* Android Habit 1.1
-* iOS 8 Safari
+* Chrome 88
+* Firefox 85
 
 ## お願い
 

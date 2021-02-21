@@ -9,6 +9,10 @@
   },
   "scripts": {
     "start": "webpack-dev-server --open-page examples/example.html",
+    "ci": "run-s lint build ci:test",
+    "ci:start-server": "http-server . -p 8081",
+    "ci:test": "run-p --aggregate-output test ci:test:cypress",
+    "ci:test:cypress": "start-server-and-test ci:start-server 8081 cypress:run:ci",
     "build": "NODE_ENV=production webpack -p --env.production",
     "build:ghpages": "webpack -p --env.production --env.ghpages",
     "build:analyze": "webpack -p --env.production --env.analyze",
@@ -19,6 +23,7 @@
     "test:watch": "jest --watch",
     "cypress:open": "cypress open",
     "cypress:run": "cypress run",
+    "cypress:run:ci": "cypress run --config-file cypress.ci.json",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public/src && mkdir -p ./public/out & npm run build:ghpages",
     "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./public/src/ && mv ./bundle/KifuInBookmarklet.min.js ./bundle/vendors~KifuInBookmarklet.min.js ./public/out/ && cp -R examples ./public && mv bundle readme-ss public/",
     "prepublishOnly": "npm run build"
@@ -78,15 +83,18 @@
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
+    "http-server": "^0.12.3",
     "img-loader": "^3.0.1",
     "jest": "^26.1.0",
     "jquery": "^3.3.1",
     "mobx-react-devtools": "^5.0.1",
+    "npm-run-all": "^4.1.5",
     "pre-push": "^0.1.1",
     "prettier": "^1.11.1",
     "prop-types": "^15.6.1",
     "sass": "^1.30.0",
     "sass-loader": "^10.1.0",
+    "start-server-and-test": "^1.12.0",
     "style-loader": "^0.20.3",
     "ts-jest": "^26.1.3",
     "ts-loader": "^4.5.0",
@@ -102,7 +110,6 @@
     "webpack-merge": "^4.1.2"
   },
   "pre-push": [
-    "lint",
-    "test"
+    "lint"
   ]
 }
