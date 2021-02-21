@@ -42,7 +42,6 @@
   },
   "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
   "dependencies": {
-    "cypress": "^6.5.0",
     "fscreen": "^1.1.0",
     "json-kifu-format": "^1.2.7",
     "mobx": "^4.1.1",
@@ -75,6 +74,7 @@
     "clean-webpack-plugin": "^0.1.19",
     "core-js": "^3.6.5",
     "css-loader": "^3.6.0",
+    "cypress": "^6.5.0",
     "enzyme": "^3.3.0",
     "enzyme-adapter-react-16": "^1.1.1",
     "enzyme-to-json": "^3.3.3",
