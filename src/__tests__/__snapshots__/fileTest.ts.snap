@@ -32829,6 +32829,94 @@ Object {
 }
 `;
 
+exports[`jkf file same_move_minimal.jkf 1`] = `
+Object {
+  "header": Object {},
+  "moves": Array [
+    Object {},
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 7,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "dropEffect": "move",
+          "x": 7,
+          "y": 6,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 3,
+        },
+        "piece": "FU",
+        "to": Object {
+          "dropEffect": "move",
+          "x": 3,
+          "y": 4,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "KA",
+        "color": 0,
+        "from": Object {
+          "x": 8,
+          "y": 8,
+        },
+        "piece": "KA",
+        "promote": true,
+        "to": Object {
+          "dropEffect": "move",
+          "x": 2,
+          "y": 2,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "capture": "UM",
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 1,
+        },
+        "piece": "GI",
+        "same": true,
+        "to": Object {
+          "dropEffect": "move",
+          "x": 2,
+          "y": 2,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 2,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "dropEffect": "move",
+          "x": 2,
+          "y": 6,
+        },
+      },
+    },
+  ],
+}
+`;
+
 exports[`ki2 file 8mai.ki2 1`] = `
 Object {
   "header": Object {
@@ -50585,6 +50673,102 @@ Object {
     },
     Object {
       "special": "TORYO",
+    },
+  ],
+}
+`;
+
+exports[`kif file last_comment.kif 1`] = `
+Object {
+  "header": Object {
+    "先手": "",
+    "後手": "",
+    "手合割": "平手　　",
+    "終了日時": "2015/02/15 20:09:22",
+    "開始日時": "2015/02/15 20:08:58",
+  },
+  "initial": Object {
+    "preset": "HIRATE",
+  },
+  "moves": Array [
+    Object {},
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 7,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 7,
+          "y": 6,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "comments": Array [
+        "コメント",
+      ],
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 3,
+          "y": 3,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 3,
+          "y": 4,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 2,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 2,
+          "y": 6,
+        },
+      },
+      "time": Object {
+        "now": Object {
+          "m": 0,
+          "s": 0,
+        },
+        "total": Object {
+          "h": 0,
+          "m": 0,
+          "s": 0,
+        },
+      },
     },
   ],
 }
