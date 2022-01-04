@@ -7,6 +7,7 @@
 import Color from "./Color";
 import {MOVE_DEF} from "./Constants";
 import IMoveDefinition from "./IMoveDefinition";
+import {Kind} from "./Kind";
 import Piece from "./Piece";
 import "./polyfills";
 import {fromPreset, fromSfen, toCSA, toSfen} from "./Serialization";
@@ -15,7 +16,7 @@ import {fromPreset, fromSfen, toCSA, toSfen} from "./Serialization";
  * 将棋盤を管理するクラス
  */
 export class Shogi {
-    private static getIllegalUnpromotedRow(kind: string) {
+    private static getIllegalUnpromotedRow(kind: Kind) {
         switch (kind) {
             case "FU":
             case "KY":
@@ -84,7 +85,7 @@ export class Shogi {
      * @param {number} moveCount
      * @returns {string}
      */
-    public toSFENString(moveCount = 1): string {
+    public toSFENString(moveCount: number = 1): string {
         return toSfen(this, moveCount);
     }
 
@@ -134,7 +135,7 @@ export class Shogi {
                   tox: number,
                   toy: number,
                   promote: boolean = false,
-                  capture?: string): void {
+                  capture?: Kind): void {
         const piece = this.get(tox, toy);
         if (piece == null) {
             throw new Error("no piece found at " + tox + ", " + toy);
@@ -164,7 +165,7 @@ export class Shogi {
     /**
      * (tox, toy)へcolorの持ち駒のkindを打つ．
      */
-    public drop(tox: number, toy: number, kind: string, color: Color = this.turn): void {
+    public drop(tox: number, toy: number, kind: Kind, color: Color = this.turn): void {
         this.checkTurn(color);
         if (this.get(tox, toy) != null) {
             throw new Error("there is a piece at " + tox + ", " + toy);
@@ -285,7 +286,7 @@ export class Shogi {
     /**
      * (x, y)に行けるcolor側のkindの駒の動きを得る
      */
-    public getMovesTo(x: number, y: number, kind: string, color: Color = this.turn): IMove[] {
+    public getMovesTo(x: number, y: number, kind: Kind, color: Color = this.turn): IMove[] {
         const to = {x, y};
         const ret = [];
         for (let i = 1; i <= 9; i++) {
@@ -313,8 +314,8 @@ export class Shogi {
     /**
      * keyを種類，valueを枚数とするオブジェクトとして持ち駒の枚数一覧を返す．
      */
-    public getHandsSummary(color: Color): { [index: string]: number } {
-        const ret: { [index: string]: number } = {
+    public getHandsSummary(color: Color): HandSummary {
+        const ret: HandSummary = {
             FU: 0,
             KY: 0,
             KE: 0, // tslint:disable-line object-literal-sort-keys
@@ -410,7 +411,7 @@ export class Shogi {
     /**
      * color側のkindの駒を取って返す
      */
-    private popFromHand(kind: string, color: Color): Piece {
+    private popFromHand(kind: Kind, color: Color): Piece {
         const hand = this.hands[color];
         for (let i = 0; i < hand.length; i++) {
             if (hand[i].kind !== kind) {
@@ -453,21 +454,24 @@ export class Shogi {
     }
 }
 
+type HandSummary = {
+  [K in Extract<Kind, "FU" | "KY" | "KE" | "GI" | "KI" | "KA" | "HI">]: number
+};
+
 export interface ISettingType {
     preset: string;
     data?: {
         color: Color;
-        board: Array<Array<{ color?: Color; kind?: string; }>>;
-        hands: Array<{ [index: string]: number }>;
+        board: Array<Array<{ color?: Color; kind?: Kind; }>>;
+        hands: HandSummary[];
     };
 }
 
 export interface IMove {
     from?: { x: number; y: number; };
     to: { x: number; y: number; };
-    kind?: string;
+    kind?: Kind;
     color?: Color;
 }
 
 export {Color, Piece, IMoveDefinition};
-// enum Kind {HI, KY, KE, GI, KI, KA, HI, OU, TO, NY, NK, NG, UM, RY}

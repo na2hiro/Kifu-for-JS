@@ -1,4 +1,5 @@
 import Color from "./Color";
+import {Kind} from "./Kind";
 
 /**
  * 駒を表すクラス
@@ -7,7 +8,7 @@ export default class Piece {
     /**
      * 成った時の種類を返す．なければそのまま．
      */
-    public static promote(kind: string): string {
+    public static promote(kind: Kind): Kind {
         return {
             FU: "TO",
             KY: "NY",
@@ -20,7 +21,7 @@ export default class Piece {
     /**
      * 表に返した時の種類を返す．表の場合はそのまま．
      */
-    public static unpromote(kind: string): string {
+    public static unpromote(kind: Kind): Kind {
         return {
             TO: "FU",
             NY: "KY", // tslint:disable-line object-literal-sort-keys
@@ -35,10 +36,10 @@ export default class Piece {
     /**
      * 成れる駒かどうかを返す
      */
-    public static canPromote(kind: string): boolean {
+    public static canPromote(kind: Kind): boolean {
         return Piece.promote(kind) !== kind;
     }
-    public static isPromoted(kind: string): boolean {
+    public static isPromoted(kind: Kind): boolean {
         return ["TO", "NY", "NK", "NG", "UM", "RY"].indexOf(kind) >= 0;
     }
     public static oppositeColor(color: Color): Color {
@@ -77,13 +78,13 @@ export default class Piece {
     /**
      * 駒の種類
      */
-    public kind: string;
+    public kind: Kind;
     /**
      * "+FU"などのCSAによる駒表現から駒オブジェクトを作成
      */
     constructor(csa: string) {
         this.color = csa.slice(0, 1) === "+" ? Color.Black : Color.White;
-        this.kind = csa.slice(1);
+        this.kind = csa.slice(1) as Kind;
     }
     /**
      * 成る

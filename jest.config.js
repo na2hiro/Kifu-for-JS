@@ -22,6 +22,7 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "src/**",
+        "!src/Kind.ts",
         "!**/__tests__/**",
         "!src/polyfills.ts"
     ]
