@@ -1,9 +1,9 @@
-# Shogi.js (Ver. 2.0) [![Build Status](https://travis-ci.org/na2hiro/Shogi.js.svg?branch=master)](https://travis-ci.org/na2hiro/Shogi.js)
+# Shogi.js (Ver. 2.0) [![Build Status](https://app.travis-ci.com/na2hiro/Shogi.js.svg?branch=master)](https://app.travis-ci.com/na2hiro/Shogi.js)
 将棋の盤駒をモデルとするシンプルなJavaScriptライブラリ．TypeScript．
 
 ## インストール
 
-```
+```shell
 npm install shogi.js
 ```
 
@@ -38,53 +38,52 @@ https://github.com/na2hiro/Shogi.js/issues
 
 ### 準備
 
-```
-$ npm install
+```shell
+$ nvm i && nvm use && npm install
 ```
 
 上記コマンドを実行することで開発に必要なパッケージをインストールできます．
 
-* TypeScript 2.0
-* Webpack 3 (バンドルツール)
-* Browserify (JSバンドルツール)
+* TypeScript
+* Webpack (バンドルツール)
 * Jest (テストフレームワーク，カバレッジ計測)
 * TSLint (Linter)
 
 ### コマンド
 
 
-```
+```shell
 $ npm run build
 $ npm run build:watch
 ```
 
 ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．
 
-```
+```shell
 $ npm run test:watch
 ```
 
 コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
 
-```
+```shell
 $ npm run test
 ```
 
 全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
 
-```
+```shell
 $ npm run lint
 ```
 
 コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
 
-```
+```shell
 $ npm run lint:fix
 ```
 
 自動的に修正可能な問題(インデント等)を直してくれます．
 
-```
+```shell
 $ npm run docs
 ```
 

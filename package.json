@@ -35,7 +35,6 @@
   "homepage": "https://github.com/na2hiro/Shogi.js#readme",
   "devDependencies": {
     "@types/jest": "^22.2.0",
-    "browserify": "^16.5.0",
     "clean-webpack-plugin": "^0.1.19",
     "jest": "^26.1.0",
     "pre-push": "^0.1.1",
@@ -52,6 +51,5 @@
   "pre-push": [
     "lint",
     "test"
-  ],
-  "dependencies": {}
+  ]
 }
