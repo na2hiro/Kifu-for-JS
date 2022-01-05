@@ -1,4 +1,4 @@
-# JSON棋譜フォーマット(JKF) [![Build Status](https://travis-ci.org/na2hiro/json-kifu-format.svg?branch=master)](https://travis-ci.org/na2hiro/json-kifu-format)
+# JSON棋譜フォーマット(JKF) [![Build Status](https://app.travis-ci.com/na2hiro/json-kifu-format.svg?branch=master)](https://app.travis-ci.com/na2hiro/json-kifu-format)
 JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．またJKFを既存のKIF, KI2, CSA等から変換するライブラリ及びJKFを用いて盤面再生を行うライブラリを提供します．
 
 ## 概要
@@ -31,7 +31,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 * 相対逆算: 局面と座標と相対情報から，その位置に移動する駒を特定すること．
 
 ## 形式の定義
-以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します．
+以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します． ([TypeDoc](https://apps.81.la/json-kifu-format/docs/modules.html) も参照)
 
 ### JSONの形式 (Version 1.0)
 `Formats.ts`にある内容です．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．
@@ -104,7 +104,7 @@ JSONで一般的なUTF-8を使用するものとします．
 ## JKFの例
 `test/`以下にも例が載っています．
 ### 通常
-```
+```json
 {
   "header": {
     "先手": "na2hiro",
@@ -124,7 +124,7 @@ JSONで一般的なUTF-8を使用するものとします．
 ```
 
 ### 分岐
-```
+```json
 {
   "header": {},
   "moves": [
@@ -146,7 +146,7 @@ JSONで一般的なUTF-8を使用するものとします．
 ```
 
 ### 駒落ち
-```
+```json
 {
   "header": {},
   "initial": {"preset": "6"},
@@ -159,7 +159,7 @@ JSONで一般的なUTF-8を使用するものとします．
 }
 ```
 ### 初形変則
-```
+```json
 {
   "header": {},
   "initial": {
@@ -196,8 +196,8 @@ JSONで一般的なUTF-8を使用するものとします．
 [Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．`json-kifu-format-*.*.*.min.js`を読み込むと，`JSONKifuFormat` が使えるようになります．
 
 ### node.js用
-```
-npm install json-kifu-format
+```shell
+$ npm install json-kifu-format
 ```
 
 exportされているクラス群は次の通りです
@@ -210,7 +210,7 @@ exportされているクラス群は次の通りです
 * `JKFPlayer`: JKFを扱う棋譜再生盤の例
 
 ## 開発環境
-```
+```shell
 $ nvm use && nvm i && npm i
 ```
 
@@ -227,7 +227,7 @@ $ nvm use && nvm i && npm i
 
 ### コマンド
 
-```
+```shell
 $ npm run build
 $ npm run build:watch
 $ npm run build:analyze
@@ -235,25 +235,25 @@ $ npm run build:analyze
 
 ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
 
-```
+```shell
 $ npm run test:watch
 ```
 
 コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
 
-```
+```shell
 $ npm run test
 ```
 
 全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
 
-```
+```shell
 $ npm run lint
 ```
 
 コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
 
-```
+```shell
 $ npm run lint:fix
 ```
 
@@ -261,7 +261,7 @@ $ npm run lint:fix
 
 ## TODO
 
-[issues](https://github.com/na2hiro/json-kifu-format/issues)参照．
+[issues](https://github.com/na2hiro/json-kifu-format/issues) 参照．
 読み込みエラーとなる棋譜があったら教えて下さい．
 
 ## reference
