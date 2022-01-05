@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 3.0.1) [![Build Status](https://travis-ci.com/na2hiro/Kifu-for-JS.svg?branch=master)](https://travis-ci.com/na2hiro/Kifu-for-JS)
+# Kifu for JS (ver. 3.0.1) [![Build Status](https://travis-ci.com/na2hiro/Kifu-for-JS.svg?branch=master)](https://app.travis-ci.com/github/na2hiro/Kifu-for-JS)
 モバイルで使いやすい(ことを目指す)将棋の棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS 将棋再生盤
@@ -55,7 +55,7 @@ Kifu for JSブックマークレットは，古いKifu for {Flash/Java}が設置
 ### 使い方
 
 1. あらかじめ次のコードをブックマークへ追加しておく
-```
+```javascript
 javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;
 ```
 2. Kifu for FlashやKifu for Javaが使われている古いページ ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html)) を開く
@@ -82,8 +82,8 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 ## お願い
 
 * 棋譜形式の対応には注意を払っていますが，もし動作しない棋譜がありましたら対応しますので，Twitterやissuesでご報告いただければ幸いです．
-* 要望やバグ報告は[issues](https://github.com/na2hiro/Kifu-for-JS/issues)へよろしくお願いします．
-* 棋譜形式そのものについては[JSON棋譜フォーマット](https://github.com/na2hiro/json-kifu-format)もご参照ください．
+* 要望やバグ報告は [issues](https://github.com/na2hiro/Kifu-for-JS/issues) へよろしくお願いします．
+* 棋譜形式そのものについては [JSON棋譜フォーマット](https://github.com/na2hiro/json-kifu-format) もご参照ください．
 
 ## 開発環境
 
@@ -95,7 +95,7 @@ $ nvm install && nvm use
 
 Node Version Manager (NVM) で目的のバージョンのnodeに切り替えます。nvmがなければこちらからダウンロードできます。 https://github.com/nvm-sh/nvm
 
-```
+```shell
 $ npm install
 ```
 
@@ -114,7 +114,7 @@ $ npm install
 
 ### 開発サーバ
 
-```
+```shell
 $ npm run start
 ```
 
@@ -122,25 +122,25 @@ $ npm run start
 
 ### テスト
 
-```
+```shell
 $ npm run cypress:open
 ```
 
 開発サーバが立ち上がっている状態でCypressによるend-to-end (E2E)テストを行えます。 実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。
 
-```
+```shell
 $ npm run test:watch
 ```
 
 単体テストを実行します．コードが変更されるたびに影響を受けるテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
 
-```
+```shell
 $ npm run test
 ```
 
 全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．
 
-```
+```shell
 $ npm run lint
 $ npm run lint:fix
 ```
