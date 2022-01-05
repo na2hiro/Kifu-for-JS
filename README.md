@@ -223,7 +223,7 @@ $ nvm use && nvm i && npm i
 * Browserify (JSバンドルツール)
 * Jest (テストフレームワーク，カバレッジ計測)
 * TSLint (Linter)
-* iconv, jschardet (文字コード関連)
+* iconv-lite, jschardet (文字コード関連)
 
 ### コマンド
 

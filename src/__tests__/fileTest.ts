@@ -1,10 +1,10 @@
-import fs = require("fs");
-import {Iconv} from "iconv";
+import {readdirSync, readFile} from "fs";
+import {decode} from "iconv-lite";
 import "jest";
-import jschardet = require("jschardet");
+import {detect} from "jschardet";
 import JKFPlayer from "../jkfplayer";
 
-const sjisIconv = new Iconv("cp932", "utf-8");
+const SJIS = "cp932";
 const FILES_DIR = __dirname + "/../../test/files";
 
 makeTest("kif", (filename) => filename.match(/u$/) ? loadUTF : loadSJIS);
@@ -15,7 +15,7 @@ makeTest("jkf", (filename) => loadUTF);
 function makeTest(ext, fileNameToLoadFunc) {
     const datas = {};
     describe(ext + " file", () => {
-        const files = fs.readdirSync(FILES_DIR + "/" + ext);
+        const files = readdirSync(FILES_DIR + "/" + ext);
         for (const file of files) {
             (((filename) => {
                 if (!filename.match(new RegExp("\\." + ext + "u?$"))) { return; }
@@ -46,24 +46,24 @@ function makeTest(ext, fileNameToLoadFunc) {
     });
 }
 function loadUTF(filename, cb) {
-    fs.readFile(filename, {encoding: "utf-8"}, cb);
+    readFile(filename, {encoding: "utf-8"}, cb);
 }
 function loadSJIS(filename, cb) {
-    fs.readFile(filename, (err, data) => {
+    readFile(filename, (err, data) => {
         if (err) {
             cb(err);
             return;
         }
-        cb(null, sjisIconv.convert(data).toString());
+        cb(null, decode(data, SJIS));
     });
 }
 function loadAuto(filename, cb) {
-    fs.readFile(filename, (err, data) => {
+    readFile(filename, (err, data) => {
         if (err) {
             cb(err);
             return;
         }
-        const iconv = new Iconv(jschardet.detect(data).encoding, "utf-8");
-        cb(null, iconv.convert(data).toString());
+        const {encoding} = detect(data);
+        cb(null, decode(data, encoding));
     });
 }
