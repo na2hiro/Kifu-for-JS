@@ -35,6 +35,8 @@
   "homepage": "https://github.com/na2hiro/Shogi.js#readme",
   "devDependencies": {
     "@types/jest": "^22.2.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
     "clean-webpack-plugin": "^0.1.19",
     "eslint": "^8.6.0",
     "jest": "^26.1.0",
