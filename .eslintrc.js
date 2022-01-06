@@ -15,6 +15,14 @@ module.exports = {
     "plugins": [
         "@typescript-eslint"
     ],
+    "ignorePatterns": [
+      ".eslintrc.js",
+      "jest.config.js",
+      "**/__tests__/**",
+      "webpack.config.js",
+      "test/",
+      "docs/"
+    ],
     "rules": {
     }
 };

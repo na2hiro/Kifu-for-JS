@@ -36,7 +36,7 @@ export const PRESET: Readonly<{ [index: string]: Readonly<{ readonly board: stri
         ].concat(BOARD3_9),
         turn: Color.White,
     },
-    "KA": { // tslint:disable-line object-literal-sort-keys
+    "KA": {
         board: [
             "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
             " * -HI *  *  *  *  *  *  * ",
@@ -121,7 +121,7 @@ const kin = {just: [FR, F, FL, R, L, B]};
 export const MOVE_DEF: Readonly<{ [index: string]: Readonly<IMoveDefinition> }> = {
     FU: {just: [F]},
     KY: {fly: [F]},
-    KE: {just: [[-1, -2], [1, -2]]}, // tslint:disable-line:object-literal-sort-keys
+    KE: {just: [[-1, -2], [1, -2]]},
     GI: {just: [FR, F, FL, BR, BL]},
     KI: kin,
     TO: kin,

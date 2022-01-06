@@ -27,6 +27,7 @@ export function fromPreset(shogi: Shogi, setting: ISettingType) {
         turn = setting.data.color;
         for (let c = 0; c < 2; c++) {
             for (const k in setting.data.hands[c]) {
+                // eslint-disable-next-line no-prototype-builtins
                 if (setting.data.hands[c].hasOwnProperty(k)) {
                     const csa = (c === 0 ? "+" : "-") + k;
                     for (let i = 0; i < setting.data.hands[c][k]; i++) {
@@ -76,7 +77,6 @@ export function fromSfen(shogi: Shogi, sfen: string) {
     let y = 0;
     for (let i = 0; i < sfenBoard.length; i++) {
         let c = sfenBoard[i];
-        const promoted = false;
         if (c === "+") {
             i++;
             c += sfenBoard[i];

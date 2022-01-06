@@ -12,7 +12,7 @@ export default class Piece {
         return {
             FU: "TO",
             KY: "NY",
-            KE: "NK", // tslint:disable-line object-literal-sort-keys
+            KE: "NK",
             GI: "NG",
             KA: "UM",
             HI: "RY",
@@ -24,7 +24,7 @@ export default class Piece {
     public static unpromote(kind: Kind): Kind {
         return {
             TO: "FU",
-            NY: "KY", // tslint:disable-line object-literal-sort-keys
+            NY: "KY",
             NK: "KE",
             NG: "GI",
             KI: "KI",
@@ -56,7 +56,7 @@ export default class Piece {
         const color = sfen.match(/[A-Z]/) ? "+" : "-";
         const kind = {
             P: "FU",
-            L: "KY", // tslint:disable-line object-literal-sort-keys
+            L: "KY",
             N: "KE",
             S: "GI",
             G: "KI",
@@ -117,7 +117,6 @@ export default class Piece {
         const sfenPiece = {
             FU: "P", // Pawn
             KY: "L", // Lance
-            // tslint:disable-next-line object-literal-sort-keys
             KE: "N", // kNight
             GI: "S", // Silver
             KI: "G", // Gold

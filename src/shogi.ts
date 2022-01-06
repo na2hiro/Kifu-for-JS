@@ -85,7 +85,7 @@ export class Shogi {
      * @param {number} moveCount
      * @returns {string}
      */
-    public toSFENString(moveCount: number = 1): string {
+    public toSFENString(moveCount = 1): string {
         return toSfen(this, moveCount);
     }
 
@@ -101,7 +101,7 @@ export class Shogi {
     /**
      * (fromx, fromy)から(tox, toy)へ移動し，promoteなら成り，駒を取っていれば持ち駒に加える．．
      */
-    public move(fromx: number, fromy: number, tox: number, toy: number, promote: boolean = false): void {
+    public move(fromx: number, fromy: number, tox: number, toy: number, promote = false): void {
         const piece = this.get(fromx, fromy);
         if (piece == null) {
             throw new Error("no piece found at " + fromx + ", " + fromy);
@@ -134,7 +134,7 @@ export class Shogi {
                   fromy: number,
                   tox: number,
                   toy: number,
-                  promote: boolean = false,
+                  promote = false,
                   capture?: Kind): void {
         const piece = this.get(tox, toy);
         if (piece == null) {
@@ -318,7 +318,7 @@ export class Shogi {
         const ret: HandSummary = {
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 0,

@@ -603,7 +603,7 @@ describe("getHandsSummary", () => {
         expect(shogi.getHandsSummary(Color.Black)).toEqual({
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 0,
@@ -616,7 +616,7 @@ describe("getHandsSummary", () => {
         expect(shogi.getHandsSummary(Color.Black)).toEqual({
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 1,
@@ -627,7 +627,7 @@ describe("getHandsSummary", () => {
         expect(shogi.getHandsSummary(Color.White)).toEqual({
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 2,
