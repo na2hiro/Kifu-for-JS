@@ -5,7 +5,8 @@ module.exports = {
     },
     "extends": [
         "eslint:recommended",
-        "plugin:@typescript-eslint/recommended"
+        "plugin:@typescript-eslint/recommended",
+        "plugin:jest/recommended"
     ],
     "parser": "@typescript-eslint/parser",
     "parserOptions": {
@@ -16,13 +17,12 @@ module.exports = {
         "@typescript-eslint"
     ],
     "ignorePatterns": [
-      ".eslintrc.js",
-      "jest.config.js",
-      "**/__tests__/**",
-      "webpack.config.js",
-      "test/",
-      "docs/"
+        ".eslintrc.js",
+        "jest.config.js",
+        "webpack.config.js",
+        "docs/",
+        "bundle/",
+        "dist/"
     ],
-    "rules": {
-    }
+    "rules": {}
 };

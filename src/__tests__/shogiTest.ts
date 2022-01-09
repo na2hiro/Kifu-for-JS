@@ -1,4 +1,3 @@
-import "jest";
 import {boardBitMapToXYs, sortMoves} from "../../test/utils";
 import {Color, Shogi} from "../shogi";
 
@@ -262,7 +261,9 @@ describe("drop", () => {
             shogi.move(3, 3, 3, 4);
             shogi.move(5, 3, 4, 2);
             shogi.move(3, 1, 4, 2);
-            shogi.drop(9, 8, "HI");
+            expect(() => {
+                shogi.drop(9, 8, "HI");
+            }).not.toThrowError();
         });
     });
 });
@@ -563,7 +564,7 @@ describe("getDropsBy", () => {
                 "_________",
             ).o.map((to) => ({to, color: Color.White, kind: "KE"}))));
     });
-    it("piece which can only move to out of board: KE", () => {
+    it("piece which can only move to out of board: KY", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);

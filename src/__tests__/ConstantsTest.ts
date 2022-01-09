@@ -1,4 +1,3 @@
-import "jest";
 import {MOVE_DEF, PRESET} from "../Constants";
 
 describe("preset", () => {
