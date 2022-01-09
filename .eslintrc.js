@@ -15,7 +15,8 @@ module.exports = {
         "sourceType": "module"
     },
     "plugins": [
-        "@typescript-eslint"
+        "@typescript-eslint",
+        "jest"
     ],
     "ignorePatterns": [
         ".eslintrc.js",
