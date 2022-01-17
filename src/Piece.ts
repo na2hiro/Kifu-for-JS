@@ -9,29 +9,33 @@ export default class Piece {
      * 成った時の種類を返す．なければそのまま．
      */
     public static promote(kind: Kind): Kind {
-        return {
-            FU: "TO",
-            KY: "NY",
-            KE: "NK", // tslint:disable-line object-literal-sort-keys
-            GI: "NG",
-            KA: "UM",
-            HI: "RY",
-        }[kind] || kind;
+        return (
+            {
+                FU: "TO",
+                KY: "NY",
+                KE: "NK",
+                GI: "NG",
+                KA: "UM",
+                HI: "RY",
+            }[kind] || kind
+        );
     }
     /**
      * 表に返した時の種類を返す．表の場合はそのまま．
      */
     public static unpromote(kind: Kind): Kind {
-        return {
-            TO: "FU",
-            NY: "KY", // tslint:disable-line object-literal-sort-keys
-            NK: "KE",
-            NG: "GI",
-            KI: "KI",
-            UM: "KA",
-            RY: "HI",
-            OU: "OU",
-        }[kind] || kind;
+        return (
+            {
+                TO: "FU",
+                NY: "KY",
+                NK: "KE",
+                NG: "GI",
+                KI: "KI",
+                UM: "KA",
+                RY: "HI",
+                OU: "OU",
+            }[kind] || kind
+        );
     }
     /**
      * 成れる駒かどうかを返す
@@ -56,7 +60,7 @@ export default class Piece {
         const color = sfen.match(/[A-Z]/) ? "+" : "-";
         const kind = {
             P: "FU",
-            L: "KY", // tslint:disable-line object-literal-sort-keys
+            L: "KY",
             N: "KE",
             S: "GI",
             G: "KI",
@@ -117,7 +121,6 @@ export default class Piece {
         const sfenPiece = {
             FU: "P", // Pawn
             KY: "L", // Lance
-            // tslint:disable-next-line object-literal-sort-keys
             KE: "N", // kNight
             GI: "S", // Silver
             KI: "G", // Gold
@@ -125,7 +128,9 @@ export default class Piece {
             HI: "R", // Rook
             OU: "K", // King
         }[Piece.unpromote(this.kind)];
-        return (Piece.isPromoted(this.kind) ? "+" : "") +
-            (this.color === Color.Black ? sfenPiece : sfenPiece.toLowerCase());
+        return (
+            (Piece.isPromoted(this.kind) ? "+" : "") +
+            (this.color === Color.Black ? sfenPiece : sfenPiece.toLowerCase())
+        );
     }
 }

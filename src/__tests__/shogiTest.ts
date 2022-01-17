@@ -1,4 +1,3 @@
-import "jest";
 import {boardBitMapToXYs, sortMoves} from "../../test/utils";
 import {Color, Shogi} from "../shogi";
 
@@ -20,7 +19,17 @@ describe("initialize", () => {
             data: {
                 board: [
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                    [{color: Color.White, kind: "OU"}, {}, {color: Color.Black, kind: "FU"}, {}, {}, {}, {}, {}, {}],
+                    [
+                        {color: Color.White, kind: "OU"},
+                        {},
+                        {color: Color.Black, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {},
+                        {},
+                        {},
+                    ],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -30,10 +39,7 @@ describe("initialize", () => {
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                 ],
                 color: Color.Black,
-                hands: [
-                    {KI: 1},
-                    {},
-                ],
+                hands: [{KI: 1}, {}],
             },
             preset: "OTHER",
         });
@@ -41,10 +47,20 @@ describe("initialize", () => {
         shogi.initialize({
             data: {
                 board: [
-                    [{}, {}, {}, {}, {}, {color: Color.White, kind: "KE"}, {
-                        color: Color.White,
-                        kind: "KE",
-                    }, {}, {color: Color.Black, kind: "OU"}],
+                    [
+                        {},
+                        {},
+                        {},
+                        {},
+                        {},
+                        {color: Color.White, kind: "KE"},
+                        {
+                            color: Color.White,
+                            kind: "KE",
+                        },
+                        {},
+                        {color: Color.Black, kind: "OU"},
+                    ],
                     [{}, {}, {}, {}, {}, {color: Color.White, kind: "KE"}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -55,10 +71,7 @@ describe("initialize", () => {
                     [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                 ],
                 color: Color.White,
-                hands: [
-                    {},
-                    {KE: 1},
-                ],
+                hands: [{}, {KE: 1}],
             },
             preset: "OTHER",
         });
@@ -67,12 +80,15 @@ describe("initialize", () => {
 });
 describe("initializeFromSFENString", () => {
     it("example 1", () => {
-        shogi.initializeFromSFENString("lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1");
+        shogi.initializeFromSFENString(
+            "lnsgkgsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b - 1"
+        );
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
     it("example 2", () => {
         shogi.initializeFromSFENString(
-                "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124");
+            "8l/1l+R2P3/p2pBG1pp/kps1p4/Nn1P2G2/P1P1P2PP/1PS6/1KSG3+r1/LN2+p3L w Sbgn3p 124"
+        );
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
 });
@@ -262,7 +278,9 @@ describe("drop", () => {
             shogi.move(3, 3, 3, 4);
             shogi.move(5, 3, 4, 2);
             shogi.move(3, 1, 4, 2);
-            shogi.drop(9, 8, "HI");
+            expect(() => {
+                shogi.drop(9, 8, "HI");
+            }).not.toThrowError();
         });
     });
 });
@@ -324,48 +342,56 @@ describe("toSFENString", () => {
 describe("getMovesFrom", () => {
     it("just", () => {
         expect(shogi.getMovesFrom(7, 7)).toEqual([{from: {x: 7, y: 7}, to: {x: 7, y: 6}}]);
-        expect(sortMoves(shogi.getMovesFrom(5, 9))).toEqual(sortMoves([
-            {from: {x: 5, y: 9}, to: {x: 4, y: 8}},
-            {from: {x: 5, y: 9}, to: {x: 5, y: 8}},
-            {from: {x: 5, y: 9}, to: {x: 6, y: 8}},
-        ]));
-        expect(sortMoves(shogi.getMovesFrom(4, 9))).toEqual(sortMoves([
-            {from: {x: 4, y: 9}, to: {x: 3, y: 8}},
-            {from: {x: 4, y: 9}, to: {x: 4, y: 8}},
-            {from: {x: 4, y: 9}, to: {x: 5, y: 8}},
-        ]));
+        expect(sortMoves(shogi.getMovesFrom(5, 9))).toEqual(
+            sortMoves([
+                {from: {x: 5, y: 9}, to: {x: 4, y: 8}},
+                {from: {x: 5, y: 9}, to: {x: 5, y: 8}},
+                {from: {x: 5, y: 9}, to: {x: 6, y: 8}},
+            ])
+        );
+        expect(sortMoves(shogi.getMovesFrom(4, 9))).toEqual(
+            sortMoves([
+                {from: {x: 4, y: 9}, to: {x: 3, y: 8}},
+                {from: {x: 4, y: 9}, to: {x: 4, y: 8}},
+                {from: {x: 4, y: 9}, to: {x: 5, y: 8}},
+            ])
+        );
         expect(shogi.getMovesFrom(8, 9)).toEqual([]);
     });
     it("fly", () => {
         expect(shogi.getMovesFrom(1, 1)).toEqual([{from: {x: 1, y: 1}, to: {x: 1, y: 2}}]);
-        expect(sortMoves(shogi.getMovesFrom(2, 8))).toEqual(sortMoves([
-            {from: {x: 2, y: 8}, to: {x: 1, y: 8}},
-            {from: {x: 2, y: 8}, to: {x: 3, y: 8}},
-            {from: {x: 2, y: 8}, to: {x: 4, y: 8}},
-            {from: {x: 2, y: 8}, to: {x: 5, y: 8}},
-            {from: {x: 2, y: 8}, to: {x: 6, y: 8}},
-            {from: {x: 2, y: 8}, to: {x: 7, y: 8}},
-        ]));
+        expect(sortMoves(shogi.getMovesFrom(2, 8))).toEqual(
+            sortMoves([
+                {from: {x: 2, y: 8}, to: {x: 1, y: 8}},
+                {from: {x: 2, y: 8}, to: {x: 3, y: 8}},
+                {from: {x: 2, y: 8}, to: {x: 4, y: 8}},
+                {from: {x: 2, y: 8}, to: {x: 5, y: 8}},
+                {from: {x: 2, y: 8}, to: {x: 6, y: 8}},
+                {from: {x: 2, y: 8}, to: {x: 7, y: 8}},
+            ])
+        );
     });
     it("just & fly", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
-        expect(sortMoves(shogi.getMovesFrom(2, 2))).toEqual(sortMoves([
-            {from: {x: 2, y: 2}, to: {x: 1, y: 1}},
-            {from: {x: 2, y: 2}, to: {x: 1, y: 2}},
-            {from: {x: 2, y: 2}, to: {x: 1, y: 3}},
-            {from: {x: 2, y: 2}, to: {x: 2, y: 1}},
-            {from: {x: 2, y: 2}, to: {x: 2, y: 3}},
-            {from: {x: 2, y: 2}, to: {x: 3, y: 1}},
-            {from: {x: 2, y: 2}, to: {x: 3, y: 2}},
-            {from: {x: 2, y: 2}, to: {x: 3, y: 3}},
-            {from: {x: 2, y: 2}, to: {x: 4, y: 4}},
-            {from: {x: 2, y: 2}, to: {x: 5, y: 5}},
-            {from: {x: 2, y: 2}, to: {x: 6, y: 6}},
-            {from: {x: 2, y: 2}, to: {x: 7, y: 7}},
-            {from: {x: 2, y: 2}, to: {x: 8, y: 8}},
-        ]));
+        expect(sortMoves(shogi.getMovesFrom(2, 2))).toEqual(
+            sortMoves([
+                {from: {x: 2, y: 2}, to: {x: 1, y: 1}},
+                {from: {x: 2, y: 2}, to: {x: 1, y: 2}},
+                {from: {x: 2, y: 2}, to: {x: 1, y: 3}},
+                {from: {x: 2, y: 2}, to: {x: 2, y: 1}},
+                {from: {x: 2, y: 2}, to: {x: 2, y: 3}},
+                {from: {x: 2, y: 2}, to: {x: 3, y: 1}},
+                {from: {x: 2, y: 2}, to: {x: 3, y: 2}},
+                {from: {x: 2, y: 2}, to: {x: 3, y: 3}},
+                {from: {x: 2, y: 2}, to: {x: 4, y: 4}},
+                {from: {x: 2, y: 2}, to: {x: 5, y: 5}},
+                {from: {x: 2, y: 2}, to: {x: 6, y: 6}},
+                {from: {x: 2, y: 2}, to: {x: 7, y: 7}},
+                {from: {x: 2, y: 2}, to: {x: 8, y: 8}},
+            ])
+        );
     });
     it("empty", () => {
         expect(shogi.getMovesFrom(7, 6)).toEqual([]);
@@ -388,21 +414,23 @@ describe("getMovesFrom", () => {
             shogi.move(8, 2, 4, 2);
             shogi.move(4, 4, 5, 3, true);
             shogi.move(4, 2, 4, 7, true);
-            expect(sortMoves(shogi.getMovesFrom(4, 7))).toEqual(sortMoves([
-                {from: {x: 4, y: 7}, to: {x: 4, y: 2}},
-                {from: {x: 4, y: 7}, to: {x: 4, y: 3}},
-                {from: {x: 4, y: 7}, to: {x: 4, y: 4}},
-                {from: {x: 4, y: 7}, to: {x: 4, y: 5}},
-                {from: {x: 4, y: 7}, to: {x: 4, y: 6}},
-                {from: {x: 4, y: 7}, to: {x: 4, y: 8}},
-                {from: {x: 4, y: 7}, to: {x: 4, y: 9}},
-                {from: {x: 4, y: 7}, to: {x: 3, y: 6}},
-                {from: {x: 4, y: 7}, to: {x: 3, y: 7}},
-                {from: {x: 4, y: 7}, to: {x: 3, y: 8}},
-                {from: {x: 4, y: 7}, to: {x: 5, y: 6}},
-                {from: {x: 4, y: 7}, to: {x: 5, y: 7}},
-                {from: {x: 4, y: 7}, to: {x: 5, y: 8}},
-            ]));
+            expect(sortMoves(shogi.getMovesFrom(4, 7))).toEqual(
+                sortMoves([
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 2}},
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 3}},
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 4}},
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 5}},
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 6}},
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 8}},
+                    {from: {x: 4, y: 7}, to: {x: 4, y: 9}},
+                    {from: {x: 4, y: 7}, to: {x: 3, y: 6}},
+                    {from: {x: 4, y: 7}, to: {x: 3, y: 7}},
+                    {from: {x: 4, y: 7}, to: {x: 3, y: 8}},
+                    {from: {x: 4, y: 7}, to: {x: 5, y: 6}},
+                    {from: {x: 4, y: 7}, to: {x: 5, y: 7}},
+                    {from: {x: 4, y: 7}, to: {x: 5, y: 8}},
+                ])
+            );
         });
     });
 });
@@ -411,50 +439,52 @@ describe("getDropsBy", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
-        expect(sortMoves(shogi.getDropsBy(Color.Black))).toEqual(sortMoves([
-            {to: {x: 1, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 1, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 1, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 1, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 1, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 2, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 2, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 2, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 3, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 3, y: 3}, color: Color.Black, kind: "KA"},
-            {to: {x: 3, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 3, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 3, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 4, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 4, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 4, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 4, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 4, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 5, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 5, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 5, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 5, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 5, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 6, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 6, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 6, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 6, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 6, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 7, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 7, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 7, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 7, y: 7}, color: Color.Black, kind: "KA"},
-            {to: {x: 7, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 8, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 8, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 8, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 8, y: 8}, color: Color.Black, kind: "KA"},
-            {to: {x: 9, y: 2}, color: Color.Black, kind: "KA"},
-            {to: {x: 9, y: 4}, color: Color.Black, kind: "KA"},
-            {to: {x: 9, y: 5}, color: Color.Black, kind: "KA"},
-            {to: {x: 9, y: 6}, color: Color.Black, kind: "KA"},
-            {to: {x: 9, y: 8}, color: Color.Black, kind: "KA"},
-        ]));
+        expect(sortMoves(shogi.getDropsBy(Color.Black))).toEqual(
+            sortMoves([
+                {to: {x: 1, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 1, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 1, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 1, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 1, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 2, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 2, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 2, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 3, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 3, y: 3}, color: Color.Black, kind: "KA"},
+                {to: {x: 3, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 3, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 3, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 4, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 4, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 4, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 4, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 4, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 5, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 5, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 5, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 5, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 5, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 6, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 6, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 6, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 6, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 6, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 7, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 7, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 7, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 7, y: 7}, color: Color.Black, kind: "KA"},
+                {to: {x: 7, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 8, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 8, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 8, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 8, y: 8}, color: Color.Black, kind: "KA"},
+                {to: {x: 9, y: 2}, color: Color.Black, kind: "KA"},
+                {to: {x: 9, y: 4}, color: Color.Black, kind: "KA"},
+                {to: {x: 9, y: 5}, color: Color.Black, kind: "KA"},
+                {to: {x: 9, y: 6}, color: Color.Black, kind: "KA"},
+                {to: {x: 9, y: 8}, color: Color.Black, kind: "KA"},
+            ])
+        );
         expect(shogi.getDropsBy(Color.White)).toEqual([]);
     });
     it("same pieces in hand", () => {
@@ -464,51 +494,53 @@ describe("getDropsBy", () => {
         shogi.move(3, 1, 2, 2);
         shogi.drop(3, 3, "KA");
         shogi.move(2, 2, 3, 3);
-        expect(sortMoves(shogi.getDropsBy(Color.White))).toEqual(sortMoves([
-            {to: {x: 1, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 1, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 1, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 1, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 1, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 2, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 2, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 2, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 2, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 3, y: 1}, color: Color.White, kind: "KA"},
-            {to: {x: 3, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 3, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 3, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 3, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 4, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 4, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 4, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 4, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 4, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 5, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 5, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 5, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 5, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 5, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 6, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 6, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 6, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 6, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 6, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 7, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 7, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 7, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 7, y: 7}, color: Color.White, kind: "KA"},
-            {to: {x: 7, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 8, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 8, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 8, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 8, y: 8}, color: Color.White, kind: "KA"},
-            {to: {x: 9, y: 2}, color: Color.White, kind: "KA"},
-            {to: {x: 9, y: 4}, color: Color.White, kind: "KA"},
-            {to: {x: 9, y: 5}, color: Color.White, kind: "KA"},
-            {to: {x: 9, y: 6}, color: Color.White, kind: "KA"},
-            {to: {x: 9, y: 8}, color: Color.White, kind: "KA"},
-        ]));
+        expect(sortMoves(shogi.getDropsBy(Color.White))).toEqual(
+            sortMoves([
+                {to: {x: 1, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 1, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 1, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 1, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 1, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 2, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 2, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 2, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 2, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 3, y: 1}, color: Color.White, kind: "KA"},
+                {to: {x: 3, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 3, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 3, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 3, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 4, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 4, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 4, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 4, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 4, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 5, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 5, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 5, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 5, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 5, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 6, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 6, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 6, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 6, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 6, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 7, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 7, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 7, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 7, y: 7}, color: Color.White, kind: "KA"},
+                {to: {x: 7, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 8, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 8, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 8, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 8, y: 8}, color: Color.White, kind: "KA"},
+                {to: {x: 9, y: 2}, color: Color.White, kind: "KA"},
+                {to: {x: 9, y: 4}, color: Color.White, kind: "KA"},
+                {to: {x: 9, y: 5}, color: Color.White, kind: "KA"},
+                {to: {x: 9, y: 6}, color: Color.White, kind: "KA"},
+                {to: {x: 9, y: 8}, color: Color.White, kind: "KA"},
+            ])
+        );
     });
     it("nifu", () => {
         shogi.move(7, 7, 7, 6);
@@ -519,30 +551,36 @@ describe("getDropsBy", () => {
         shogi.move(8, 2, 4, 2);
         shogi.move(4, 4, 5, 3, true);
         shogi.move(4, 2, 4, 7, true);
-        expect(sortMoves(shogi.getDropsBy(Color.Black)))
-            .toEqual(sortMoves(boardBitMapToXYs(
-                "_________\n" +
-                "_____o___\n" +
-                "_____o___\n" +
-                "_____o___\n" +
-                "_____o___\n" +
-                "_____o___\n" +
-                "_________\n" +
-                "_____o___\n" +
-                "_________",
-            ).o.map((to) => ({to, color: Color.Black, kind: "FU"}))));
-        expect(sortMoves(shogi.getDropsBy(Color.White)))
-            .toEqual(sortMoves(boardBitMapToXYs(
-                "_________\n" +
-                "____oo___\n" +
-                "_____o___\n" +
-                "____oo___\n" +
-                "____oo___\n" +
-                "____oo___\n" +
-                "_________\n" +
-                "____oo___\n" +
-                "_________",
-            ).o.map((to) => ({to, color: Color.White, kind: "FU"}))));
+        expect(sortMoves(shogi.getDropsBy(Color.Black))).toEqual(
+            sortMoves(
+                boardBitMapToXYs(
+                    "_________\n" +
+                        "_____o___\n" +
+                        "_____o___\n" +
+                        "_____o___\n" +
+                        "_____o___\n" +
+                        "_____o___\n" +
+                        "_________\n" +
+                        "_____o___\n" +
+                        "_________"
+                ).o.map((to) => ({to, color: Color.Black, kind: "FU"}))
+            )
+        );
+        expect(sortMoves(shogi.getDropsBy(Color.White))).toEqual(
+            sortMoves(
+                boardBitMapToXYs(
+                    "_________\n" +
+                        "____oo___\n" +
+                        "_____o___\n" +
+                        "____oo___\n" +
+                        "____oo___\n" +
+                        "____oo___\n" +
+                        "_________\n" +
+                        "____oo___\n" +
+                        "_________"
+                ).o.map((to) => ({to, color: Color.White, kind: "FU"}))
+            )
+        );
     });
     it("piece which can only move to out of board: KE", () => {
         shogi.move(7, 7, 7, 6);
@@ -550,20 +588,23 @@ describe("getDropsBy", () => {
         shogi.move(8, 9, 7, 7);
         shogi.move(2, 2, 7, 7, true);
         shogi.move(7, 9, 6, 8);
-        expect(sortMoves(shogi.getDropsBy(Color.White)))
-            .toEqual(sortMoves(boardBitMapToXYs(
-                "_________\n" +
-                "o_ooooooo\n" +
-                "______o__\n" +
-                "oooooo_oo\n" +
-                "ooooooooo\n" +
-                "oo_oooooo\n" +
-                "_________\n" +
-                "_________\n" +
-                "_________",
-            ).o.map((to) => ({to, color: Color.White, kind: "KE"}))));
+        expect(sortMoves(shogi.getDropsBy(Color.White))).toEqual(
+            sortMoves(
+                boardBitMapToXYs(
+                    "_________\n" +
+                        "o_ooooooo\n" +
+                        "______o__\n" +
+                        "oooooo_oo\n" +
+                        "ooooooooo\n" +
+                        "oo_oooooo\n" +
+                        "_________\n" +
+                        "_________\n" +
+                        "_________"
+                ).o.map((to) => ({to, color: Color.White, kind: "KE"}))
+            )
+        );
     });
-    it("piece which can only move to out of board: KE", () => {
+    it("piece which can only move to out of board: KY", () => {
         shogi.move(7, 7, 7, 6);
         shogi.move(3, 3, 3, 4);
         shogi.move(8, 8, 2, 2, true);
@@ -571,18 +612,21 @@ describe("getDropsBy", () => {
         shogi.move(2, 2, 1, 1);
         shogi.move(6, 1, 7, 2);
         shogi.drop(7, 7, "KA", Color.Black);
-        expect(sortMoves(shogi.getDropsBy(Color.Black)))
-            .toEqual(sortMoves(boardBitMapToXYs(
-                "_________\n" +
-                "o___ooooo\n" +
-                "______o__\n" +
-                "oooooo_oo\n" +
-                "ooooooooo\n" +
-                "oo_oooooo\n" +
-                "_________\n" +
-                "ooooooo_o\n" +
-                "_________",
-            ).o.map((to) => ({to, color: Color.Black, kind: "KY"}))));
+        expect(sortMoves(shogi.getDropsBy(Color.Black))).toEqual(
+            sortMoves(
+                boardBitMapToXYs(
+                    "_________\n" +
+                        "o___ooooo\n" +
+                        "______o__\n" +
+                        "oooooo_oo\n" +
+                        "ooooooooo\n" +
+                        "oo_oooooo\n" +
+                        "_________\n" +
+                        "ooooooo_o\n" +
+                        "_________"
+                ).o.map((to) => ({to, color: Color.Black, kind: "KY"}))
+            )
+        );
     });
 });
 describe("getMovesTo", () => {
@@ -595,7 +639,9 @@ describe("getMovesTo", () => {
     });
     it("color parameter", () => {
         expect(shogi.getMovesTo(1, 2, "KY", Color.Black)).toEqual([]);
-        expect(shogi.getMovesTo(1, 2, "KY", Color.White)).toEqual([{from: {x: 1, y: 1}, to: {x: 1, y: 2}}]);
+        expect(shogi.getMovesTo(1, 2, "KY", Color.White)).toEqual([
+            {from: {x: 1, y: 1}, to: {x: 1, y: 2}},
+        ]);
     });
 });
 describe("getHandsSummary", () => {
@@ -603,7 +649,7 @@ describe("getHandsSummary", () => {
         expect(shogi.getHandsSummary(Color.Black)).toEqual({
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 0,
@@ -616,7 +662,7 @@ describe("getHandsSummary", () => {
         expect(shogi.getHandsSummary(Color.Black)).toEqual({
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 1,
@@ -627,7 +673,7 @@ describe("getHandsSummary", () => {
         expect(shogi.getHandsSummary(Color.White)).toEqual({
             FU: 0,
             KY: 0,
-            KE: 0, // tslint:disable-line object-literal-sort-keys
+            KE: 0,
             GI: 0,
             KI: 0,
             KA: 2,

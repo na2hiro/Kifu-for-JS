@@ -3,5 +3,8 @@
  *
  * `Black` は先手で、 `White` は後手である．
  */
-enum Color {Black, White}
+enum Color {
+    Black,
+    White,
+}
 export default Color;

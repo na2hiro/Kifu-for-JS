@@ -11,7 +11,10 @@ export function fromPreset(shogi: Shogi, setting: ISettingType) {
         for (let i = 0; i < 9; i++) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
-                const csa: string = PRESET[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
+                const csa: string = PRESET[setting.preset].board[j].slice(
+                    24 - i * 3,
+                    24 - i * 3 + 3
+                );
                 board[i][j] = csa === " * " ? null : new Piece(csa);
             }
         }
@@ -21,12 +24,15 @@ export function fromPreset(shogi: Shogi, setting: ISettingType) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
                 const p = setting.data.board[i][j];
-                board[i][j] = p.kind ? new Piece((p.color === Color.Black ? "+" : "-") + p.kind) : null;
+                board[i][j] = p.kind
+                    ? new Piece((p.color === Color.Black ? "+" : "-") + p.kind)
+                    : null;
             }
         }
         turn = setting.data.color;
         for (let c = 0; c < 2; c++) {
             for (const k in setting.data.hands[c]) {
+                // eslint-disable-next-line no-prototype-builtins
                 if (setting.data.hands[c].hasOwnProperty(k)) {
                     const csa = (c === 0 ? "+" : "-") + k;
                     for (let i = 0; i < setting.data.hands[c][k]; i++) {
@@ -76,7 +82,6 @@ export function fromSfen(shogi: Shogi, sfen: string) {
     let y = 0;
     for (let i = 0; i < sfenBoard.length; i++) {
         let c = sfenBoard[i];
-        const promoted = false;
         if (c === "+") {
             i++;
             c += sfenBoard[i];

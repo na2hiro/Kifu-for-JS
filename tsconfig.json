@@ -1,9 +1,9 @@
 {
-  "include": ["src"],
-  "exclude": ["**/__tests__/**/*"],
-  "compilerOptions": {
-    "declaration": true,
-    "module": "commonjs",
-    "noEmitOnError": true
-  }
+    "include": ["src"],
+    "exclude": ["**/__tests__/**/*"],
+    "compilerOptions": {
+        "declaration": true,
+        "module": "commonjs",
+        "noEmitOnError": true
+    }
 }

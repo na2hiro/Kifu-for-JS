@@ -1,22 +1,12 @@
-import "jest";
 import Piece from "../Piece";
 
-function sortMove(moves) {
-    return moves.sort((a, b) => toNum(a) - toNum(b));
-
-    function toNum(move) {
-        return move.from
-            ? move.from.x * 9 * 9 * 9 + move.from.y * 9 * 9 + move.to.x * 9 + move.to.y
-            : -kindToNum(move.kind) * 9 * 9 * 2 + move.color * 9 * 9 + move.to.x * 9 + move.to.y;
-    }
-
-    function kindToNum(kind) {
-        return ["FU", "KY", "KE", "GI", "KI", "KA", "HI", "OU"];
-    }
-}
-
 describe("promote", () => {
-    it("normal", () => {
+    it("can be done", () => {
+        const fu = new Piece("+FU");
+        fu.promote();
+        expect(new Piece("+TO")).toEqual(fu);
+    });
+    it("is idempotent", () => {
         const fu = new Piece("+FU");
         fu.promote();
         expect(new Piece("+TO")).toEqual(fu);
@@ -25,16 +15,21 @@ describe("promote", () => {
     });
 });
 describe("unpromote", () => {
-    it("normal", () => {
+    it("can unpromote, and unpromote is idempotent", () => {
         const ky = new Piece("+KY");
         ky.promote();
         ky.unpromote();
         expect(new Piece("+KY")).toEqual(ky);
-        ky.unpromote();
-        expect(new Piece("+KY")).toEqual(ky);
+    });
+    it("is idempotent", () => {
+        const ny = new Piece("+NY");
+        ny.unpromote();
+        expect(new Piece("+KY")).toEqual(ny);
+        ny.unpromote();
+        expect(new Piece("+KY")).toEqual(ny);
     });
 });
-describe("unpromote", () => {
+describe("inverse", () => {
     it("normal", () => {
         const ke = new Piece("+KE");
         ke.inverse();
