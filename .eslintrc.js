@@ -1,30 +1,27 @@
 module.exports = {
-    "env": {
-        "browser": true,
-        "es2021": true
+    env: {
+        browser: true,
+        es2021: true,
     },
-    "extends": [
+    extends: [
         "eslint:recommended",
         "plugin:@typescript-eslint/recommended",
         "plugin:jest/recommended",
-        "prettier"
+        "prettier",
     ],
-    "parser": "@typescript-eslint/parser",
-    "parserOptions": {
-        "ecmaVersion": 13,
-        "sourceType": "module"
+    parser: "@typescript-eslint/parser",
+    parserOptions: {
+        ecmaVersion: 13,
+        sourceType: "module",
     },
-    "plugins": [
-        "@typescript-eslint",
-        "jest"
-    ],
-    "ignorePatterns": [
+    plugins: ["@typescript-eslint", "jest"],
+    ignorePatterns: [
         ".eslintrc.js",
         "jest.config.js",
         "webpack.config.js",
         "docs/",
         "bundle/",
-        "dist/"
+        "dist/",
     ],
-    "rules": {}
+    rules: {},
 };

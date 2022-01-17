@@ -12,7 +12,7 @@ describe("promote", () => {
         expect(new Piece("+TO")).toEqual(fu);
         fu.promote();
         expect(new Piece("+TO")).toEqual(fu);
-    })
+    });
 });
 describe("unpromote", () => {
     it("can unpromote, and unpromote is idempotent", () => {
@@ -27,8 +27,8 @@ describe("unpromote", () => {
         expect(new Piece("+KY")).toEqual(ny);
         ny.unpromote();
         expect(new Piece("+KY")).toEqual(ny);
-    })
-})
+    });
+});
 describe("inverse", () => {
     it("normal", () => {
         const ke = new Piece("+KE");

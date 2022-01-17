@@ -108,17 +108,23 @@ export class Shogi {
         }
         this.checkTurn(piece.color);
         if (!this.flagEditMode) {
-            if (!this.getMovesFrom(fromx, fromy).some((move) => {
+            if (
+                !this.getMovesFrom(fromx, fromy).some((move) => {
                     return move.to.x === tox && move.to.y === toy;
-                })) {
-                throw new Error("cannot move from " + fromx + ", " + fromy + " to " + tox + ", " + toy);
+                })
+            ) {
+                throw new Error(
+                    "cannot move from " + fromx + ", " + fromy + " to " + tox + ", " + toy
+                );
             }
         }
         if (this.get(tox, toy) != null) {
             this.capture(tox, toy);
         }
         // 行き所のない駒
-        const deadEnd = Shogi.getIllegalUnpromotedRow(piece.kind) >= Shogi.getRowToOppositeEnd(toy, piece.color);
+        const deadEnd =
+            Shogi.getIllegalUnpromotedRow(piece.kind) >=
+            Shogi.getRowToOppositeEnd(toy, piece.color);
         if (promote || deadEnd) {
             piece.promote();
         }
@@ -130,12 +136,14 @@ export class Shogi {
     /**
      * moveの逆を行う．つまり(tox, toy)から(fromx, fromy)へ移動し，駒を取っていたら戻し，promoteなら成りを戻す．
      */
-    public unmove(fromx: number,
-                  fromy: number,
-                  tox: number,
-                  toy: number,
-                  promote = false,
-                  capture?: Kind): void {
+    public unmove(
+        fromx: number,
+        fromy: number,
+        tox: number,
+        toy: number,
+        promote = false,
+        capture?: Kind
+    ): void {
         const piece = this.get(tox, toy);
         if (piece == null) {
             throw new Error("no piece found at " + tox + ", " + toy);
@@ -170,9 +178,11 @@ export class Shogi {
         if (this.get(tox, toy) != null) {
             throw new Error("there is a piece at " + tox + ", " + toy);
         }
-        if (!this.getDropsBy(color).some((move: IMove) => {
+        if (
+            !this.getDropsBy(color).some((move: IMove) => {
                 return move.to.x === tox && move.to.y === toy && move.kind === kind;
-            })) {
+            })
+        ) {
             throw new Error("Cannot move");
         }
         const piece = this.popFromHand(kind, color);
@@ -200,14 +210,14 @@ export class Shogi {
      */
     public getMovesFrom(x: number, y: number): IMove[] {
         // 盤外かもしれない(x, y)にcolorの駒が移動しても問題がないか
-        const legal = function(x: number, y: number, color: Color) {
+        const legal = function (x: number, y: number, color: Color) {
             if (x < 1 || 9 < x || y < 1 || 9 < y) {
                 return false;
             }
             const piece = this.get(x, y);
             return piece == null || piece.color !== color;
         }.bind(this);
-        const shouldStop = function(x: number, y: number, color: Color) {
+        const shouldStop = function (x: number, y: number, color: Color) {
             const piece = this.get(x, y);
             return piece != null && piece.color !== color;
         }.bind(this);
@@ -248,7 +258,7 @@ export class Shogi {
      */
     public getDropsBy(color: Color): IMove[] {
         const ret = [];
-        const places: Array<{ x: number, y: number }> = [];
+        const places: Array<{x: number; y: number}> = [];
         const fuExistsArray = [];
         for (let i = 1; i <= 9; i++) {
             let fuExists = false;
@@ -262,7 +272,7 @@ export class Shogi {
             }
             fuExistsArray.push(fuExists);
         }
-        const done: { [index: string]: boolean } = {};
+        const done: {[index: string]: boolean} = {};
         for (const hand of this.hands[color]) {
             const kind = hand.kind;
             if (done[kind]) {
@@ -455,21 +465,21 @@ export class Shogi {
 }
 
 type HandSummary = {
-  [K in Extract<Kind, "FU" | "KY" | "KE" | "GI" | "KI" | "KA" | "HI">]: number
+    [K in Extract<Kind, "FU" | "KY" | "KE" | "GI" | "KI" | "KA" | "HI">]: number;
 };
 
 export interface ISettingType {
     preset: string;
     data?: {
         color: Color;
-        board: Array<Array<{ color?: Color; kind?: Kind; }>>;
+        board: Array<Array<{color?: Color; kind?: Kind}>>;
         hands: HandSummary[];
     };
 }
 
 export interface IMove {
-    from?: { x: number; y: number; };
-    to: { x: number; y: number; };
+    from?: {x: number; y: number};
+    to: {x: number; y: number};
     kind?: Kind;
     color?: Color;
 }

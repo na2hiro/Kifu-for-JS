@@ -28,7 +28,9 @@ export function sortMoves(moves) {
     }
 }
 
-export function boardBitMapToXYs(boardBitMap): { [key: string]: Array<{x: number, y: number}> } {
+export function boardBitMapToXYs(boardBitMap): {
+    [key: string]: Array<{x: number; y: number}>;
+} {
     const boardRows = boardBitMap.split("\n");
     const ret = {};
     for (let y = 0; y < boardRows.length; y++) {

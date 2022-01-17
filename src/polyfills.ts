@@ -1,13 +1,17 @@
 if (!Array.prototype.some) {
-    Array.prototype.some = function(fun /*, thisp */) {
+    Array.prototype.some = function (fun /*, thisp */) {
         "use strict";
 
-        if (this == null) { throw new TypeError(); }
+        if (this == null) {
+            throw new TypeError();
+        }
 
         const t = Object(this),
             len = t.length >>> 0;
 
-        if (typeof fun != "function") { throw new TypeError(); }
+        if (typeof fun != "function") {
+            throw new TypeError();
+        }
 
         // eslint-disable-next-line prefer-rest-params
         const thisp = arguments[1];

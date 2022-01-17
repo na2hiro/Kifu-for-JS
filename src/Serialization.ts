@@ -11,7 +11,10 @@ export function fromPreset(shogi: Shogi, setting: ISettingType) {
         for (let i = 0; i < 9; i++) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
-                const csa: string = PRESET[setting.preset].board[j].slice(24 - i * 3, 24 - i * 3 + 3);
+                const csa: string = PRESET[setting.preset].board[j].slice(
+                    24 - i * 3,
+                    24 - i * 3 + 3
+                );
                 board[i][j] = csa === " * " ? null : new Piece(csa);
             }
         }
@@ -21,7 +24,9 @@ export function fromPreset(shogi: Shogi, setting: ISettingType) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
                 const p = setting.data.board[i][j];
-                board[i][j] = p.kind ? new Piece((p.color === Color.Black ? "+" : "-") + p.kind) : null;
+                board[i][j] = p.kind
+                    ? new Piece((p.color === Color.Black ? "+" : "-") + p.kind)
+                    : null;
             }
         }
         turn = setting.data.color;
