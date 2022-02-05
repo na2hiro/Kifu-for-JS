@@ -129,7 +129,7 @@ komabetsu = lines:komabetsuline* {
 	}
 	return {preset: "OTHER", data: {board: board, hands: hands}}
 }
-komabetsuline = "P" teban:teban pieces:(xypiece)+ nl {return {teban: teban, pieces: pieces}}
+komabetsuline = "P" teban:teban pieces:(xypiece)* nl {return {teban: teban, pieces: pieces}}
 
 moves = hd:firstboard tl:move* comment* {tl.unshift(hd); return tl;}
 firstboard = c:comment* {return c.length>0?{comments:c}:{}}
