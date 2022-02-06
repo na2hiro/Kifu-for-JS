@@ -271,3 +271,5 @@ Object {
   "turn": 1,
 }
 `;
+
+exports[`preset throws error with invalid preset name 1`] = `"Unknown preset: invalid"`;

@@ -6,4 +6,7 @@ describe("preset", () => {
             expect(getInitialFromPreset(preset)).toMatchSnapshot(preset);
         }
     });
+    it("throws error with invalid preset name", () => {
+        expect(() => getInitialFromPreset("invalid")).toThrowErrorMatchingSnapshot();
+    });
 });
