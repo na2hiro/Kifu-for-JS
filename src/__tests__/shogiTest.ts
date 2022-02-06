@@ -13,6 +13,8 @@ describe("initialize", () => {
     it("komaochi", () => {
         shogi.initialize({preset: "6"});
         expect(shogi.toCSAString()).toMatchSnapshot();
+        shogi.initialize({preset: "7_L"});
+        expect(shogi.toCSAString()).toMatchSnapshot();
     });
     it("other, multiple initialize", () => {
         shogi.initialize({

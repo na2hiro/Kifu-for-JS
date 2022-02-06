@@ -1,5 +1,5 @@
 import Color from "./Color";
-import {PRESET} from "./Constants";
+import {getInitialFromPreset} from "./presets";
 import Piece from "./Piece";
 import {ISettingType, Shogi} from "./shogi";
 
@@ -8,17 +8,15 @@ export function fromPreset(shogi: Shogi, setting: ISettingType) {
     const hands = [[], []];
     let turn;
     if (setting.preset !== "OTHER") {
+        const initial = getInitialFromPreset(setting.preset);
         for (let i = 0; i < 9; i++) {
             board[i] = [];
             for (let j = 0; j < 9; j++) {
-                const csa: string = PRESET[setting.preset].board[j].slice(
-                    24 - i * 3,
-                    24 - i * 3 + 3
-                );
+                const csa: string = initial.board[j].slice(24 - i * 3, 24 - i * 3 + 3);
                 board[i][j] = csa === " * " ? null : new Piece(csa);
             }
         }
-        turn = PRESET[setting.preset].turn;
+        turn = initial.turn;
     } else {
         for (let i = 0; i < 9; i++) {
             board[i] = [];

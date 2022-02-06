@@ -5,9 +5,9 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import Color from "./Color";
-import {MOVE_DEF} from "./Constants";
 import IMoveDefinition from "./IMoveDefinition";
 import {Kind} from "./Kind";
+import {getMoveDefinitions} from "./moveDefinitions";
 import Piece from "./Piece";
 import "./polyfills";
 import {fromPreset, fromSfen, toCSA, toSfen} from "./Serialization";
@@ -225,7 +225,7 @@ export class Shogi {
         if (piece == null) {
             return [];
         }
-        const moveDef = MOVE_DEF[piece.kind];
+        const moveDef = getMoveDefinitions(piece.kind);
         const ret = [];
         const from = {x, y};
         const unit = piece.color === Color.Black ? 1 : -1;

@@ -255,6 +255,21 @@ P-
 -"
 `;
 
+exports[`initialize komaochi 2`] = `
+"P1 *  * -GI-KI-OU-KI *  *  * 
+P2 *  *  *  *  *  *  *  *  * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+P+
+P-
+-"
+`;
+
 exports[`initialize normal 1`] = `
 "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
 P2 * -HI *  *  *  *  * -KA * 
