@@ -14,7 +14,7 @@ export function canPromote(place: IPlaceFormat, color: Color) {
 // 最小形式の棋譜をnormalizeする
 // 最小形式: (指し) from, to, promote; (打ち) piece, to
 export function normalizeMinimal(obj: IJSONKifuFormat): IJSONKifuFormat {
-    const shogi = new Shogi(obj.initial || undefined);
+    const shogi = new Shogi(obj.initial);
     normalizeMinimalMoves(shogi, obj.moves);
     return obj;
 }
@@ -400,6 +400,8 @@ function restorePreset(obj: IJSONKifuFormat) {
     presets["1122818291"] = "5";
     presets["1121228291"] = "5_L";
     presets["112122818291"] = "6";
+    presets["11212231818291"] = "7_L";
+    presets["11212271818291"] = "7_R";
     presets["1121223171818291"] = "8";
     presets["11212231416171818291"] = "10";
 

@@ -5,6 +5,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import {Color} from "shogi.js";
+import {Kind} from "shogi.js/dist/src/Kind";
 
 /**
  * Kifu format
@@ -24,7 +25,7 @@ export interface IJSONKifuFormat {
 export interface IStateFormat {
     color: Color;
     board: IPiece[][];
-    hands: Array<{ [index: string]: number }>;
+    hands: Array<{ [index in Extract<Kind, "FU" | "KY" | "KE" | "GI" | "KI" | "KA" | "HI">]: number }>;
 }
 
 /**
@@ -33,7 +34,7 @@ export interface IStateFormat {
  */
 export interface IPiece {
     color?: Color;
-    kind?: string;
+    kind?: Kind;
 }
 
 /**
@@ -43,10 +44,10 @@ export interface IMoveMoveFormat {
     color: Color;
     from?: IPlaceFormat;
     to?: IPlaceFormat;
-    piece: string;
+    piece: Kind;
     same?: boolean;
     promote?: boolean;
-    capture?: string;
+    capture?: Kind;
     relative?: string;
 }
 

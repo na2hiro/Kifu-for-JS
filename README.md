@@ -1,4 +1,4 @@
-# JSON棋譜フォーマット(JKF) [![Build Status](https://app.travis-ci.com/na2hiro/json-kifu-format.svg?branch=master)](https://app.travis-ci.com/na2hiro/json-kifu-format)
+# JSON棋譜フォーマット(JKF) ![Build Status](https://github.com/na2hiro/json-kifu-format/actions/workflows/main.yml/badge.svg)
 JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．またJKFを既存のKIF, KI2, CSA等から変換するライブラリ及びJKFを用いて盤面再生を行うライブラリを提供します．
 
 ## 概要
@@ -94,6 +94,8 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 	* 5: 五枚落ち	
 	* 5_L: 左五枚落ち
 	* 6: 六枚落ち
+	* 7_L: 左七枚落
+	* 7_R: 右七枚落ち
 	* 8: 八枚落ち
 	* 10: 十枚落ち
 	* OTHER: その他
@@ -218,9 +220,8 @@ $ nvm use && nvm i && npm i
 
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
 * [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
-* TypeScript 2.0
-* Webpack 3 (バンドルツール)
-* Browserify (JSバンドルツール)
+* TypeScript
+* Webpack (バンドルツール)
 * Jest (テストフレームワーク，カバレッジ計測)
 * TSLint (Linter)
 * iconv-lite, jschardet (文字コード関連)
@@ -259,18 +260,25 @@ $ npm run lint:fix
 
 自動的に修正可能な問題(インデント等)を直してくれます．
 
-## TODO
+## バグ報告、機能要望等
 
 [issues](https://github.com/na2hiro/json-kifu-format/issues) 参照．
 読み込みエラーとなる棋譜があったら教えて下さい．
 
-## reference
+## 参考文献
 
 * [CSA標準棋譜ファイル形式](http://www.computer-shogi.org/protocol/record_v22.html)
 * [shogi-format](https://code.google.com/p/shogi-format/): こちらは昔自ら提案したもの．大風呂敷だったため挫折しました．今回はより小さく洗練された形式を目指しており，また実装を用意し実用第一で進めていきます．
 * [棋譜の表記方法](http://www.shogi.or.jp/faq/kihuhyouki.html): 相対情報の書き方
 * [棋譜の形式について - 将棋の棋譜でーたべーす](http://wiki.optus.nu/shogi/index.php?post=%B4%FD%C9%E8%A4%CE%B7%C1%BC%B0%A4%CB%A4%C4%A4%A4%A4%C6): 出回っている棋譜形式のまとめ
 
-## license
+## ライセンス
 
-MIT License (see LICENSE.txt)
+MIT License (see [LICENSE.txt](./LICENSE.txt))
+
+## Workflows (it's for me)
+
+### Publish
+1. Bump version using `bump` action
+2. Create a new release with the new version
+3. Check an email about publish result
