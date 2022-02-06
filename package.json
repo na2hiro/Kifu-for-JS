@@ -15,7 +15,7 @@
     "lint:fix": "tslint -p ./ --fix",
     "test": "jest",
     "test:watch": "jest --watch",
-    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "typecheck": "tsc --project tsconfig.typecheck.json --noEmit",
     "prepublishOnly": "npm run build",
     "docs": "typedoc --exclude '**/__tests__/**/*' src/main.ts",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"

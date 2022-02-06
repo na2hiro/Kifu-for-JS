@@ -1,4 +1,5 @@
 import "jest";
+import {IJSONKifuFormat} from "../Formats";
 import {normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "../normalizer";
 /* tslint:disable:object-literal-sort-keys max-line-length */
 
@@ -753,7 +754,7 @@ describe("module Normalizer", () => {
     });
     describe("restorePreset", () => {
         it("HIRATE", () => {
-            const actual = {
+            const actual: IJSONKifuFormat = {
                 header: {},
                 initial: {
                     preset: "OTHER",
@@ -786,7 +787,7 @@ describe("module Normalizer", () => {
             expect(normalizeCSA(actual)).toEqual(expected);
         });
         it("HIRATE but different turn", () => {
-            const actual = {
+            const actual: IJSONKifuFormat = {
                 header: {},
                 initial: {
                     preset: "OTHER",
@@ -839,7 +840,7 @@ describe("module Normalizer", () => {
             expect(normalizeCSA(actual)).toEqual(expected);
         });
         it("HIRATE but different hand", () => {
-            const actual = {
+            const actual: IJSONKifuFormat = {
                 header: {},
                 initial: {
                     preset: "OTHER",
@@ -892,7 +893,7 @@ describe("module Normalizer", () => {
             expect(normalizeCSA(actual)).toEqual(expected);
         });
         it("8", () => {
-            const actual = {
+            const actual: IJSONKifuFormat = {
                 header: {},
                 initial: {
                     preset: "OTHER",
@@ -925,7 +926,7 @@ describe("module Normalizer", () => {
             expect(normalizeCSA(actual)).toEqual(expected);
         });
         it("8 but different turn", () => {
-            const actual = {
+            const actual: IJSONKifuFormat = {
                 header: {},
                 initial: {
                     preset: "OTHER",
