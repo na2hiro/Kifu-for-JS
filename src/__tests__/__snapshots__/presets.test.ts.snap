@@ -1,392 +1,6 @@
 // Jest Snapshot v1, https://goo.gl/fbAQLP
 
-exports[`move def snapshots: FU 1`] = `
-Object {
-  "just": Array [
-    Array [
-      0,
-      -1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: GI 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      1,
-    ],
-    Array [
-      1,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: HI 1`] = `
-Object {
-  "fly": Array [
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: KA 1`] = `
-Object {
-  "fly": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      1,
-    ],
-    Array [
-      1,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: KE 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -2,
-    ],
-    Array [
-      1,
-      -2,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: KI 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: KY 1`] = `
-Object {
-  "fly": Array [
-    Array [
-      0,
-      -1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: NG 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: NK 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: NY 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: OU 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      -1,
-      1,
-    ],
-    Array [
-      0,
-      1,
-    ],
-    Array [
-      1,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: RY 1`] = `
-Object {
-  "fly": Array [
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      1,
-    ],
-    Array [
-      1,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: TO 1`] = `
-Object {
-  "just": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`move def snapshots: UM 1`] = `
-Object {
-  "fly": Array [
-    Array [
-      -1,
-      -1,
-    ],
-    Array [
-      1,
-      -1,
-    ],
-    Array [
-      -1,
-      1,
-    ],
-    Array [
-      1,
-      1,
-    ],
-  ],
-  "just": Array [
-    Array [
-      0,
-      -1,
-    ],
-    Array [
-      -1,
-      0,
-    ],
-    Array [
-      1,
-      0,
-    ],
-    Array [
-      0,
-      1,
-    ],
-  ],
-}
-`;
-
-exports[`preset snapshots: 2 1`] = `
+exports[`preset initialized board: 2 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -403,7 +17,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 3 1`] = `
+exports[`preset initialized board: 3 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE * ",
@@ -420,7 +34,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 4 1`] = `
+exports[`preset initialized board: 4 1`] = `
 Object {
   "board": Array [
     " * -KE-GI-KI-OU-KI-GI-KE * ",
@@ -437,7 +51,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 5 1`] = `
+exports[`preset initialized board: 5 1`] = `
 Object {
   "board": Array [
     " *  * -GI-KI-OU-KI-GI-KE * ",
@@ -454,7 +68,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 5_L 1`] = `
+exports[`preset initialized board: 5_L 1`] = `
 Object {
   "board": Array [
     " * -KE-GI-KI-OU-KI-GI *  * ",
@@ -471,7 +85,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 6 1`] = `
+exports[`preset initialized board: 6 1`] = `
 Object {
   "board": Array [
     " *  * -GI-KI-OU-KI-GI *  * ",
@@ -488,7 +102,41 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 8 1`] = `
+exports[`preset initialized board: 7_L 1`] = `
+Object {
+  "board": Array [
+    " *  * -GI-KI-OU-KI *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 7_R 1`] = `
+Object {
+  "board": Array [
+    " *  *  * -KI-OU-KI-GI *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 8 1`] = `
 Object {
   "board": Array [
     " *  *  * -KI-OU-KI *  *  * ",
@@ -505,7 +153,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: 10 1`] = `
+exports[`preset initialized board: 10 1`] = `
 Object {
   "board": Array [
     " *  *  *  * -OU *  *  *  * ",
@@ -522,7 +170,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: HI 1`] = `
+exports[`preset initialized board: HI 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -539,7 +187,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: HIKY 1`] = `
+exports[`preset initialized board: HIKY 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE * ",
@@ -556,7 +204,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: HIRATE 1`] = `
+exports[`preset initialized board: HIRATE 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -573,7 +221,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: KA 1`] = `
+exports[`preset initialized board: KA 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
@@ -590,7 +238,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: KY 1`] = `
+exports[`preset initialized board: KY 1`] = `
 Object {
   "board": Array [
     "-KY-KE-GI-KI-OU-KI-GI-KE * ",
@@ -607,7 +255,7 @@ Object {
 }
 `;
 
-exports[`preset snapshots: KY_R 1`] = `
+exports[`preset initialized board: KY_R 1`] = `
 Object {
   "board": Array [
     " * -KE-GI-KI-OU-KI-GI-KE-KY",
@@ -623,3 +271,5 @@ Object {
   "turn": 1,
 }
 `;
+
+exports[`preset throws error with invalid preset name 1`] = `"Unknown preset: invalid"`;

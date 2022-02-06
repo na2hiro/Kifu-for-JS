@@ -1,5 +1,4 @@
 import Color from "./Color";
-import IMoveDefinition from "./IMoveDefinition";
 
 const EMPTY = " *  *  *  *  *  *  *  *  * ";
 const BOARD3_9 = [
@@ -16,9 +15,7 @@ const BOARD2_9 = [EMPTY].concat(BOARD3_9);
 /**
  * 既定の初期局面
  */
-export const PRESET: Readonly<{
-    [index: string]: Readonly<{readonly board: string[]; readonly turn: Color}>;
-}> = {
+const presetDefinitions = {
     HIRATE: {
         board: ["-KY-KE-GI-KI-OU-KI-GI-KE-KY", " * -HI *  *  *  *  * -KA * "].concat(BOARD3_9),
         turn: Color.Black,
@@ -67,6 +64,14 @@ export const PRESET: Readonly<{
         board: [" *  * -GI-KI-OU-KI-GI *  * "].concat(BOARD2_9),
         turn: Color.White,
     },
+    "7_R": {
+        board: [" *  *  * -KI-OU-KI-GI *  * "].concat(BOARD2_9),
+        turn: Color.White,
+    },
+    "7_L": {
+        board: [" *  * -GI-KI-OU-KI *  *  * "].concat(BOARD2_9),
+        turn: Color.White,
+    },
     "8": {
         board: [" *  *  * -KI-OU-KI *  *  * "].concat(BOARD2_9),
         turn: Color.White,
@@ -77,37 +82,14 @@ export const PRESET: Readonly<{
     },
 };
 
-const F = [0, -1];
-const B = [0, 1];
-const L = [1, 0];
-const R = [-1, 0];
-const FR = [-1, -1];
-const FL = [1, -1];
-const BR = [-1, 1];
-const BL = [1, 1];
-
-const kin = {just: [FR, F, FL, R, L, B]};
-
-export const MOVE_DEF: Readonly<{
-    [index: string]: Readonly<IMoveDefinition>;
-}> = {
-    FU: {just: [F]},
-    KY: {fly: [F]},
-    KE: {
-        just: [
-            [-1, -2],
-            [1, -2],
-        ],
-    },
-    GI: {just: [FR, F, FL, BR, BL]},
-    KI: kin,
-    TO: kin,
-    NY: kin,
-    NK: kin,
-    NG: kin,
-    KA: {fly: [FR, FL, BR, BL]},
-    HI: {fly: [F, R, L, B]},
-    OU: {just: [FR, F, FL, R, L, BR, B, BL]},
-    UM: {fly: [FR, FL, BR, BL], just: [F, R, L, B]},
-    RY: {fly: [F, R, L, B], just: [FR, FL, BR, BL]},
+export type IPreset = keyof typeof presetDefinitions;
+export const getInitialFromPreset = (preset: string) => {
+    const definition = presetDefinitions[preset];
+    if (!definition) {
+        throw new Error(`Unknown preset: ${preset}`);
+    }
+    return definition;
 };
+
+const presets = Object.keys(presetDefinitions);
+export default presets;
