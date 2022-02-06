@@ -15,6 +15,7 @@
     "lint:fix": "eslint ./ --fix && prettier --write .",
     "test": "jest",
     "test:watch": "jest --watch",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
     "prepublishOnly": "npm run build",
     "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
