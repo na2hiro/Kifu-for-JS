@@ -1,4 +1,5 @@
 import "jest";
+import {Shogi} from "shogi.js";
 import JKFPlayer from "../jkfplayer";
 /* tslint:disable:object-literal-sort-keys max-line-length no-unused-expression */
 
@@ -40,6 +41,12 @@ describe("class Player", () => {
             expect(() => {
                 JKFPlayer.parse("ふが");
             }).toThrow();
+        });
+        it("parses CSA string of initial state of Shogi.js", () => {
+            const csa = new Shogi().toCSAString();
+            const player = JKFPlayer.parseCSA(csa);
+            const csa2 = player.shogi.toCSAString();
+            expect(csa2).toBe(csa);
         });
     });
     describe("forward", () => {
