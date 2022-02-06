@@ -58,7 +58,7 @@
     "webpack-merge": "^4.2.2"
   },
   "dependencies": {
-    "shogi.js": "^2.0.3"
+    "shogi.js": "^2.0.5"
   },
   "pre-push": [
     "lint",

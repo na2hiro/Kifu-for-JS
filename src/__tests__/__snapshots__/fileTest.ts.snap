@@ -32917,6 +32917,55 @@ Object {
 }
 `;
 
+exports[`ki2 file 7mai.ki2u 1`] = `
+Object {
+  "header": Object {
+    "上手": "uwate",
+    "下手": "shitate",
+    "手合割": "左七枚落ち",
+    "終了日時": "2022/02/06 14:53:37",
+    "開始日時": "2022/02/06 14:51:20",
+  },
+  "initial": Object {
+    "preset": "7_L",
+  },
+  "moves": Array [
+    Object {},
+    Object {
+      "move": Object {
+        "color": 1,
+        "from": Object {
+          "x": 7,
+          "y": 1,
+        },
+        "piece": "GI",
+        "to": Object {
+          "x": 8,
+          "y": 2,
+        },
+      },
+    },
+    Object {
+      "move": Object {
+        "color": 0,
+        "from": Object {
+          "x": 7,
+          "y": 7,
+        },
+        "piece": "FU",
+        "to": Object {
+          "x": 7,
+          "y": 6,
+        },
+      },
+    },
+    Object {
+      "special": "CHUDAN",
+    },
+  ],
+}
+`;
+
 exports[`ki2 file 8mai.ki2 1`] = `
 Object {
   "header": Object {
