@@ -1,4 +1,4 @@
-# Shogi.js (Ver. 2.0) [![Build Status](https://app.travis-ci.com/na2hiro/Shogi.js.svg?branch=master)](https://app.travis-ci.com/na2hiro/Shogi.js)
+# Shogi.js (Ver. 2.0) ![Build Status](https://github.com/na2hiro/Shogi.js/actions/workflows/main.yml/badge.svg)
 将棋の盤駒をモデルとするシンプルなJavaScriptライブラリ．TypeScript．
 
 ## インストール
