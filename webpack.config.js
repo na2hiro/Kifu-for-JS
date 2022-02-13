@@ -1,8 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const package = require("./package.json");
 
 module.exports = (env) => {
@@ -35,15 +34,15 @@ module.exports = (env) => {
             library: "ShogiJS",
             filename: `shogi-${package.version}.min.js`,
             path: BUNDLE_DIR,
+            clean: true,
         },
-        plugins: [new CleanWebpackPlugin([BUNDLE_DIR])],
         optimization: {
             minimize: true,
         },
     });
 
     if (IS_ANALYZE) {
-        bundle.plugins.push(new BundleAnalyzerPlugin());
+        bundle.plugins = [new BundleAnalyzerPlugin()];
     }
 
     // For npm module
@@ -53,8 +52,8 @@ module.exports = (env) => {
             libraryTarget: "commonjs2",
             filename: "shogi.js",
             path: DIST_DIR,
+            clean: true,
         },
-        plugins: [new CleanWebpackPlugin([DIST_DIR])],
     });
     return [bundle, dist];
 };
