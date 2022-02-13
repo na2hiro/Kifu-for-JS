@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
+const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const package = require("./package.json");
 
 module.exports = (env) => {
@@ -42,7 +42,7 @@ module.exports = (env) => {
     });
 
     if (IS_ANALYZE) {
-        bundle.plugins.push(new BundleAnalyzerPlugin());
+        bundle.plugins = [new BundleAnalyzerPlugin()];
     }
 
     // For npm module

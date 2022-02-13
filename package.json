@@ -9,7 +9,7 @@
   },
   "scripts": {
     "build": "webpack --mode=production",
-    "build:analyze": "webpack --mode=production --env.analyze",
+    "build:analyze": "webpack --mode=production --env analyze=1",
     "build:watch": "webpack --mode=development --watch",
     "lint": "eslint ./ && prettier --check .",
     "lint:fix": "eslint ./ --fix && prettier --write .",
@@ -45,7 +45,6 @@
     "husky": "^7.0.4",
     "jest": "^26.1.0",
     "prettier": "^2.5.1",
-    "terser-webpack-plugin": "^5.3.1",
     "ts-jest": "^26.4.3",
     "ts-loader": "^4.5.0",
     "typedoc": "^0.22.11",
