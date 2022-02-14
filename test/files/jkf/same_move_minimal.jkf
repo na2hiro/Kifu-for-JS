@@ -9,7 +9,6 @@
           "y": 7
         },
         "to": {
-          "dropEffect": "move",
           "x": 7,
           "y": 6
         },
@@ -24,7 +23,6 @@
           "y": 3
         },
         "to": {
-          "dropEffect": "move",
           "x": 3,
           "y": 4
         },
@@ -39,7 +37,6 @@
           "y": 8
         },
         "to": {
-          "dropEffect": "move",
           "x": 2,
           "y": 2
         },
@@ -56,7 +53,6 @@
           "y": 1
         },
         "to": {
-          "dropEffect": "move",
           "x": 2,
           "y": 2
         },
@@ -73,7 +69,6 @@
           "y": 7
         },
         "to": {
-          "dropEffect": "move",
           "x": 2,
           "y": 6
         },
