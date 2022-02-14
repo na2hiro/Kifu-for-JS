@@ -32843,7 +32843,6 @@ Object {
         },
         "piece": "FU",
         "to": Object {
-          "dropEffect": "move",
           "x": 7,
           "y": 6,
         },
@@ -32858,7 +32857,6 @@ Object {
         },
         "piece": "FU",
         "to": Object {
-          "dropEffect": "move",
           "x": 3,
           "y": 4,
         },
@@ -32875,7 +32873,6 @@ Object {
         "piece": "KA",
         "promote": true,
         "to": Object {
-          "dropEffect": "move",
           "x": 2,
           "y": 2,
         },
@@ -32892,7 +32889,6 @@ Object {
         "piece": "GI",
         "same": true,
         "to": Object {
-          "dropEffect": "move",
           "x": 2,
           "y": 2,
         },
@@ -32907,7 +32903,6 @@ Object {
         },
         "piece": "FU",
         "to": Object {
-          "dropEffect": "move",
           "x": 2,
           "y": 6,
         },
