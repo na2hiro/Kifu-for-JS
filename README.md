@@ -105,7 +105,7 @@ JSONで一般的なUTF-8を使用するものとします．
 
 ### JSON Schemaによる定義
 [JSON Schema](https://json-schema.org/) のバージョン 2020-12 による定義が [./specification/json-kifu-format.schema.json](./specification/json-kifu-format.schema.json) にあります。
-また、 `npm run schema:compile` によりこのJSON Schemaファイル自体の検証を、 `npm run schema:validate` により [./test/files/jkf/*.jkf](./test/files/jkf/*.jkf) のJSON Schemaファイルに対する検証を行います。
+また、 `npm run schema:compile` によりこのJSON Schemaファイル自体の検証を、 `npm run schema:validate` により [specification/files/](specification/files/) 以下にあるJKFファイルのJSON Schemaファイルに対する検証を行います。
 
 ## JKFの例
 [.test/](./test/) 以下にも例が載っています．
