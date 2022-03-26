@@ -80,7 +80,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 * `RelativeString = string` 以下の文字列を連結したもの
 	* 左, 直, 右: それぞれL, C, R(Left, Center/Choku, Right)
 	* 上, 寄, 引: それぞれU, M, D(Up, Middle, Down)
-	* 打: H(Hit 何か違う気もする)
+	* 打: H(Hit (本来はDrop))
 * `InitialPresetString = string` 平手，香落ち等KIFでサポートされている手合情報
 	* HIRATE: 平手
 	* KY: 香落ち
