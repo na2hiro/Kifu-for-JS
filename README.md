@@ -103,6 +103,10 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 ### 文字コード
 JSONで一般的なUTF-8を使用するものとします．
 
+### JSON Schemaによる定義
+[JSON Schema](https://json-schema.org/) のバージョン 2020-12 による定義が `specification/json-kifu-format.schema.json` にあります。
+また、 `npm run schema:compile` によりこのJSON Schemaファイル自体の検証を、 `npm run schema:validate` により `test/files/jkf/*.jkf` のJSON Schemaファイルに対する検証を行います。
+
 ## JKFの例
 `test/`以下にも例が載っています．
 ### 通常
