@@ -34,7 +34,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します． ([TypeDoc](https://apps.81.la/json-kifu-format/docs/modules.html) も参照)
 
 ### JSONの形式 (Version 1.0)
-`Formats.ts`にある内容です．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．
+[./src/Formats.ts](./src/Formats.ts)にある内容です．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．
 
 * JKFが持つフィールドの定義
 	* header `string=>string` ヘッダ情報．キーはKI2，KIF等の日本語のものに準ずる．(例: "場所", "先手")
@@ -104,11 +104,12 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 JSONで一般的なUTF-8を使用するものとします．
 
 ### JSON Schemaによる定義
-[JSON Schema](https://json-schema.org/) のバージョン 2020-12 による定義が `specification/json-kifu-format.schema.json` にあります。
-また、 `npm run schema:compile` によりこのJSON Schemaファイル自体の検証を、 `npm run schema:validate` により `test/files/jkf/*.jkf` のJSON Schemaファイルに対する検証を行います。
+[JSON Schema](https://json-schema.org/) のバージョン 2020-12 による定義が [./specification/json-kifu-format.schema.json](./specification/json-kifu-format.schema.json) にあります。
+また、 `npm run schema:compile` によりこのJSON Schemaファイル自体の検証を、 `npm run schema:validate` により [./test/files/jkf/*.jkf](./test/files/jkf/*.jkf) のJSON Schemaファイルに対する検証を行います。
 
 ## JKFの例
-`test/`以下にも例が載っています．
+[.test/](./test/) 以下にも例が載っています．
+
 ### 通常
 ```json
 {
@@ -224,11 +225,10 @@ $ nvm use && nvm i && npm i
 
 * [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
 * [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
-* TypeScript
-* Webpack (バンドルツール)
-* Jest (テストフレームワーク，カバレッジ計測)
-* TSLint (Linter)
-* iconv-lite, jschardet (文字コード関連)
+* [TypeScript](https://www.typescriptlang.org/)
+* [Webpack](https://webpack.js.org/)
+* [Jest](https://jestjs.io/)
+* [TSLint](https://palantir.github.io/tslint/)
 
 ### コマンド
 
@@ -278,7 +278,7 @@ $ npm run lint:fix
 
 ## ライセンス
 
-MIT License (see [LICENSE.txt](./LICENSE.txt))
+MIT License (see [./LICENSE.txt](./LICENSE.txt))
 
 ## Workflows (it's for me)
 
