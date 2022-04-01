@@ -48,7 +48,7 @@
   "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
   "dependencies": {
     "fscreen": "^1.1.0",
-    "json-kifu-format": "^1.2.7",
+    "json-kifu-format": "^1.2.9",
     "mobx": "^4.1.1",
     "mobx-react": "^5.0.0",
     "react": "^16.0.0",
@@ -58,7 +58,7 @@
     "react-dnd-touch-backend": "^0.8.3",
     "react-dom": "^16.0.0",
     "react-responsive": "^8.2.0",
-    "shogi.js": "^2.0.0"
+    "shogi.js": "^2.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.10.3",
