@@ -18,6 +18,7 @@ module.exports = {
     ignorePatterns: [
         ".eslintrc.js",
         "jest.config.js",
+        "pegjs-jest.js",
         "webpack.config.js",
         "docs/",
         "bundle/",
