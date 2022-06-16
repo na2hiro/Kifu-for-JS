@@ -1,0 +1,10 @@
+/.github/
+/bundle/
+/coverage/
+/dist/
+/docs/
+/node_modules/
+/public/
+README.md
+package-lock.json
+package.json

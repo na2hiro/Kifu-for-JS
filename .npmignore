@@ -1,4 +1,5 @@
-/test/
 /**/__tests__/
+/.github/
 /.idea/
 /coverage/
+/test/
