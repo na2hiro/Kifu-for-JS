@@ -12,7 +12,7 @@
     "build:analyze": "npm run build -- --env analyze",
     "build:watch": "webpack --watch",
     "lint": "eslint ./ && prettier --check .",
-    "lint:fix": "eslint ./ --fix && prettier --write",
+    "lint:fix": "eslint ./ --fix && prettier --write .",
     "test": "jest",
     "test:watch": "jest --watch",
     "typecheck": "tsc --project tsconfig.typecheck.json --noEmit",
