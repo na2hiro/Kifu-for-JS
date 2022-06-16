@@ -1,4 +1,3 @@
-import "jest";
 import {parseCSA as parse} from "../parsers";
 
 function p(x, y) {

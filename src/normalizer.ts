@@ -366,24 +366,24 @@ export function filterMovesByRelatives(relative: string, color: Color, moves: IM
             move,
             vec: flipVector(color, {x: move.to.x - move.from.x, y: move.to.y - move.from.y}),
         }))
-        .filter(({move, vec}) =>
+        .filter(({vec}) =>
             relative.split("").every((rel) => moveSatisfiesRelative(rel, color, vec))
         );
     if (relative.indexOf("C") >= 0) {
         // 直は上がる時だけ
-        candidates = candidates.filter(({move, vec}) => vec.y < 0);
+        candidates = candidates.filter(({vec}) => vec.y < 0);
     }
     if (relative.indexOf("L") >= 0) {
         let min = Infinity;
-        candidates.forEach(({move, vec}) => (min = Math.min(min, vec.x)));
-        return candidates.filter(({move, vec}) => vec.x === min).map(({move, vec}) => move);
+        candidates.forEach(({vec}) => (min = Math.min(min, vec.x)));
+        return candidates.filter(({vec}) => vec.x === min).map(({move}) => move);
     }
     if (relative.indexOf("R") >= 0) {
         let max = -Infinity;
-        candidates.forEach(({move, vec}) => (max = Math.max(max, vec.x)));
-        return candidates.filter(({move, vec}) => vec.x === max).map(({move, vec}) => move);
+        candidates.forEach(({vec}) => (max = Math.max(max, vec.x)));
+        return candidates.filter(({vec}) => vec.x === max).map(({move}) => move);
     }
-    return candidates.map(({move, vec}) => move);
+    return candidates.map(({move}) => move);
 }
 function moveSatisfiesRelative(
     relative: string,

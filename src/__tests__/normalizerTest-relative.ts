@@ -1,4 +1,3 @@
-import "jest";
 import {Color, Piece, Shogi} from "shogi.js";
 import {IMoveMoveFormat} from "../Formats";
 import {JKFPlayer} from "../main";
@@ -39,6 +38,7 @@ describe("module Normalizer (relative information test from https://www.shogi.or
         run("UM", [99, 59], 77, ["左", "右"]);
         run("UM", [47, 18], 29, ["左", "右"]);
     });
+    // eslint-disable-next-line jest/no-identical-title
     describe("馬", () => {
         run("UM", [93, 74], 92, ["左", "右"]);
     });

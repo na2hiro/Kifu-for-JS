@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -13,7 +14,7 @@ import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 export default class JKFPlayer {
     public static debug = false;
     public static logs = [];
-    public static log(...lg: any[]) {
+    public static log(...lg: unknown[]) {
         if (JKFPlayer.debug) {
             console.log(lg);
         } else {

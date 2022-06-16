@@ -1,4 +1,3 @@
-import "jest";
 import {parseKI2 as parse} from "../parsers";
 
 function p(x, y) {

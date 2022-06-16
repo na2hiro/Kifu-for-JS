@@ -1,4 +1,4 @@
-import "jest";
+/* eslint-disable @typescript-eslint/ban-ts-comment */
 import {IJSONKifuFormat} from "../Formats";
 import {normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "../normalizer";
 

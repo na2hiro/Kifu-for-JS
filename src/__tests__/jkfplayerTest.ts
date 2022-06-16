@@ -1,4 +1,6 @@
-import "jest";
+/* eslint-disable jest/expect-expect */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable jest/valid-expect */
 import {Shogi} from "shogi.js";
 import JKFPlayer from "../jkfplayer";
 

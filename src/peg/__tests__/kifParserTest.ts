@@ -1,4 +1,4 @@
-import "jest";
+/* eslint-disable no-irregular-whitespace */
 import {parseKIF as parse} from "../parsers";
 
 function p(x, y) {
