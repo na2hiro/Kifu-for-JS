@@ -1,6 +1,5 @@
 import "jest";
 import {parseKIF as parse} from "../parsers";
-/* tslint:disable:object-literal-sort-keys max-line-length */
 
 function p(x, y) {
     return {x, y};

@@ -1,7 +1,6 @@
 import "jest";
 import {Shogi} from "shogi.js";
 import JKFPlayer from "../jkfplayer";
-/* tslint:disable:object-literal-sort-keys max-line-length no-unused-expression */
 
 // TODO Fix type errors
 

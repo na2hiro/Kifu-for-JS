@@ -1,7 +1,6 @@
 import "jest";
 import {IJSONKifuFormat} from "../Formats";
 import {normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "../normalizer";
-/* tslint:disable:object-literal-sort-keys max-line-length */
 
 function p(x, y) {
     return {x, y};

@@ -367,7 +367,6 @@ function restorePreset(obj: IJSONKifuFormat) {
             if (obj.initial.data.hands[i][kind] !== 0) { return; }
         }
     }
-    /* tslint:disable:max-line-length */
     const hirate = [
             [{color: Color.White, kind: "KY"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "KY"}],
             [{color: Color.White, kind: "KE"}, {color: Color.White, kind: "KA"}, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {color: Color.Black, kind: "HI"}, {color: Color.Black, kind: "KE"}],
@@ -379,7 +378,6 @@ function restorePreset(obj: IJSONKifuFormat) {
             [{color: Color.White, kind: "KE"}, {color: Color.White, kind: "HI"}, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {color: Color.Black, kind: "KA"}, {color: Color.Black, kind: "KE"}],
             [{color: Color.White, kind: "KY"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "KY"}],
         ];
-    /* tslint:enable:max-line-length */
     const diff = [];
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {

@@ -15,7 +15,7 @@ export default class JKFPlayer {
     public static logs = [];
     public static log(...lg: any[]) {
         if (JKFPlayer.debug) {
-            console.log(lg); // tslint:disable-line no-console
+            console.log(lg);
         } else {
             JKFPlayer.logs.push(lg);
         }
@@ -88,7 +88,7 @@ export default class JKFPlayer {
         return {
             FU: "歩",
             KY: "香",
-            KE: "桂", // tslint:disable-line object-literal-sort-keys
+            KE: "桂",
             GI: "銀",
             KI: "金",
             KA: "角",
@@ -105,7 +105,7 @@ export default class JKFPlayer {
     public static relativeToKan(relative: string) {
         return {
             L: "左",
-            C: "直", // tslint:disable-line object-literal-sort-keys
+            C: "直",
             R: "右",
             U: "上",
             M: "寄",
@@ -116,7 +116,7 @@ export default class JKFPlayer {
     public static specialToKan(special: string) {
         return {
             "TORYO": "投了",
-            "CHUDAN": "中断", // tslint:disable-line object-literal-sort-keys
+            "CHUDAN": "中断",
             "SENNICHITE": "千日手",
             "TIME_UP": "時間切れ",
             "ILLEGAL_MOVE": "反則負け",
@@ -206,9 +206,7 @@ export default class JKFPlayer {
     public kifu: IJSONKifuFormat;
     public tesuu: number;
     public forkPointers: Array<{te: number, forkIndex: number}> = [];
-    // tslint:disable-next-line:variable-name
     private forks_ = null;
-    // tslint:disable-next-line:variable-name
     private currentStream_: IMoveFormat[] = null;
     get forks(): Array<{te: number; moves: IMoveFormat[]}> {
         if (this.forks_ === null) {
@@ -288,10 +286,8 @@ export default class JKFPlayer {
         }
         let limit = 10000; // for safe
         if (this.tesuu < tesuu) {
-            // tslint:disable-next-line no-empty
             while (this.tesuu !== tesuu && this.forward() && limit-- > 0) { }
         } else {
-            // tslint:disable-next-line no-empty
             while (this.tesuu !== tesuu && this.backward() && limit-- > 0) { }
         }
         if (limit === 0) { throw new Error("tesuu overflows"); }
