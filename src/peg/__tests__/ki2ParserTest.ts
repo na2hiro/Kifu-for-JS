@@ -19,7 +19,9 @@ describe("ki2-parser", () => {
         });
     });
     it("comment", () => {
-        expect(parse("*開始時コメント\n▲７六歩\n*初手コメント\n*初手コメント2\n△３四歩 ▲２二角成")).toEqual({
+        expect(
+            parse("*開始時コメント\n▲７六歩\n*初手コメント\n*初手コメント2\n△３四歩 ▲２二角成")
+        ).toEqual({
             header: {},
             moves: [
                 {comments: ["開始時コメント"]},
@@ -76,8 +78,9 @@ describe("ki2-parser", () => {
     });
     describe("initial", () => {
         it("simple", () => {
-
-            expect(parse("\
+            expect(
+                parse(
+                    "\
 手合割：その他　\n\
 上手の持駒：銀四　桂四　\n\
   ９ ８ ７ ６ ５ ４ ３ ２ １\n\
@@ -96,7 +99,9 @@ describe("ki2-parser", () => {
 下手番\n\
 下手：shitate\n\
 上手：uwate\n\
-▲１三香 △１二桂 ▲同香成")).toEqual({
+▲１三香 △１二桂 ▲同香成"
+                )
+            ).toEqual({
                 header: {
                     手合割: "その他　",
                     上手: "uwate",
@@ -107,7 +112,17 @@ describe("ki2-parser", () => {
                     data: {
                         board: [
                             [{color: 1, kind: "OU"}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}, {color: 1, kind: "FU"}],
+                            [
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                                {color: 1, kind: "FU"},
+                            ],
                             [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                             [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                             [{}, {}, {}, {}, {}, {}, {}, {}, {}],
@@ -134,14 +149,18 @@ describe("ki2-parser", () => {
     });
     describe("fork", () => {
         it("normal", () => {
-            expect(parse("\
+            expect(
+                parse(
+                    "\
 手合割：平手\n\
 ▲７六歩 △３四歩 ▲２二角成 △同　銀 ▲４五角\n\
 まで5手で中断\n\
 \n\
 変化：3手\n\
 ▲６六歩 △８四歩\
-")).toEqual({
+"
+                )
+            ).toEqual({
                 header: {
                     手合割: "平手",
                 },
@@ -150,13 +169,16 @@ describe("ki2-parser", () => {
                     {},
                     {move: {to: p(7, 6), piece: "FU"}},
                     {move: {to: p(3, 4), piece: "FU"}},
-                    {move: {to: p(2, 2), piece: "KA", promote: true}, forks: [
-                        [
-//                            {},
-                            {move: {to: p(6, 6), piece: "FU"}},
-                            {move: {to: p(8, 4), piece: "FU"}},
+                    {
+                        move: {to: p(2, 2), piece: "KA", promote: true},
+                        forks: [
+                            [
+                                //                            {},
+                                {move: {to: p(6, 6), piece: "FU"}},
+                                {move: {to: p(8, 4), piece: "FU"}},
+                            ],
                         ],
-                    ]},
+                    },
                     {move: {same: true, piece: "GI"}},
                     {move: {to: p(4, 5), piece: "KA"}},
                     {special: "CHUDAN"},
@@ -165,35 +187,44 @@ describe("ki2-parser", () => {
         });
 
         it("Multiple forks", () => {
-            expect(parse(
-                "▲７六歩 △３四歩\n" +
-                "\n" +
-                "変化：2手\n" +
-                "△８四歩\n" +
-                "\n" +
-                "変化：2手\n" +
-                "△４四歩\n" +
-                "\n" +
-                "変化：1手\n" +
-                "▲２六歩\n" +
-                "\n" +
-                "変化：1手\n" +
-                "▲８六歩\n" +
-                "\n" +
-                "変化：1手\n" +
-                "▲７八金")).toEqual({
+            expect(
+                parse(
+                    "▲７六歩 △３四歩\n" +
+                        "\n" +
+                        "変化：2手\n" +
+                        "△８四歩\n" +
+                        "\n" +
+                        "変化：2手\n" +
+                        "△４四歩\n" +
+                        "\n" +
+                        "変化：1手\n" +
+                        "▲２六歩\n" +
+                        "\n" +
+                        "変化：1手\n" +
+                        "▲８六歩\n" +
+                        "\n" +
+                        "変化：1手\n" +
+                        "▲７八金"
+                )
+            ).toEqual({
                 header: {},
                 moves: [
                     {},
-                    {move: {to: p(7, 6), piece: "FU"}, forks: [
-                        [{move: {to: p(2, 6), piece: "FU"}}],
-                        [{move: {to: p(8, 6), piece: "FU"}}],
-                        [{move: {to: p(7, 8), piece: "KI"}}],
-                    ]},
-                    {move: {to: p(3, 4), piece: "FU"}, forks: [
-                        [{move: {to: p(8, 4), piece: "FU"}}],
-                        [{move: {to: p(4, 4), piece: "FU"}}],
-                    ]},
+                    {
+                        move: {to: p(7, 6), piece: "FU"},
+                        forks: [
+                            [{move: {to: p(2, 6), piece: "FU"}}],
+                            [{move: {to: p(8, 6), piece: "FU"}}],
+                            [{move: {to: p(7, 8), piece: "KI"}}],
+                        ],
+                    },
+                    {
+                        move: {to: p(3, 4), piece: "FU"},
+                        forks: [
+                            [{move: {to: p(8, 4), piece: "FU"}}],
+                            [{move: {to: p(4, 4), piece: "FU"}}],
+                        ],
+                    },
                 ],
             });
         });

@@ -34,12 +34,21 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6)}},
                 {move: {from: p(4, 3), to: p(4, 4)}},
-                {move: {from: p(8, 8), to: p(4, 4)}},
+                {move: {from: p(8, 8), to: p(4, 4)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(4, 4), color: 0, piece: "KA", same: true, capture: "FU"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(4, 4),
+                        color: 0,
+                        piece: "KA",
+                        same: true,
+                        capture: "FU",
+                    },
+                }
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -49,14 +58,32 @@ describe("module Normalizer", () => {
                 {move: {from: p(3, 3), to: p(3, 4)}},
                 {move: {from: p(8, 8), to: p(2, 2)}},
                 {move: {from: p(3, 1), to: p(2, 2)}},
-                {move: {piece: "KA", to: p(4, 5)}},
+                {move: {piece: "KA", to: p(4, 5)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        color: 0,
+                        piece: "KA",
+                        capture: "KA",
+                        promote: false,
+                    },
+                },
+                {
+                    move: {
+                        from: p(3, 1),
+                        to: p(2, 2),
+                        color: 1,
+                        piece: "GI",
+                        capture: "KA",
+                        same: true,
+                    },
+                },
+                {move: {to: p(4, 5), color: 0, piece: "KA"}}
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -67,15 +94,34 @@ describe("module Normalizer", () => {
                 {move: {from: p(8, 9), to: p(7, 7)}},
                 {move: {from: p(2, 2), to: p(7, 7), promote: true}},
                 {move: {from: p(8, 8), to: p(7, 7)}},
-                {move: {piece: "KE", to: p(3, 3)}},
+                {move: {piece: "KE", to: p(3, 3)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
                 {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -83,37 +129,80 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4)}},
-                {move: {from: p(8, 9), to: p(7, 7)}, forks: [
-                    [
-                        {move: {from: p(8, 8), to: p(2, 2)}},
-                        {move: {from: p(3, 1), to: p(2, 2)}},
-                        {move: {piece: "KA", to: p(4, 5)}},
+                {
+                    move: {from: p(8, 9), to: p(7, 7)},
+                    forks: [
+                        [
+                            {move: {from: p(8, 8), to: p(2, 2)}},
+                            {move: {from: p(3, 1), to: p(2, 2)}},
+                            {move: {piece: "KA", to: p(4, 5)}},
+                        ],
                     ],
-                ]},
+                },
                 {move: {from: p(2, 2), to: p(7, 7), promote: true}},
                 {move: {from: p(8, 8), to: p(7, 7)}},
-                {move: {piece: "KE", to: p(3, 3)}},
+                {move: {piece: "KE", to: p(3, 3)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}, forks: [
-                    [
-                        {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                        {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                        {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"},
+                    forks: [
+                        [
+                            {
+                                move: {
+                                    from: p(8, 8),
+                                    to: p(2, 2),
+                                    color: 0,
+                                    piece: "KA",
+                                    capture: "KA",
+                                    promote: false,
+                                },
+                            },
+                            {
+                                move: {
+                                    from: p(3, 1),
+                                    to: p(2, 2),
+                                    color: 1,
+                                    piece: "GI",
+                                    capture: "KA",
+                                    same: true,
+                                },
+                            },
+                            {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                        ],
                     ],
-                ]},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                },
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
         it("error", () => {
             actual.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6)}},
-                {move: {from: p(3, 3), to: p(3, 2)}},
+                {move: {from: p(3, 3), to: p(3, 2)}}
             );
             expect(() => {
                 normalizeMinimal(actual);
@@ -149,12 +238,21 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), piece: "FU"}},
                 {move: {from: p(4, 3), to: p(4, 4), piece: "FU"}},
-                {move: {from: p(8, 8), to: p(4, 4), piece: "KA", same: true}},
+                {move: {from: p(8, 8), to: p(4, 4), piece: "KA", same: true}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(4, 4), color: 0, piece: "KA", same: true, capture: "FU"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(4, 4),
+                        color: 0,
+                        piece: "KA",
+                        same: true,
+                        capture: "FU",
+                    },
+                }
             );
             expect(normalizeKIF(actual)).toEqual(expected);
         });
@@ -164,14 +262,32 @@ describe("module Normalizer", () => {
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU"}},
                 {move: {from: p(8, 8), to: p(2, 2), piece: "KA"}},
                 {move: {from: p(3, 1), piece: "GI", same: true}},
-                {move: {piece: "KA", to: p(4, 5)}},
+                {move: {piece: "KA", to: p(4, 5)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        color: 0,
+                        piece: "KA",
+                        capture: "KA",
+                        promote: false,
+                    },
+                },
+                {
+                    move: {
+                        from: p(3, 1),
+                        to: p(2, 2),
+                        color: 1,
+                        piece: "GI",
+                        capture: "KA",
+                        same: true,
+                    },
+                },
+                {move: {to: p(4, 5), color: 0, piece: "KA"}}
             );
             expect(normalizeKIF(actual)).toEqual(expected);
         });
@@ -182,15 +298,34 @@ describe("module Normalizer", () => {
                 {move: {from: p(8, 9), to: p(7, 7), piece: "KE"}},
                 {move: {from: p(2, 2), piece: "KA", promote: true, same: true}},
                 {move: {from: p(8, 8), piece: "KA", same: true}},
-                {move: {piece: "KE", to: p(3, 3)}},
+                {move: {piece: "KE", to: p(3, 3)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
                 {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeKIF(actual)).toEqual(expected);
         });
@@ -198,37 +333,78 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU"}},
-                {move: {from: p(8, 9), to: p(7, 7), piece: "KE"}, forks: [
-                    [
-                        {move: {from: p(8, 8), to: p(2, 2), piece: "KA"}},
-                        {move: {from: p(3, 1), same: true, piece: "GI"}},
-                        {move: {piece: "KA", to: p(4, 5)}},
+                {
+                    move: {from: p(8, 9), to: p(7, 7), piece: "KE"},
+                    forks: [
+                        [
+                            {move: {from: p(8, 8), to: p(2, 2), piece: "KA"}},
+                            {move: {from: p(3, 1), same: true, piece: "GI"}},
+                            {move: {piece: "KA", to: p(4, 5)}},
+                        ],
                     ],
-                ]},
+                },
                 {move: {from: p(2, 2), same: true, piece: "KA", promote: true}},
                 {move: {from: p(8, 8), same: true, piece: "KA"}},
-                {move: {piece: "KE", to: p(3, 3)}},
+                {move: {piece: "KE", to: p(3, 3)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}, forks: [
-                    [
-                        {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                        {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                        {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"},
+                    forks: [
+                        [
+                            {
+                                move: {
+                                    from: p(8, 8),
+                                    to: p(2, 2),
+                                    color: 0,
+                                    piece: "KA",
+                                    capture: "KA",
+                                    promote: false,
+                                },
+                            },
+                            {
+                                move: {
+                                    from: p(3, 1),
+                                    to: p(2, 2),
+                                    color: 1,
+                                    piece: "GI",
+                                    capture: "KA",
+                                    same: true,
+                                },
+                            },
+                            {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                        ],
                     ],
-                ]},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                },
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeKIF(actual)).toEqual(expected);
         });
         it("error", () => {
-            actual.moves.push(
-                {move: {from: p(7, 6), to: p(6, 6), piece: "FU"}},
-            );
+            actual.moves.push({move: {from: p(7, 6), to: p(6, 6), piece: "FU"}});
             expect(() => {
                 normalizeKIF(actual);
             }).toThrow();
@@ -262,7 +438,7 @@ describe("module Normalizer", () => {
                         ],
                     ],
                 },
-                {special: "TORYO"},
+                {special: "TORYO"}
             );
             expect(normalizeKIF(actual)).toMatchSnapshot();
         });
@@ -295,12 +471,21 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {to: p(7, 6), piece: "FU"}},
                 {move: {to: p(4, 4), piece: "FU"}},
-                {move: {to: p(4, 4), piece: "KA", same: true}},
+                {move: {to: p(4, 4), piece: "KA", same: true}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(4, 4), color: 0, piece: "KA", same: true, capture: "FU"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(4, 4),
+                        color: 0,
+                        piece: "KA",
+                        same: true,
+                        capture: "FU",
+                    },
+                }
             );
             expect(normalizeKI2(actual)).toEqual(expected);
         });
@@ -311,15 +496,34 @@ describe("module Normalizer", () => {
                 {move: {to: p(7, 7), piece: "KE"}},
                 {move: {piece: "KA", promote: true, same: true}},
                 {move: {piece: "KA", same: true}},
-                {move: {piece: "KE", to: p(3, 3), relative: "H"}},
+                {move: {piece: "KE", to: p(3, 3), relative: "H"}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
                 {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeKI2(actual)).toEqual(expected);
         });
@@ -329,39 +533,51 @@ describe("module Normalizer", () => {
                 {move: {to: p(3, 4), piece: "FU"}},
                 {move: {to: p(2, 2), piece: "KA", promote: false}},
                 {move: {piece: "GI", same: true}},
-                {move: {piece: "KA", to: p(4, 5)}},
+                {move: {piece: "KA", to: p(4, 5)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        color: 0,
+                        piece: "KA",
+                        capture: "KA",
+                        promote: false,
+                    },
+                },
+                {
+                    move: {
+                        from: p(3, 1),
+                        to: p(2, 2),
+                        color: 1,
+                        piece: "GI",
+                        capture: "KA",
+                        same: true,
+                    },
+                },
+                {move: {to: p(4, 5), color: 0, piece: "KA"}}
             );
             expect(normalizeKI2(actual)).toEqual(expected);
         });
         describe("relative", () => {
             it("normal", () => {
-                actual.moves.push(
-                    {move: {to: p(5, 8), piece: "KI", relative: "R"}},
-                );
-                expected.moves.push(
-                    {move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "R"}},
-                );
+                actual.moves.push({move: {to: p(5, 8), piece: "KI", relative: "R"}});
+                expected.moves.push({
+                    move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "R"},
+                });
                 expect(normalizeKI2(actual)).toEqual(expected);
             });
             it("insufficient", () => {
-                actual.moves.push(
-                    {move: {to: p(5, 8), piece: "KI"}},
-                );
+                actual.moves.push({move: {to: p(5, 8), piece: "KI"}});
                 expect(() => {
                     normalizeKI2(actual);
                 }).toThrow();
             });
             it("malformed", () => {
-                actual.moves.push(
-                    {move: {to: p(5, 8), piece: "KI", relative: "C"}},
-                );
+                actual.moves.push({move: {to: p(5, 8), piece: "KI", relative: "C"}});
                 expect(() => {
                     normalizeKI2(actual);
                 }).toThrow();
@@ -371,30 +587,73 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {to: p(7, 6), piece: "FU"}},
                 {move: {to: p(3, 4), piece: "FU"}},
-                {move: {to: p(7, 7), piece: "KE"}, forks: [
-                    [
-                        {move: {to: p(2, 2), piece: "KA", promote: false}},
-                        {move: {same: true, piece: "GI"}},
-                        {move: {piece: "KA", to: p(4, 5)}},
+                {
+                    move: {to: p(7, 7), piece: "KE"},
+                    forks: [
+                        [
+                            {move: {to: p(2, 2), piece: "KA", promote: false}},
+                            {move: {same: true, piece: "GI"}},
+                            {move: {piece: "KA", to: p(4, 5)}},
+                        ],
                     ],
-                ]},
+                },
                 {move: {same: true, piece: "KA", promote: true}},
                 {move: {same: true, piece: "KA"}},
-                {move: {piece: "KE", to: p(3, 3), relative: "H"}},
+                {move: {piece: "KE", to: p(3, 3), relative: "H"}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}, forks: [
-                    [
-                        {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                        {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                        {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"},
+                    forks: [
+                        [
+                            {
+                                move: {
+                                    from: p(8, 8),
+                                    to: p(2, 2),
+                                    color: 0,
+                                    piece: "KA",
+                                    capture: "KA",
+                                    promote: false,
+                                },
+                            },
+                            {
+                                move: {
+                                    from: p(3, 1),
+                                    to: p(2, 2),
+                                    color: 1,
+                                    piece: "GI",
+                                    capture: "KA",
+                                    same: true,
+                                },
+                            },
+                            {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                        ],
                     ],
-                ]},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                },
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeKI2(actual)).toEqual(expected);
         });
@@ -412,24 +671,22 @@ describe("module Normalizer", () => {
                 };
             });
             it("L", () => {
-                actual.moves.push(
-                    {move: {piece: "KI", to: p(5, 8), relative: "L"}},
-                );
-                expected.moves.push(
-                    {move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "L"}},
-                );
+                actual.moves.push({move: {piece: "KI", to: p(5, 8), relative: "L"}});
+                expected.moves.push({
+                    move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "L"},
+                });
                 expect(normalizeKI2(actual)).toEqual(expected);
             });
             it("U", () => {
                 actual.moves.push(
                     {move: {to: p(4, 8), piece: "KI"}},
                     {move: {to: p(4, 4), piece: "FU"}},
-                    {move: {to: p(5, 8), piece: "KI", relative: "U"}},
+                    {move: {to: p(5, 8), piece: "KI", relative: "U"}}
                 );
                 expected.moves.push(
                     {move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
                     {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                    {move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "U"}},
+                    {move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "U"}}
                 );
                 expect(normalizeKI2(actual)).toEqual(expected);
             });
@@ -437,12 +694,12 @@ describe("module Normalizer", () => {
                 actual.moves.push(
                     {move: {to: p(4, 8), piece: "KI"}},
                     {move: {to: p(4, 4), piece: "FU"}},
-                    {move: {to: p(5, 8), piece: "KI", relative: "M"}},
+                    {move: {to: p(5, 8), piece: "KI", relative: "M"}}
                 );
                 expected.moves.push(
                     {move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
                     {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                    {move: {from: p(4, 8), to: p(5, 8), color: 0, piece: "KI", relative: "M"}},
+                    {move: {from: p(4, 8), to: p(5, 8), color: 0, piece: "KI", relative: "M"}}
                 );
                 expect(normalizeKI2(actual)).toEqual(expected);
             });
@@ -452,47 +709,72 @@ describe("module Normalizer", () => {
                     {move: {to: p(4, 4), piece: "FU"}},
                     {move: {to: p(4, 8), piece: "OU"}},
                     {move: {to: p(4, 5), piece: "FU"}},
-                    {move: {to: p(5, 9), piece: "KI", relative: "D"}},
+                    {move: {to: p(5, 9), piece: "KI", relative: "D"}}
                 );
                 expected.moves.push(
                     {move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "R"}},
                     {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
                     {move: {from: p(5, 9), to: p(4, 8), color: 0, piece: "OU"}},
                     {move: {from: p(4, 4), to: p(4, 5), color: 1, piece: "FU"}},
-                    {move: {from: p(5, 8), to: p(5, 9), color: 0, piece: "KI", relative: "D"}},
+                    {move: {from: p(5, 8), to: p(5, 9), color: 0, piece: "KI", relative: "D"}}
                 );
                 expect(normalizeKI2(actual)).toEqual(expected);
             });
             it("no C for UM and RY", () => {
                 actual.moves.push(
-                        {move: {from: p(7, 7), to: p(7, 6)}},
-                        {move: {from: p(3, 3), to: p(3, 4)}},
-                        {move: {from: p(8, 8), to: p(2, 2), promote: true}},
-                        {move: {from: p(4, 1), to: p(3, 2)}},
-                        {move: {piece: "KA", to: p(4, 1)}},
-                        {move: {from: p(9, 3), to: p(9, 4)}},
-                        {move: {from: p(4, 1), to: p(3, 2), piece: "KA", promote: true}},
-                        {move: {from: p(9, 4), to: p(9, 5), piece: "FU"}},
-                        {move: {from: p(2, 2), to: p(2, 1), piece: "UM"}},
-                        );
+                    {move: {from: p(7, 7), to: p(7, 6)}},
+                    {move: {from: p(3, 3), to: p(3, 4)}},
+                    {move: {from: p(8, 8), to: p(2, 2), promote: true}},
+                    {move: {from: p(4, 1), to: p(3, 2)}},
+                    {move: {piece: "KA", to: p(4, 1)}},
+                    {move: {from: p(9, 3), to: p(9, 4)}},
+                    {move: {from: p(4, 1), to: p(3, 2), piece: "KA", promote: true}},
+                    {move: {from: p(9, 4), to: p(9, 5), piece: "FU"}},
+                    {move: {from: p(2, 2), to: p(2, 1), piece: "UM"}}
+                );
                 expected.moves.push(
-                        {move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}},
-                        {move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1}},
-                        {move: {from: p(8, 8), to: p(2, 2), promote: true, piece: "KA", capture: "KA", color: 0}},
-                        {move: {from: p(4, 1), to: p(3, 2), piece: "KI", color: 1}},
-                        {move: {piece: "KA", to: p(4, 1), color: 0}},
-                        {move: {from: p(9, 3), to: p(9, 4), piece: "FU", color: 1}},
-                        {move: {from: p(4, 1), to: p(3, 2), piece: "KA", color: 0, promote: true, capture: "KI"}},
-                        {move: {from: p(9, 4), to: p(9, 5), piece: "FU", color: 1}},
-                        {move: {from: p(2, 2), to: p(2, 1), color: 0, piece: "UM", relative: "R", capture: "KE"}},
-                        );
+                    {move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}},
+                    {move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1}},
+                    {
+                        move: {
+                            from: p(8, 8),
+                            to: p(2, 2),
+                            promote: true,
+                            piece: "KA",
+                            capture: "KA",
+                            color: 0,
+                        },
+                    },
+                    {move: {from: p(4, 1), to: p(3, 2), piece: "KI", color: 1}},
+                    {move: {piece: "KA", to: p(4, 1), color: 0}},
+                    {move: {from: p(9, 3), to: p(9, 4), piece: "FU", color: 1}},
+                    {
+                        move: {
+                            from: p(4, 1),
+                            to: p(3, 2),
+                            piece: "KA",
+                            color: 0,
+                            promote: true,
+                            capture: "KI",
+                        },
+                    },
+                    {move: {from: p(9, 4), to: p(9, 5), piece: "FU", color: 1}},
+                    {
+                        move: {
+                            from: p(2, 2),
+                            to: p(2, 1),
+                            color: 0,
+                            piece: "UM",
+                            relative: "R",
+                            capture: "KE",
+                        },
+                    }
+                );
                 expect(normalizeMinimal(actual)).toEqual(expected);
             });
         });
         it("error", () => {
-            actual.moves.push(
-                {move: {from: p(7, 6), to: p(7, 5), piece: "FU"}},
-            );
+            actual.moves.push({move: {from: p(7, 6), to: p(7, 5), piece: "FU"}});
             expect(() => {
                 normalizeKI2(actual);
             }).toThrow();
@@ -526,12 +808,21 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), piece: "FU"}},
                 {move: {from: p(4, 3), to: p(4, 4), piece: "FU"}},
-                {move: {from: p(8, 8), to: p(4, 4), piece: "KA"}},
+                {move: {from: p(8, 8), to: p(4, 4), piece: "KA"}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(4, 4), color: 0, piece: "KA", same: true, capture: "FU"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(4, 4),
+                        color: 0,
+                        piece: "KA",
+                        same: true,
+                        capture: "FU",
+                    },
+                }
             );
             expect(normalizeCSA(actual)).toEqual(expected);
         });
@@ -542,15 +833,34 @@ describe("module Normalizer", () => {
                 {move: {from: p(8, 9), to: p(7, 7), piece: "KE"}},
                 {move: {from: p(2, 2), to: p(7, 7), piece: "UM"}},
                 {move: {from: p(8, 8), to: p(7, 7), piece: "KA"}},
-                {move: {piece: "KE", to: p(3, 3)}},
+                {move: {piece: "KE", to: p(3, 3)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
                 {move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}},
-                {move: {from: p(2, 2), to: p(7, 7), color: 1, piece: "KA", capture: "KE", promote: true, same: true}},
-                {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
-                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(7, 7),
+                        color: 1,
+                        piece: "KA",
+                        capture: "KE",
+                        promote: true,
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(7, 7),
+                        color: 0,
+                        piece: "KA",
+                        capture: "UM",
+                        same: true,
+                    },
+                },
+                {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}}
             );
             expect(normalizeCSA(actual)).toEqual(expected);
         });
@@ -560,14 +870,32 @@ describe("module Normalizer", () => {
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU"}},
                 {move: {from: p(8, 8), to: p(2, 2), piece: "KA"}},
                 {move: {from: p(3, 1), to: p(2, 2), piece: "GI"}},
-                {move: {piece: "KA", to: p(4, 5)}},
+                {move: {piece: "KA", to: p(4, 5)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: false}},
-                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
-                {move: {to: p(4, 5), color: 0, piece: "KA"}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        color: 0,
+                        piece: "KA",
+                        capture: "KA",
+                        promote: false,
+                    },
+                },
+                {
+                    move: {
+                        from: p(3, 1),
+                        to: p(2, 2),
+                        color: 1,
+                        piece: "GI",
+                        capture: "KA",
+                        same: true,
+                    },
+                },
+                {move: {to: p(4, 5), color: 0, piece: "KA"}}
             );
             expect(normalizeCSA(actual)).toEqual(expected);
         });
@@ -577,21 +905,28 @@ describe("module Normalizer", () => {
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU"}},
                 {move: {from: p(8, 8), to: p(2, 2), piece: "UM"}},
                 {move: {from: p(4, 1), to: p(4, 2), piece: "KI"}},
-                {move: {from: p(2, 2), to: p(1, 1), piece: "UM"}},
+                {move: {from: p(2, 2), to: p(1, 1), piece: "UM"}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                 {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
-                {move: {from: p(8, 8), to: p(2, 2), color: 0, piece: "KA", capture: "KA", promote: true}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        color: 0,
+                        piece: "KA",
+                        capture: "KA",
+                        promote: true,
+                    },
+                },
                 {move: {from: p(4, 1), to: p(4, 2), color: 1, piece: "KI"}},
-                {move: {from: p(2, 2), to: p(1, 1), color: 0, piece: "UM", capture: "KY"}},
+                {move: {from: p(2, 2), to: p(1, 1), color: 0, piece: "UM", capture: "KY"}}
             );
             expect(normalizeCSA(actual)).toEqual(expected);
         });
         it("error", () => {
-            actual.moves.push(
-                {move: {from: p(7, 6), to: p(7, 5), piece: "FU"}},
-            );
+            actual.moves.push({move: {from: p(7, 6), to: p(7, 5), piece: "FU"}});
             expect(() => {
                 normalizeCSA(actual);
             }).toThrow();
@@ -602,14 +937,43 @@ describe("module Normalizer", () => {
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU"}, time: {now: {m: 0, s: 2}}},
                 {move: {from: p(8, 8), to: p(2, 2), piece: "UM"}, time: {now: {m: 1, s: 40}}},
                 {move: {from: p(3, 1), to: p(2, 2), piece: "GI"}, time: {now: {m: 0, s: 1}}},
-                {move: {to: p(4, 5), piece: "KA"}, time: {now: {m: 0, s: 0}}},
+                {move: {to: p(4, 5), piece: "KA"}, time: {now: {m: 0, s: 0}}}
             );
             expected.moves.push(
-                    {move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}, time: {now: {m: 0, s: 12}, total: {h: 0, m: 0, s: 12}}}, // totalはnormalizerが復元
-                    {move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1}, time: {now: {m: 0, s: 2}, total: {h: 0, m: 0, s: 2}}},
-                    {move: {from: p(8, 8), to: p(2, 2), piece: "KA", capture: "KA", promote: true, color: 0}, time: {now: {m: 1, s: 40}, total: {h: 0, m: 1, s: 52}}},
-                    {move: {from: p(3, 1), to: p(2, 2), piece: "GI", capture: "UM", same: true, color: 1}, time: {now: {m: 0, s: 1}, total: {h: 0, m: 0, s: 3}}},
-                    {move: {to: p(4, 5), piece: "KA", color: 0}, time: {now: {m: 0, s: 0}, total: {h: 0, m: 1, s: 52}}},
+                {
+                    move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+                    time: {now: {m: 0, s: 12}, total: {h: 0, m: 0, s: 12}},
+                }, // totalはnormalizerが復元
+                {
+                    move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1},
+                    time: {now: {m: 0, s: 2}, total: {h: 0, m: 0, s: 2}},
+                },
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        piece: "KA",
+                        capture: "KA",
+                        promote: true,
+                        color: 0,
+                    },
+                    time: {now: {m: 1, s: 40}, total: {h: 0, m: 1, s: 52}},
+                },
+                {
+                    move: {
+                        from: p(3, 1),
+                        to: p(2, 2),
+                        piece: "GI",
+                        capture: "UM",
+                        same: true,
+                        color: 1,
+                    },
+                    time: {now: {m: 0, s: 1}, total: {h: 0, m: 0, s: 3}},
+                },
+                {
+                    move: {to: p(4, 5), piece: "KA", color: 0},
+                    time: {now: {m: 0, s: 0}, total: {h: 0, m: 1, s: 52}},
+                }
             );
             expect(normalizeCSA(actual)).toEqual(expected);
         });
@@ -631,12 +995,12 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(4, 9), to: p(4, 8)}},
                 {move: {from: p(4, 3), to: p(4, 4)}},
-                {move: {from: p(6, 9), to: p(5, 8)}},
+                {move: {from: p(6, 9), to: p(5, 8)}}
             );
             expected.moves.push(
                 {move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                {move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "U"}},
+                {move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "U"}}
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -644,12 +1008,12 @@ describe("module Normalizer", () => {
             actual.moves.push(
                 {move: {from: p(4, 9), to: p(4, 8)}},
                 {move: {from: p(4, 3), to: p(4, 4)}},
-                {move: {from: p(4, 8), to: p(5, 8)}},
+                {move: {from: p(4, 8), to: p(5, 8)}}
             );
             expected.moves.push(
                 {move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
-                {move: {from: p(4, 8), to: p(5, 8), color: 0, piece: "KI", relative: "M"}},
+                {move: {from: p(4, 8), to: p(5, 8), color: 0, piece: "KI", relative: "M"}}
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -659,24 +1023,22 @@ describe("module Normalizer", () => {
                 {move: {from: p(4, 3), to: p(4, 4), piece: "FU"}},
                 {move: {from: p(5, 9), to: p(4, 8), piece: "OU"}},
                 {move: {from: p(4, 4), to: p(4, 5), piece: "FU"}},
-                {move: {from: p(5, 8), to: p(5, 9), piece: "KI"}},
+                {move: {from: p(5, 8), to: p(5, 9), piece: "KI"}}
             );
             expected.moves.push(
                 {move: {from: p(6, 9), to: p(5, 8), color: 0, piece: "KI", relative: "L"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
                 {move: {from: p(5, 9), to: p(4, 8), color: 0, piece: "OU"}},
                 {move: {from: p(4, 4), to: p(4, 5), color: 1, piece: "FU"}},
-                {move: {from: p(5, 8), to: p(5, 9), color: 0, piece: "KI", relative: "D"}},
+                {move: {from: p(5, 8), to: p(5, 9), color: 0, piece: "KI", relative: "D"}}
             );
             expect(normalizeKIF(actual)).toEqual(expected);
         });
         it("R", () => {
-            actual.moves.push(
-                {move: {from: p(4, 9), to: p(5, 8)}},
-            );
-            expected.moves.push(
-                {move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "R"}},
-            );
+            actual.moves.push({move: {from: p(4, 9), to: p(5, 8)}});
+            expected.moves.push({
+                move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "R"},
+            });
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
         it("RU", () => {
@@ -689,18 +1051,45 @@ describe("module Normalizer", () => {
                 {move: {from: p(3, 1), to: p(3, 2)}},
                 {move: {piece: "KI", to: p(4, 8)}},
                 {move: {from: p(3, 2), to: p(3, 3), piece: "GI"}},
-                {move: {from: p(4, 9), to: p(5, 8)}},
+                {move: {from: p(4, 9), to: p(5, 8)}}
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}},
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1}},
-                {move: {from: p(8, 8), to: p(2, 2), promote: true, piece: "KA", capture: "KA", color: 0}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        promote: true,
+                        piece: "KA",
+                        capture: "KA",
+                        color: 0,
+                    },
+                },
                 {move: {from: p(4, 1), to: p(3, 2), piece: "KI", color: 1}},
-                {move: {from: p(2, 2), to: p(3, 2), piece: "UM", color: 0, capture: "KI", same: true}},
-                {move: {from: p(3, 1), to: p(3, 2), piece: "GI", color: 1, capture: "UM", same: true}},
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(3, 2),
+                        piece: "UM",
+                        color: 0,
+                        capture: "KI",
+                        same: true,
+                    },
+                },
+                {
+                    move: {
+                        from: p(3, 1),
+                        to: p(3, 2),
+                        piece: "GI",
+                        color: 1,
+                        capture: "UM",
+                        same: true,
+                    },
+                },
                 {move: {piece: "KI", to: p(4, 8), color: 0, relative: "H"}},
                 {move: {from: p(3, 2), to: p(3, 3), piece: "GI", color: 1}},
-                {move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "RU"}},
+                {move: {from: p(4, 9), to: p(5, 8), color: 0, piece: "KI", relative: "RU"}}
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -710,14 +1099,14 @@ describe("module Normalizer", () => {
                 {move: {from: p(4, 3), to: p(4, 4), piece: "FU"}},
                 {move: {from: p(6, 9), to: p(5, 9), piece: "KI"}},
                 {move: {from: p(4, 4), to: p(4, 5), piece: "FU"}},
-                {move: {from: p(4, 9), to: p(4, 8), piece: "KI"}},
+                {move: {from: p(4, 9), to: p(4, 8), piece: "KI"}}
             );
             expected.moves.push(
                 {move: {from: p(5, 9), to: p(6, 8), color: 0, piece: "OU"}},
                 {move: {from: p(4, 3), to: p(4, 4), color: 1, piece: "FU"}},
                 {move: {from: p(6, 9), to: p(5, 9), color: 0, piece: "KI", relative: "L"}},
                 {move: {from: p(4, 4), to: p(4, 5), color: 1, piece: "FU"}},
-                {move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI", relative: "C"}},
+                {move: {from: p(4, 9), to: p(4, 8), color: 0, piece: "KI", relative: "C"}}
             );
             expect(normalizeKIF(actual)).toEqual(expected);
         });
@@ -731,22 +1120,62 @@ describe("module Normalizer", () => {
                 {move: {from: p(9, 3), to: p(9, 4)}},
                 {move: {from: p(4, 1), to: p(3, 2), piece: "KA", promote: true}},
                 {move: {from: p(9, 4), to: p(9, 5), piece: "FU"}},
-                {move: {from: p(2, 2), to: p(2, 1), piece: "UM"}, forks: [
-                    [{move: {from: p(3, 2), to: p(3, 1), piece: "UM"}}],
-                ]},
+                {
+                    move: {from: p(2, 2), to: p(2, 1), piece: "UM"},
+                    forks: [[{move: {from: p(3, 2), to: p(3, 1), piece: "UM"}}]],
+                }
             );
             expected.moves.push(
                 {move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}},
                 {move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1}},
-                {move: {from: p(8, 8), to: p(2, 2), promote: true, piece: "KA", capture: "KA", color: 0}},
+                {
+                    move: {
+                        from: p(8, 8),
+                        to: p(2, 2),
+                        promote: true,
+                        piece: "KA",
+                        capture: "KA",
+                        color: 0,
+                    },
+                },
                 {move: {from: p(4, 1), to: p(3, 2), piece: "KI", color: 1}},
                 {move: {piece: "KA", to: p(4, 1), color: 0}},
                 {move: {from: p(9, 3), to: p(9, 4), piece: "FU", color: 1}},
-                {move: {from: p(4, 1), to: p(3, 2), piece: "KA", color: 0, promote: true, capture: "KI"}},
+                {
+                    move: {
+                        from: p(4, 1),
+                        to: p(3, 2),
+                        piece: "KA",
+                        color: 0,
+                        promote: true,
+                        capture: "KI",
+                    },
+                },
                 {move: {from: p(9, 4), to: p(9, 5), piece: "FU", color: 1}},
-                {move: {from: p(2, 2), to: p(2, 1), color: 0, piece: "UM", relative: "R", capture: "KE"}, forks: [
-                    [{move: {from: p(3, 2), to: p(3, 1), color: 0, piece: "UM", relative: "L", capture: "GI"}}],
-                ]},
+                {
+                    move: {
+                        from: p(2, 2),
+                        to: p(2, 1),
+                        color: 0,
+                        piece: "UM",
+                        relative: "R",
+                        capture: "KE",
+                    },
+                    forks: [
+                        [
+                            {
+                                move: {
+                                    from: p(3, 2),
+                                    to: p(3, 1),
+                                    color: 0,
+                                    piece: "UM",
+                                    relative: "L",
+                                    capture: "GI",
+                                },
+                            },
+                        ],
+                    ],
+                }
             );
             expect(normalizeMinimal(actual)).toEqual(expected);
         });
@@ -759,15 +1188,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "KA"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "HI"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 0,
                         hands: [
@@ -792,15 +1311,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "KA"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "HI"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 1,
                         hands: [
@@ -817,15 +1426,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "KA"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "HI"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 1,
                         hands: [
@@ -845,15 +1544,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "KA"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "HI"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 1,
                         hands: [
@@ -870,15 +1659,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "GI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{ color: 1, kind: "KY" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "KA"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "GI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KE"},
+                                {color: 1, kind: "HI"},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {color: 1, kind: "KY"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 1,
                         hands: [
@@ -898,15 +1777,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 1,
                         hands: [
@@ -931,15 +1900,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 0,
                         hands: [
@@ -956,15 +2015,105 @@ describe("module Normalizer", () => {
                     preset: "OTHER",
                     data: {
                         board: [
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{ color: 1, kind: "OU" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "OU" }],
-                            [{ color: 1, kind: "KI" }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KI" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "GI" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                            [{                          }, {}, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {}, { color: 0, kind: "KY" }],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "HI"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {color: 1, kind: "OU"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "OU"},
+                            ],
+                            [
+                                {color: 1, kind: "KI"},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KI"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "GI"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {color: 0, kind: "KA"},
+                                {color: 0, kind: "KE"},
+                            ],
+                            [
+                                {},
+                                {},
+                                {color: 1, kind: "FU"},
+                                {},
+                                {},
+                                {},
+                                {color: 0, kind: "FU"},
+                                {},
+                                {color: 0, kind: "KY"},
+                            ],
                         ],
                         color: 0,
                         hands: [
@@ -1004,10 +2153,16 @@ describe("module Normalizer", () => {
                 header: {},
                 moves: [
                     {},
-                    {move: {from: p(7, 7), to: p(7, 6), piece: "FU"}, forks: [
-                        [{special: "ILLEGAL_ACTION"}],
-                        [{move: {from: p(2, 7), to: p(2, 6), piece: "FU"}}, {special: "ILLEGAL_ACTION"}],
-                    ]},
+                    {
+                        move: {from: p(7, 7), to: p(7, 6), piece: "FU"},
+                        forks: [
+                            [{special: "ILLEGAL_ACTION"}],
+                            [
+                                {move: {from: p(2, 7), to: p(2, 6), piece: "FU"}},
+                                {special: "ILLEGAL_ACTION"},
+                            ],
+                        ],
+                    },
                     {special: "ILLEGAL_ACTION"},
                 ],
             };
@@ -1015,10 +2170,16 @@ describe("module Normalizer", () => {
                 header: {},
                 moves: [
                     {},
-                    {move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}, forks: [
-                        [{special: "-ILLEGAL_ACTION"}],
-                        [{move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}}, {special: "+ILLEGAL_ACTION"}],
-                    ]},
+                    {
+                        move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+                        forks: [
+                            [{special: "-ILLEGAL_ACTION"}],
+                            [
+                                {move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}},
+                                {special: "+ILLEGAL_ACTION"},
+                            ],
+                        ],
+                    },
                     {special: "+ILLEGAL_ACTION"},
                 ],
             };

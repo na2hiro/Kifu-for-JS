@@ -7,8 +7,8 @@ import JKFPlayer from "../jkfplayer";
 const SJIS = "cp932";
 const FILES_DIR = __dirname + "/../../test/files";
 
-makeTest("kif", (filename) => filename.match(/u$/) ? loadUTF : loadSJIS);
-makeTest("ki2", (filename) => filename.match(/u$/) ? loadUTF : loadSJIS);
+makeTest("kif", (filename) => (filename.match(/u$/) ? loadUTF : loadSJIS));
+makeTest("ki2", (filename) => (filename.match(/u$/) ? loadUTF : loadSJIS));
 makeTest("csa", (filename) => loadAuto);
 makeTest("jkf", (filename) => loadUTF);
 
@@ -17,31 +17,37 @@ function makeTest(ext, fileNameToLoadFunc) {
     describe(ext + " file", () => {
         const files = readdirSync(FILES_DIR + "/" + ext);
         for (const file of files) {
-            (((filename) => {
-                if (!filename.match(new RegExp("\\." + ext + "u?$"))) { return; }
+            ((filename) => {
+                if (!filename.match(new RegExp("\\." + ext + "u?$"))) {
+                    return;
+                }
                 it(filename, (done) => {
                     try {
-                        fileNameToLoadFunc(filename)(FILES_DIR + "/" + ext + "/" + filename, (err, data) => {
-                            if (err) {
-                                done(err);
-                                return;
+                        fileNameToLoadFunc(filename)(
+                            FILES_DIR + "/" + ext + "/" + filename,
+                            (err, data) => {
+                                if (err) {
+                                    done(err);
+                                    return;
+                                }
+                                data = data.replace(/^\ufeff/, ""); // delete BOM
+                                try {
+                                    const player: JKFPlayer =
+                                        JKFPlayer["parse" + ext.toUpperCase()](data);
+                                    player.goto(Infinity);
+                                    player.goto(0);
+                                    expect(player.kifu).toMatchSnapshot();
+                                    done();
+                                } catch (e) {
+                                    done(e);
+                                }
                             }
-                            data = data.replace(/^\ufeff/, ""); // delete BOM
-                            try {
-                                const player: JKFPlayer = JKFPlayer["parse" + ext.toUpperCase()](data);
-                                player.goto(Infinity);
-                                player.goto(0);
-                                expect(player.kifu).toMatchSnapshot();
-                                done();
-                            } catch (e) {
-                                done(e);
-                            }
-                        });
+                        );
                     } catch (e) {
                         done(e);
                     }
                 });
-            })(file));
+            })(file);
         }
     });
 }

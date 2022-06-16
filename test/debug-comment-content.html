@@ -1,26 +1,30 @@
-<meta charset="utf-8">
+<meta charset="utf-8" />
 <script src="../bundle/json-kifu-format-1.2.7.min.js" charset="utf-8"></script>
 <script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
 
 <script>
-$(document).ready(function() {
-	$.ajax('./files/kif/last_comment.kif', {
-		success: function(data) {
-			kifu=data;
-			parse(data);
-		},
-		beforeSend: function(xhr){
-			xhr.overrideMimeType("text/html;charset=Shift_JIS");
-		},
-	}, 'text');
-});
+    $(document).ready(function () {
+        $.ajax(
+            "./files/kif/last_comment.kif",
+            {
+                success: function (data) {
+                    kifu = data;
+                    parse(data);
+                },
+                beforeSend: function (xhr) {
+                    xhr.overrideMimeType("text/html;charset=Shift_JIS");
+                },
+            },
+            "text"
+        );
+    });
 
-function parse(data){
-	player = JSONKifuFormat.JKFPlayer.parseKIF(data);
-	var cnt=0;
-	console.log(player.getReadableKifu());
-	while(player.forward() && cnt++<1000){
-		console.log(player.getReadableKifu(), player.getComments().join("\n"));
-	}
-}
+    function parse(data) {
+        player = JSONKifuFormat.JKFPlayer.parseKIF(data);
+        var cnt = 0;
+        console.log(player.getReadableKifu());
+        while (player.forward() && cnt++ < 1000) {
+            console.log(player.getReadableKifu(), player.getComments().join("\n"));
+        }
+    }
 </script>
