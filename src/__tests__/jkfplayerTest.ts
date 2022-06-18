@@ -713,6 +713,9 @@ P-\n\
             special: "TORYO",
         })).toBe("投了");
     });
+    it("doMove", () => {
+        expect(JKFPlayer.doMove(new Shogi({ preset: "HIRATE" }), null)).toBe(undefined)
+    });
     describe("wrappers", () => {
         let player;
         beforeEach(() => {
