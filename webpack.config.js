@@ -1,15 +1,14 @@
-const path = require("path");
-const webpack = require("webpack");
-const merge = require("webpack-merge");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
-const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const package = require("./package.json");
+import {resolve as _resolve} from "path";
+import merge from "webpack-merge";
+import CleanWebpackPlugin from "clean-webpack-plugin";
+import {BundleAnalyzerPlugin} from "webpack-bundle-analyzer";
+import {version} from "./package.json";
 
-module.exports = (env) => {
+export default (env) => {
     const IS_ANALYZE = env && env.analyze;
     const common = {
         entry: {
-            filename: path.resolve(__dirname, "./src/main.ts"),
+            filename: _resolve(__dirname, "./src/main.ts"),
             //filename: path.resolve(__dirname, './src/tst.js'),
             //hoge: path.resolve(__dirname, './src/csa-parser.pegjs')
         },
@@ -29,14 +28,15 @@ module.exports = (env) => {
         resolve: {
             extensions: [".ts", ".js", ".pegjs"],
         },
+        mode: "production",
     };
 
     // For browsers
-    const BUNDLE_DIR = path.resolve(__dirname, "./bundle");
+    const BUNDLE_DIR = _resolve(__dirname, "./bundle");
     const bundle = merge(common, {
         output: {
             library: "JSONKifuFormat",
-            filename: `json-kifu-format-${package.version}.min.js`,
+            filename: `json-kifu-format-${version}.min.js`,
             path: BUNDLE_DIR,
         },
         plugins: [new CleanWebpackPlugin([BUNDLE_DIR])],
@@ -49,7 +49,7 @@ module.exports = (env) => {
     }
 
     // For npm module
-    const DIST_DIR = path.resolve(__dirname, "./dist");
+    const DIST_DIR = _resolve(__dirname, "./dist");
     const dist = merge(common, {
         output: {
             libraryTarget: "commonjs2",
