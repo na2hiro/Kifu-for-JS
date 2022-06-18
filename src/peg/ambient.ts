@@ -1,3 +1,4 @@
 declare module "*.pegjs" {
-    export function parse(kifuString: string): unknown;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    export function parse(kifuString: string): any;
 }

@@ -14,7 +14,8 @@ import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 export default class JKFPlayer {
     public static debug = false;
     public static logs = [];
-    public static log(...lg: unknown[]) {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    public static log(...lg: any[]) {
         if (JKFPlayer.debug) {
             console.log(lg);
         } else {
