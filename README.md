@@ -1,4 +1,4 @@
-# JSON棋譜フォーマット(JKF) ![Build Status](https://github.com/na2hiro/json-kifu-format/actions/workflows/main.yml/badge.svg)
+# JSON棋譜フォーマット(JKF) ![Build Status](https://github.com/na2hiro/json-kifu-format/actions/workflows/main.yml/badge.svg?branch=master)
 JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．またJKFを既存のKIF, KI2, CSA等から変換するライブラリ及びJKFを用いて盤面再生を行うライブラリを提供します．
 
 ## 概要
