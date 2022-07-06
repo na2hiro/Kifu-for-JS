@@ -6,6 +6,7 @@ module.exports = {
         "/node_modules/", ".scss$"
     ],
     testRegex: "(/__tests__/.*|src/.*(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    testEnvironment: "jsdom",
     moduleFileExtensions: [
         "ts",
         "tsx",
@@ -36,5 +37,4 @@ module.exports = {
         "!src/main.ts",
         "!src/peg/**"
     ],
-    testURL: "http://localhost"
 };

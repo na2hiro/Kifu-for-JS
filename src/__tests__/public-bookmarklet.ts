@@ -1,4 +1,3 @@
-describe.skip("bookmarklet", () => {
-    // TODO unit test
-    it.skip("")
+describe("bookmarklet", () => {
+    it.todo("test everything")
 })

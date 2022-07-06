@@ -8,3 +8,4 @@
 /public
 /src/public-bookmarklet.min.js
 /cypress/videos/
+/cypress/screenshots/
