@@ -8,8 +8,9 @@ const package = require('./package.json');
 const DEV_SERVER_PORT = 8080;
 
 module.exports = env => {
-    const IS_PROD = env && env.production;
-    const IS_ANALYZE = env && env.analyze;
+    const IS_PROD = env.production;
+    const IS_ANALYZE = env.analyze;
+    const IS_CI = env.ci;
     const BUNDLE_DIR = path.resolve(__dirname, './bundle');
     const common = {
         module: {
@@ -75,7 +76,7 @@ http://opensource.org/licenses/mit-license.php`
             port: DEV_SERVER_PORT,
             host: '0.0.0.0'
         };
-        common.devtool = "cheap-module-eval-source-map";
+        common.devtool = "eval-cheap-module-source-map";
     }
 
     if (IS_ANALYZE) {
@@ -103,9 +104,19 @@ http://opensource.org/licenses/mit-license.php`
             filename: `[name].min.js`,
             chunkFilename: `[name].min.js`,
             path: BUNDLE_DIR,
-            publicPath: IS_PROD ? "https://na2hiro.github.io/Kifu-for-JS/out/" : `http://localhost:${DEV_SERVER_PORT}/bundle/`
+            publicPath: getPublicPath(),
         },
     });
 
     return [bundle, bookmarklets];
+
+    function getPublicPath() {
+        if (IS_CI) {
+            return `http://localhost:8081/bundle/`;
+        } else if (IS_PROD) {
+            return "https://na2hiro.github.io/Kifu-for-JS/out/";
+        } else {
+            `http://localhost:${DEV_SERVER_PORT}/bundle/`
+        }
+    }
 };
