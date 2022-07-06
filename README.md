@@ -58,7 +58,7 @@ Kifu for JSブックマークレットは，古いKifu for {Flash/Java}が設置
 ```javascript
 javascript:!function(){var s=document.createElement("script");s.src="https://na2hiro.github.io/Kifu-for-JS/src/public-bookmarklet.min.js",document.body.appendChild(s)}();void 0;
 ```
-2. Kifu for FlashやKifu for Javaが使われている古いページ ([例](http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html)) を開く
+2. Kifu for FlashやKifu for Javaが使われている古いページ ([例](https://web.archive.org/web/20191105055709/http://live.shogi.or.jp/oui/kifu/55/oui201409100101.html)) を開く
 
 <img src="http://na2hiro.github.io/Kifu-for-JS/readme-ss/bookmarklet-1.jpg" width="800">
 
