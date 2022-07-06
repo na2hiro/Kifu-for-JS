@@ -1,3 +1,4 @@
+/* eslint-disable no-empty */
 /** @license
  * JSON Kifu Format
  * Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
@@ -13,9 +14,10 @@ import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 export default class JKFPlayer {
     public static debug = false;
     public static logs = [];
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public static log(...lg: any[]) {
         if (JKFPlayer.debug) {
-            console.log(lg); // tslint:disable-line no-console
+            console.log(lg);
         } else {
             JKFPlayer.logs.push(lg);
         }
@@ -27,10 +29,12 @@ export default class JKFPlayer {
             switch (ext) {
                 case "jkf":
                     return JKFPlayer.parseJKF(kifu);
-                case "kif": case "kifu":
-                return JKFPlayer.parseKIF(kifu);
-                case "ki2": case "ki2u":
-                return JKFPlayer.parseKI2(kifu);
+                case "kif":
+                case "kifu":
+                    return JKFPlayer.parseKIF(kifu);
+                case "ki2":
+                case "ki2u":
+                    return JKFPlayer.parseKI2(kifu);
                 case "csa":
                     return JKFPlayer.parseCSA(kifu);
             }
@@ -75,7 +79,9 @@ export default class JKFPlayer {
         return new JKFPlayer(normalizeCSA(parseCSA(JKFPlayer.addLastNewLine(kifu))));
     }
     public static addLastNewLine(kifu: string) {
-        if (kifu.substr(kifu.length - 1) === "\n") { return kifu; }
+        if (kifu.substr(kifu.length - 1) === "\n") {
+            return kifu;
+        }
         return kifu + "\n";
     }
     public static numToZen(n: number) {
@@ -88,7 +94,7 @@ export default class JKFPlayer {
         return {
             FU: "歩",
             KY: "香",
-            KE: "桂", // tslint:disable-line object-literal-sort-keys
+            KE: "桂",
             GI: "銀",
             KI: "金",
             KA: "角",
@@ -105,7 +111,7 @@ export default class JKFPlayer {
     public static relativeToKan(relative: string) {
         return {
             L: "左",
-            C: "直", // tslint:disable-line object-literal-sort-keys
+            C: "直",
             R: "右",
             U: "上",
             M: "寄",
@@ -114,22 +120,24 @@ export default class JKFPlayer {
         }[relative];
     }
     public static specialToKan(special: string) {
-        return {
-            "TORYO": "投了",
-            "CHUDAN": "中断", // tslint:disable-line object-literal-sort-keys
-            "SENNICHITE": "千日手",
-            "TIME_UP": "時間切れ",
-            "ILLEGAL_MOVE": "反則負け",
-            "+ILLEGAL_ACTION": "後手反則負け",
-            "-ILLEGAL_ACTION": "先手反則負け",
-            "JISHOGI": "持将棋",
-            "KACHI": "勝ち宣言",
-            "HIKIWAKE": "引き分け宣言",
-            "MATTA": "待った",
-            "TSUMI": "詰",
-            "FUZUMI": "不詰",
-            "ERROR": "エラー",
-        }[special] || special;
+        return (
+            {
+                TORYO: "投了",
+                CHUDAN: "中断",
+                SENNICHITE: "千日手",
+                TIME_UP: "時間切れ",
+                ILLEGAL_MOVE: "反則負け",
+                "+ILLEGAL_ACTION": "後手反則負け",
+                "-ILLEGAL_ACTION": "先手反則負け",
+                JISHOGI: "持将棋",
+                KACHI: "勝ち宣言",
+                HIKIWAKE: "引き分け宣言",
+                MATTA: "待った",
+                TSUMI: "詰",
+                FUZUMI: "不詰",
+                ERROR: "エラー",
+            }[special] || special
+        );
     }
     public static moveToReadableKifu(mv: IMoveFormat): string {
         if (mv.special) {
@@ -152,17 +160,33 @@ export default class JKFPlayer {
         return ret;
     }
     public static doMove(shogi: Shogi, move: IMoveMoveFormat) {
-        if (!move) { return; }
+        if (!move) {
+            return;
+        }
         if (move.from) {
             shogi.move(move.from.x, move.from.y, move.to.x, move.to.y, move.promote);
         } else {
-            shogi.drop(move.to.x, move.to.y, move.piece, typeof move.color !== "undefined" ? move.color : void 0);
+            shogi.drop(
+                move.to.x,
+                move.to.y,
+                move.piece,
+                typeof move.color !== "undefined" ? move.color : void 0
+            );
         }
     }
     public static undoMove(shogi: Shogi, move: IMoveMoveFormat) {
-        if (!move) { return; }
+        if (!move) {
+            return;
+        }
         if (move.from) {
-            shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+            shogi.unmove(
+                move.from.x,
+                move.from.y,
+                move.to.x,
+                move.to.y,
+                move.promote,
+                move.capture
+            );
         } else {
             shogi.undrop(move.to.x, move.to.y);
         }
@@ -176,12 +200,15 @@ export default class JKFPlayer {
     }
 
     private static sameMoveMinimal(move1: IMoveMoveFormat, move2: IMoveMoveFormat) {
-        return (move1.to.x === move2.to.x && move1.to.y === move2.to.y
-            && (move1.from && move2.from
-                ? move1.from.x === move2.from.x
-                && move1.from.y === move2.from.y
-                && move1.promote === move2.promote
-                : move1.piece === move2.piece ));
+        return (
+            move1.to.x === move2.to.x &&
+            move1.to.y === move2.to.y &&
+            (move1.from && move2.from
+                ? move1.from.x === move2.from.x &&
+                  move1.from.y === move2.from.y &&
+                  move1.promote === move2.promote
+                : move1.piece === move2.piece)
+        );
     }
     private static getBoardState(shogi: Shogi) {
         const ret = [];
@@ -196,19 +223,14 @@ export default class JKFPlayer {
         return ret;
     }
     private static getHandsState(shogi: Shogi) {
-        return [
-            shogi.getHandsSummary(Color.Black),
-            shogi.getHandsSummary(Color.White),
-        ];
+        return [shogi.getHandsSummary(Color.Black), shogi.getHandsSummary(Color.White)];
     }
 
     public shogi: Shogi;
     public kifu: IJSONKifuFormat;
     public tesuu: number;
-    public forkPointers: Array<{te: number, forkIndex: number}> = [];
-    // tslint:disable-next-line:variable-name
+    public forkPointers: Array<{te: number; forkIndex: number}> = [];
     private forks_ = null;
-    // tslint:disable-next-line:variable-name
     private currentStream_: IMoveFormat[] = null;
     get forks(): Array<{te: number; moves: IMoveFormat[]}> {
         if (this.forks_ === null) {
@@ -235,17 +257,23 @@ export default class JKFPlayer {
     // 1手進める
     public forward() {
         const nextMove = this.getMoveFormat(this.tesuu + 1);
-        if (!nextMove) { return false; }
+        if (!nextMove) {
+            return false;
+        }
         this.tesuu++;
         const move = nextMove.move;
-        if (!move) { return true; }
+        if (!move) {
+            return true;
+        }
         JKFPlayer.log("forward", this.tesuu, move);
         this.doMove(move);
         return true;
     }
     // 1手戻す
     public backward() {
-        if (this.tesuu <= 0) { return false; }
+        if (this.tesuu <= 0) {
+            return false;
+        }
         const move = this.getMoveFormat(this.tesuu).move;
         JKFPlayer.log("backward", this.tesuu - 1, move);
         this.undoMove(move);
@@ -255,7 +283,7 @@ export default class JKFPlayer {
         return true;
     }
     // tesuu手目へ行く
-    public goto(tesuu: number|string) {
+    public goto(tesuu: number | string) {
         if (typeof tesuu === "string") {
             const commaPos = tesuu.indexOf(",");
             if (commaPos > 0) {
@@ -266,7 +294,12 @@ export default class JKFPlayer {
                 for (let i = 0; i < destPointers.length; i++) {
                     const dest = destPointers[i];
                     const current = this.forkPointers[i];
-                    if (matchingSoFar && current && current.te === dest.te && current.forkIndex === dest.forkIndex) {
+                    if (
+                        matchingSoFar &&
+                        current &&
+                        current.te === dest.te &&
+                        current.forkIndex === dest.forkIndex
+                    ) {
                         // We don't need to repeat the same forking as currently while it's matching
                         continue;
                     }
@@ -288,16 +321,16 @@ export default class JKFPlayer {
         }
         let limit = 10000; // for safe
         if (this.tesuu < tesuu) {
-            // tslint:disable-next-line no-empty
-            while (this.tesuu !== tesuu && this.forward() && limit-- > 0) { }
+            while (this.tesuu !== tesuu && this.forward() && limit-- > 0) {}
         } else {
-            // tslint:disable-next-line no-empty
-            while (this.tesuu !== tesuu && this.backward() && limit-- > 0) { }
+            while (this.tesuu !== tesuu && this.backward() && limit-- > 0) {}
         }
-        if (limit === 0) { throw new Error("tesuu overflows"); }
+        if (limit === 0) {
+            throw new Error("tesuu overflows");
+        }
     }
     // tesuu手前後に移動する
-    public go(tesuu: number|string) {
+    public go(tesuu: number | string) {
         if (typeof tesuu === "string") {
             tesuu = Number(tesuu);
         }
@@ -307,12 +340,14 @@ export default class JKFPlayer {
         this.goto(this.tesuu + tesuu);
     }
     // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
-    public forkAndForward(num: number|string): boolean {
+    public forkAndForward(num: number | string): boolean {
         if (typeof num === "string") {
             num = parseInt(num, 10);
         }
         const forks = this.getMoveFormat(this.tesuu + 1).forks;
-        if (!forks || forks.length <= num) { return false; }
+        if (!forks || forks.length <= num) {
+            return false;
+        }
         this.forkPointers.push({te: this.tesuu + 1, forkIndex: num});
         this.updateForksAndCurrentStream();
         return this.forward();
@@ -334,11 +369,16 @@ export default class JKFPlayer {
     // もしpromoteの可能性があればfalseを返して何もしない
     // 成功すればその局面に移動してtrueを返す．
     public inputMove(move: IMoveMoveFormat) {
-        if (this.getMoveFormat().special) { throw new Error("終了局面へ棋譜を追加することは出来ません"); }
+        if (this.getMoveFormat().special) {
+            throw new Error("終了局面へ棋譜を追加することは出来ません");
+        }
         if (move.from != null && move.promote == null) {
             const piece = this.shogi.get(move.from.x, move.from.y);
-            if (!Piece.isPromoted(piece.kind) && Piece.canPromote(piece.kind)
-                    && (canPromote(move.from, piece.color) || canPromote(move.to, piece.color))) {
+            if (
+                !Piece.isPromoted(piece.kind) &&
+                Piece.canPromote(piece.kind) &&
+                (canPromote(move.from, piece.color) || canPromote(move.to, piece.color))
+            ) {
                 return false;
             }
         }
@@ -352,7 +392,11 @@ export default class JKFPlayer {
             if (nextMove.forks) {
                 for (let i = 0; i < nextMove.forks.length; i++) {
                     const forkCand = nextMove.forks[i][0];
-                    if (forkCand && forkCand.move && JKFPlayer.sameMoveMinimal(forkCand.move, move)) {
+                    if (
+                        forkCand &&
+                        forkCand.move &&
+                        JKFPlayer.sameMoveMinimal(forkCand.move, move)
+                    ) {
                         // 分岐と一致
                         this.forkAndForward(i);
                         return true;
@@ -367,7 +411,9 @@ export default class JKFPlayer {
         if (addToFork) {
             // 最終手でなければ分岐に追加
             next = this.getMoveFormat(this.tesuu + 1);
-            if (!next.forks) { next.forks = []; }
+            if (!next.forks) {
+                next.forks = [];
+            }
             next.forks.push([newMove]);
         } else {
             // 最終手に追加
@@ -395,7 +441,9 @@ export default class JKFPlayer {
         return this.getMoveFormat(tesuu).move;
     }
     public getReadableKifu(tesuu: number = this.tesuu): string {
-        if (tesuu === 0) { return "開始局面"; }
+        if (tesuu === 0) {
+            return "開始局面";
+        }
         return JKFPlayer.moveToReadableKifu(this.getMoveFormat(tesuu));
     }
     public getReadableForkKifu(tesuu: number = this.tesuu): string[] {
@@ -411,7 +459,7 @@ export default class JKFPlayer {
     public getState() {
         return JKFPlayer.getState(this.shogi);
     }
-    public getReadableKifuState(): Array<{kifu: string; forks: string[]; comments: string[] }> {
+    public getReadableKifuState(): Array<{kifu: string; forks: string[]; comments: string[]}> {
         const ret = [];
         for (let i = 0; i <= this.getMaxTesuu(); i++) {
             ret.push({
@@ -424,7 +472,7 @@ export default class JKFPlayer {
     }
 
     private updateForksAndCurrentStream() {
-        const forks: Array<{te: number, moves: IMoveFormat[]}> = [];
+        const forks: Array<{te: number; moves: IMoveFormat[]}> = [];
         let currentStream: IMoveFormat[] = [];
         let currentFork: IMoveFormat[] = this.kifu.moves;
         let tesuuOffset = 0;
@@ -445,7 +493,7 @@ export default class JKFPlayer {
     }
     private getNextFork(tesuu: number = this.tesuu) {
         const next = this.getMoveFormat(tesuu + 1);
-        return (next && next.forks) ? next.forks : [];
+        return next && next.forks ? next.forks : [];
     }
     private doMove(move: IMoveMoveFormat) {
         JKFPlayer.doMove(this.shogi, move);

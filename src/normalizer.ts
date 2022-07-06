@@ -22,7 +22,9 @@ function normalizeMinimalMoves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IM
     for (let i = 0; i < moves.length; i++) {
         const last = i === 0 ? lastMove : moves[i - 1];
         const move = moves[i].move;
-        if (!move) { continue; }
+        if (!move) {
+            continue;
+        }
         // 手番
         move.color = shogi.turn;
         if (move.from) {
@@ -69,7 +71,14 @@ function normalizeMinimalMoves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IM
         const move = moves[i].move;
         if (move) {
             if (move.from) {
-                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                shogi.unmove(
+                    move.from.x,
+                    move.from.y,
+                    move.to.x,
+                    move.to.y,
+                    move.promote,
+                    move.capture
+                );
             } else {
                 shogi.undrop(move.to.x, move.to.y);
             }
@@ -99,14 +108,18 @@ function normalizeKIFMoves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IMoveF
     for (let i = 0; i < moves.length; i++) {
         const last = i === 0 ? lastMove : moves[i - 1];
         const move = moves[i].move;
-        if (!move) { continue; }
+        if (!move) {
+            continue;
+        }
         // 手番
         move.color = shogi.turn;
         if (move.from) {
             // move
 
             // sameからto復元
-            if (move.same) { move.to = last.move.to; }
+            if (move.same) {
+                move.to = last.move.to;
+            }
 
             // capture復元
             addCaptureInformation(shogi, move);
@@ -139,7 +152,14 @@ function normalizeKIFMoves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IMoveF
         const move = moves[i].move;
         if (move) {
             if (move.from) {
-                shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+                shogi.unmove(
+                    move.from.x,
+                    move.from.y,
+                    move.to.x,
+                    move.to.y,
+                    move.promote,
+                    move.capture
+                );
             } else {
                 shogi.undrop(move.to.x, move.to.y);
             }
@@ -161,12 +181,16 @@ function normalizeKI2Moves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IMoveF
     for (let i = 0; i < moves.length; i++) {
         const last = i === 0 ? lastMove : moves[i - 1];
         const move = moves[i].move;
-        if (!move) { continue; }
+        if (!move) {
+            continue;
+        }
 
         // 手番
         move.color = shogi.turn;
         // 同からto復元
-        if (move.same) { move.to = last.move.to; }
+        if (move.same) {
+            move.to = last.move.to;
+        }
 
         // from復元
         const candMoves = shogi.getMovesTo(move.to.x, move.to.y, move.piece);
@@ -177,7 +201,9 @@ function normalizeKI2Moves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IMoveF
         } else {
             // 相対逆算
             const moveAns = filterMovesByRelatives(move.relative, shogi.turn, candMoves);
-            if (moveAns.length !== 1) { throw new Error("相対情報が不完全で複数の候補があります"); }
+            if (moveAns.length !== 1) {
+                throw new Error("相対情報が不完全で複数の候補があります");
+            }
             move.from = moveAns[0].from;
         }
 
@@ -200,9 +226,18 @@ function normalizeKI2Moves(shogi: Shogi, moves: IMoveFormat[], lastMove?: IMoveF
     restoreColorOfIllegalAction(moves, shogi);
     for (let i = moves.length - 1; i >= 0; i--) {
         const move = moves[i].move;
-        if (!move) { continue; }
+        if (!move) {
+            continue;
+        }
         if (move.from) {
-            shogi.unmove(move.from.x, move.from.y, move.to.x, move.to.y, move.promote, move.capture);
+            shogi.unmove(
+                move.from.x,
+                move.from.y,
+                move.to.x,
+                move.to.y,
+                move.promote,
+                move.capture
+            );
         } else {
             shogi.undrop(move.to.x, move.to.y);
         }
@@ -220,15 +255,21 @@ export function normalizeCSA(obj: IJSONKifuFormat): IJSONKifuFormat {
     for (let i = 0; i < obj.moves.length; i++) {
         restoreTotalTime(obj.moves[i].time, i >= 2 ? obj.moves[i - 2].time : void 0);
         const move = obj.moves[i].move;
-        if (!move) { continue; }
+        if (!move) {
+            continue;
+        }
         // 手番
         move.color = shogi.turn;
         if (move.from) {
             // move
 
             // same復元
-            if (i > 0 && obj.moves[i - 1].move && obj.moves[i - 1].move.to.x === move.to.x
-                    && obj.moves[i - 1].move.to.y === move.to.y) {
+            if (
+                i > 0 &&
+                obj.moves[i - 1].move &&
+                obj.moves[i - 1].move.to.x === move.to.x &&
+                obj.moves[i - 1].move.to.y === move.to.y
+            ) {
                 move.same = true;
             }
 
@@ -267,13 +308,16 @@ export function normalizeCSA(obj: IJSONKifuFormat): IJSONKifuFormat {
 }
 // export for testing
 export function addRelativeInformation(shogi: Shogi, move: IMoveMoveFormat) {
-    const moveVectors = shogi.getMovesTo(move.to.x, move.to.y, move.piece)
-            .map((mv) => flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)));
+    const moveVectors = shogi
+        .getMovesTo(move.to.x, move.to.y, move.piece)
+        .map((mv) => flipVector(shogi.turn, spaceshipVector(mv.to, mv.from)));
     if (moveVectors.length >= 2) {
         const realVector = flipVector(shogi.turn, spaceshipVector(move.to, move.from));
         move.relative = (() => {
             // 上下方向唯一
-            if (moveVectors.filter((mv) => mv.y === realVector.y).length === 1) { return YToUMD(realVector.y); }
+            if (moveVectors.filter((mv) => mv.y === realVector.y).length === 1) {
+                return YToUMD(realVector.y);
+            }
             // 左右方向唯一
             if (moveVectors.filter((mv) => mv.x === realVector.x).length === 1) {
                 if ((move.piece === "UM" || move.piece === "RY") && realVector.x === 0) {
@@ -294,25 +338,27 @@ export function addRelativeInformation(shogi: Shogi, move: IMoveMoveFormat) {
 }
 function addCaptureInformation(shogi: Shogi, move: IMoveMoveFormat) {
     const to = shogi.get(move.to.x, move.to.y);
-    if (to) { move.capture = to.kind; }
+    if (to) {
+        move.capture = to.kind;
+    }
 }
 
-function flipVector(color: Color, vector: {x: number; y: number; }) {
+function flipVector(color: Color, vector: {x: number; y: number}) {
     return color === Color.Black ? vector : {x: -vector.x, y: -vector.y};
 }
 function spaceship(a: number, b: number) {
-    return a === b ? 0 : (a > b ? 1 : -1);
+    return a === b ? 0 : a > b ? 1 : -1;
 }
-function spaceshipVector(a: {x: number; y: number; }, b: {x: number; y: number; }) {
+function spaceshipVector(a: {x: number; y: number}, b: {x: number; y: number}) {
     return {x: spaceship(a.x, b.x), y: spaceship(a.y, b.y)};
 }
 // yの段から移動した場合の相対情報
 function YToUMD(y: number) {
-    return y === 0 ? "M" : (y > 0 ? "D" : "U");
+    return y === 0 ? "M" : y > 0 ? "D" : "U";
 }
 // xの行から移動した場合の相対情報
 function XToLCR(x: number) {
-    return x === 0 ? "C" : (x > 0 ? "R" : "L");
+    return x === 0 ? "C" : x > 0 ? "R" : "L";
 }
 export function filterMovesByRelatives(relative: string, color: Color, moves: IMove[]): IMove[] {
     let candidates = moves
@@ -320,29 +366,30 @@ export function filterMovesByRelatives(relative: string, color: Color, moves: IM
             move,
             vec: flipVector(color, {x: move.to.x - move.from.x, y: move.to.y - move.from.y}),
         }))
-        .filter(({move, vec}) => relative.split("").every((rel) => moveSatisfiesRelative(rel, color, vec)));
+        .filter(({vec}) =>
+            relative.split("").every((rel) => moveSatisfiesRelative(rel, color, vec))
+        );
     if (relative.indexOf("C") >= 0) {
         // 直は上がる時だけ
-        candidates = candidates
-            .filter(({move, vec}) => vec.y < 0);
+        candidates = candidates.filter(({vec}) => vec.y < 0);
     }
     if (relative.indexOf("L") >= 0) {
         let min = Infinity;
-        candidates.forEach(({move, vec}) => min = Math.min(min, vec.x));
-        return candidates
-            .filter(({move, vec}) => vec.x === min)
-            .map(({move, vec}) => move);
+        candidates.forEach(({vec}) => (min = Math.min(min, vec.x)));
+        return candidates.filter(({vec}) => vec.x === min).map(({move}) => move);
     }
     if (relative.indexOf("R") >= 0) {
         let max = -Infinity;
-        candidates.forEach(({move, vec}) => max = Math.max(max, vec.x));
-        return candidates
-            .filter(({move, vec}) => vec.x === max)
-            .map(({move, vec}) => move);
+        candidates.forEach(({vec}) => (max = Math.max(max, vec.x)));
+        return candidates.filter(({vec}) => vec.x === max).map(({move}) => move);
     }
-    return candidates.map(({move, vec}) => move);
+    return candidates.map(({move}) => move);
 }
-function moveSatisfiesRelative(relative: string, color: Color, vec: {x: number, y: number}): boolean {
+function moveSatisfiesRelative(
+    relative: string,
+    color: Color,
+    vec: {x: number; y: number}
+): boolean {
     switch (relative) {
         case "U":
             return vec.y < 0;
@@ -360,30 +407,124 @@ function moveSatisfiesRelative(relative: string, color: Color, vec: {x: number, 
 }
 // CSA等で盤面みたままで表現されているものをpresetに戻せれば戻す
 function restorePreset(obj: IJSONKifuFormat) {
-    if (!obj.initial || obj.initial.preset !== "OTHER") { return; }
+    if (!obj.initial || obj.initial.preset !== "OTHER") {
+        return;
+    }
     const kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
     for (let i = 0; i < 2; i++) {
         for (const kind of kinds) {
-            if (obj.initial.data.hands[i][kind] !== 0) { return; }
+            if (obj.initial.data.hands[i][kind] !== 0) {
+                return;
+            }
         }
     }
-    /* tslint:disable:max-line-length */
     const hirate = [
-            [{color: Color.White, kind: "KY"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "KY"}],
-            [{color: Color.White, kind: "KE"}, {color: Color.White, kind: "KA"}, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {color: Color.Black, kind: "HI"}, {color: Color.Black, kind: "KE"}],
-            [{color: Color.White, kind: "GI"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "GI"}],
-            [{color: Color.White, kind: "KI"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "KI"}],
-            [{color: Color.White, kind: "OU"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "OU"}],
-            [{color: Color.White, kind: "KI"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "KI"}],
-            [{color: Color.White, kind: "GI"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "GI"}],
-            [{color: Color.White, kind: "KE"}, {color: Color.White, kind: "HI"}, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {color: Color.Black, kind: "KA"}, {color: Color.Black, kind: "KE"}],
-            [{color: Color.White, kind: "KY"}, {                     }, {color: Color.White, kind: "FU"}, {}, {}, {}, {color: Color.Black, kind: "FU"}, {                    }, {color: Color.Black, kind: "KY"}],
-        ];
-    /* tslint:enable:max-line-length */
+        [
+            {color: Color.White, kind: "KY"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "KY"},
+        ],
+        [
+            {color: Color.White, kind: "KE"},
+            {color: Color.White, kind: "KA"},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {color: Color.Black, kind: "HI"},
+            {color: Color.Black, kind: "KE"},
+        ],
+        [
+            {color: Color.White, kind: "GI"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "GI"},
+        ],
+        [
+            {color: Color.White, kind: "KI"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "KI"},
+        ],
+        [
+            {color: Color.White, kind: "OU"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "OU"},
+        ],
+        [
+            {color: Color.White, kind: "KI"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "KI"},
+        ],
+        [
+            {color: Color.White, kind: "GI"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "GI"},
+        ],
+        [
+            {color: Color.White, kind: "KE"},
+            {color: Color.White, kind: "HI"},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {color: Color.Black, kind: "KA"},
+            {color: Color.Black, kind: "KE"},
+        ],
+        [
+            {color: Color.White, kind: "KY"},
+            {},
+            {color: Color.White, kind: "FU"},
+            {},
+            {},
+            {},
+            {color: Color.Black, kind: "FU"},
+            {},
+            {color: Color.Black, kind: "KY"},
+        ],
+    ];
     const diff = [];
     for (let i = 0; i < 9; i++) {
         for (let j = 0; j < 9; j++) {
-            if (!samePiece(obj.initial.data.board[i][j], hirate[i][j])) { diff.push("" + (i + 1) + (j + 1)); }
+            if (!samePiece(obj.initial.data.board[i][j], hirate[i][j])) {
+                diff.push("" + (i + 1) + (j + 1));
+            }
         }
     }
 
@@ -417,9 +558,13 @@ function restorePreset(obj: IJSONKifuFormat) {
     }
 }
 function samePiece(p1, p2) {
-    return (typeof p1.color === "undefined" && typeof p2.color === "undefined") ||
-        (typeof p1.color !== "undefined" && typeof p2.color !== "undefined" && p1.color === p2.color
-            && p1.kind === p2.kind);
+    return (
+        (typeof p1.color === "undefined" && typeof p2.color === "undefined") ||
+        (typeof p1.color !== "undefined" &&
+            typeof p2.color !== "undefined" &&
+            p1.color === p2.color &&
+            p1.kind === p2.kind)
+    );
 }
 function restoreColorOfIllegalAction(moves: IMoveFormat[], shogi: Shogi) {
     if (moves.length >= 1 && moves[moves.length - 1].special === "ILLEGAL_ACTION") {
@@ -427,9 +572,15 @@ function restoreColorOfIllegalAction(moves: IMoveFormat[], shogi: Shogi) {
     }
 }
 function restoreTotalTime(
-        time: {now: ITimeFormat, total: ITimeFormat},
-        lastTime: {now: ITimeFormat, total: ITimeFormat} = {now: {m: 0, s: 0}, total: {h: 0, m: 0, s: 0}}) {
-    if (!time) { return; }
+    time: {now: ITimeFormat; total: ITimeFormat},
+    lastTime: {now: ITimeFormat; total: ITimeFormat} = {
+        now: {m: 0, s: 0},
+        total: {h: 0, m: 0, s: 0},
+    }
+) {
+    if (!time) {
+        return;
+    }
     time.total = {
         h: (time.now.h || 0) + lastTime.total.h,
         m: time.now.m + lastTime.total.m,

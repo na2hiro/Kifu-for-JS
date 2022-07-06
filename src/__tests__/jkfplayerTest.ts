@@ -1,7 +1,8 @@
-import "jest";
+/* eslint-disable jest/expect-expect */
+/* eslint-disable @typescript-eslint/ban-ts-comment */
+/* eslint-disable jest/valid-expect */
 import {Shogi} from "shogi.js";
 import JKFPlayer from "../jkfplayer";
-/* tslint:disable:object-literal-sort-keys max-line-length no-unused-expression */
 
 // TODO Fix type errors
 
@@ -711,6 +712,9 @@ P-\n\
         expect(JKFPlayer.moveToReadableKifu({
             special: "TORYO",
         })).toBe("投了");
+    });
+    it("doMove", () => {
+        expect(JKFPlayer.doMove(new Shogi({ preset: "HIRATE" }), null)).toBe(undefined)
     });
     describe("wrappers", () => {
         let player;

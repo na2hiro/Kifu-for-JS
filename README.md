@@ -228,7 +228,7 @@ $ nvm use && nvm i && npm i
 * [TypeScript](https://www.typescriptlang.org/)
 * [Webpack](https://webpack.js.org/)
 * [Jest](https://jestjs.io/)
-* [TSLint](https://palantir.github.io/tslint/)
+* [ESLint](https://eslint.org/)
 
 ### コマンド
 

@@ -1,4 +1,3 @@
-import "jest";
 import {Color, Piece, Shogi} from "shogi.js";
 import {IMoveMoveFormat} from "../Formats";
 import {JKFPlayer} from "../main";
@@ -39,6 +38,7 @@ describe("module Normalizer (relative information test from https://www.shogi.or
         run("UM", [99, 59], 77, ["左", "右"]);
         run("UM", [47, 18], 29, ["左", "右"]);
     });
+    // eslint-disable-next-line jest/no-identical-title
     describe("馬", () => {
         run("UM", [93, 74], 92, ["左", "右"]);
     });
@@ -50,9 +50,15 @@ function run(piece, coords, toCoord, expected) {
             preset: "OTHER",
             data: {
                 board: [
-                    emptyLine, emptyLine, emptyLine,
-                    emptyLine, emptyLine, emptyLine,
-                    emptyLine, emptyLine, emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
+                    emptyLine,
                 ],
                 color: 0,
                 hands: [
@@ -76,20 +82,22 @@ function run(piece, coords, toCoord, expected) {
         const movesTo = shogi.getMovesTo(to.x, to.y, piece, Color.Black);
         coords.forEach((coord, i) => {
             it(`${coord}`, () => {
-            const from = coordToXY(coord);
-            const move: IMoveMoveFormat = {
-                from,
-                to,
-                color: Color.Black,
-                piece,
-            };
-            addRelativeInformation(shogi, move);
-            expect((move.relative || "").split("").map(JKFPlayer.relativeToKan).join("")).toBe(expected[i]);
+                const from = coordToXY(coord);
+                const move: IMoveMoveFormat = {
+                    from,
+                    to,
+                    color: Color.Black,
+                    piece,
+                };
+                addRelativeInformation(shogi, move);
+                expect((move.relative || "").split("").map(JKFPlayer.relativeToKan).join("")).toBe(
+                    expected[i]
+                );
 
-            const found = filterMovesByRelatives(move.relative, Color.Black, movesTo);
-            expect(found).toHaveLength(1);
-            expect(found[0].from).toEqual(from);
-            })
+                const found = filterMovesByRelatives(move.relative, Color.Black, movesTo);
+                expect(found).toHaveLength(1);
+                expect(found[0].from).toEqual(from);
+            });
         });
     });
 }

@@ -11,7 +11,7 @@ import {Kind} from "shogi.js/dist/src/Kind";
  * Kifu format
  */
 export interface IJSONKifuFormat {
-    header: { [index: string]: string; };
+    header: {[index: string]: string};
     initial?: {
         preset: string;
         data?: IStateFormat;
@@ -25,7 +25,9 @@ export interface IJSONKifuFormat {
 export interface IStateFormat {
     color: Color;
     board: IPiece[][];
-    hands: Array<{ [index in Extract<Kind, "FU" | "KY" | "KE" | "GI" | "KI" | "KA" | "HI">]: number }>;
+    hands: Array<{
+        [index in Extract<Kind, "FU" | "KY" | "KE" | "GI" | "KI" | "KA" | "HI">]: number;
+    }>;
 }
 
 /**
