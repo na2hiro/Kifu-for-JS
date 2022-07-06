@@ -1,7 +1,7 @@
 const path = require("path");
 const webpack = require("webpack");
-const merge = require("webpack-merge");
-const CleanWebpackPlugin = require("clean-webpack-plugin");
+const {merge} = require("webpack-merge");
+const {CleanWebpackPlugin} = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
 const package = require("./package.json");
 
@@ -39,7 +39,7 @@ module.exports = (env) => {
             filename: `json-kifu-format-${package.version}.min.js`,
             path: BUNDLE_DIR,
         },
-        plugins: [new CleanWebpackPlugin([BUNDLE_DIR])],
+        plugins: [new CleanWebpackPlugin()],
         optimization: {
             minimize: true,
         },
@@ -56,7 +56,7 @@ module.exports = (env) => {
             filename: "json-kifu-format.js",
             path: DIST_DIR,
         },
-        plugins: [new CleanWebpackPlugin([DIST_DIR])],
+        plugins: [new CleanWebpackPlugin()],
     });
     return [bundle, dist];
 };
