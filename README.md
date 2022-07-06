@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 3.0.1) [![Build Status](https://travis-ci.com/na2hiro/Kifu-for-JS.svg?branch=master)](https://app.travis-ci.com/github/na2hiro/Kifu-for-JS)
+# Kifu for JS (ver. 3.0.1) ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg)
 モバイルで使いやすい(ことを目指す)将棋の棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS 将棋再生盤
