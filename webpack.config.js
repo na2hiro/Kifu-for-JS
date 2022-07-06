@@ -8,6 +8,7 @@ const package = require('./package.json');
 const DEV_SERVER_PORT = 8080;
 
 module.exports = env => {
+    const IS_GHPAGES = env.ghpages;
     const IS_PROD = env.production;
     const IS_ANALYZE = env.analyze;
     const IS_CI = env.ci;
@@ -106,6 +107,9 @@ http://opensource.org/licenses/mit-license.php`
             path: BUNDLE_DIR,
             publicPath: getPublicPath(),
         },
+        optimization: {
+            splitChunks: IS_GHPAGES ? false : undefined,
+        }
     });
 
     return [bundle, bookmarklets];
