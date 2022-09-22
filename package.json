@@ -8,7 +8,7 @@
     "test": "test"
   },
   "scripts": {
-    "start": "npx webpack && webpack-dev-server --open example.html --mode development",
+    "start": "webpack-dev-server --open example.html --mode development",
     "ci": "run-s lint ci:build ci:test",
     "ci:start-server": "http-server . -p 8081",
     "ci:build": "npm run build -- --env ci",
