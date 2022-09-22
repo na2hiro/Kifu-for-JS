@@ -73,9 +73,20 @@ http://opensource.org/licenses/mit-license.php`
         }
     } else {
         common.devServer = {
-            progress: true,
             port: DEV_SERVER_PORT,
-            host: '0.0.0.0'
+            host: '0.0.0.0',
+            client: {
+                progress: true,
+            },
+            static: [
+                {
+                    directory: BUNDLE_DIR,
+                },
+                {
+                    directory: path.join(__dirname, "/examples"),
+                },
+            ],
+
         };
         common.devtool = "eval-cheap-module-source-map";
     }
@@ -112,7 +123,7 @@ http://opensource.org/licenses/mit-license.php`
         }
     });
 
-    return [bundle, bookmarklets];
+    return bundle;
 
     function getPublicPath() {
         if (IS_CI) {
