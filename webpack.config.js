@@ -72,22 +72,6 @@ http://opensource.org/licenses/mit-license.php`
             minimize: true
         }
     } else {
-        common.devServer = {
-            port: DEV_SERVER_PORT,
-            host: '0.0.0.0',
-            client: {
-                progress: true,
-            },
-            static: [
-                {
-                    directory: BUNDLE_DIR,
-                },
-                {
-                    directory: path.join(__dirname, "/examples"),
-                },
-            ],
-
-        };
         common.devtool = "eval-cheap-module-source-map";
     }
 
@@ -104,6 +88,24 @@ http://opensource.org/licenses/mit-license.php`
             path: BUNDLE_DIR,
             publicPath: "/bundle/"
         },
+        ...(IS_PROD ? {} : {
+                devServer: {
+                    port: DEV_SERVER_PORT,
+                    host: '0.0.0.0',
+                    client: {
+                        progress: true,
+                    },
+                    static: [
+                        {
+                            directory: BUNDLE_DIR,
+                        },
+                        {
+                            directory: path.join(__dirname, "/examples"),
+                        },
+                    ],
+                }
+            }
+        )
     });
 
     // For bookmarklets
@@ -123,7 +125,7 @@ http://opensource.org/licenses/mit-license.php`
         }
     });
 
-    return bundle;
+    return [bundle, bookmarklets];
 
     function getPublicPath() {
         if (IS_CI) {
