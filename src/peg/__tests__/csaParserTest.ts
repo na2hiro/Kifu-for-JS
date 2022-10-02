@@ -118,7 +118,7 @@ describe("csa-parser V2", () => {
             },
         };
     });
-    it("simple", () => {
+    it("parses simple case", () => {
         expect(parse("\
 V2.2\n\
 PI\n\
@@ -142,7 +142,7 @@ PI\n\
             }
         );
     });
-    it("comment", () => {
+    it("supports comments", () => {
         expect(
             parse(
                 "\
@@ -170,7 +170,7 @@ PI\n\
             ],
         });
     });
-    it("special", () => {
+    it("supports special moves", () => {
         expect(parse("\
 V2.2\n\
 PI\n\
@@ -192,7 +192,7 @@ PI\n\
             ],
         });
     });
-    it("comma", () => {
+    it("supports multiple statements with commas", () => {
         expect(
             parse(
                 "\
@@ -217,7 +217,7 @@ PI\n\
             ],
         });
     });
-    it("time", () => {
+    it("supports time", () => {
         expect(
             parse(
                 "\
@@ -248,8 +248,8 @@ T0\n"
             ],
         });
     });
-    describe("開始局面", () => {
-        it("平手初期局面", () => {
+    describe("initial field", () => {
+        it("supports 平手初期局面 (PI)", () => {
             expect(
                 parse(
                     "\
@@ -385,7 +385,7 @@ PI82HI22KA91KY81KE21KE11KY\n\
                 ],
             });
         });
-        it("一括表現", () => {
+        it("supports 一括表現", () => {
             expect(
                 parse(
                     "\
@@ -529,7 +529,7 @@ P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n\
                 ],
             });
         });
-        it("駒別単独表現", () => {
+        it("supports 駒別単独表現", () => {
             expect(
                 parse(
                     "\
@@ -583,7 +583,7 @@ P-00GI00GI00GI00GI00KE00KE00KE00KE\n\
                 ],
             });
         });
-        describe("AL", () => {
+        describe("00AL stands for the rest", () => {
             it("works with 駒別単独", () => {
                 expect(
                     parse("\
@@ -813,7 +813,7 @@ P-00AL
             `);
         });
     });
-    it("header", () => {
+    it("supports header", () => {
         expect(
             parse(
                 "\
@@ -965,7 +965,7 @@ describe("csa-parser V1", () => {
             },
         };
     });
-    it("simple", () => {
+    it("parses simple case", () => {
         expect(parse("\
 PI\n\
 +\n\
@@ -986,7 +986,7 @@ PI\n\
             ],
         });
     });
-    it("comment", () => {
+    it("supports comments", () => {
         expect(
             parse(
                 "\
@@ -1013,7 +1013,7 @@ PI\n\
             ],
         });
     });
-    it("special", () => {
+    it("supports special moves", () => {
         expect(parse("\
 PI\n\
 +\n\
@@ -1034,7 +1034,7 @@ PI\n\
             ],
         });
     });
-    it("comma", () => {
+    it("supports multiple statements with commas", () => {
         expect(
             parse("\
 PI\n\
@@ -1056,7 +1056,7 @@ PI\n\
             ],
         });
     });
-    it("time", () => {
+    it("supports time", () => {
         expect(
             parse(
                 "\
@@ -1086,8 +1086,8 @@ T0\n"
             ],
         });
     });
-    describe("開始局面", () => {
-        it("平手初期局面", () => {
+    describe("initial field", () => {
+        it("supports 平手初期局面 (PI)", () => {
             expect(
                 parse(
                     "\
@@ -1222,7 +1222,7 @@ PI82HI22KA91KY81KE21KE11KY\n\
                 ],
             });
         });
-        it("一括表現", () => {
+        it("supports 一括表現", () => {
             expect(
                 parse(
                     "\
@@ -1365,7 +1365,7 @@ P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n\
                 ],
             });
         });
-        it("駒別単独表現", () => {
+        it("supports 駒別単独表現", () => {
             expect(
                 parse(
                     "\
@@ -1418,7 +1418,7 @@ P-00GI00GI00GI00GI00KE00KE00KE00KE\n\
                 ],
             });
         });
-        it("AL", () => {
+        it("00AL stands for the rest", () => {
             expect(
                 parse("\
 V2.2\n\
@@ -1466,7 +1466,7 @@ P-00AL\n\
             });
         });
     });
-    it("header", () => {
+    it("supports header", () => {
         expect(
             parse("\
 N+sente\n\
