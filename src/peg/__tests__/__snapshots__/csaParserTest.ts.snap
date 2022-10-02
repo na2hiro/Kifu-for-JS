@@ -1,0 +1,2314 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`csa-parser V1 initial field 00AL stands for the rest 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KE",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+    ],
+    "color": 0,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 1,
+        "KY": 0,
+      },
+      Object {
+        "FU": 17,
+        "GI": 4,
+        "HI": 2,
+        "KA": 2,
+        "KE": 3,
+        "KI": 3,
+        "KY": 4,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V1 initial field supports 一括表現 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "HI",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "OU",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "KA",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+    ],
+    "color": 1,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V1 initial field supports 平手初期局面 (PI) 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "HI",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "OU",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "KA",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+    ],
+    "color": 1,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V1 initial field supports 駒別単独表現 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+    ],
+    "color": 0,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 2,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 4,
+      },
+      Object {
+        "FU": 0,
+        "GI": 4,
+        "HI": 0,
+        "KA": 0,
+        "KE": 4,
+        "KI": 0,
+        "KY": 0,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V1 matches snapshot for simple case 1`] = `{"header":{},"initial":{"preset":"OTHER","data":{"board":[[{"color":1,"kind":"KY"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KY"}],[{"color":1,"kind":"KE"},{"color":1,"kind":"KA"},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{"color":0,"kind":"HI"},{"color":0,"kind":"KE"}],[{"color":1,"kind":"GI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"GI"}],[{"color":1,"kind":"KI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KI"}],[{"color":1,"kind":"OU"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"OU"}],[{"color":1,"kind":"KI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KI"}],[{"color":1,"kind":"GI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"GI"}],[{"color":1,"kind":"KE"},{"color":1,"kind":"HI"},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{"color":0,"kind":"KA"},{"color":0,"kind":"KE"}],[{"color":1,"kind":"KY"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KY"}]],"hands":[{"FU":0,"KY":0,"KE":0,"GI":0,"KI":0,"KA":0,"HI":0},{"FU":0,"KY":0,"KE":0,"GI":0,"KI":0,"KA":0,"HI":0}],"color":0}},"moves":[{},{"move":{"to":{"x":7,"y":6},"piece":"FU","from":{"x":7,"y":7}}},{"move":{"to":{"x":3,"y":4},"piece":"FU","from":{"x":3,"y":3}}},{"move":{"to":{"x":2,"y":2},"piece":"UM","from":{"x":8,"y":8}}},{"move":{"to":{"x":2,"y":2},"piece":"GI","from":{"x":3,"y":1}}},{"move":{"to":{"x":4,"y":5},"piece":"KA"}}]}`;
+
+exports[`csa-parser V1 supports comments 1`] = `
+Array [
+  Object {
+    "comments": Array [
+      "開始時コメント",
+    ],
+  },
+  Object {
+    "comments": Array [
+      "初手コメント",
+      "初手コメント2",
+    ],
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+  },
+]
+`;
+
+exports[`csa-parser V1 supports header 1`] = `
+Object {
+  "先手": "sente",
+  "後手": "gote",
+}
+`;
+
+exports[`csa-parser V1 supports multiple statements with commas 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 12,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 2,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 1,
+        "s": 40,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 1,
+      },
+      "piece": "GI",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 1,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "piece": "KA",
+      "to": Object {
+        "x": 4,
+        "y": 5,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 0,
+      },
+    },
+  },
+]
+`;
+
+exports[`csa-parser V1 supports special moves 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 9,
+      },
+      "piece": "GI",
+      "to": Object {
+        "x": 7,
+        "y": 8,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 2,
+        "y": 2,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 8,
+        "y": 8,
+      },
+    },
+  },
+  Object {
+    "special": "TORYO",
+  },
+]
+`;
+
+exports[`csa-parser V1 supports time 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 12,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 2,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 1,
+        "s": 40,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 1,
+      },
+      "piece": "GI",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 1,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "piece": "KA",
+      "to": Object {
+        "x": 4,
+        "y": 5,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 0,
+      },
+    },
+  },
+]
+`;
+
+exports[`csa-parser V2 initial field 00AL stands for the rest works with 駒別単独 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KE",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "TO",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+    ],
+    "color": 0,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 1,
+        "KY": 0,
+      },
+      Object {
+        "FU": 17,
+        "GI": 4,
+        "HI": 2,
+        "KA": 2,
+        "KE": 3,
+        "KI": 3,
+        "KY": 4,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V2 initial field supports 一括表現 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "HI",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "OU",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "KA",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+    ],
+    "color": 1,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V2 initial field supports 平手初期局面 (PI) 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "HI",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "OU",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "KI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KI",
+        },
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "GI",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "GI",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {
+          "color": 0,
+          "kind": "KA",
+        },
+        Object {
+          "color": 0,
+          "kind": "KE",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+      ],
+    ],
+    "color": 1,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V2 initial field supports 駒別単独表現 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+    ],
+    "color": 0,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 2,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 4,
+      },
+      Object {
+        "FU": 0,
+        "GI": 4,
+        "HI": 0,
+        "KA": 0,
+        "KE": 4,
+        "KI": 0,
+        "KY": 0,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V2 initial field works with 一括表現 1`] = `
+Object {
+  "data": Object {
+    "board": Array [
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "TO",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "FU",
+        },
+        Object {
+          "color": 1,
+          "kind": "OU",
+        },
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KY",
+        },
+        Object {
+          "color": 0,
+          "kind": "RY",
+        },
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+        Object {},
+      ],
+      Array [
+        Object {},
+        Object {},
+        Object {},
+        Object {
+          "color": 1,
+          "kind": "RY",
+        },
+        Object {},
+        Object {},
+        Object {
+          "color": 0,
+          "kind": "KA",
+        },
+        Object {
+          "color": 0,
+          "kind": "KA",
+        },
+        Object {},
+      ],
+    ],
+    "color": 0,
+    "hands": Array [
+      Object {
+        "FU": 0,
+        "GI": 0,
+        "HI": 0,
+        "KA": 0,
+        "KE": 0,
+        "KI": 0,
+        "KY": 0,
+      },
+      Object {
+        "FU": 14,
+        "GI": 4,
+        "HI": 0,
+        "KA": 0,
+        "KE": 4,
+        "KI": 4,
+        "KY": 3,
+      },
+    ],
+  },
+  "preset": "OTHER",
+}
+`;
+
+exports[`csa-parser V2 matches snapshot for simple case 1`] = `{"header":{},"initial":{"preset":"OTHER","data":{"board":[[{"color":1,"kind":"KY"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KY"}],[{"color":1,"kind":"KE"},{"color":1,"kind":"KA"},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{"color":0,"kind":"HI"},{"color":0,"kind":"KE"}],[{"color":1,"kind":"GI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"GI"}],[{"color":1,"kind":"KI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KI"}],[{"color":1,"kind":"OU"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"OU"}],[{"color":1,"kind":"KI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KI"}],[{"color":1,"kind":"GI"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"GI"}],[{"color":1,"kind":"KE"},{"color":1,"kind":"HI"},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{"color":0,"kind":"KA"},{"color":0,"kind":"KE"}],[{"color":1,"kind":"KY"},{},{"color":1,"kind":"FU"},{},{},{},{"color":0,"kind":"FU"},{},{"color":0,"kind":"KY"}]],"hands":[{"FU":0,"KY":0,"KE":0,"GI":0,"KI":0,"KA":0,"HI":0},{"FU":0,"KY":0,"KE":0,"GI":0,"KI":0,"KA":0,"HI":0}],"color":0}},"moves":[{},{"move":{"to":{"x":7,"y":6},"piece":"FU","from":{"x":7,"y":7}}},{"move":{"to":{"x":3,"y":4},"piece":"FU","from":{"x":3,"y":3}}},{"move":{"to":{"x":2,"y":2},"piece":"UM","from":{"x":8,"y":8}}},{"move":{"to":{"x":2,"y":2},"piece":"GI","from":{"x":3,"y":1}}},{"move":{"to":{"x":4,"y":5},"piece":"KA"}}]}`;
+
+exports[`csa-parser V2 supports comments 1`] = `
+Array [
+  Object {
+    "comments": Array [
+      "開始時コメント",
+    ],
+  },
+  Object {
+    "comments": Array [
+      "初手コメント",
+      "初手コメント2",
+    ],
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+  },
+]
+`;
+
+exports[`csa-parser V2 supports multiple statements with commas 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 12,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 2,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 1,
+        "s": 40,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 1,
+      },
+      "piece": "GI",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 1,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "piece": "KA",
+      "to": Object {
+        "x": 4,
+        "y": 5,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 0,
+      },
+    },
+  },
+]
+`;
+
+exports[`csa-parser V2 supports special moves 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 9,
+      },
+      "piece": "GI",
+      "to": Object {
+        "x": 7,
+        "y": 8,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 2,
+        "y": 2,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 8,
+        "y": 8,
+      },
+    },
+  },
+  Object {
+    "special": "TORYO",
+  },
+]
+`;
+
+exports[`csa-parser V2 supports time 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 12,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 2,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "UM",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 1,
+        "s": 40,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "from": Object {
+        "x": 3,
+        "y": 1,
+      },
+      "piece": "GI",
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 1,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "piece": "KA",
+      "to": Object {
+        "x": 4,
+        "y": 5,
+      },
+    },
+    "time": Object {
+      "now": Object {
+        "m": 0,
+        "s": 0,
+      },
+    },
+  },
+]
+`;
