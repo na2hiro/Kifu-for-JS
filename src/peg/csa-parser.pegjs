@@ -1,4 +1,8 @@
 {
+    /**
+     * CSA V1 http://www2.computer-shogi.org/wcsc12/record.html
+     * CSA V2.2 http://www2.computer-shogi.org/protocol/record_v22.html
+     */
 	function secToTime(sec){
 		var remain, h, m, s = sec%60;
 		m = (sec-s)/60;
