@@ -21,5 +21,5 @@ module.exports = {
         "!src/main.ts",
         "!src/peg/**",
     ],
-    snapshotSerializers: ["./test/board-serializer.js"]
+    snapshotSerializers: ["./test/board-serializer.js"],
 };

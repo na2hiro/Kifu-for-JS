@@ -32,8 +32,8 @@ PI
 
 describe.each([
     {v: "V1", prefix: ""},
-    {v: "V2", prefix: "V2.2\n"}
-])("$v parser for V1 formats", ({v, prefix}) => {
+    {v: "V2", prefix: "V2.2\n"},
+])("$v parser for V1 formats", ({prefix}) => {
     it("matches snapshot for simple case", () => {
         expect(
             parse(`${prefix}PI
@@ -201,4 +201,4 @@ P-00AL
             });
         });
     });
-})
+});
