@@ -583,52 +583,234 @@ P-00GI00GI00GI00GI00KE00KE00KE00KE\n\
                 ],
             });
         });
-        it("AL", () => {
-            expect(
-                parse("\
+        describe("AL", () => {
+            it("works with 駒別単独", () => {
+                expect(
+                    parse("\
 V2.2\n\
-P+23FU\n\
+P+23TO\n\
 P-11OU21KE\n\
 P+00KI\n\
 P-00AL\n\
 +\n\
 +0022KI\n\
 %TSUMI\n")
-            ).toEqual({
-                header: {},
-                initial: {
-                    preset: "OTHER",
-                    data: {
-                        board: [
-                            [{color: 1, kind: "OU"}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [
-                                {color: 1, kind: "KE"},
-                                {},
-                                {color: 0, kind: "FU"},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
-                                {},
+                ).toEqual({
+                    header: {},
+                    initial: {
+                        preset: "OTHER",
+                        data: {
+                            board: [
+                                [{color: 1, kind: "OU"}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [
+                                    {color: 1, kind: "KE"},
+                                    {},
+                                    {color: 0, kind: "TO"},
+                                    {},
+                                    {},
+                                    {},
+                                    {},
+                                    {},
+                                    {},
+                                ],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
+                                [{}, {}, {}, {}, {}, {}, {}, {}, {}],
                             ],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                            [{}, {}, {}, {}, {}, {}, {}, {}, {}],
-                        ],
-                        color: 0,
-                        hands: [
-                            {FU: 0, KY: 0, KE: 0, GI: 0, KI: 1, KA: 0, HI: 0},
-                            {FU: 17, KY: 4, KE: 3, GI: 4, KI: 3, KA: 2, HI: 2},
-                        ],
+                            color: 0,
+                            hands: [
+                                {FU: 0, KY: 0, KE: 0, GI: 0, KI: 1, KA: 0, HI: 0},
+                                {FU: 17, KY: 4, KE: 3, GI: 4, KI: 3, KA: 2, HI: 2},
+                            ],
+                        },
                     },
-                },
-                moves: [{}, {move: {to: p(2, 2), piece: "KI"}}, {special: "TSUMI"}],
+                    moves: [{}, {move: {to: p(2, 2), piece: "KI"}}, {special: "TSUMI"}],
+                });
             });
+        });
+        it("works with 一括表現", () => {
+            expect(
+                parse(`P1 *  *  *  *  *  *  *  *  * 
+P2 *  *  *  *  *  *  *  *  * 
+P3 *  *  * -FU-FU *  *  *  * 
+P4-RY *  * -OU * -FU *  *  * 
+P5 *  * +KY * -TO *  *  *  * 
+P6 *  * +RY *  *  *  *  *  * 
+P7+KA *  *  *  *  *  *  *  * 
+P8+KA *  *  *  *  *  *  *  * 
+P9 *  *  *  *  *  *  *  *  * 
+P-00AL
++
+`)
+            ).toMatchInlineSnapshot(`
+                Object {
+                  "header": Object {},
+                  "initial": Object {
+                    "data": Object {
+                      "board": Array [
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {
+                            "color": 1,
+                            "kind": "FU",
+                          },
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {
+                            "color": 1,
+                            "kind": "FU",
+                          },
+                          Object {},
+                          Object {
+                            "color": 1,
+                            "kind": "TO",
+                          },
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {
+                            "color": 1,
+                            "kind": "FU",
+                          },
+                          Object {
+                            "color": 1,
+                            "kind": "OU",
+                          },
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {
+                            "color": 0,
+                            "kind": "KY",
+                          },
+                          Object {
+                            "color": 0,
+                            "kind": "RY",
+                          },
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {},
+                        ],
+                        Array [
+                          Object {},
+                          Object {},
+                          Object {},
+                          Object {
+                            "color": 1,
+                            "kind": "RY",
+                          },
+                          Object {},
+                          Object {},
+                          Object {
+                            "color": 0,
+                            "kind": "KA",
+                          },
+                          Object {
+                            "color": 0,
+                            "kind": "KA",
+                          },
+                          Object {},
+                        ],
+                      ],
+                      "color": 0,
+                      "hands": Array [
+                        Object {
+                          "FU": 0,
+                          "GI": 0,
+                          "HI": 0,
+                          "KA": 0,
+                          "KE": 0,
+                          "KI": 0,
+                          "KY": 0,
+                        },
+                        Object {
+                          "FU": 14,
+                          "GI": 4,
+                          "HI": 0,
+                          "KA": 0,
+                          "KE": 4,
+                          "KI": 4,
+                          "KY": 3,
+                        },
+                      ],
+                    },
+                    "preset": "OTHER",
+                  },
+                  "moves": Array [
+                    Object {},
+                  ],
+                }
+            `);
         });
     });
     it("header", () => {

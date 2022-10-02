@@ -26,6 +26,16 @@
 			"TIME_LIMIT": "持ち時間",
 		}[key] || key;
 	}
+	function unpromote(kind) {
+	    return {
+	        TO: "FU",
+	        NY: "KY",
+	        NK: "KE",
+	        NG: "GI",
+	        UM: "KA",
+	        RY: "HI",
+	    }[kind] || kind;
+	}
 }
 kifu = csa2 / csa1
 
@@ -68,6 +78,20 @@ initialboard = comment* data:(hirate / ikkatsu / ""{return "NO"}) koma:komabetsu
 	}else{
 		data.data.hands = koma.data.hands;
 	}
+	var alColor = data.data.hands.indexOf("AL_TO_REPLACE");
+	if(alColor>=0) {
+	    var rest = {FU:18,KY:4,KE:4,GI:4,KI:4,KA:2,HI:2};
+	    for(var piece in data.data.hands[1-alColor]) {
+	        rest[piece] -= data.data.hands[1-alColor][piece];
+	    }
+	    for(var x=0; x<data.data.board.length; x++) {
+            for(var y=0; y<data.data.board[x].length; y++) {
+                var p = data.data.board[x][y];
+                if(p.kind && (p.kind!="OU")) rest[unpromote(p.kind)]--;
+            }
+	    }
+	    data.data.hands[alColor] = rest;
+	}
 	data.data.color=teban;
 	return data;
 }
@@ -101,7 +125,6 @@ komabetsu = lines:komabetsuline* {
 		{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0},
 		{FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0}
 	];
-	var all = {FU:18,KY:4,KE:4,GI:4,KI:4,KA:2,HI:2};
 	for(var i=0; i<9; i++){
 		var line=[];
 		for(var j=0; j<9; j++){
@@ -115,7 +138,7 @@ komabetsu = lines:komabetsuline* {
 			if(p.xy.x==0){
 				// 持ち駒
 				if(p.piece=="AL"){
-					hands[lines[i].teban]=all;
+					hands[lines[i].teban]="AL_TO_REPLACE";
 					break all;
 				}
 				var obj=hands[lines[i].teban];
@@ -124,7 +147,6 @@ komabetsu = lines:komabetsuline* {
 				// 盤上
 				board[p.xy.x-1][p.xy.y-1] = {color: lines[i].teban, kind: p.piece};
 			}
-			if(p.piece!="OU") all[p.piece]--;
 		}
 	}
 	return {preset: "OTHER", data: {board: board, hands: hands}}
