@@ -26,7 +26,7 @@
     "cypress:run": "cypress run",
     "cypress:run:ci": "cypress run --config-file cypress.ci.json",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public/src && mkdir -p ./public/out & npm run build",
-    "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./public/src/ && mv ./bundle/KifuInBookmarklet.min.js ./public/out/ && cp -R examples ./public && mv bundle readme-ss public/",
+    "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./public/src/ && mv ./bundle/*.js ./public/out/ && cp -R examples ./public && mv bundle readme-ss public/",
     "prepublishOnly": "npm run build"
   },
   "repository": {
