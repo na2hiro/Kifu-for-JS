@@ -1,0 +1,43 @@
+'encoding=Shift_JIS
+' ---- Kifu for Windows V7 V7.08 CSA形式棋譜ファイル ----
+V2.2
+N+shitate
+N-uwate
+$START_TIME:2014/10/13 18:51:20
+$END_TIME:2014/10/13 18:53:37
+P1 *  *  * -KI-OU-KI *  *  * 
+P2 *  *  *  *  *  *  *  *  * 
+P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+P4 *  *  *  *  *  *  *  *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  *  *  *  *  *  *  *  * 
+P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+P8 * +KA *  *  *  *  * +HI * 
+P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+-
+-6172KI,T3
++7776FU,T1
+-4132KI,T2
++2726FU,T2
+-6364FU,T3
++2625FU,T3
+-6465FU,T1
++2524FU,T14
+-2324FU,T1
++2824HI,T2
+-0023FU,T3
++2428HI,T5
+-7263KI,T6
++3938GI,T1
+-6354KI,T1
++3827GI,T17
+-5142OU,T20
++2726GI,T1
+-4344FU,T5
++2625GI,T2
+-4243OU,T1
++0024FU,T1
+-2324FU,T1
++2524GI,T1
+-4334OU,T1
+%CHUDAN,T39

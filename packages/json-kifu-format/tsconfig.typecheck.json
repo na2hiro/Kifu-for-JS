@@ -1,0 +1,9 @@
+{
+    "include": ["./src"],
+    "compilerOptions": {
+        "declaration": true,
+        "module": "commonjs",
+        "noEmitOnError": true,
+        "target": "es5"
+    }
+}
