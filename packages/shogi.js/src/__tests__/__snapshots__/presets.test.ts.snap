@@ -1,0 +1,275 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`preset initialized board: 2 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 3 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 4 1`] = `
+Object {
+  "board": Array [
+    " * -KE-GI-KI-OU-KI-GI-KE * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 5 1`] = `
+Object {
+  "board": Array [
+    " *  * -GI-KI-OU-KI-GI-KE * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 5_L 1`] = `
+Object {
+  "board": Array [
+    " * -KE-GI-KI-OU-KI-GI *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 6 1`] = `
+Object {
+  "board": Array [
+    " *  * -GI-KI-OU-KI-GI *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 7_L 1`] = `
+Object {
+  "board": Array [
+    " *  * -GI-KI-OU-KI *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 7_R 1`] = `
+Object {
+  "board": Array [
+    " *  *  * -KI-OU-KI-GI *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 8 1`] = `
+Object {
+  "board": Array [
+    " *  *  * -KI-OU-KI *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: 10 1`] = `
+Object {
+  "board": Array [
+    " *  *  *  * -OU *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: HI 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+    " *  *  *  *  *  *  * -KA * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: HIKY 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+    " *  *  *  *  *  *  * -KA * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: HIRATE 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+    " * -HI *  *  *  *  * -KA * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 0,
+}
+`;
+
+exports[`preset initialized board: KA 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE-KY",
+    " * -HI *  *  *  *  *  *  * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: KY 1`] = `
+Object {
+  "board": Array [
+    "-KY-KE-GI-KI-OU-KI-GI-KE * ",
+    " * -HI *  *  *  *  * -KA * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset initialized board: KY_R 1`] = `
+Object {
+  "board": Array [
+    " * -KE-GI-KI-OU-KI-GI-KE-KY",
+    " * -HI *  *  *  *  * -KA * ",
+    "-FU-FU-FU-FU-FU-FU-FU-FU-FU",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    " *  *  *  *  *  *  *  *  * ",
+    "+FU+FU+FU+FU+FU+FU+FU+FU+FU",
+    " * +KA *  *  *  *  * +HI * ",
+    "+KY+KE+GI+KI+OU+KI+GI+KE+KY",
+  ],
+  "turn": 1,
+}
+`;
+
+exports[`preset throws error with invalid preset name 1`] = `"Unknown preset: invalid"`;

@@ -1,0 +1,57 @@
+{
+  "name": "shogi.js",
+  "version": "2.0.5",
+  "description": "simple shogi library for JavaScript",
+  "main": "dist/shogi.js",
+  "types": "dist/src/shogi.d.ts",
+  "directories": {
+    "test": "test"
+  },
+  "scripts": {
+    "build": "webpack --mode=production",
+    "build:analyze": "webpack --mode=production --env analyze=1",
+    "build:watch": "webpack --mode=development --watch",
+    "lint": "eslint ./ && prettier --check .",
+    "lint:fix": "eslint ./ --fix && prettier --write .",
+    "test": "jest",
+    "test:watch": "jest --watch",
+    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "prepublishOnly": "npm run build",
+    "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
+    "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/",
+    "prepare": "husky install"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/na2hiro/Shogi.js.git"
+  },
+  "keywords": [
+    "shogi",
+    "library"
+  ],
+  "author": "na2hiro",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/na2hiro/Shogi.js/issues"
+  },
+  "homepage": "https://github.com/na2hiro/Shogi.js#readme",
+  "devDependencies": {
+    "@types/jest": "^27.4.0",
+    "@typescript-eslint/eslint-plugin": "^5.9.0",
+    "@typescript-eslint/parser": "^5.9.0",
+    "eslint": "^8.6.0",
+    "eslint-config-prettier": "^8.3.0",
+    "eslint-plugin-jest": "^25.3.4",
+    "husky": "^7.0.4",
+    "jest": "^27.5.1",
+    "prettier": "^2.5.1",
+    "ts-jest": "^27.1.3",
+    "ts-loader": "^9.4.2",
+    "typedoc": "^0.23.21",
+    "typescript": "^4.0.5",
+    "webpack": "^5.68.0",
+    "webpack-bundle-analyzer": "^4.6.1",
+    "webpack-cli": "^4.9.2",
+    "webpack-merge": "^4.1.2"
+  }
+}
