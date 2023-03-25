@@ -5,7 +5,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 import {Color} from "shogi.js";
-import {Kind} from "shogi.js/dist/src/Kind";
+import {Kind} from "shogi.js/src/Kind";
 
 /**
  * Kifu format
