@@ -484,4 +484,4 @@ export interface IMove {
     color?: Color;
 }
 
-export {Color, Piece, IMoveDefinition};
+export {Color, Piece, Kind, IMoveDefinition};

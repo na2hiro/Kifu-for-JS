@@ -2,7 +2,7 @@ const path = require("path");
 const webpack = require("webpack");
 const merge = require("webpack-merge");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
-const package = require("./package.json");
+const pkg = require("./package.json");
 
 module.exports = (env) => {
     const IS_ANALYZE = env && env.analyze;
@@ -32,7 +32,7 @@ module.exports = (env) => {
     const bundle = merge(common, {
         output: {
             library: "ShogiJS",
-            filename: `shogi-${package.version}.min.js`,
+            filename: `shogi-${pkg.version}.min.js`,
             path: BUNDLE_DIR,
             clean: true,
         },

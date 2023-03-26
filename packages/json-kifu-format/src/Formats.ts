@@ -4,8 +4,7 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-import {Color} from "shogi.js";
-import {Kind} from "shogi.js/src/Kind";
+import {Color, Kind} from "shogi.js";
 
 /**
  * Kifu format
