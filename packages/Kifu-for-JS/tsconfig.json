@@ -6,6 +6,7 @@
     "experimentalDecorators": true,
     "module": "esnext",
     "moduleResolution": "node",
+    "esModuleInterop": true,
     "noEmitOnError": true,
     "jsx": "react",
     "target": "es2015",

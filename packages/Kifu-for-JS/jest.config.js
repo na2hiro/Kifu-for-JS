@@ -1,10 +1,4 @@
 module.exports = {
-    transform: {
-        "^.+\\.tsx?$": "ts-jest",
-    },
-    transformIgnorePatterns: [
-        "/node_modules/", ".scss$"
-    ],
     testRegex: "(/__tests__/.*|src/.*(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     testEnvironment: "jsdom",
     moduleFileExtensions: [
