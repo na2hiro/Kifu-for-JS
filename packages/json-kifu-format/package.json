@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "clean": "rm -rf ./bundle ./dist",
     "build": "webpack --mode=production",
     "build:analyze": "npm run build -- --env analyze",
     "build:watch": "webpack --watch",

@@ -2,6 +2,7 @@
     "include": ["src"],
     "exclude": ["**/__tests__/**/*"],
     "compilerOptions": {
+        "outDir": "dist",
         "declaration": true,
         "module": "commonjs",
         "noEmitOnError": true

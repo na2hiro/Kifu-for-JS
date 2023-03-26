@@ -9,6 +9,7 @@
     "test": "test"
   },
   "scripts": {
+    "clean": "rm -rf ./bundle",
     "start": "webpack-dev-server --open example.html --mode development",
     "ci": "run-s lint ci:build ci:test",
     "ci:start-server": "http-server . -p 8081",

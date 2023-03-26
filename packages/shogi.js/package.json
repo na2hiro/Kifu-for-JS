@@ -8,6 +8,7 @@
     "test": "test"
   },
   "scripts": {
+    "clean": "rm -rf ./dist ./bundle",
     "build": "webpack --mode=production",
     "build:analyze": "webpack --mode=production --env analyze=1",
     "build:watch": "webpack --mode=development --watch",
@@ -15,7 +16,7 @@
     "lint:fix": "eslint ./ --fix && prettier --write .",
     "test": "jest",
     "test:watch": "jest --watch",
-    "typecheck": "tsc --project tsconfig.json --noEmit",
+    "typecheck": "tsc --project tsconfig.typecheck.json",
     "prepublishOnly": "npm run build",
     "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
