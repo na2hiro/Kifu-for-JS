@@ -8,6 +8,7 @@
     "lerna": "^6.6.1"
   },
   "scripts": {
+    "ghpages": "cd packages/Kifu-for-JS && npm run deploy:ghpages && cd -",
     "prepublishOnly": "npm run build",
     "test": "lerna run test",
     "test:watch": "lerna run test:watch --stream",
