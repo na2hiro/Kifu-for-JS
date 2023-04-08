@@ -8,6 +8,7 @@
     "lerna": "^6.6.1"
   },
   "scripts": {
+    "prepublishOnly": "npm run build",
     "test": "lerna run test",
     "test:watch": "lerna run test:watch --stream",
     "lint": "lerna run lint",

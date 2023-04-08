@@ -17,7 +17,6 @@
     "test": "jest",
     "test:watch": "jest --watch",
     "typecheck": "tsc --project tsconfig.typecheck.json",
-    "prepublishOnly": "npm run build",
     "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
   },

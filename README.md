@@ -40,3 +40,7 @@ Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージ�
 | `build`       | すべてのパッケージをビルドする                       |
 | `dev`         | すべてのパッケージをビルドしてexampleページを起動し、変更を監視する |
 
+### リリースワークフロー (na2hiro向け)
+1. `bump` GitHub Actions でパッケージのバージョンを上げる
+2. リリースページからリリースを生成
+3. `publish` GitHub Actions がリリースをビルド・公開する

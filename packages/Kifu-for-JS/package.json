@@ -4,7 +4,6 @@
   "description": "Shogi Kifu viewer for JavaScript",
   "main": "bundle/kifu-for-js.min.js",
   "types": "bundle/src/index.d.ts",
-  "private": true,
   "directories": {
     "test": "test"
   },
@@ -28,8 +27,7 @@
     "cypress:run": "cypress run",
     "cypress:run:ci": "cypress run --config-file cypress.ci.json",
     "deploy:ghpages": "rm -rf ./public && mkdir -p ./public/src && mkdir -p ./public/out & npm run build",
-    "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./public/src/ && mv ./bundle/*.js ./public/out/ && cp -R examples ./public && mv bundle readme-ss public/",
-    "prepublishOnly": "npm run build"
+    "postdeploy:ghpages": "mv ./bundle/public-bookmarklet.min.js ./public/src/ && mv ./bundle/*.js ./public/out/ && cp -R examples ./public && mv bundle readme-ss public/"
   },
   "repository": {
     "type": "git",
