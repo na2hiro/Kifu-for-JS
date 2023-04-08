@@ -6,5 +6,15 @@
   ],
   "devDependencies": {
     "lerna": "^6.6.1"
+  },
+  "scripts": {
+    "test": "lerna run test",
+    "test:watch": "lerna run test:watch --stream",
+    "lint": "lerna run lint",
+    "lint:fix": "lerna run lint:fix",
+    "build": "lerna run build",
+    "dev": "run-p dev:*",
+    "dev:main": "lerna run dev --stream",
+    "dev:libs": "lerna watch --scope=json-kifu-format --include-dependencies -- lerna run build --scope=json-kifu-format --since"
   }
 }

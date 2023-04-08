@@ -5,6 +5,7 @@
       "options": {
         "cacheableOperations": [
           "build",
+          "build:watch",
           "lint",
           "test",
           "typecheck"
@@ -20,6 +21,16 @@
       "outputs": [
         "{projectRoot}/dist",
         "{projectRoot}/bundle"
+      ]
+    },
+    "test": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
+    "dev": {
+      "dependsOn": [
+        "^build"
       ]
     }
   }

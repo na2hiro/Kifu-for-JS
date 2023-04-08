@@ -133,7 +133,7 @@ http://opensource.org/licenses/mit-license.php`
         } else if (IS_PROD) {
             return "https://na2hiro.github.io/Kifu-for-JS/out/";
         } else {
-            `http://localhost:${DEV_SERVER_PORT}/bundle/`
+            return `http://localhost:${DEV_SERVER_PORT}/bundle/`
         }
     }
 };
