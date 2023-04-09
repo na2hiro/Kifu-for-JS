@@ -1,6 +1,6 @@
 const path = require("path");
 const webpack = require("webpack");
-const merge = require("webpack-merge");
+const {merge} = require("webpack-merge");
 const {BundleAnalyzerPlugin} = require("webpack-bundle-analyzer");
 const pkg = require("./package.json");
 

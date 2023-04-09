@@ -5,7 +5,19 @@
     "packages/*"
   ],
   "devDependencies": {
-    "lerna": "^6.6.1"
+    "@types/jest": "^28.1.4",
+    "lerna": "^6.6.1",
+    "typescript": "^5.0.4",
+    "webpack": "^5.78.0",
+    "webpack-bundle-analyzer": "^4.5.0",
+    "webpack-cli": "^4.10.0",
+    "webpack-merge": "^5.8.0",
+    "prettier": "^2.7.1",
+    "jest": "^28.1.2",
+    "eslint": "^8.17.0",
+    "eslint-config-prettier": "^8.5.0",
+    "eslint-plugin-jest": "^26.5.3",
+    "ts-loader": "^4.5.0"
   },
   "scripts": {
     "dev": "run-p dev:*",
