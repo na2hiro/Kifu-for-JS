@@ -1,40 +1,40 @@
 {
-  "name": "shogi.js",
-  "version": "2.0.5",
-  "description": "simple shogi library for JavaScript",
-  "main": "dist/shogi.js",
-  "types": "dist/src/shogi.d.ts",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "clean": "rm -rf ./dist ./bundle",
-    "build": "webpack --mode=production",
-    "build:analyze": "webpack --mode=production --env analyze=1",
-    "build:watch": "webpack --mode=development --watch",
-    "lint": "eslint ./ && prettier --check .",
-    "lint:fix": "eslint ./ --fix && prettier --write .",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "typecheck": "tsc --project tsconfig.typecheck.json",
-    "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
-    "ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/na2hiro/Shogi.js.git"
-  },
-  "keywords": [
-    "shogi",
-    "library"
-  ],
-  "author": "na2hiro",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/na2hiro/Shogi.js/issues"
-  },
-  "homepage": "https://github.com/na2hiro/Shogi.js#readme",
-  "devDependencies": {
-    "ts-jest": "^27.1.3"
-  }
+    "name": "shogi.js",
+    "version": "3.1.1-alpha.0",
+    "description": "simple shogi library for JavaScript",
+    "main": "dist/shogi.js",
+    "types": "dist/src/shogi.d.ts",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "clean": "rm -rf ./dist ./bundle",
+        "build": "webpack --mode=production",
+        "build:analyze": "webpack --mode=production --env analyze=1",
+        "build:watch": "webpack --mode=development --watch",
+        "lint": "eslint ./ && prettier --check .",
+        "lint:fix": "eslint ./ --fix && prettier --write .",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "typecheck": "tsc --project tsconfig.typecheck.json",
+        "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
+        "ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/na2hiro/Shogi.js.git"
+    },
+    "keywords": [
+        "shogi",
+        "library"
+    ],
+    "author": "na2hiro",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/na2hiro/Shogi.js/issues"
+    },
+    "homepage": "https://github.com/na2hiro/Shogi.js#readme",
+    "devDependencies": {
+        "ts-jest": "^27.1.3"
+    }
 }
