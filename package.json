@@ -28,6 +28,7 @@
     "dev:libs": "lerna watch --scope=json-kifu-format --include-dependencies -- lerna run build --scope=json-kifu-format --since",
     "test": "lerna run test",
     "test:watch": "lerna run test:watch --stream",
+    "test:ci": "lerna run test -- --ci --coverage --maxWorkers=2",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
     "typecheck": "lerna run typecheck",
