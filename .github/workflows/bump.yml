@@ -28,4 +28,4 @@ jobs:
           git config user.name '${{ secrets.GIT_USER_NAME }}'
           git config user.email '${{ secrets.GIT_USER_EMAIL }}'
       - name: bump version
-        run: lerna version ${{ github.event.inputs.version }}
+        run: lerna version ${{ github.event.inputs.version }} --yes
