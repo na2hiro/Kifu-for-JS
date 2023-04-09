@@ -5,6 +5,7 @@
         "outDir": "dist",
         "declaration": true,
         "module": "commonjs",
-        "noEmitOnError": true
+        "noEmitOnError": true,
+        "skipLibCheck": true
     }
 }

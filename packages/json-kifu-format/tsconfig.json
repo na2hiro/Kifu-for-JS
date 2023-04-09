@@ -5,6 +5,7 @@
         "declaration": true,
         "module": "commonjs",
         "noEmitOnError": true,
-        "target": "es5"
+        "target": "es5",
+        "skipLibCheck": true
     }
 }

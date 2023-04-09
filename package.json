@@ -8,15 +8,16 @@
     "lerna": "^6.6.1"
   },
   "scripts": {
-    "ghpages": "cd packages/Kifu-for-JS && npm run deploy:ghpages && cd -",
-    "prepublishOnly": "npm run build",
+    "dev": "run-p dev:*",
+    "dev:main": "lerna run dev --stream",
+    "dev:libs": "lerna watch --scope=json-kifu-format --include-dependencies -- lerna run build --scope=json-kifu-format --since",
     "test": "lerna run test",
     "test:watch": "lerna run test:watch --stream",
     "lint": "lerna run lint",
     "lint:fix": "lerna run lint:fix",
+    "typecheck": "lerna run typecheck",
     "build": "lerna run build",
-    "dev": "run-p dev:*",
-    "dev:main": "lerna run dev --stream",
-    "dev:libs": "lerna watch --scope=json-kifu-format --include-dependencies -- lerna run build --scope=json-kifu-format --since"
+    "prepublishOnly": "npm run build",
+    "ghpages": "rm -rf public && lerna run ghpages && mkdir public && mv packages/Kifu-for-JS/public/* public/ && mv packages/json-kifu-format/public public/json-kifu-format && mv packages/shogi.js/public public/shogi.js"
   }
 }

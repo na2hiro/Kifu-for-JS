@@ -18,7 +18,7 @@
     "test:watch": "jest --watch",
     "typecheck": "tsc --project tsconfig.typecheck.json",
     "docs": "typedoc --exclude '**/__tests__/**/*' ./src/shogi.ts",
-    "deploy:ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
+    "ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/"
   },
   "repository": {
     "type": "git",

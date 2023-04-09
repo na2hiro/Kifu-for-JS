@@ -24,10 +24,10 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-node-
       - run: npm ci
-      - run: npm run deploy:ghpages
+      - run: npm run ghpages
 
       - name: Deploy
         uses: peaceiris/actions-gh-pages@v3
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}
-          publish_dir: ./packages/Kifu-for-JS/public
+          publish_dir: ./public
