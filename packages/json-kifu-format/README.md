@@ -31,7 +31,7 @@ JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．�
 * 相対逆算: 局面と座標と相対情報から，その位置に移動する駒を特定すること．
 
 ## 形式の定義
-以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します． ([TypeDoc](https://apps.81.la/json-kifu-format/docs/modules.html) も参照)
+以下で定義される形式をVersion 1.0とします．1.x台では後方互換性を保つ変更のみを採用します． ([TypeDoc](https://apps.81.la/Kifu-for-JS/json-kifu-format/docs/) も参照)
 
 ### JSONの形式 (Version 1.0)
 [./src/Formats.ts](./src/Formats.ts)にある内容です．"?"はない場合があるという意味です．小文字で始まる`型名`は組み込み型です．

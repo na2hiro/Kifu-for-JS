@@ -28,7 +28,7 @@ npm install shogi.js
 
 ## Docs
 
-[TypeDoc ドキュメンテーション](http://apps.81.la/Shogi.js/docs/modules.html) を参照のこと。
+[TypeDoc ドキュメンテーション](https://apps.81.la/Kifu-for-JS/shogi.js/docs/) を参照のこと。
 また，`test`ディレクトリ以下のテストで実際の挙動を確認されたい．
 
 ## TODO
