@@ -1,4 +1,4 @@
-# Kifu for JS monorepo
+# Kifu for JS monorepo ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージのREADMEは各パッケージのディレクトリにあります。
 

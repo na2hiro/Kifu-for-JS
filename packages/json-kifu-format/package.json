@@ -36,9 +36,9 @@
   "author": "na2hiro",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/na2hiro/json-kifu-format/issues"
+    "url": "https://github.com/na2hiro/Kifu-for-JS/issues"
   },
-  "homepage": "https://github.com/na2hiro/json-kifu-format#readme",
+  "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/json-kifu-format#readme",
   "devDependencies": {
     "@types/node": "^13.1.1",
     "ajv-cli": "^5.0.0",

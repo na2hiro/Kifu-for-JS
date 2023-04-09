@@ -1,4 +1,5 @@
-# JSON棋譜フォーマット(JKF) ![Build Status](https://github.com/na2hiro/json-kifu-format/actions/workflows/main.yml/badge.svg?branch=master)
+# JSON棋譜フォーマット(JKF) ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/json-kifu-format.svg)](https://badge.fury.io/js/json-kifu-format)
+
 JSONで将棋の棋譜を取り扱う標準形式JKFを定義しています．またJKFを既存のKIF, KI2, CSA等から変換するライブラリ及びJKFを用いて盤面再生を行うライブラリを提供します．
 
 ## 概要
@@ -200,7 +201,7 @@ JSONで一般的なUTF-8を使用するものとします．
 ## プログラム
 ### ブラウザ向け
 
-[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．`json-kifu-format-*.*.*.min.js`を読み込むと，`JSONKifuFormat` が使えるようになります．
+[Releases](https://github.com/na2hiro/Kifu-for-JS/releases) からどうぞ．`json-kifu-format-*.*.*.min.js`を読み込むと，`JSONKifuFormat` が使えるようになります．
 
 ### node.js用
 ```shell
@@ -216,58 +217,22 @@ exportされているクラス群は次の通りです
 * `Normalizer`: {KIF/KI2/CSA}と同等の情報しか持たないJKFを完全なJKFに変換するプログラム
 * `JKFPlayer`: JKFを扱う棋譜再生盤の例
 
-## 開発環境
-```shell
-$ nvm use && nvm i && npm i
-```
+## バグ報告、機能要望等
 
-上記コマンドを実行することで開発に必要なパッケージをインストールできます．
+[issues](https://github.com/na2hiro/Kifu-for-JS/issues) 参照．
+読み込みエラーとなる棋譜があったら教えて下さい．
 
-* [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
+## 開発
+主な情報は[monorepoトップのREADME](../../README.md#開発)をご覧ください。`kifu-for-js`固有の情報は以下の通りです。
+
+### 関連ツール・ライブラリ
+
+* [na2hiro/Shogi.js](../shogi.js): 将棋の盤駒を扱うライブラリ
 * [PEG.js](http://pegjs.majda.cz/): パーサジェネレータ
 * [TypeScript](https://www.typescriptlang.org/)
 * [Webpack](https://webpack.js.org/)
 * [Jest](https://jestjs.io/)
 * [ESLint](https://eslint.org/)
-
-### コマンド
-
-```shell
-$ npm run build
-$ npm run build:watch
-$ npm run build:analyze
-```
-
-ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．`build:analyze`の場合，バンドルの大きさの可視化ができます．
-
-```shell
-$ npm run test:watch
-```
-
-コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
-
-```shell
-$ npm run test
-```
-
-全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
-
-```shell
-$ npm run lint
-```
-
-コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
-
-```shell
-$ npm run lint:fix
-```
-
-自動的に修正可能な問題(インデント等)を直してくれます．
-
-## バグ報告、機能要望等
-
-[issues](https://github.com/na2hiro/json-kifu-format/issues) 参照．
-読み込みエラーとなる棋譜があったら教えて下さい．
 
 ## 参考文献
 
@@ -279,10 +244,3 @@ $ npm run lint:fix
 ## ライセンス
 
 MIT License (see [./LICENSE.txt](./LICENSE.txt))
-
-## Workflows (it's for me)
-
-### Publish
-1. Bump version using `bump` action
-2. Create a new release with the new version
-3. Check an email about publish result
