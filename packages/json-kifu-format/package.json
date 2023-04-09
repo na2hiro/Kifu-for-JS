@@ -1,55 +1,55 @@
 {
-  "name": "json-kifu-format",
-  "version": "1.3.1",
-  "description": "JSON棋譜フォーマット(JKF)の定義とその関連ライブラリ",
-  "main": "dist/json-kifu-format.js",
-  "types": "dist/src/main.d.ts",
-  "directories": {
-    "test": "test"
-  },
-  "scripts": {
-    "clean": "rm -rf ./bundle ./dist",
-    "build": "webpack --mode=production",
-    "build:analyze": "npm run build -- --env analyze",
-    "build:watch": "webpack --watch",
-    "lint": "eslint ./ && prettier --check .",
-    "lint:fix": "eslint ./ --fix && prettier --write .",
-    "test": "jest",
-    "test:watch": "jest --watch",
-    "typecheck": "tsc --project tsconfig.typecheck.json --noEmit",
-    "docs": "typedoc --exclude '**/__tests__/**/*' src/main.ts",
-    "ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/",
-    "schema:compile": "ajv compile --spec=draft2020 --strict-tuples=false -s specification/json-kifu-format.schema.json",
-    "schema:validate": "ajv validate --spec=draft2020 --strict-tuples=false -s specification/json-kifu-format.schema.json -d 'specification/files/*.json'"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/na2hiro/json-kifu-format.git"
-  },
-  "keywords": [
-    "shogi",
-    "json",
-    "kifu",
-    "format",
-    "jkf"
-  ],
-  "author": "na2hiro",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/na2hiro/Kifu-for-JS/issues"
-  },
-  "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/json-kifu-format#readme",
-  "devDependencies": {
-    "@types/node": "^13.1.1",
-    "ajv-cli": "^5.0.0",
-    "clean-webpack-plugin": "^4.0.0",
-    "iconv-lite": "^0.6.3",
-    "jschardet": "^1.3.0",
-    "pegjs": "^0.10.0",
-    "pegjs-loader": "^0.5.6",
-    "ts-jest": "^28.0.5"
-  },
-  "dependencies": {
-    "shogi.js": "*"
-  }
+    "name": "json-kifu-format",
+    "version": "3.1.1-alpha.0",
+    "description": "JSON棋譜フォーマット(JKF)の定義とその関連ライブラリ",
+    "main": "dist/json-kifu-format.js",
+    "types": "dist/src/main.d.ts",
+    "directories": {
+        "test": "test"
+    },
+    "scripts": {
+        "clean": "rm -rf ./bundle ./dist",
+        "build": "webpack --mode=production",
+        "build:analyze": "npm run build -- --env analyze",
+        "build:watch": "webpack --watch",
+        "lint": "eslint ./ && prettier --check .",
+        "lint:fix": "eslint ./ --fix && prettier --write .",
+        "test": "jest",
+        "test:watch": "jest --watch",
+        "typecheck": "tsc --project tsconfig.typecheck.json --noEmit",
+        "docs": "typedoc --exclude '**/__tests__/**/*' src/main.ts",
+        "ghpages": "rm -rf ./public && mkdir -p ./public && npm run docs && mv ./docs ./public/",
+        "schema:compile": "ajv compile --spec=draft2020 --strict-tuples=false -s specification/json-kifu-format.schema.json",
+        "schema:validate": "ajv validate --spec=draft2020 --strict-tuples=false -s specification/json-kifu-format.schema.json -d 'specification/files/*.json'"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/na2hiro/json-kifu-format.git"
+    },
+    "keywords": [
+        "shogi",
+        "json",
+        "kifu",
+        "format",
+        "jkf"
+    ],
+    "author": "na2hiro",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/na2hiro/Kifu-for-JS/issues"
+    },
+    "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/json-kifu-format#readme",
+    "devDependencies": {
+        "@types/node": "^13.1.1",
+        "ajv-cli": "^5.0.0",
+        "clean-webpack-plugin": "^4.0.0",
+        "iconv-lite": "^0.6.3",
+        "jschardet": "^1.3.0",
+        "pegjs": "^0.10.0",
+        "pegjs-loader": "^0.5.6",
+        "ts-jest": "^28.0.5"
+    },
+    "dependencies": {
+        "shogi.js": "^3.1.1-alpha.0"
+    }
 }
