@@ -21,23 +21,23 @@ jobs:
       - name: Build
         run: npm run build
 
-#  typecheck:
-#    name: Typechecker
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout repo
-#        uses: actions/checkout@v3
-#
-#      - name: Use Node 16
-#        uses: actions/setup-node@v3
-#        with:
-#          node-version: 16
-#
-#      - name: Install dependencies
-#        uses: bahmutov/npm-install@v1
-#
-#      - name: Typecheck
-#        run: npm run typecheck
+  typecheck:
+    name: Typechecker
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Typecheck
+        run: npm run typecheck
 
 # TODO: add integration tests
 
@@ -57,7 +57,7 @@ jobs:
         uses: bahmutov/npm-install@v1
 
       - name: Test
-        run: npm run test -- --ci --coverage --maxWorkers=2
+        run: npm run test:ci
 
   lint:
     name: Linter

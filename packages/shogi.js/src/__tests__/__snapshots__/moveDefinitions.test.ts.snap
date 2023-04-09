@@ -1,0 +1,387 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`move def snapshots: FU 1`] = `
+Object {
+  "just": Array [
+    Array [
+      0,
+      -1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: GI 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      1,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: HI 1`] = `
+Object {
+  "fly": Array [
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: KA 1`] = `
+Object {
+  "fly": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      1,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: KE 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -2,
+    ],
+    Array [
+      1,
+      -2,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: KI 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: KY 1`] = `
+Object {
+  "fly": Array [
+    Array [
+      0,
+      -1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: NG 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: NK 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: NY 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: OU 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      -1,
+      1,
+    ],
+    Array [
+      0,
+      1,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: RY 1`] = `
+Object {
+  "fly": Array [
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      1,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: TO 1`] = `
+Object {
+  "just": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;
+
+exports[`move def snapshots: UM 1`] = `
+Object {
+  "fly": Array [
+    Array [
+      -1,
+      -1,
+    ],
+    Array [
+      1,
+      -1,
+    ],
+    Array [
+      -1,
+      1,
+    ],
+    Array [
+      1,
+      1,
+    ],
+  ],
+  "just": Array [
+    Array [
+      0,
+      -1,
+    ],
+    Array [
+      -1,
+      0,
+    ],
+    Array [
+      1,
+      0,
+    ],
+    Array [
+      0,
+      1,
+    ],
+  ],
+}
+`;

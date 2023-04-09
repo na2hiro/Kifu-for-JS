@@ -1,0 +1,11 @@
+/.idea
+*.iml
+/node_modules
+*.swp
+/bundle/
+/coverage/
+.DS_Store
+/public
+/src/public-bookmarklet.min.js
+/cypress/videos/
+/cypress/screenshots/

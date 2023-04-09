@@ -1,0 +1,452 @@
+{
+    "$schema": "https://json-schema.org/draft/2020-12/schema",
+    "$id": "https://github.com/na2hiro/json-kifu-format",
+    "$ref": "#/$defs/record",
+    "$defs": {
+        "record": {
+            "title": "json-kifu-format",
+            "type": "object",
+            "properties": {
+                "header": {
+                    "description": "ヘッダ情報。キーはKI2，KIF等の日本語のものに準ずる．(例: \"場所\", \"先手\")",
+                    "$ref": "#/$defs/header"
+                },
+                "initial": {
+                    "description": "初期局面。nullの場合は平手を表す",
+                    "$ref": "#/$defs/initial"
+                },
+                "moves": {
+                    "description": "n番目はn手目の棋譜(0番目は初期局面のコメント用)。",
+                    "$ref": "#/$defs/moves"
+                }
+            },
+            "required": ["header", "moves"],
+            "additionalProperties": false
+        },
+        "initial": {
+            "title": "初期状態",
+            "type": ["object", "null"],
+            "properties": {
+                "preset": {
+                    "description": "手合名",
+                    "$ref": "#/$defs/preset"
+                },
+                "data": {
+                    "description": "初期局面データ。手合名がOTHERの時に使用する",
+                    "$ref": "#/$defs/initialData"
+                }
+            },
+            "required": ["preset"],
+            "additionalProperties": false
+        },
+        "header": {
+            "title": "ヘッダ情報",
+            "type": "object",
+            "additionalProperties": {
+                "type": "string"
+            }
+        },
+        "preset": {
+            "title": "手合情報",
+            "description": "KIFでサポートされている手合情報。順に、平手、香落ち、右香落ち、角落ち、飛車落ち、飛香落ち、二枚落ち、三枚落ち、四枚落ち、五枚落ち、左五枚落ち、六枚落ち、左七枚落ち、右七枚落ち、八枚落ち、十枚落ち、その他、を表す。",
+            "enum": [
+                "HIRATE",
+                "KY",
+                "KY_R",
+                "KA",
+                "HI",
+                "HIKY",
+                "2",
+                "3",
+                "4",
+                "5",
+                "5_L",
+                "6",
+                "7_L",
+                "7_R",
+                "8",
+                "10",
+                "OTHER"
+            ]
+        },
+        "initialData": {
+            "title": "初期局面のデータ",
+            "type": ["object", "null"],
+            "properties": {
+                "color": {
+                    "description": "初手の手番",
+                    "$ref": "#/$defs/color"
+                },
+                "board": {
+                    "description": "盤上の駒の配置",
+                    "$ref": "#/$defs/initialBoard"
+                },
+                "hands": {
+                    "description": "0番目が先手，1番目が後手の持駒",
+                    "$ref": "#/$defs/hands"
+                }
+            },
+            "required": ["color", "board", "hands"]
+        },
+        "initialBoard": {
+            "title": "初期状態の盤面",
+            "oneOf": [
+                {
+                    "description": "駒がない場合",
+                    "type": "object",
+                    "additionalProperties": false
+                },
+                {
+                    "description": "盤上の駒。board[x-1][y-1]に(x,y)の駒情報",
+                    "$ref": "#/$defs/board"
+                }
+            ]
+        },
+        "board": {
+            "title": "盤",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/column"
+            }
+        },
+        "column": {
+            "title": "盤の列",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/square"
+            }
+        },
+        "square": {
+            "title": "盤の升",
+            "type": "object",
+            "properties": {
+                "color": {
+                    "description": "先手/後手",
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/color"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "kind": {
+                    "description": "駒の種類",
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/kind"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            },
+            "additionalProperties": false
+        },
+        "moves": {
+            "title": "指し手のリスト",
+            "type": "array",
+            "prefixItems": [
+                {
+                    "$ref": "#/$defs/initialComment"
+                }
+            ],
+            "items": {
+                "$ref": "#/$defs/moveWithForksAndInfo"
+            }
+        },
+        "initialComment": {
+            "title": "初期局面のコメント",
+            "type": "object",
+            "properties": {
+                "comment": {
+                    "type": "string"
+                }
+            }
+        },
+        "hands": {
+            "title": "先後双方の持駒",
+            "type": "array",
+            "minItems": 2,
+            "maxItems": 2,
+            "items": {
+                "description": "駒種がkey, 枚数がvalueの連想配列",
+                "$ref": "#/$defs/hand"
+            }
+        },
+        "hand": {
+            "title": "持駒",
+            "type": "object",
+            "additionalProperties": false,
+            "properties": {
+                "FU": {
+                    "type": "integer"
+                },
+                "KY": {
+                    "type": "integer"
+                },
+                "KE": {
+                    "type": "integer"
+                },
+                "GI": {
+                    "type": "integer"
+                },
+                "KI": {
+                    "type": "integer"
+                },
+                "KA": {
+                    "type": "integer"
+                },
+                "HI": {
+                    "type": "integer"
+                },
+                "OU": {
+                    "type": "integer"
+                },
+                "TO": {
+                    "type": "integer"
+                },
+                "NY": {
+                    "type": "integer"
+                },
+                "NK": {
+                    "type": "integer"
+                },
+                "NG": {
+                    "type": "integer"
+                },
+                "UM": {
+                    "type": "integer"
+                },
+                "RY": {
+                    "type": "integer"
+                }
+            }
+        },
+        "color": {
+            "title": "陣営",
+            "description": "先手：0、後手：1",
+            "enum": [0, 1]
+        },
+        "moveWithForksAndInfo": {
+            "title": "指し手",
+            "type": "object",
+            "properties": {
+                "comments": {
+                    "description": "コメント",
+                    "$ref": "#/$defs/comments"
+                },
+                "move": {
+                    "description": "駒の動き",
+                    "$ref": "#/$defs/move"
+                },
+                "time": {
+                    "description": "消費時間",
+                    "$ref": "#/$defs/consumption"
+                },
+                "special": {
+                    "description": "特殊棋譜。それぞれの意味はCSA標準棋譜ファイル形式 (V2.2) に準拠する。",
+                    "$ref": "#/$defs/special"
+                },
+                "forks": {
+                    "description": "分岐。任意の長さの分岐を任意個格納する．分岐の初手はこのforksを持つ棋譜の代替の手とする(次の手ではなく)",
+                    "$ref": "#/$defs/forks"
+                }
+            },
+            "additionalProperties": false
+        },
+        "special": {
+            "title": "特殊棋譜",
+            "enum": [
+                "TORYO",
+                "CHUDAN",
+                "SENNICHITE",
+                "TIME_UP",
+                "ILLEGAL_MOVE",
+                "+ILLEGAL_ACTION",
+                "-ILLEGAL_ACTION",
+                "JISHOGI",
+                "KACHI",
+                "HIKIWAKE",
+                "MATTA",
+                "TSUMI",
+                "FUZUMI",
+                "ERROR",
+                null
+            ]
+        },
+        "forks": {
+            "title": "分岐群",
+            "type": ["array", "null"],
+            "items": {
+                "$ref": "#/$defs/fork"
+            }
+        },
+        "fork": {
+            "title": "分岐",
+            "type": "array",
+            "items": {
+                "$ref": "#/$defs/moveWithForksAndInfo"
+            }
+        },
+        "consumption": {
+            "title": "消費時間",
+            "type": ["object", "null"],
+            "properties": {
+                "now": {
+                    "description": "1手",
+                    "$ref": "#/$defs/time"
+                },
+                "total": {
+                    "description": "合計",
+                    "$ref": "#/$defs/time"
+                }
+            },
+            "required": ["now", "total"],
+            "additionalProperties": false
+        },
+        "move": {
+            "title": "指し手",
+            "type": ["object", "null"],
+            "properties": {
+                "color": {
+                    "description": "先手/後手",
+                    "$ref": "#/$defs/color"
+                },
+                "from": {
+                    "description": "移動元。打った場合はなし",
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/placeFormat"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "to": {
+                    "description": "移動先",
+                    "$ref": "#/$defs/placeFormat"
+                },
+                "piece": {
+                    "description": "駒の種類",
+                    "$ref": "#/$defs/kind"
+                },
+                "same": {
+                    "description": "直前と同じ場合",
+                    "type": ["boolean", "null"]
+                },
+                "promote": {
+                    "description": "成るかどうか。true:成, false:不成, 無いかnull:どちらでもない",
+                    "type": ["boolean", "null"]
+                },
+                "capture": {
+                    "description": "取った駒の種類",
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/capturablekind"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                },
+                "relative": {
+                    "description": "相対情報",
+                    "oneOf": [
+                        {
+                            "$ref": "#/$defs/relative"
+                        },
+                        {
+                            "type": "null"
+                        }
+                    ]
+                }
+            },
+            "required": ["color", "to", "piece"],
+            "additionalProperties": false
+        },
+        "comments": {
+            "title": "コメント",
+            "oneOf": [
+                {
+                    "type": "null"
+                },
+                {
+                    "type": "array",
+                    "items": {
+                        "type": "string"
+                    }
+                }
+            ]
+        },
+        "relative": {
+            "title": "相対情報",
+            "type": "string",
+            "pattern": "[LCR]|[UMD]|[LCR][UD]|[LR]M|H"
+        },
+        "time": {
+            "title": "時間",
+            "type": "object",
+            "properties": {
+                "h": {
+                    "description": "時",
+                    "type": ["integer", "null"]
+                },
+                "m": {
+                    "description": "分",
+                    "type": "integer"
+                },
+                "s": {
+                    "description": "秒",
+                    "type": "integer"
+                }
+            },
+            "required": ["m", "s"],
+            "additionalProperties": false
+        },
+        "placeFormat": {
+            "title": "座標",
+            "type": "object",
+            "properties": {
+                "x": {
+                    "description": "1から9",
+                    "type": "integer"
+                },
+                "y": {
+                    "description": "一から九",
+                    "type": "integer"
+                }
+            },
+            "required": ["x", "y"],
+            "additionalProperties": false
+        },
+        "kind": {
+            "title": "駒の種類",
+            "description": "CSA標準棋譜ファイル形式 (V2.2) の表記を使用している。",
+            "enum": [
+                "FU",
+                "KY",
+                "KE",
+                "GI",
+                "KI",
+                "KA",
+                "HI",
+                "OU",
+                "TO",
+                "NY",
+                "NK",
+                "NG",
+                "UM",
+                "RY"
+            ]
+        },
+        "capturablekind": {
+            "title": "持駒に加えることができる駒の種類",
+            "description": "kindの部分集合である。",
+            "enum": ["FU", "KY", "KE", "GI", "KI", "KA", "HI", "TO", "NY", "NK", "NG", "UM", "RY"]
+        }
+    }
+}

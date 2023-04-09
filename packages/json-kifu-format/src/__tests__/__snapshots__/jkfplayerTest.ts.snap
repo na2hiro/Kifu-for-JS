@@ -1,0 +1,1019 @@
+// Jest Snapshot v1, https://goo.gl/fbAQLP
+
+exports[`class Player forkPointers, forks, currentStream nested fork: currentStream 1`] = `
+Array [
+  Object {},
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 2,
+              "y": 7,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 2,
+              "y": 6,
+            },
+          },
+        },
+        Object {
+          "forks": Array [
+            Array [
+              Object {
+                "move": Object {
+                  "color": 1,
+                  "from": Object {
+                    "x": 8,
+                    "y": 3,
+                  },
+                  "piece": "FU",
+                  "to": Object {
+                    "x": 8,
+                    "y": 4,
+                  },
+                },
+              },
+            ],
+          ],
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 3,
+              "y": 3,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 3,
+              "y": 4,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 8,
+              "y": 3,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 8,
+              "y": 4,
+            },
+          },
+        },
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 2,
+              "y": 7,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 2,
+              "y": 6,
+            },
+          },
+        },
+        Object {
+          "forks": Array [
+            Array [
+              Object {
+                "move": Object {
+                  "color": 1,
+                  "from": Object {
+                    "x": 8,
+                    "y": 4,
+                  },
+                  "piece": "FU",
+                  "to": Object {
+                    "x": 8,
+                    "y": 5,
+                  },
+                },
+              },
+              Object {
+                "move": Object {
+                  "color": 1,
+                  "from": Object {
+                    "x": 8,
+                    "y": 8,
+                  },
+                  "piece": "KA",
+                  "to": Object {
+                    "x": 7,
+                    "y": 7,
+                  },
+                },
+              },
+            ],
+          ],
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 3,
+              "y": 3,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 3,
+              "y": 4,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 5,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 5,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "capture": "KA",
+            "color": 0,
+            "from": Object {
+              "x": 8,
+              "y": 8,
+            },
+            "piece": "KA",
+            "promote": false,
+            "to": Object {
+              "x": 2,
+              "y": 2,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 2,
+        "y": 6,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: currentStream 2`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 2,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 8,
+              "y": 3,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 8,
+              "y": 4,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: currentStream 3`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 2,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 8,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 8,
+        "y": 4,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: currentStream 4`] = `
+Array [
+  Object {},
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 2,
+              "y": 7,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 2,
+              "y": 6,
+            },
+          },
+        },
+        Object {
+          "forks": Array [
+            Array [
+              Object {
+                "move": Object {
+                  "color": 1,
+                  "from": Object {
+                    "x": 8,
+                    "y": 3,
+                  },
+                  "piece": "FU",
+                  "to": Object {
+                    "x": 8,
+                    "y": 4,
+                  },
+                },
+              },
+            ],
+          ],
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 3,
+              "y": 3,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 3,
+              "y": 4,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 8,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 8,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 2,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 8,
+              "y": 4,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 8,
+              "y": 5,
+            },
+          },
+        },
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 8,
+              "y": 8,
+            },
+            "piece": "KA",
+            "to": Object {
+              "x": 7,
+              "y": 7,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: currentStream 5`] = `
+Array [
+  Object {},
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 2,
+              "y": 7,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 2,
+              "y": 6,
+            },
+          },
+        },
+        Object {
+          "forks": Array [
+            Array [
+              Object {
+                "move": Object {
+                  "color": 1,
+                  "from": Object {
+                    "x": 8,
+                    "y": 3,
+                  },
+                  "piece": "FU",
+                  "to": Object {
+                    "x": 8,
+                    "y": 4,
+                  },
+                },
+              },
+            ],
+          ],
+          "move": Object {
+            "color": 1,
+            "from": Object {
+              "x": 3,
+              "y": 3,
+            },
+            "piece": "FU",
+            "to": Object {
+              "x": 3,
+              "y": 4,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 8,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 8,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 2,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 8,
+        "y": 4,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 8,
+        "y": 5,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "KA",
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forkPointers 1`] = `Array []`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forkPointers 2`] = `
+Array [
+  Object {
+    "forkIndex": 0,
+    "te": 1,
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forkPointers 3`] = `
+Array [
+  Object {
+    "forkIndex": 0,
+    "te": 1,
+  },
+  Object {
+    "forkIndex": 0,
+    "te": 2,
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forkPointers 4`] = `
+Array [
+  Object {
+    "forkIndex": 0,
+    "te": 2,
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forkPointers 5`] = `
+Array [
+  Object {
+    "forkIndex": 0,
+    "te": 2,
+  },
+  Object {
+    "forkIndex": 0,
+    "te": 4,
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forks 1`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"},"forks":[[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]]},{"move":{"from":{"x":5,"y":3},"to":{"x":5,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]]},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}}]]}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forks 2`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"},"forks":[[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]]},{"move":{"from":{"x":5,"y":3},"to":{"x":5,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]]},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}}]]}]},
+  {"te":1,"moves":[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forks 3`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"},"forks":[[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]]},{"move":{"from":{"x":5,"y":3},"to":{"x":5,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]]},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}}]]}]},
+  {"te":1,"moves":[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]},
+  {"te":2,"moves":[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forks 4`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"},"forks":[[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]]},{"move":{"from":{"x":5,"y":3},"to":{"x":5,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]]},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}}]]}]},
+  {"te":2,"moves":[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream nested fork: forks 5`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"},"forks":[[{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}}]]}]]},{"move":{"from":{"x":5,"y":3},"to":{"x":5,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]]},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}}]]}]},
+  {"te":2,"moves":[{"move":{"from":{"x":8,"y":3},"to":{"x":8,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":2,"y":7},"to":{"x":2,"y":6},"color":1,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"},"forks":[[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]]}]},
+  {"te":4,"moves":[{"move":{"from":{"x":8,"y":4},"to":{"x":8,"y":5},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":1,"piece":"KA"}}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: currentStream 1`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "capture": "KA",
+            "color": 0,
+            "from": Object {
+              "x": 8,
+              "y": 8,
+            },
+            "piece": "KA",
+            "promote": false,
+            "to": Object {
+              "x": 2,
+              "y": 2,
+            },
+          },
+        },
+        Object {
+          "move": Object {
+            "capture": "KA",
+            "color": 1,
+            "from": Object {
+              "x": 3,
+              "y": 1,
+            },
+            "piece": "GI",
+            "same": true,
+            "to": Object {
+              "x": 2,
+              "y": 2,
+            },
+          },
+        },
+        Object {
+          "move": Object {
+            "color": 0,
+            "piece": "KA",
+            "to": Object {
+              "x": 4,
+              "y": 5,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 8,
+        "y": 9,
+      },
+      "piece": "KE",
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "capture": "KE",
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 2,
+      },
+      "piece": "KA",
+      "promote": true,
+      "same": true,
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "capture": "UM",
+      "color": 0,
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "KA",
+      "same": true,
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "piece": "KE",
+      "relative": "H",
+      "to": Object {
+        "x": 3,
+        "y": 3,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: currentStream 2`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "forks": Array [
+      Array [
+        Object {
+          "move": Object {
+            "capture": "KA",
+            "color": 0,
+            "from": Object {
+              "x": 8,
+              "y": 8,
+            },
+            "piece": "KA",
+            "promote": false,
+            "to": Object {
+              "x": 2,
+              "y": 2,
+            },
+          },
+        },
+        Object {
+          "move": Object {
+            "capture": "KA",
+            "color": 1,
+            "from": Object {
+              "x": 3,
+              "y": 1,
+            },
+            "piece": "GI",
+            "same": true,
+            "to": Object {
+              "x": 2,
+              "y": 2,
+            },
+          },
+        },
+        Object {
+          "move": Object {
+            "color": 0,
+            "piece": "KA",
+            "to": Object {
+              "x": 4,
+              "y": 5,
+            },
+          },
+        },
+      ],
+    ],
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 8,
+        "y": 9,
+      },
+      "piece": "KE",
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "capture": "KE",
+      "color": 1,
+      "from": Object {
+        "x": 2,
+        "y": 2,
+      },
+      "piece": "KA",
+      "promote": true,
+      "same": true,
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "capture": "UM",
+      "color": 0,
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "KA",
+      "same": true,
+      "to": Object {
+        "x": 7,
+        "y": 7,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "piece": "KE",
+      "relative": "H",
+      "to": Object {
+        "x": 3,
+        "y": 3,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: currentStream 3`] = `
+Array [
+  Object {},
+  Object {
+    "move": Object {
+      "color": 0,
+      "from": Object {
+        "x": 7,
+        "y": 7,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 7,
+        "y": 6,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 1,
+      "from": Object {
+        "x": 3,
+        "y": 3,
+      },
+      "piece": "FU",
+      "to": Object {
+        "x": 3,
+        "y": 4,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "capture": "KA",
+      "color": 0,
+      "from": Object {
+        "x": 8,
+        "y": 8,
+      },
+      "piece": "KA",
+      "promote": false,
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "capture": "KA",
+      "color": 1,
+      "from": Object {
+        "x": 3,
+        "y": 1,
+      },
+      "piece": "GI",
+      "same": true,
+      "to": Object {
+        "x": 2,
+        "y": 2,
+      },
+    },
+  },
+  Object {
+    "move": Object {
+      "color": 0,
+      "piece": "KA",
+      "to": Object {
+        "x": 4,
+        "y": 5,
+      },
+    },
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: forkPointers 1`] = `Array []`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: forkPointers 2`] = `Array []`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: forkPointers 3`] = `
+Array [
+  Object {
+    "forkIndex": 0,
+    "te": 3,
+  },
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: forks 1`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":9},"to":{"x":7,"y":7},"color":0,"piece":"KE"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}},{"move":{"from":{"x":3,"y":1},"to":{"x":2,"y":2},"color":1,"piece":"GI","capture":"KA","same":true}},{"move":{"to":{"x":4,"y":5},"color":0,"piece":"KA"}}]]},{"move":{"from":{"x":2,"y":2},"to":{"x":7,"y":7},"color":1,"piece":"KA","capture":"KE","promote":true,"same":true}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":0,"piece":"KA","capture":"UM","same":true}},{"move":{"to":{"x":3,"y":3},"color":1,"piece":"KE","relative":"H"}}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: forks 2`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":9},"to":{"x":7,"y":7},"color":0,"piece":"KE"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}},{"move":{"from":{"x":3,"y":1},"to":{"x":2,"y":2},"color":1,"piece":"GI","capture":"KA","same":true}},{"move":{"to":{"x":4,"y":5},"color":0,"piece":"KA"}}]]},{"move":{"from":{"x":2,"y":2},"to":{"x":7,"y":7},"color":1,"piece":"KA","capture":"KE","promote":true,"same":true}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":0,"piece":"KA","capture":"UM","same":true}},{"move":{"to":{"x":3,"y":3},"color":1,"piece":"KE","relative":"H"}}]},
+]
+`;
+
+exports[`class Player forkPointers, forks, currentStream one fork: forks 3`] = `
+Array [
+  {"te":0,"moves":[{},{"move":{"from":{"x":7,"y":7},"to":{"x":7,"y":6},"color":0,"piece":"FU"}},{"move":{"from":{"x":3,"y":3},"to":{"x":3,"y":4},"color":1,"piece":"FU"}},{"move":{"from":{"x":8,"y":9},"to":{"x":7,"y":7},"color":0,"piece":"KE"},"forks":[[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}},{"move":{"from":{"x":3,"y":1},"to":{"x":2,"y":2},"color":1,"piece":"GI","capture":"KA","same":true}},{"move":{"to":{"x":4,"y":5},"color":0,"piece":"KA"}}]]},{"move":{"from":{"x":2,"y":2},"to":{"x":7,"y":7},"color":1,"piece":"KA","capture":"KE","promote":true,"same":true}},{"move":{"from":{"x":8,"y":8},"to":{"x":7,"y":7},"color":0,"piece":"KA","capture":"UM","same":true}},{"move":{"to":{"x":3,"y":3},"color":1,"piece":"KE","relative":"H"}}]},
+  {"te":3,"moves":[{"move":{"from":{"x":8,"y":8},"to":{"x":2,"y":2},"color":0,"piece":"KA","capture":"KA","promote":false}},{"move":{"from":{"x":3,"y":1},"to":{"x":2,"y":2},"color":1,"piece":"GI","capture":"KA","same":true}},{"move":{"to":{"x":4,"y":5},"color":0,"piece":"KA"}}]},
+]
+`;

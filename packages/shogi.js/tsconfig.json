@@ -1,0 +1,11 @@
+{
+    "include": ["src/shogi.ts"],
+    "exclude": ["**/__tests__/**/*", "**/node_modules/**/*"],
+    "compilerOptions": {
+        "outDir": "dist",
+        "declaration": true,
+        "module": "commonjs",
+        "noEmitOnError": true,
+        "skipLibCheck": true
+    }
+}

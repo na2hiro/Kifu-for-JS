@@ -1,0 +1,11 @@
+{
+    "include": ["./src"],
+    "exclude": ["**/__tests__/**/*"],
+    "compilerOptions": {
+        "declaration": true,
+        "module": "commonjs",
+        "noEmitOnError": true,
+        "target": "es5",
+        "skipLibCheck": true
+    }
+}

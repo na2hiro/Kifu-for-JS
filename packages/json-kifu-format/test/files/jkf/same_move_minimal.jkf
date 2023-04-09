@@ -1,0 +1,80 @@
+{
+    "header": {},
+    "moves": [
+        {},
+        {
+            "move": {
+                "from": {
+                    "x": 7,
+                    "y": 7
+                },
+                "to": {
+                    "x": 7,
+                    "y": 6
+                },
+                "color": 0,
+                "piece": "FU"
+            }
+        },
+        {
+            "move": {
+                "from": {
+                    "x": 3,
+                    "y": 3
+                },
+                "to": {
+                    "x": 3,
+                    "y": 4
+                },
+                "color": 1,
+                "piece": "FU"
+            }
+        },
+        {
+            "move": {
+                "from": {
+                    "x": 8,
+                    "y": 8
+                },
+                "to": {
+                    "x": 2,
+                    "y": 2
+                },
+                "promote": true,
+                "color": 0,
+                "capture": "KA",
+                "piece": "KA"
+            }
+        },
+        {
+            "move": {
+                "from": {
+                    "x": 3,
+                    "y": 1
+                },
+                "to": {
+                    "x": 2,
+                    "y": 2
+                },
+                "color": 1,
+                "same": true,
+                "capture": "UM",
+                "piece": "GI"
+            }
+        },
+        {
+            "move": {
+                "from": {
+                    "x": 2,
+                    "y": 7
+                },
+                "to": {
+                    "x": 2,
+                    "y": 6
+                },
+                "color": 0,
+                "piece": "FU"
+            }
+        }
+    ]
+}
