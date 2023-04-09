@@ -33,6 +33,7 @@
     "lint:fix": "lerna run lint:fix",
     "typecheck": "lerna run typecheck",
     "build": "lerna run build",
+    "clean": "lerna run clean",
     "prepublishOnly": "npm run build",
     "ghpages": "rm -rf public && lerna run ghpages && mkdir public && mv packages/Kifu-for-JS/public/* public/ && mv packages/json-kifu-format/public public/json-kifu-format && mv packages/shogi.js/public public/shogi.js"
   },
