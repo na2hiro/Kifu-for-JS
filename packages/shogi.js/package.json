@@ -33,7 +33,7 @@
     "bugs": {
         "url": "https://github.com/na2hiro/Shogi.js/issues"
     },
-    "homepage": "https://github.com/na2hiro/Shogi.js#readme",
+    "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/shogi.js#readme",
     "devDependencies": {
         "ts-jest": "^27.1.3"
     }

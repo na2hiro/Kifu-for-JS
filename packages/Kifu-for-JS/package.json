@@ -46,7 +46,7 @@
     "bugs": {
         "url": "https://github.com/na2hiro/Kifu-for-JS/issues"
     },
-    "homepage": "https://github.com/na2hiro/Kifu-for-JS#readme",
+    "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/Kifu-for-JS#readme",
     "dependencies": {
         "fscreen": "^1.1.0",
         "json-kifu-format": "^3.1.1-alpha.0",

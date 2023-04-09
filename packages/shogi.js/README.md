@@ -1,4 +1,5 @@
-# Shogi.js (Ver. 2.0) ![Build Status](https://github.com/na2hiro/Shogi.js/actions/workflows/main.yml/badge.svg)
+# Shogi.js ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/shogi.js.svg)](https://badge.fury.io/js/shogi.js)
+
 将棋の盤駒をモデルとするシンプルなJavaScriptライブラリ．TypeScript．
 
 ## インストール
@@ -31,63 +32,11 @@ npm install shogi.js
 [TypeDoc ドキュメンテーション](https://apps.81.la/Kifu-for-JS/shogi.js/docs/) を参照のこと。
 また，`test`ディレクトリ以下のテストで実際の挙動を確認されたい．
 
-## TODO
-https://github.com/na2hiro/Shogi.js/issues
+## バグ・要望等
+https://github.com/na2hiro/Kifu-for-JS/issues へお寄せください
 
 ## 開発
-
-### 準備
-
-```shell
-$ nvm i && nvm use && npm install
-```
-
-上記コマンドを実行することで開発に必要なパッケージをインストールできます．
-
-* TypeScript
-* Webpack (バンドルツール)
-* Jest (テストフレームワーク，カバレッジ計測)
-* TSLint (Linter)
-
-### コマンド
-
-
-```shell
-$ npm run build
-$ npm run build:watch
-```
-
-ビルドが走ります．`build:watch`の場合，変更されるたびにビルドが走ります．
-
-```shell
-$ npm run test:watch
-```
-
-コンソールでテスト結果が表示されます．コードの変更が保存されるたびに必要なテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
-
-```shell
-$ npm run test
-```
-
-全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．push時にチェックされ満たしていなければ却下されるはずです．
-
-```shell
-$ npm run lint
-```
-
-コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます．
-
-```shell
-$ npm run lint:fix
-```
-
-自動的に修正可能な問題(インデント等)を直してくれます．
-
-```shell
-$ npm run docs
-```
-
-`docs/` 以下にドキュメントを生成します．
+[monorepoトップのREADME](../../README.md#開発)をご覧ください。
 
 ## license
 

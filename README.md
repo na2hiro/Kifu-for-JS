@@ -1,10 +1,10 @@
-# Kifu for JS monorepo
+# Kifu for JS monorepo ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージのREADMEは各パッケージのディレクトリにあります。
 
-* [`kifu-for-js`](packages/Kifu-for-JS/README.md): Kifu for JS 将棋再生盤とブックマークレット
-* [`json-kifu-format`](packages/json-kifu-format/README.md): JSON棋譜フォーマットと関連ライブラリ
-* [`shogi.js`](packages/Shogi.js/README.md): 将棋の盤駒を扱うライブラリ
+* [`kifu-for-js`](packages/Kifu-for-JS#readme): Kifu for JS 将棋再生盤とブックマークレット
+* [`json-kifu-format`](packages/json-kifu-format#readme): JSON棋譜フォーマットと関連ライブラリ
+* [`shogi.js`](packages/Shogi.js#readme): 将棋の盤駒を扱うライブラリ
 
 ## 開発
 

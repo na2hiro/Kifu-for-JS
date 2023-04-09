@@ -1,4 +1,4 @@
-# Kifu for JS (ver. 3.0.1) ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg)
+# Kifu for JS ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![GitHub pages status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/gh-pages.yml/badge.svg)](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/gh-pages.yml) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT) [![npm version](https://badge.fury.io/js/kifu-for-js.svg)](https://badge.fury.io/js/kifu-for-js)
 モバイルで使いやすい(ことを目指す)将棋の棋譜再生盤とそのブックマークレット
 
 ## Kifu for JS 将棋再生盤
@@ -11,7 +11,7 @@ Kifu for JSは，Kifu for Flash同様，Webページ内で棋譜を読み込み�
 ### 機能
 既にKifu for Flashと同等程度の機能を備えています．
 
-* 対応棋譜形式: **kif**, **ki2**, kifu, ki2u, **csa**, [**jkf**](https://github.com/na2hiro/json-kifu-format)
+* 対応棋譜形式: **kif**, **ki2**, kifu, ki2u, **csa**, [**jkf**](../json-kifu-format#readme)
 * 駒落ちや詰将棋等の初期局面指定にも対応
 * 変化手順の再生が可能
 * 棋譜中継のための自動更新機能
@@ -71,7 +71,7 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 <img src="http://na2hiro.github.io/Kifu-for-JS/readme-ss/bookmarklet-3.jpg" width="800">
 
 ## 更新ログ / バージョン
-[Releases](https://github.com/na2hiro/json-kifu-format/releases) からどうぞ．
+[Releases](https://github.com/na2hiro/Kifu-for-JS/releases) からどうぞ．
 
 ## 動作環境
 以下の環境で自動テストによる動作確認を行っています。
@@ -83,26 +83,16 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 
 * 棋譜形式の対応には注意を払っていますが，もし動作しない棋譜がありましたら対応しますので，Twitterやissuesでご報告いただければ幸いです．
 * 要望やバグ報告は [issues](https://github.com/na2hiro/Kifu-for-JS/issues) へよろしくお願いします．
-* 棋譜形式そのものについては [JSON棋譜フォーマット](https://github.com/na2hiro/json-kifu-format) もご参照ください．
+* 棋譜形式そのものについては [JSON棋譜フォーマット](../json-kifu-format#readme) もご参照ください．
 
-## 開発環境
+## 開発
 
-### セットアップ
+主な情報は[monorepoトップのREADME](../../README.md#開発)をご覧ください。`kifu-for-js`固有の情報は以下の通りです。
 
-```sh
-$ nvm install && nvm use
-```
+### 関連ツール・ライブラリ
 
-Node Version Manager (NVM) で目的のバージョンのnodeに切り替えます。nvmがなければこちらからダウンロードできます。 https://github.com/nvm-sh/nvm
-
-```shell
-$ npm install
-```
-
-上記コマンドを実行することで開発に必要なパッケージをインストールできます．
-
-* [na2hiro/json-kifu-format](https://github.com/na2hiro/json-kifu-format) 1.0: 将棋の盤駒を扱うライブラリ
-* [na2hiro/Shogi.js](https://github.com/na2hiro/Shogi.js): 将棋の盤駒を扱うライブラリ
+* [na2hiro/json-kifu-format](../json-kifu-format) 1.0: 将棋の盤駒を扱うライブラリ
+* [na2hiro/Shogi.js](../shogi.js): 将棋の盤駒を扱うライブラリ
 * TypeScript
 * React
 * React DnD
@@ -112,40 +102,13 @@ $ npm install
 * Cypress (end-to-endテスト)
 * TSLint (Linter)
 
-### 開発サーバ
+### E2E テスト
 
 ```shell
-$ npm run start
+npm run cypress:open
 ```
 
-開発用サーバが立ち上がり，`examples/`以下の`example.html`や`loadJkf.html`にアクセスすることで動作を確認できます．コード変更時には自動で反映されます。
-
-### テスト
-
-```shell
-$ npm run cypress:open
-```
-
-開発サーバが立ち上がっている状態でCypressによるend-to-end (E2E)テストを行えます。 実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。
-
-```shell
-$ npm run test:watch
-```
-
-単体テストを実行します．コードが変更されるたびに影響を受けるテストが再実行されるため，実装が既存の有効なテストを壊してないか簡単に確認できます．
-
-```shell
-$ npm run test
-```
-
-全てのテストが走るとともにカバレッジレポートが表示されます．`coverage/lcov-report/index.html`では，行ごとのカバレッジを確認できます．追加されたコードのブランチカバレッジが100%になるようにしてください．
-
-```shell
-$ npm run lint
-$ npm run lint:fix
-```
-
-コードの品質が検査されます．エラーがあればそれに従い直してください．push前にもチェックされます． `:fix`をつけると、自動的に修正可能な問題(インデント等)を直してくれます．
+開発サーバが立ち上がっている状態(例えば`npm run dev`の後)でCypressによるend-to-end (E2E)テストを行えます。 実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。
 
 ## License
 [Shogi images by muchonovski](http://mucho.girly.jp/bona/) below `images` directory are under a [Creative Commons 表示-非営利 2.1 日本 License](http://creativecommons.org/licenses/by-nc/2.1/jp/).
