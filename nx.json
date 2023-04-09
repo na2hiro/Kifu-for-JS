@@ -37,6 +37,12 @@
       "dependsOn": [
         "^build"
       ]
+    },
+    "ghpages": {
+      "dependsOn": [
+        "^build",
+        "build"
+      ]
     }
   }
 }
