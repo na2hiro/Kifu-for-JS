@@ -1,6 +1,6 @@
 {
     "name": "shogi.js",
-    "version": "3.1.1-alpha.0",
+    "version": "3.2.0",
     "description": "simple shogi library for JavaScript",
     "main": "dist/shogi.js",
     "types": "dist/src/shogi.d.ts",
