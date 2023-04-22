@@ -6,7 +6,7 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-import {Color, Piece, Shogi} from "shogi.js";
+import {Color, Piece, Shogi, Kind, kindToString} from "shogi.js";
 import {IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
 import {canPromote, normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "./normalizer";
 import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
@@ -90,23 +90,8 @@ export default class JKFPlayer {
     public static numToKan(n: number) {
         return "〇一二三四五六七八九"[n];
     }
-    public static kindToKan(kind: string): string {
-        return {
-            FU: "歩",
-            KY: "香",
-            KE: "桂",
-            GI: "銀",
-            KI: "金",
-            KA: "角",
-            HI: "飛",
-            OU: "玉",
-            TO: "と",
-            NY: "成香",
-            NK: "成桂",
-            NG: "成銀",
-            UM: "馬",
-            RY: "龍",
-        }[kind];
+    public static kindToKan(kind: Kind): string {
+        return kindToString(kind);
     }
     public static relativeToKan(relative: string) {
         return {

@@ -43,8 +43,8 @@ describe("loadFile", () => {
         fetchFile.mockResolvedValue(KIF_STRING);
         document.body.innerHTML = "<div id='kifu'></div>";
         const kifuStore = await KifuForJS.load("somewhere.kif", "kifu");
-        expect(kifuStore.player.tesuu).toBe(0)
-        expect(kifuStore.player.kifu.moves.length).toBe(5)
+        expect(kifuStore.player.tesuu).toBe(0);
+        expect(kifuStore.player.kifu.moves.length).toBe(5);
         expect(kifuStore.errors).toHaveLength(0);
     });
 
@@ -81,21 +81,21 @@ describe("loadString", () => {
     it("plays KIF without errors", async () => {
         document.body.innerHTML = "<div id='kifu'></div>";
         const kifuStore = await KifuForJS.loadString(KIF_STRING, "kifu");
-        expect(kifuStore.player.tesuu).toBe(0)
-        expect(kifuStore.player.kifu.moves.length).toBe(5)
+        expect(kifuStore.player.tesuu).toBe(0);
+        expect(kifuStore.player.kifu.moves.length).toBe(5);
     });
 
     it("plays KI2 without errors", async () => {
         document.body.innerHTML = "<div id='kifu'></div>";
         const kifuStore = await KifuForJS.loadString(KI2_STRING, "kifu");
-        expect(kifuStore.player.tesuu).toBe(0)
-        expect(kifuStore.player.kifu.moves.length).toBe(3)
+        expect(kifuStore.player.tesuu).toBe(0);
+        expect(kifuStore.player.kifu.moves.length).toBe(3);
     });
 
     it("shows and error about invalid kifu", async () => {
         document.body.innerHTML = "<div id='kifu'></div>";
         const kifuStore = await KifuForJS.loadString("▲七六歩", "kifu");
-        expect(kifuStore.player.kifu.moves.length).toBe(1)
+        expect(kifuStore.player.kifu.moves.length).toBe(1);
         expect(kifuStore.errors).toMatchSnapshot();
     });
 });

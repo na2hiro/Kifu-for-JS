@@ -12,8 +12,7 @@ module.exports = {
     moduleNameMapper: {
         "\\.(png|scss)$": "<rootDir>/__mocks__/fileMock.js",
     },
-    setupFiles: ["./test/jestsetup.ts"],
-    snapshotSerializers: ["enzyme-to-json/serializer"],
+    setupFilesAfterEnv: ["./test/jestsetup.ts"],
     coverageThreshold: {
         global: {
             statements: -179,

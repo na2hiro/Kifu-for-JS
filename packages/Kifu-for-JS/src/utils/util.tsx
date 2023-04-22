@@ -1,3 +1,4 @@
+import React from "react";
 import { Color } from "shogi.js";
 
 export function colorToMark(color) {

@@ -27,7 +27,7 @@ export default class LeftControl extends React.Component<IProps, {}> {
                 <button className="kifuforjs-dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
                     棋譜保存
                 </button>
-                <select className="kifuforjs-autoload" onChange={this.onChangeTimer}>
+                <select className="kifuforjs-autoload" onChange={this.onChangeTimer} aria-label="自動更新設定">
                     <option value="NaN">自動更新しない</option>
                     <option value="30">自動更新30秒毎</option>
                     <option value="60">自動更新1分毎</option>

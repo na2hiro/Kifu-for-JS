@@ -36,7 +36,14 @@ export default class ForkList extends React.Component<IProps, any> {
         }
         return (
             this.props.kifuStore.hasFork && (
-                <select value="top" onChange={this.onChange} disabled={forks.length === 0} data-testid="forklist">
+                // TODO: select using label instead of testid
+                <select
+                    value="top"
+                    onChange={this.onChange}
+                    disabled={forks.length === 0}
+                    data-testid="forklist"
+                    aria-label="分岐"
+                >
                     {options}
                 </select>
             )

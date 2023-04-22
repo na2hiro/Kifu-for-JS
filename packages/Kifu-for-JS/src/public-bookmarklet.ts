@@ -19,7 +19,7 @@ async function start(): Promise<KifuStore[]> {
 
     async function replaceAll(): Promise<KifuStore[]> {
         const targetList = [];
-        $("applet param[name=KIFU]").each(function() {
+        $("applet param[name=KIFU]").each(function () {
             // applet方式
             // http://kakinoki.o.oo7.jp/kifujf/example.html
             const $parent = $(this).parent();
@@ -29,7 +29,7 @@ async function start(): Promise<KifuStore[]> {
             $parent.replaceWith("<div id='" + targetId + "'></div>");
             targetList.push({ targetId, kifuPath, method: "applet" });
         });
-        $("object param[name=FlashVars]").each(function() {
+        $("object param[name=FlashVars]").each(function () {
             // object方式 http://kakinoki.o.oo7.jp/flash/example.html
             const $parent = $(this).parent();
             let kifuPath;
@@ -113,12 +113,7 @@ async function start(): Promise<KifuStore[]> {
 }
 
 function makeRandomId() {
-    return (
-        "kifuforjs_" +
-        Math.random()
-            .toString(36)
-            .slice(2)
-    );
+    return "kifuforjs_" + Math.random().toString(36).slice(2);
 }
 
 let promise = Promise.resolve();

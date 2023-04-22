@@ -16,6 +16,7 @@ export default class Comment extends React.Component<IProps> {
                 className="kifuforjs-comment"
                 disabled={true}
                 value={this.props.kifuStore.errors.join("\n") || player.getComments().join("\n")}
+                aria-label="コメント"
             />
         );
     }

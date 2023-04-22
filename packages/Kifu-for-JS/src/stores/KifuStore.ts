@@ -57,10 +57,10 @@ export default class KifuStore {
     }
 
     public loadKifu(kifu: string, fileName?: string): Promise<void> {
-        return new Promise((resolve)=>{
+        return new Promise((resolve) => {
             this.loadKifuSync(kifu, fileName);
             resolve();
-        })
+        });
     }
 
     public loadKifuSync(kifu: string, fileName?: string) {
@@ -96,7 +96,7 @@ export default class KifuStore {
             (fetchError) => {
                 this.errors.push(fetchError);
                 throw fetchError;
-            }
+            },
         );
     }
 

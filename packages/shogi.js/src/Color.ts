@@ -8,3 +8,12 @@ enum Color {
     White,
 }
 export default Color;
+
+export function colorToString(color: Color): string {
+    switch (color) {
+        case Color.Black:
+            return "先手";
+        case Color.White:
+            return "後手";
+    }
+}
