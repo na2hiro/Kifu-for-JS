@@ -1,11 +1,11 @@
 import {lastCellShouldBe, end, forward1, forward10, selectTesuu, tesuuShouldBe, goto, kifuList} from "../utils";
 
-const activeRow = () => cy.get(".kifuforjs-kifulist-row--selected")
-const dl = () => cy.get(".kifuforjs-dl")
-const autoload = () => cy.get(".kifuforjs-autoload")
-const forklist = () => cy.getBySel("forklist")
+const activeRow = () => cy.findByRole("listbox").findByRole("option", {selected: true});
+const dl = () => cy.findByText("棋譜保存")
+const autoload = () => cy.findByLabelText("自動更新設定")
+const forklist = () => cy.findByLabelText("分岐")
 
-const selectRow = (tesuu: number) => cy.get(`.kifuforjs-kifulist-inner>div:nth-child(${tesuu + 2})`)
+const selectRow = (tesuu: number) => cy.findByRole("listbox").findByRole("option", {name: new RegExp(`(^|\\s)${tesuu}\\s`)})
 
 let response; // Mutate this to change stubbed request
 const setJkfUntil = (jkfObj: any, tesuu: number) => response = {
@@ -15,7 +15,7 @@ const setJkfUntil = (jkfObj: any, tesuu: number) => response = {
 
 describe("Left control", () => {
     beforeEach(() => {
-        cy.visit('/examples/loadJkf.html', {
+        cy.visit('/loadJkf.html', {
             onBeforeLoad(win) {
                 cy.stub(win, 'open');
             }
@@ -51,17 +51,17 @@ describe("Left control", () => {
         dl().click()
         cy.window().its('open').should('be.called');
     })
-    it('shows branches and can fork', () => {
-        cy.visit("/examples/forked.html")
+    it.only('shows branches and can fork', () => {
+        cy.visit("/forked.html")
         goto(1)
         lastCellShouldBe(7, 6)
 
         goto(0)
-        forklist().select("0")
+        forklist().select("☗２六歩")
         tesuuShouldBe(1)
         lastCellShouldBe(2, 6)
 
-        forklist().select("0")
+        forklist().select("☖８四歩")
         tesuuShouldBe(2)
         lastCellShouldBe(8, 4)
 
@@ -76,7 +76,7 @@ describe("Left control", () => {
         cy.fixture("/jkfExample.json")
             .then(jkf => setJkfUntil(jkf, 0))
 
-        cy.intercept("GET", "/examples/files/jkf/ryuou201409020101.jkf", req=>req.reply(response)).as("get")
+        cy.intercept("GET", "/files/jkf/ryuou201409020101.jkf", req=>req.reply(response)).as("get")
         autoload().select("30")
         cy.tick(31000)
         cy.get("@get")

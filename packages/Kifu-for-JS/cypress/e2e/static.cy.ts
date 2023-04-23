@@ -2,7 +2,7 @@ import {comment, end, goto, reverse} from "../utils";
 
 describe("Static checks", () => {
     beforeEach(() => {
-        cy.visit('/examples/loadJkf.html');
+        cy.visit('/loadJkf.html');
     })
 
     describe("Metadata", () => {

@@ -1,22 +1,22 @@
-export const start = () => cy.contains(/^\|<$/);
-export const backward10 = () => cy.contains(/^<<$/);
-export const backward1 = () => cy.contains(/^<$/);
+export const start = () => cy.findByText("|<");
+export const backward10 = () => cy.findByText("<<");
+export const backward1 = () => cy.findByText("<");
 
-export const forward1 = () => cy.contains(/^>$/);
-export const forward10 = () => cy.contains(/^>>$/);
-export const end = () => cy.contains(/^>\|$/);
+export const forward1 = () => cy.findByText(">");
+export const forward10 = () => cy.findByText(">>");
+export const end = () => cy.findByText(">|");
 
-export const reverse = () => cy.contains("反転");
-export const credit = () => cy.contains("credit");
+export const reverse = () => cy.findByText("反転");
+export const credit = () => cy.findByText("credit");
 
-export const comment = () => cy.get(".kifuforjs-comment");
+export const comment = () => cy.findByLabelText("コメント");
 
-export const kifuList = () => cy.get(".kifuforjs-kifulist")
+export const kifuList = () => cy.findByRole("listbox")
 
 export const selectCell = (x: number, y: number) =>
     cy.get(`table tr:nth-child(${y + 1}) td:nth-child(${10 - x})`);
 
-export const selectTesuu = () => cy.get(`input[name="tesuu"]`);
+export const selectTesuu = () => cy.findByLabelText(`現在の手数`);
 export const goto = (tesuu: number) => selectTesuu().type(`{backspace}{backspace}{backspace}${tesuu}`)
 
 export const tesuuShouldBe = (tesuu: number) => selectTesuu().should('have.value', tesuu)

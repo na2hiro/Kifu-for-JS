@@ -18,7 +18,9 @@ export interface IProps {
 }
 
 function getLabel({ color, kind }: { color?: Color; kind?: string }) {
-    if (typeof color === "undefined" || typeof kind === "undefined") { return "空き"; }
+    if (typeof color === "undefined" || typeof kind === "undefined") {
+        return "空き";
+    }
     return `${colorToString(color)} ${kindToString(kind)}`;
 }
 
