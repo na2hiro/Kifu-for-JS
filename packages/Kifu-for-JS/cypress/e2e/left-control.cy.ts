@@ -15,7 +15,7 @@ const setJkfUntil = (jkfObj: any, tesuu: number) => response = {
 
 describe("Left control", () => {
     beforeEach(() => {
-        cy.visit('/loadJkf.html', {
+        cy.visit('/examples/loadJkf.html', {
             onBeforeLoad(win) {
                 cy.stub(win, 'open');
             }
@@ -52,7 +52,7 @@ describe("Left control", () => {
         cy.window().its('open').should('be.called');
     })
     it.only('shows branches and can fork', () => {
-        cy.visit("/forked.html")
+        cy.visit("/examples/forked.html")
         goto(1)
         lastCellShouldBe(7, 6)
 

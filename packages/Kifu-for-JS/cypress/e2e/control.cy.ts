@@ -15,7 +15,7 @@ const CREDIT = "credit";
 
 describe("Control", () => {
   beforeEach(() => {
-    cy.visit("/loadJkf.html", {
+    cy.visit("/examples/loadJkf.html", {
       onBeforeLoad(win) {
         cy.stub(win, "open");
       }

@@ -9,7 +9,7 @@ export const end = () => cy.findByText(">|");
 export const reverse = () => cy.findByText("反転");
 export const credit = () => cy.findByText("credit");
 
-export const comment = () => cy.findByLabelText("コメント");
+export const comment = () => cy.findByLabelText("局面コメント");
 
 export const kifuList = () => cy.findByRole("listbox")
 

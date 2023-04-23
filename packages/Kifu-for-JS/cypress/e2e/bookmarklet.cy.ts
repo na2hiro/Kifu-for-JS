@@ -2,15 +2,15 @@ import { comment, forward1, forward10, selectTesuu } from "../utils";
 
 describe("bookmarklet", () => {
   it("should replace flash", () => {
-    cy.visit("/kifu-for-flash-replace.html");
+    cy.visit("/examples/kifu-for-flash-replace.html");
     comment().should("have.text", "コメント");
   });
   it("should replace flash swfobject", () => {
-    cy.visit("/kifu-for-flash-swfobject-replace.html");
+    cy.visit("/examples/kifu-for-flash-swfobject-replace.html");
     comment().should("have.text", "コメント");
   });
   it("should replace java applet", () => {
-    cy.visit("/kifu-for-java-replace.html");
+    cy.visit("/examples/kifu-for-java-replace.html");
 
     cy.get(".kifuforjs").first().within(() => {
       cy.get(`.kifuforjs-kifulist-inner`).find("div").should("have.length.above", 1);
@@ -29,7 +29,7 @@ describe("bookmarklet", () => {
     cy.on("window:alert", stub);
     cy.on("uncaught:exception", (err) => false); // ignore
 
-    cy.visit("/nothing-to-replace.html")
+    cy.visit("/examples/nothing-to-replace.html")
       .then(() => {
         expect(stub).to.be.calledOnce;
       });
