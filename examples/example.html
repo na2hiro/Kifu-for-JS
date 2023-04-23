@@ -1,4 +1,4 @@
-<html>
+<html lang="ja">
 <head>
 <title>Kifu for JS example</title>
 <meta charset="utf-8">
@@ -63,7 +63,7 @@ JavaもFlashも使わない，JavaScriptだけで動く<a href="https://github.c
 <script>Kifu.load("./files/jkf/ryuou201409020101.jkf");</script>
 <h3><a id="text">テキスト読み込み＆JSからのテキスト再読み込み</a></h3>
 <script>var kifu = Kifu.loadString("▲７六歩  △８四歩  ▲６八銀");</script>
-<textarea id="kifuString">
+<textarea id="kifuString" aria-label="棋譜">
 ▲７六歩  △８四歩  ▲６八銀
 </textarea>
 <button onclick="kifu.then(kifuStore => kifuStore.loadKifu(document.getElementById('kifuString').value))">読み込み</button>
