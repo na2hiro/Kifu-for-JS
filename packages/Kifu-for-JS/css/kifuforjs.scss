@@ -225,7 +225,7 @@
       width: 100%;
     }
 
-    &-row--selected {
+    [aria-selected="true"] {
       background-color: #cecece;
 
       .kifuforjs-kifulist:focus & {

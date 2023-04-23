@@ -19,9 +19,6 @@ import { createRef } from "react";
 import "../css/kifuforjs.scss";
 import Comment from "./Comment";
 
-// tslint:disable-next-line:no-var-requires
-const DevTools = process.env.NODE_ENV !== "production" ? require("mobx-react-devtools").default : () => <span />;
-
 export interface IProps {
     filePath?: string;
     kifu?: string;
@@ -116,7 +113,6 @@ class Kifu extends React.Component<IProps, { isFullscreen: boolean }> {
                             {fscreen.fullscreenElement ? "Finish fullscreen" : "Enter fullscreen"}
                         </div>
                     )*/}
-                    <DevTools />
                     <div className="kifuforjs-columns">
                         <div className="kifuforjs-column">
                             <Hand kifuStore={this.kifuStore} defaultColor={1} />

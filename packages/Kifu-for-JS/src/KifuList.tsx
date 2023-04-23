@@ -1,7 +1,7 @@
 import { JKFPlayer } from "json-kifu-format";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { FunctionComponent, SyntheticEvent, useCallback, useEffect, useRef, useState } from "react";
+import { FunctionComponent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
 import { pad } from "./utils/util";
 
 export interface IProps {
@@ -55,7 +55,7 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) =>
             setTesuuInitiatedByScroll(null);
         }
     }, [tesuu, containerHeight]);
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (containerRef.current && ref.current) {
             let newRowHeight = rowHeight;
             if (rowHeight === null) {
@@ -118,15 +118,24 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) =>
         [tesuu],
     );
     return (
-        <div className="kifuforjs-kifulist" onScroll={onScroll} onKeyDown={onKeyDown} ref={containerRef} tabIndex={0}>
+        <div
+            className="kifuforjs-kifulist"
+            onScroll={onScroll}
+            onKeyDown={onKeyDown}
+            ref={containerRef}
+            tabIndex={0}
+            role="listbox"
+            aria-label="手数"
+        >
             <div className="kifuforjs-kifulist-inner">
                 <div style={{ height: paddingHeight }} />
                 {options.map(({ text, value }) => (
                     <div
                         key={value}
+                        role="option"
                         // tslint:disable-next-line jsx-no-lambda
                         onClick={() => onChange(value)}
-                        className={value === tesuu ? "kifuforjs-kifulist-row--selected" : ""}
+                        aria-selected={value === tesuu}
                         ref={value === tesuu ? ref : null}
                     >
                         {text}

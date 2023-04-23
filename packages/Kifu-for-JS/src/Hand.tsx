@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import * as React from "react";
-import { Color } from "shogi.js";
+import { Color, colorToString } from "shogi.js";
 import PieceHandGroup from "./PieceHandGroup";
 import KifuStore from "./stores/KifuStore";
 import { colorToMark } from "./utils/util";
@@ -37,7 +37,10 @@ export default class Hand extends React.Component<IProps, any> {
                 }
                 data-testid={`hand-for-${color}`}
             >
-                <div className="kifuforjs-hand-head">{colorToMark(color) + playerName}</div>
+                <div className="kifuforjs-hand-head" aria-label={`${colorToString(color)} ${playerName}の持ち駒`}>
+                    {colorToMark(color)}
+                    {playerName}
+                </div>
                 <div className={"kifuforjs-hand-body"}>{handGroups}</div>
             </div>
         );

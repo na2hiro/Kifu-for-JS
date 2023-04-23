@@ -9,9 +9,9 @@ const DEV_SERVER_PORT = 8080;
 
 module.exports = env => {
     const IS_GHPAGES = env.ghpages;
-    const IS_PROD = env.production;
+    const IS_PROD = env.production; // Prod or dev
     const IS_ANALYZE = env.analyze;
-    const IS_CI = env.ci;
+    const IS_PROD_LOCAL = env.prodLocal; // To test prod build locally
     const BUNDLE_DIR = path.resolve(__dirname, './bundle');
     const common = {
         module: {
@@ -100,7 +100,7 @@ http://opensource.org/licenses/mit-license.php`
                             directory: BUNDLE_DIR,
                         },
                         {
-                            directory: path.join(__dirname, "/examples"),
+                            directory: __dirname,
                         },
                     ],
                 }
@@ -128,7 +128,7 @@ http://opensource.org/licenses/mit-license.php`
     return [bundle, bookmarklets];
 
     function getPublicPath() {
-        if (IS_CI) {
+        if (IS_PROD_LOCAL) {
             return `http://localhost:8081/bundle/`;
         } else if (IS_PROD) {
             return "https://na2hiro.github.io/Kifu-for-JS/out/";

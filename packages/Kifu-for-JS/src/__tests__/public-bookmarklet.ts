@@ -1,3 +1,3 @@
 describe("bookmarklet", () => {
-    it.todo("test everything")
-})
+    it.todo("test everything");
+});

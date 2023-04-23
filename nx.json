@@ -43,6 +43,16 @@
         "^build",
         "build"
       ]
+    },
+    "ci:cy": {
+      "dependsOn": [
+        "build:prodLocal"
+      ]
+    },
+    "build:prodLocal": {
+      "dependsOn": [
+        "^build"
+      ]
     }
   }
 }

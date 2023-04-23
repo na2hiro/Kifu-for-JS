@@ -105,7 +105,7 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 ### E2E テスト
 
 ```shell
-npm run cypress:open
+npm run cy:open
 ```
 
 開発サーバが立ち上がっている状態(例えば`npm run dev`の後)でCypressによるend-to-end (E2E)テストを行えます。 実際のブラウザの様子を確認でき、ソースまたはテストコードが変更されるたびに走ります。

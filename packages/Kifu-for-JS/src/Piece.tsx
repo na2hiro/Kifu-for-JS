@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import { DragSource, DropTarget } from "react-dnd";
-import { Color } from "shogi.js";
+import { Color, colorToString, kindToString } from "shogi.js";
 import { getUrlWithReverse } from "./images/PieceImage";
 import KifuStore from "./stores/KifuStore";
 
@@ -15,6 +15,13 @@ export interface IProps {
     connectDropTarget?: (obj: any) => Element;
     connectDragSource?: (obj: any) => Element;
     isDragging?: boolean;
+}
+
+function getLabel({ color, kind }: { color?: Color; kind?: string }) {
+    if (typeof color === "undefined" || typeof kind === "undefined") {
+        return "空き";
+    }
+    return `${colorToString(color)} ${kindToString(kind)}`;
 }
 
 @observer
@@ -48,10 +55,11 @@ export interface IProps {
 )
 export default class Piece extends React.Component<IProps, any> {
     public render(): React.ReactNode {
+        const label = getLabel(this.props.data);
         const div = this.props.connectDropTarget(
             this.props.connectDragSource(
                 <div style={{ opacity: this.props.isDragging ? 0.4 : 1 }}>
-                    <img src={getPieceImage(this.props)} />
+                    <img src={getPieceImage(this.props)} alt={label} aria-label={label} data-testid={"piece"} />
                 </div>,
             ),
         );

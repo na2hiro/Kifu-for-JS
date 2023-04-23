@@ -4,9 +4,9 @@
  * This software is released under the MIT License.
  * http://opensource.org/licenses/mit-license.php
  */
-import Color from "./Color";
+import Color, {colorToString} from "./Color";
 import IMoveDefinition from "./IMoveDefinition";
-import {Kind} from "./Kind";
+import {Kind, kindToString} from "./Kind";
 import {getMoveDefinitions} from "./moveDefinitions";
 import Piece from "./Piece";
 import "./polyfills";
@@ -484,4 +484,4 @@ export interface IMove {
     color?: Color;
 }
 
-export {Color, Piece, Kind, IMoveDefinition};
+export {Color, Piece, Kind, IMoveDefinition, kindToString, colorToString};

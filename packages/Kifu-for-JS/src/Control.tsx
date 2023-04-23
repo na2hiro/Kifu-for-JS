@@ -48,7 +48,14 @@ export default class Control extends React.Component<IProps> {
                     <button data-go="-1">
                         <div>&lt;</div>
                     </button>
-                    <input type="text" name="tesuu" size={3} value={player.tesuu} onChange={this.onChangeTesuu} />
+                    <input
+                        type="text"
+                        name="tesuu"
+                        size={3}
+                        value={player.tesuu}
+                        onChange={this.onChangeTesuu}
+                        aria-label="現在の手数"
+                    />
                     <button data-go="1">
                         <div>&gt;</div>
                     </button>

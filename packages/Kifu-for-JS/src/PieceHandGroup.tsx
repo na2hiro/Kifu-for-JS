@@ -1,5 +1,6 @@
 import { Component } from "react";
 import * as React from "react";
+import { kindToString } from "shogi.js";
 import PieceHand from "./PieceHand";
 import KifuStore from "./stores/KifuStore";
 
@@ -37,6 +38,12 @@ export default class PieceHandGroup extends Component<IProps, any> {
         if (this.props.data.kind === "FU") {
             classNames.push("kifuforjs-pieceinhand--fu");
         }
-        return <div className={classNames.join(" ")}>{pieces}</div>;
+        const label = `${kindToString(this.props.data.kind)}${this.props.value > 1 ? `${this.props.value}枚` : ``}`;
+
+        return (
+            <div data-testid="piece-in-hand" className={classNames.join(" ")} role="img" aria-label={label}>
+                {pieces}
+            </div>
+        );
     }
 }

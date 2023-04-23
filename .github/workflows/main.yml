@@ -39,7 +39,23 @@ jobs:
       - name: Typecheck
         run: npm run typecheck
 
-# TODO: add integration tests
+  cypress:
+    name: Integration test with Cypress
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v3
+
+      - name: Use Node 16
+        uses: actions/setup-node@v3
+        with:
+          node-version: 16
+
+      - name: Install dependencies
+        uses: bahmutov/npm-install@v1
+
+      - name: Test
+        run: npm run ci:cy
 
   test:
     name: Unit Tests

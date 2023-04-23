@@ -17,7 +17,11 @@ export default class Info extends React.Component<IProps, {}> {
                 dds.push(<dd key={"val" + key}>{data[key]}</dd>);
             }
         }
-        const info = <dl>{dds}</dl>;
-        return <div className="kifuforjs-halfofcolumn kifuforjs-info">{info}</div>;
+
+        return (
+            <div className="kifuforjs-halfofcolumn kifuforjs-info" tabIndex={0}>
+                <dl>{dds}</dl>
+            </div>
+        );
     }
 }

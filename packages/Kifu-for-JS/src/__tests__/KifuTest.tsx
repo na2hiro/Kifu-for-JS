@@ -1,100 +1,107 @@
-import { mount, ReactWrapper } from "enzyme";
+import { render, screen, within } from "@testing-library/react";
 import "jest";
 import * as React from "react";
 
 import Kifu from "../Kifu";
-import Piece from "../Piece";
-import Hand from "../Hand";
-import PieceHandGroup from "../PieceHandGroup";
+import { expectCell, selectPiece } from "../../test/testutils";
 
-const selectKifuList = (wrapper: ReactWrapper) => wrapper.find(".kifuforjs-kifulist-inner");
-const KIFU_LIST_PADDER_COUNT = 2;
-const selectCurrentRow = (kifuList: ReactWrapper) => kifuList.find(".kifuforjs-kifulist-row--selected");
-const selectPiece = (wrapper: ReactWrapper, x: number, y: number) => wrapper.find(Piece).at((y - 1) * 9 + (9 - x));
-const selectFlipButton = (wrapper: ReactWrapper) => wrapper
-            .find("button.kifuforjs-control-tools")
-            .at(0);
-const selectForwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="1"]');
-const selectBackwardButton = (wrapper: ReactWrapper) => wrapper.find('button[data-go="-1"]');
+const PADDING = "\xa0\xa0\xa0";
+
+const selectKifuList = () => screen.findByRole("listbox");
+const selectKifuListRows = async () => {
+    const kifuList = await selectKifuList();
+    return await within(kifuList).findAllByRole("option");
+};
+const selectCurrentRow = async () => {
+    const kifuList = await selectKifuList();
+    return await within(kifuList).findByRole("option", { selected: true });
+};
+const clickFlipButton = async () => {
+    const button = await screen.findByRole("button", { name: "反転" });
+    button.click();
+};
+const clickForwardButton = async () => {
+    const button = await screen.findByRole("button", { name: ">" });
+    button.click();
+};
+const clickBackwardButton = async () => {
+    const button = await screen.findByRole("button", { name: "<" });
+    button.click();
+};
+
+const expectCurrentKifuListRow = async (expected: string) => {
+    expect((await selectCurrentRow()).textContent).toBe(`${PADDING}${expected} `);
+};
 
 const SAMPLE_KI2 = "▲７六歩△８四歩";
 const SAMPLE_HANDS_KI2 = "▲７六歩△３四歩▲２二角成△同銀";
 
 describe("<Kifu />", () => {
-    it("renders empty state", () => {
-        const wrapper = mount(<Kifu/>);
-        expect(wrapper.find(".kifuforjs").exists()).toBeTruthy();
-        expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({color: 0, kind: "FU"});
-        expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({});
+    it("renders empty state", async () => {
+        render(<Kifu />);
+        await expectCell(1, 1, "後手 香");
+        await expectCell(7, 7, "先手 歩");
+        await expectCell(7, 6, "空き");
     });
-    it("renders with kifu", () => {
-        const wrapper = mount(<Kifu kifu={SAMPLE_KI2}/>);
-        const kifuList = selectKifuList(wrapper);
-        expect(kifuList.children()).toHaveLength(3 + KIFU_LIST_PADDER_COUNT);
-        expect(selectCurrentRow(kifuList).text()).toBe("\xa0\xa0\xa00 開始局面 ");
+    it("renders with kifu", async () => {
+        render(<Kifu kifu={SAMPLE_KI2} />);
+        expect(await selectKifuListRows()).toHaveLength(3);
+        await expectCurrentKifuListRow("0 開始局面");
     });
-    it("renders hands", () => {
-        const wrapper = mount(<Kifu kifu={SAMPLE_HANDS_KI2} />);
-        // TODO: Use KifuStore to controll player
-        selectForwardButton(wrapper).simulate("click");
-        selectForwardButton(wrapper).simulate("click");
-        selectForwardButton(wrapper).simulate("click");
+    it("renders hands", async () => {
+        render(<Kifu kifu={SAMPLE_HANDS_KI2} />);
+        // TODO: Use KifuStore to control player
+        await clickForwardButton();
+        await clickForwardButton();
+        await clickForwardButton();
 
-        const hand = wrapper.find(Hand).filterWhere(hand => hand.prop("defaultColor")===0);
-        const fu = hand.find(PieceHandGroup).filterWhere(group => group.key()==="KA");
-        expect(fu.prop("value")).toBe(1);
+        const hand = await screen.findByTestId("hand-for-0");
+        expect(hand).toHaveTextContent(/☗/);
+        const hands = await within(hand).findAllByTestId("piece-in-hand");
+        expect(hands.map((hand) => hand.getAttribute("aria-label"))).toContain("角");
     });
 });
 describe("Control panel", () => {
-    it("forward", () => {
-        const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
-        const kifuList = selectKifuList(wrapper);
-        expect(kifuList.children().length).toBe(3 + KIFU_LIST_PADDER_COUNT);
+    it("forward", async () => {
+        render(<Kifu kifu={SAMPLE_KI2} />);
+        expect(await selectKifuListRows()).toHaveLength(3);
 
-        const reactWrapper = selectForwardButton(wrapper);
-        reactWrapper.simulate("click");
+        await clickForwardButton();
 
-        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa01 ☗７六歩 ");
-        expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({});
-        expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({ color: 0, kind: "FU" });
+        await expectCurrentKifuListRow("1 ☗７六歩");
+        await expectCell(7, 7, "空き");
+        await expectCell(7, 6, "先手 歩");
 
-        selectForwardButton(wrapper).simulate("click");
+        await clickForwardButton();
 
-        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa02 ☖８四歩 ");
+        await expectCurrentKifuListRow("2 ☖８四歩");
     });
-    it("backward", () => {
-        const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
-        const kifuList = selectKifuList(wrapper);
-        expect(kifuList.children().length).toBe(3 + KIFU_LIST_PADDER_COUNT);
+    it("backward", async () => {
+        render(<Kifu kifu={SAMPLE_KI2} />);
+        expect(await selectKifuListRows()).toHaveLength(3);
 
-        selectForwardButton(wrapper).simulate("click");
-        selectForwardButton(wrapper).simulate("click");
+        await clickForwardButton();
+        await clickForwardButton();
+        await expectCurrentKifuListRow("2 ☖８四歩");
 
-        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa02 ☖８四歩 ");
+        await clickBackwardButton();
+        await expectCurrentKifuListRow("1 ☗７六歩");
 
-        selectBackwardButton(wrapper).simulate("click");
-
-        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa01 ☗７六歩 ");
-
-        selectBackwardButton(wrapper).simulate("click");
-
-        expect(selectCurrentRow(wrapper).text()).toBe("\xa0\xa0\xa00 開始局面 ");
+        await clickBackwardButton();
+        await expectCurrentKifuListRow("0 開始局面");
     });
-    it("flip", () => {
-        const wrapper = mount(<Kifu kifu={SAMPLE_KI2} />);
-        selectForwardButton(wrapper).simulate("click");
+    it("flip", async () => {
+        render(<Kifu kifu={SAMPLE_KI2} />);
+        await clickForwardButton();
+        await expectCell(7, 7, "空き");
+        await expectCell(7, 6, "先手 歩");
 
-        expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({});
-        expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({ color: 0, kind: "FU" });
+        await clickFlipButton();
+        await expectCell(7, 7, "後手 歩");
+        await expectCell(7, 6, "空き");
 
-        selectFlipButton(wrapper).simulate("click");
-
-        expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({ color: 1, kind: "FU" });
-        expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({});
-
-        selectFlipButton(wrapper).simulate("click");
-
-        expect(selectPiece(wrapper, 7, 7).prop("data")).toEqual({});
-        expect(selectPiece(wrapper, 7, 6).prop("data")).toEqual({ color: 0, kind: "FU" });
+        await clickFlipButton();
+        await expectCell(7, 7, "空き");
+        await expectCell(7, 6, "先手 歩");
     });
 });
