@@ -8,12 +8,13 @@
 
 import {Color, Piece, Shogi, Kind, kindToString} from "shogi.js";
 import {IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
-import {canPromote, normalizeCSA, normalizeKI2, normalizeKIF, normalizeMinimal} from "./normalizer";
+import {canPromote, normalizeMinimal} from "./normalizer";
 import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 
 export default class JKFPlayer {
     public static debug = false;
     public static logs = [];
+
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     public static log(...lg: any[]) {
         if (JKFPlayer.debug) {
@@ -22,6 +23,7 @@ export default class JKFPlayer {
             JKFPlayer.logs.push(lg);
         }
     }
+
     public static parse(kifu: string, filename?: string) {
         if (filename) {
             const tmp = filename.split(".");
@@ -62,37 +64,39 @@ export default class JKFPlayer {
         }
         throw new Error("JKF, KIF, KI2, CSAいずれの形式でも失敗しました");
     }
+
     public static parseJKF(kifu: string) {
         JKFPlayer.log("parseJKF", kifu);
         return new JKFPlayer(JSON.parse(kifu));
     }
+
     public static parseKIF(kifu: string) {
         JKFPlayer.log("parseKIF", kifu);
-        return new JKFPlayer(normalizeKIF(parseKIF(JKFPlayer.addLastNewLine(kifu))));
+        return new JKFPlayer(parseKIF(kifu));
     }
+
     public static parseKI2(kifu: string) {
         JKFPlayer.log("parseKI2", kifu);
-        return new JKFPlayer(normalizeKI2(parseKI2(JKFPlayer.addLastNewLine(kifu))));
+        return new JKFPlayer(parseKI2(kifu));
     }
+
     public static parseCSA(kifu: string) {
         JKFPlayer.log("parseCSA", kifu);
-        return new JKFPlayer(normalizeCSA(parseCSA(JKFPlayer.addLastNewLine(kifu))));
+        return new JKFPlayer(parseCSA(kifu));
     }
-    public static addLastNewLine(kifu: string) {
-        if (kifu.substr(kifu.length - 1) === "\n") {
-            return kifu;
-        }
-        return kifu + "\n";
-    }
+
     public static numToZen(n: number) {
         return "０１２３４５６７８９"[n];
     }
+
     public static numToKan(n: number) {
         return "〇一二三四五六七八九"[n];
     }
+
     public static kindToKan(kind: Kind): string {
         return kindToString(kind);
     }
+
     public static relativeToKan(relative: string) {
         return {
             L: "左",
@@ -104,6 +108,7 @@ export default class JKFPlayer {
             H: "打",
         }[relative];
     }
+
     public static specialToKan(special: string) {
         return (
             {
@@ -124,6 +129,7 @@ export default class JKFPlayer {
             }[special] || special
         );
     }
+
     public static moveToReadableKifu(mv: IMoveFormat): string {
         if (mv.special) {
             return JKFPlayer.specialToKan(mv.special);
@@ -144,6 +150,7 @@ export default class JKFPlayer {
         }
         return ret;
     }
+
     public static doMove(shogi: Shogi, move: IMoveMoveFormat) {
         if (!move) {
             return;
@@ -159,6 +166,7 @@ export default class JKFPlayer {
             );
         }
     }
+
     public static undoMove(shogi: Shogi, move: IMoveMoveFormat) {
         if (!move) {
             return;
@@ -176,6 +184,7 @@ export default class JKFPlayer {
             shogi.undrop(move.to.x, move.to.y);
         }
     }
+
     public static getState(shogi: Shogi): IStateFormat {
         return {
             board: JKFPlayer.getBoardState(shogi),
@@ -195,6 +204,7 @@ export default class JKFPlayer {
                 : move1.piece === move2.piece)
         );
     }
+
     private static getBoardState(shogi: Shogi) {
         const ret = [];
         for (let i = 1; i <= 9; i++) {
@@ -207,6 +217,7 @@ export default class JKFPlayer {
         }
         return ret;
     }
+
     private static getHandsState(shogi: Shogi) {
         return [shogi.getHandsSummary(Color.Black), shogi.getHandsSummary(Color.White)];
     }
@@ -217,12 +228,14 @@ export default class JKFPlayer {
     public forkPointers: Array<{te: number; forkIndex: number}> = [];
     private forks_ = null;
     private currentStream_: IMoveFormat[] = null;
+
     get forks(): Array<{te: number; moves: IMoveFormat[]}> {
         if (this.forks_ === null) {
             this.updateForksAndCurrentStream();
         }
         return this.forks_;
     }
+
     get currentStream(): IMoveFormat[] {
         if (this.currentStream_ === null) {
             this.updateForksAndCurrentStream();
@@ -234,11 +247,13 @@ export default class JKFPlayer {
         this.shogi = new Shogi(kifu.initial || undefined);
         this.initialize(kifu);
     }
+
     public initialize(kifu: IJSONKifuFormat) {
         this.kifu = kifu;
         this.tesuu = 0;
         this.forkPointers = [];
     }
+
     // 1手進める
     public forward() {
         const nextMove = this.getMoveFormat(this.tesuu + 1);
@@ -254,6 +269,7 @@ export default class JKFPlayer {
         this.doMove(move);
         return true;
     }
+
     // 1手戻す
     public backward() {
         if (this.tesuu <= 0) {
@@ -267,6 +283,7 @@ export default class JKFPlayer {
         this.updateForksAndCurrentStream();
         return true;
     }
+
     // tesuu手目へ行く
     public goto(tesuu: number | string) {
         if (typeof tesuu === "string") {
@@ -314,6 +331,7 @@ export default class JKFPlayer {
             throw new Error("tesuu overflows");
         }
     }
+
     // tesuu手前後に移動する
     public go(tesuu: number | string) {
         if (typeof tesuu === "string") {
@@ -324,6 +342,7 @@ export default class JKFPlayer {
         }
         this.goto(this.tesuu + tesuu);
     }
+
     // 現在の局面から別れた分岐のうちnum番目の変化へ1つ進む
     public forkAndForward(num: number | string): boolean {
         if (typeof num === "string") {
@@ -347,6 +366,7 @@ export default class JKFPlayer {
         }
         return `${tesuu},${JSON.stringify(this.forkPointers.filter((p) => p.te <= tesuu))}`;
     }
+
     // TODO: Distinguish minimal move and full move
     // 現在の局面から新しいかもしれない手を1手動かす．
     // 必要フィールドは，指し: from, to, promote(成れる場合のみ)．打ち: to, piece
@@ -415,35 +435,44 @@ export default class JKFPlayer {
         }
         return true;
     }
+
     // wrapper
     public getBoard(x: number, y: number): Piece {
         return this.shogi.get(x, y);
     }
+
     public getComments(tesuu: number = this.tesuu) {
         return this.getMoveFormat(tesuu).comments || [];
     }
+
     public getMove(tesuu: number = this.tesuu) {
         return this.getMoveFormat(tesuu).move;
     }
+
     public getReadableKifu(tesuu: number = this.tesuu): string {
         if (tesuu === 0) {
             return "開始局面";
         }
         return JKFPlayer.moveToReadableKifu(this.getMoveFormat(tesuu));
     }
+
     public getReadableForkKifu(tesuu: number = this.tesuu): string[] {
         return this.getNextFork(tesuu).map((fork) => JKFPlayer.moveToReadableKifu(fork[0]));
     }
+
     public getMaxTesuu() {
         return this.currentStream.length - 1;
     }
+
     public toJKF() {
         return JSON.stringify(this.kifu);
     }
+
     // jkf.initial.dataの形式を得る
     public getState() {
         return JKFPlayer.getState(this.shogi);
     }
+
     public getReadableKifuState(): Array<{kifu: string; forks: string[]; comments: string[]}> {
         const ret = [];
         for (let i = 0; i <= this.getMaxTesuu(); i++) {
@@ -476,13 +505,16 @@ export default class JKFPlayer {
     private getMoveFormat(tesuu: number = this.tesuu): IMoveFormat {
         return this.currentStream[tesuu];
     }
+
     private getNextFork(tesuu: number = this.tesuu) {
         const next = this.getMoveFormat(tesuu + 1);
         return next && next.forks ? next.forks : [];
     }
+
     private doMove(move: IMoveMoveFormat) {
         JKFPlayer.doMove(this.shogi, move);
     }
+
     private undoMove(move: IMoveMoveFormat) {
         JKFPlayer.undoMove(this.shogi, move);
     }

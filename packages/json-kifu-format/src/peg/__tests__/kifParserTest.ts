@@ -1,5 +1,5 @@
 /* eslint-disable no-irregular-whitespace */
-import {parseKIF as parse} from "../parsers";
+import {parse} from "../kif-parser.pegjs";
 
 function p(x, y) {
     return {x, y};
