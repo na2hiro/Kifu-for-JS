@@ -1,6 +1,6 @@
 {
     "name": "json-kifu-format",
-    "version": "3.2.0",
+    "version": "4.0.0",
     "description": "JSON棋譜フォーマット(JKF)の定義とその関連ライブラリ",
     "main": "dist/json-kifu-format.js",
     "types": "dist/src/main.d.ts",
@@ -50,6 +50,6 @@
         "ts-jest": "^28.0.5"
     },
     "dependencies": {
-        "shogi.js": "^3.2.0"
+        "shogi.js": "^4.0.0"
     }
 }
