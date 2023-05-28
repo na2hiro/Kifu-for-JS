@@ -1,4 +1,5 @@
-import {parseCSA as parse} from "../parsers";
+// TODO: fix TS error for editors
+import {parse} from "../csa-parser.pegjs";
 
 describe("V2 parser for V2 formats", () => {
     it("supports header with $ markups", () => {
