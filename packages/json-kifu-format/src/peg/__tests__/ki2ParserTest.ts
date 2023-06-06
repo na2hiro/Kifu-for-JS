@@ -3,6 +3,8 @@ import {parse} from "../ki2-parser.pegjs";
 function p(x, y) {
     return {x, y};
 }
+
+/* eslint-disable no-irregular-whitespace */
 describe("ki2-parser", () => {
     it("simple", () => {
         expect(parse("▲７六歩 △３四歩 ▲２二角成 △同　銀 ▲４五角")).toEqual({
