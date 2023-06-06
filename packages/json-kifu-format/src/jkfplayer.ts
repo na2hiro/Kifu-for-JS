@@ -193,7 +193,7 @@ export default class JKFPlayer {
         };
     }
 
-    private static sameMoveMinimal(move1: IMoveMoveFormat, move2: IMoveMoveFormat) {
+    static sameMoveMinimal(move1: Partial<IMoveMoveFormat>, move2: Partial<IMoveMoveFormat>) {
         return (
             move1.to.x === move2.to.x &&
             move1.to.y === move2.to.y &&

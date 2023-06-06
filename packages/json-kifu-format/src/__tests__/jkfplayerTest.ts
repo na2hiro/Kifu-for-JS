@@ -70,55 +70,65 @@ describe("class Player", () => {
                             same: true,
                         },
                     },
-                    {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
+                    {
+                        move: {
+                            from: p(8, 8),
+                            to: p(7, 7),
+                            color: 0,
+                            piece: "KA",
+                            capture: "UM",
+                            same: true,
+                        },
+                    },
                     {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
                 ],
             });
-            expect(player.shogi.toCSAString()).toBe("\
-P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n\
-P2 * -HI *  *  *  *  * -KA * \n\
-P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n\
-P4 *  *  *  *  *  *  *  *  * \n\
-P5 *  *  *  *  *  *  *  *  * \n\
-P6 *  *  *  *  *  *  *  *  * \n\
-P7+FU+FU+FU+FU+FU+FU+FU+FU+FU\n\
-P8 * +KA *  *  *  *  * +HI * \n\
-P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n\
-P+\n\
-P-\n\
-+");
+            expect(player.shogi.toCSAString()).toMatchInlineSnapshot(`
+                "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+                P2 * -HI *  *  *  *  * -KA * 
+                P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+                P4 *  *  *  *  *  *  *  *  * 
+                P5 *  *  *  *  *  *  *  *  * 
+                P6 *  *  *  *  *  *  *  *  * 
+                P7+FU+FU+FU+FU+FU+FU+FU+FU+FU
+                P8 * +KA *  *  *  *  * +HI * 
+                P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+                P+
+                P-
+                +"
+            `);
             expect(player.forward()).toBeTruthy();
-            expect(player.shogi.toCSAString()).toBe("\
-P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n\
-P2 * -HI *  *  *  *  * -KA * \n\
-P3-FU-FU-FU-FU-FU-FU-FU-FU-FU\n\
-P4 *  *  *  *  *  *  *  *  * \n\
-P5 *  *  *  *  *  *  *  *  * \n\
-P6 *  * +FU *  *  *  *  *  * \n\
-P7+FU+FU * +FU+FU+FU+FU+FU+FU\n\
-P8 * +KA *  *  *  *  * +HI * \n\
-P9+KY+KE+GI+KI+OU+KI+GI+KE+KY\n\
-P+\n\
-P-\n\
--");
+            expect(player.shogi.toCSAString()).toMatchInlineSnapshot(`
+                "P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+                P2 * -HI *  *  *  *  * -KA * 
+                P3-FU-FU-FU-FU-FU-FU-FU-FU-FU
+                P4 *  *  *  *  *  *  *  *  * 
+                P5 *  *  *  *  *  *  *  *  * 
+                P6 *  * +FU *  *  *  *  *  * 
+                P7+FU+FU * +FU+FU+FU+FU+FU+FU
+                P8 * +KA *  *  *  *  * +HI * 
+                P9+KY+KE+GI+KI+OU+KI+GI+KE+KY
+                P+
+                P-
+                -"
+            `);
             expect(player.forward()).toBeTruthy();
             expect(player.forward()).toBeTruthy();
             expect(player.forward()).toBeTruthy();
             expect(player.forward()).toBeTruthy();
             expect(player.forward()).toBeTruthy();
-            const sixth = "\
-P1-KY-KE-GI-KI-OU-KI-GI-KE-KY\n\
-P2 * -HI *  *  *  *  *  *  * \n\
-P3-FU-FU-FU-FU-FU-FU-KE-FU-FU\n\
-P4 *  *  *  *  *  * -FU *  * \n\
-P5 *  *  *  *  *  *  *  *  * \n\
-P6 *  * +FU *  *  *  *  *  * \n\
-P7+FU+FU+KA+FU+FU+FU+FU+FU+FU\n\
-P8 *  *  *  *  *  *  * +HI * \n\
-P9+KY * +GI+KI+OU+KI+GI+KE+KY\n\
-P+00KA\n\
-P-\n\
-+";
+            const sixth = `P1-KY-KE-GI-KI-OU-KI-GI-KE-KY
+P2 * -HI *  *  *  *  *  *  * 
+P3-FU-FU-FU-FU-FU-FU-KE-FU-FU
+P4 *  *  *  *  *  * -FU *  * 
+P5 *  *  *  *  *  *  *  *  * 
+P6 *  * +FU *  *  *  *  *  * 
+P7+FU+FU+KA+FU+FU+FU+FU+FU+FU
+P8 *  *  *  *  *  *  * +HI * 
+P9+KY * +GI+KI+OU+KI+GI+KE+KY
+P+00KA
+P-
++`;
             expect(player.shogi.toCSAString()).toBe(sixth);
             expect(player.forward()).toBeFalsy();
             expect(player.shogi.toCSAString()).toBe(sixth);
@@ -241,7 +251,8 @@ P-\n\
                     {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                     {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
                     {
-                        move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}, forks: [
+                        move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"},
+                        forks: [
                             [
                                 {
                                     move: {
@@ -253,7 +264,16 @@ P-\n\
                                         promote: false,
                                     },
                                 },
-                                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
+                                {
+                                    move: {
+                                        from: p(3, 1),
+                                        to: p(2, 2),
+                                        color: 1,
+                                        piece: "GI",
+                                        capture: "KA",
+                                        same: true,
+                                    },
+                                },
                                 {move: {to: p(4, 5), color: 0, piece: "KA"}},
                             ],
                         ],
@@ -269,7 +289,16 @@ P-\n\
                             same: true,
                         },
                     },
-                    {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
+                    {
+                        move: {
+                            from: p(8, 8),
+                            to: p(7, 7),
+                            color: 0,
+                            piece: "KA",
+                            capture: "UM",
+                            same: true,
+                        },
+                    },
                     {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
                 ],
             });
@@ -301,7 +330,8 @@ P-\n\
                     {move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}},
                     {move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}},
                     {
-                        move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"}, forks: [
+                        move: {from: p(8, 9), to: p(7, 7), color: 0, piece: "KE"},
+                        forks: [
                             [
                                 {
                                     move: {
@@ -313,7 +343,16 @@ P-\n\
                                         promote: false,
                                     },
                                 },
-                                {move: {from: p(3, 1), to: p(2, 2), color: 1, piece: "GI", capture: "KA", same: true}},
+                                {
+                                    move: {
+                                        from: p(3, 1),
+                                        to: p(2, 2),
+                                        color: 1,
+                                        piece: "GI",
+                                        capture: "KA",
+                                        same: true,
+                                    },
+                                },
                                 {move: {to: p(4, 5), color: 0, piece: "KA"}},
                             ],
                         ],
@@ -329,7 +368,16 @@ P-\n\
                             same: true,
                         },
                     },
-                    {move: {from: p(8, 8), to: p(7, 7), color: 0, piece: "KA", capture: "UM", same: true}},
+                    {
+                        move: {
+                            from: p(8, 8),
+                            to: p(7, 7),
+                            color: 0,
+                            piece: "KA",
+                            capture: "UM",
+                            same: true,
+                        },
+                    },
                     {move: {to: p(3, 3), color: 1, piece: "KE", relative: "H"}},
                 ],
             });
@@ -370,13 +418,22 @@ P-\n\
                 moves: [
                     {},
                     {
-                        move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}, forks: [
+                        move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"},
+                        forks: [
                             [
                                 {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
                                 {
-                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"},
+                                    forks: [
                                         [
-                                            {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
+                                            {
+                                                move: {
+                                                    from: p(8, 3),
+                                                    to: p(8, 4),
+                                                    color: 1,
+                                                    piece: "FU",
+                                                },
+                                            },
                                         ],
                                     ],
                                 },
@@ -384,15 +441,31 @@ P-\n\
                         ],
                     },
                     {
-                        move: {from: p(5, 3), to: p(5, 4), color: 1, piece: "FU"}, forks: [
+                        move: {from: p(5, 3), to: p(5, 4), color: 1, piece: "FU"},
+                        forks: [
                             [
                                 {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
                                 {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
                                 {
-                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"},
+                                    forks: [
                                         [
-                                            {move: {from: p(8, 4), to: p(8, 5), color: 1, piece: "FU"}},
-                                            {move: {from: p(8, 8), to: p(7, 7), color: 1, piece: "KA"}},
+                                            {
+                                                move: {
+                                                    from: p(8, 4),
+                                                    to: p(8, 5),
+                                                    color: 1,
+                                                    piece: "FU",
+                                                },
+                                            },
+                                            {
+                                                move: {
+                                                    from: p(8, 8),
+                                                    to: p(7, 7),
+                                                    color: 1,
+                                                    piece: "KA",
+                                                },
+                                            },
                                         ],
                                     ],
                                 },
@@ -400,7 +473,8 @@ P-\n\
                         ],
                     },
                     {
-                        move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}, forks: [
+                        move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"},
+                        forks: [
                             [
                                 {
                                     move: {
@@ -482,13 +556,22 @@ P-\n\
                 moves: [
                     {},
                     {
-                        move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"}, forks: [
+                        move: {from: p(7, 7), to: p(7, 6), color: 0, piece: "FU"},
+                        forks: [
                             [
                                 {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
                                 {
-                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"},
+                                    forks: [
                                         [
-                                            {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
+                                            {
+                                                move: {
+                                                    from: p(8, 3),
+                                                    to: p(8, 4),
+                                                    color: 1,
+                                                    piece: "FU",
+                                                },
+                                            },
                                         ],
                                     ],
                                 },
@@ -496,15 +579,31 @@ P-\n\
                         ],
                     },
                     {
-                        move: {from: p(5, 3), to: p(5, 4), color: 1, piece: "FU"}, forks: [
+                        move: {from: p(5, 3), to: p(5, 4), color: 1, piece: "FU"},
+                        forks: [
                             [
                                 {move: {from: p(8, 3), to: p(8, 4), color: 1, piece: "FU"}},
                                 {move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}},
                                 {
-                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"}, forks: [
+                                    move: {from: p(3, 3), to: p(3, 4), color: 1, piece: "FU"},
+                                    forks: [
                                         [
-                                            {move: {from: p(8, 4), to: p(8, 5), color: 1, piece: "FU"}},
-                                            {move: {from: p(8, 8), to: p(7, 7), color: 1, piece: "KA"}},
+                                            {
+                                                move: {
+                                                    from: p(8, 4),
+                                                    to: p(8, 5),
+                                                    color: 1,
+                                                    piece: "FU",
+                                                },
+                                            },
+                                            {
+                                                move: {
+                                                    from: p(8, 8),
+                                                    to: p(7, 7),
+                                                    color: 1,
+                                                    piece: "KA",
+                                                },
+                                            },
                                         ],
                                     ],
                                 },
@@ -512,7 +611,8 @@ P-\n\
                         ],
                     },
                     {
-                        move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"}, forks: [
+                        move: {from: p(2, 7), to: p(2, 6), color: 1, piece: "FU"},
+                        forks: [
                             [
                                 {
                                     move: {
@@ -589,9 +689,7 @@ P-\n\
         it("new input", () => {
             const player = new JKFPlayer({
                 header: {},
-                moves: [
-                    {},
-                ],
+                moves: [{}],
             });
             const first = player.shogi.toCSAString();
             // @ts-ignore
@@ -605,9 +703,7 @@ P-\n\
         it("same with existing one", () => {
             const player = new JKFPlayer({
                 header: {},
-                moves: [
-                    {},
-                ],
+                moves: [{}],
             });
             // @ts-ignore
             expect(player.inputMove({from: p(7, 7), to: p(7, 6)})).toBeTruthy();
@@ -627,9 +723,7 @@ P-\n\
         it("same with existing fork", () => {
             const player = new JKFPlayer({
                 header: {},
-                moves: [
-                    {},
-                ],
+                moves: [{}],
             });
             // @ts-ignore
             expect(player.inputMove({from: p(7, 7), to: p(7, 6)})).toBeTruthy();
@@ -655,10 +749,7 @@ P-\n\
         it("can't add fork to special", () => {
             const player = new JKFPlayer({
                 header: {},
-                moves: [
-                    {},
-                    {special: "CHUDAN"},
-                ],
+                moves: [{}, {special: "CHUDAN"}],
             });
             expect(() => {
                 player.forward();
@@ -694,27 +785,39 @@ P-\n\
         expect(JKFPlayer.numToKan(9)).toBe("九");
     });
     it("moveToReadableKifu", () => {
-        expect(JKFPlayer.moveToReadableKifu({
-            move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
-        })).toBe("☗７六歩");
-        expect(JKFPlayer.moveToReadableKifu({
-            move: {from: p(2, 3), to: p(2, 4), piece: "FU", color: 1, same: true},
-        })).toBe("☖同　歩");
-        expect(JKFPlayer.moveToReadableKifu({
-            move: {from: p(3, 3), to: p(2, 4), piece: "GI", color: 0, promote: true},
-        })).toBe("☗２四銀成");
-        expect(JKFPlayer.moveToReadableKifu({
-            move: {from: p(3, 3), to: p(2, 4), piece: "GI", color: 0, promote: false},
-        })).toBe("☗２四銀不成");
-        expect(JKFPlayer.moveToReadableKifu({
-            move: {from: p(6, 8), to: p(5, 7), piece: "GI", color: 0, relative: "RU"},
-        })).toBe("☗５七銀右上");
-        expect(JKFPlayer.moveToReadableKifu({
-            special: "TORYO",
-        })).toBe("投了");
+        expect(
+            JKFPlayer.moveToReadableKifu({
+                move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+            })
+        ).toBe("☗７六歩");
+        expect(
+            JKFPlayer.moveToReadableKifu({
+                move: {from: p(2, 3), to: p(2, 4), piece: "FU", color: 1, same: true},
+            })
+        ).toBe("☖同　歩");
+        expect(
+            JKFPlayer.moveToReadableKifu({
+                move: {from: p(3, 3), to: p(2, 4), piece: "GI", color: 0, promote: true},
+            })
+        ).toBe("☗２四銀成");
+        expect(
+            JKFPlayer.moveToReadableKifu({
+                move: {from: p(3, 3), to: p(2, 4), piece: "GI", color: 0, promote: false},
+            })
+        ).toBe("☗２四銀不成");
+        expect(
+            JKFPlayer.moveToReadableKifu({
+                move: {from: p(6, 8), to: p(5, 7), piece: "GI", color: 0, relative: "RU"},
+            })
+        ).toBe("☗５七銀右上");
+        expect(
+            JKFPlayer.moveToReadableKifu({
+                special: "TORYO",
+            })
+        ).toBe("投了");
     });
     it("doMove", () => {
-        expect(JKFPlayer.doMove(new Shogi({ preset: "HIRATE" }), null)).toBe(undefined)
+        expect(JKFPlayer.doMove(new Shogi({preset: "HIRATE"}), null)).toBe(undefined);
     });
     describe("wrappers", () => {
         let player;
@@ -724,9 +827,8 @@ P-\n\
                 moves: [
                     {comments: ["hoge"]},
                     {
-                        move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}, forks: [
-                            [{move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}}],
-                        ],
+                        move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+                        forks: [[{move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}}]],
                     },
                     {move: {from: p(3, 3), to: p(3, 4), piece: "FU", color: 1}},
                 ],
@@ -751,15 +853,105 @@ P-\n\
         it("getState", () => {
             expect(player.getState()).toEqual({
                 board: [
-                    [{ color: 1, kind: "KY" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "KY" }],
-                    [{ color: 1, kind: "KE" }, { color: 1, kind: "KA" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "HI" }, { color: 0, kind: "KE" }],
-                    [{ color: 1, kind: "GI" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "GI" }],
-                    [{ color: 1, kind: "KI" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "KI" }],
-                    [{ color: 1, kind: "OU" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "OU" }],
-                    [{ color: 1, kind: "KI" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "KI" }],
-                    [{ color: 1, kind: "GI" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "GI" }],
-                    [{ color: 1, kind: "KE" }, { color: 1, kind: "HI" }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, { color: 0, kind: "KA" }, { color: 0, kind: "KE" }],
-                    [{ color: 1, kind: "KY" }, {                      }, { color: 1, kind: "FU" }, {}, {}, {}, { color: 0, kind: "FU" }, {                      }, { color: 0, kind: "KY" }],
+                    [
+                        {color: 1, kind: "KY"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "KY"},
+                    ],
+                    [
+                        {color: 1, kind: "KE"},
+                        {color: 1, kind: "KA"},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {color: 0, kind: "HI"},
+                        {color: 0, kind: "KE"},
+                    ],
+                    [
+                        {color: 1, kind: "GI"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "GI"},
+                    ],
+                    [
+                        {color: 1, kind: "KI"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "KI"},
+                    ],
+                    [
+                        {color: 1, kind: "OU"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "OU"},
+                    ],
+                    [
+                        {color: 1, kind: "KI"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "KI"},
+                    ],
+                    [
+                        {color: 1, kind: "GI"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "GI"},
+                    ],
+                    [
+                        {color: 1, kind: "KE"},
+                        {color: 1, kind: "HI"},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {color: 0, kind: "KA"},
+                        {color: 0, kind: "KE"},
+                    ],
+                    [
+                        {color: 1, kind: "KY"},
+                        {},
+                        {color: 1, kind: "FU"},
+                        {},
+                        {},
+                        {},
+                        {color: 0, kind: "FU"},
+                        {},
+                        {color: 0, kind: "KY"},
+                    ],
                 ],
                 color: 0,
                 hands: [
@@ -793,9 +985,8 @@ P-\n\
         it("getMoveFormat", () => {
             expect(player.getMoveFormat(0)).toEqual({comments: ["hoge"]});
             expect(player.getMoveFormat(1)).toEqual({
-                move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0}, forks: [
-                    [{move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}}],
-                ],
+                move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
+                forks: [[{move: {from: p(2, 7), to: p(2, 6), piece: "FU", color: 0}}]],
             });
             player.forkAndForward(0);
             expect(player.getMoveFormat(0)).toEqual({comments: ["hoge"]});
@@ -806,28 +997,47 @@ P-\n\
     });
     it("static sameMoveMinimal", () => {
         // @ts-ignore
-        expect(JKFPlayer.sameMoveMinimal({from: p(2, 3), to: p(2, 2), promote: true}, {
-            from: p(2, 3),
-            to: p(2, 2),
-            promote: true,
-            piece: "FU",
-        })).toBeTruthy();
+        expect(
+            JKFPlayer.sameMoveMinimal(
+                {from: p(2, 3), to: p(2, 2), promote: true},
+                {
+                    from: p(2, 3),
+                    to: p(2, 2),
+                    promote: true,
+                    piece: "FU",
+                }
+            )
+        ).toBeTruthy();
         // @ts-ignore
-        expect(JKFPlayer.sameMoveMinimal({to: p(2, 3), piece: "KY"}, {to: p(2, 3), piece: "KY"})).toBeTruthy();
+        expect(
+            JKFPlayer.sameMoveMinimal({to: p(2, 3), piece: "KY"}, {to: p(2, 3), piece: "KY"})
+        ).toBeTruthy();
         // @ts-ignore
-        expect(JKFPlayer.sameMoveMinimal({from: p(2, 3), to: p(2, 2), promote: false}, {
-            from: p(2, 3),
-            to: p(2, 2),
-            promote: true,
-            piece: "FU",
-        })).toBe(false);
+        expect(
+            JKFPlayer.sameMoveMinimal(
+                {from: p(2, 3), to: p(2, 2), promote: false},
+                {
+                    from: p(2, 3),
+                    to: p(2, 2),
+                    promote: true,
+                    piece: "FU",
+                }
+            )
+        ).toBe(false);
         // @ts-ignore
-        expect(JKFPlayer.sameMoveMinimal({to: p(2, 3), piece: "KE"}, {to: p(2, 3), piece: "KY"})).toBeFalsy();
+        expect(
+            JKFPlayer.sameMoveMinimal({to: p(2, 3), piece: "KE"}, {to: p(2, 3), piece: "KY"})
+        ).toBeFalsy();
         // @ts-ignore
-        expect(JKFPlayer.sameMoveMinimal({from: p(2, 7), to: p(2, 6), piece: "FU"}, {
-            to: p(2, 6),
-            piece: "KA",
-        })).toBe(false);
+        expect(
+            JKFPlayer.sameMoveMinimal(
+                {from: p(2, 7), to: p(2, 6), piece: "FU"},
+                {
+                    to: p(2, 6),
+                    piece: "KA",
+                }
+            )
+        ).toBe(false);
     });
     describe("getMoveFormat", () => {
         it("only one", () => {

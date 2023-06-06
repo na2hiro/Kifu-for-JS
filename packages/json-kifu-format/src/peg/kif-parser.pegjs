@@ -26,7 +26,7 @@
 				"銀": "NG"
 			}[kind[1]];
 		}
-		return {
+		const csa = {
 			"歩": "FU",
 			"香": "KY",
 			"桂": "KE",
@@ -44,6 +44,8 @@
 			"竜": "RY",
 			"龍": "RY"
 		}[kind];
+		if(!csa) throw "不明な駒 `"+kind+"`";
+		return csa;
 	}
 	function specialToCSA(str){
 		return {
@@ -84,7 +86,7 @@
 		// Kifu for iPhoneは半角スペース区切り
 		var kinds = str.split(/[ 　]/);
 		var ret = {FU:0,KY:0,KE:0,GI:0,KI:0,KA:0,HI:0};
-		if(str=="") return ret;
+		if(str=="" || str=="なし") return ret;
 		for(var i=0; i<kinds.length; i++){
 			if(kinds[i]=="") continue;
 			ret[kindToCSA(kinds[i][0])] = kinds[i].length==1?1:kanToN2(kinds[i].slice(1));
