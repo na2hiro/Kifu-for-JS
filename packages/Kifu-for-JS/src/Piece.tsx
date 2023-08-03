@@ -24,7 +24,6 @@ function getLabel({ color, kind }: { color?: Color; kind?: string }) {
     return `${colorToString(color)} ${kindToString(kind)}`;
 }
 
-@observer
 @DragSource(
     "piece",
     {
@@ -53,6 +52,7 @@ function getLabel({ color, kind }: { color?: Color; kind?: string }) {
         connectDropTarget: connect.dropTarget(),
     }),
 )
+@observer
 export default class Piece extends React.Component<IProps, any> {
     public render(): React.ReactNode {
         const label = getLabel(this.props.data);
