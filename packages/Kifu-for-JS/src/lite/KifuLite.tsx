@@ -20,6 +20,7 @@ export interface IProps {
 const areaWidth = 300;
 const areaHeight = 250;
 const controlHeight = 100;
+const controlMargin = 5;
 const PORTRAIT_VIEW_QUERY = "(max-aspect-ratio: 2/3), (max-width: 570px)";
 
 const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu }) => {
@@ -46,6 +47,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
             width={areaWidth}
             height={areaHeight + controlHeight}
         >
+            {/* TODO: Show indicator for the on-board controls on first interaction */}
             <rect
                 fillOpacity={0}
                 x={0}
@@ -62,14 +64,20 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
                 height={areaHeight}
                 onClick={() => kifuStore.player.forward()}
             ></rect>
-            <foreignObject x={0} y={areaHeight} width={areaWidth} height={controlHeight}>
-                <div style={{ display: "flex", justifyContent: "space-between", height: "100%" }}>
+            <foreignObject
+                x={controlMargin}
+                y={areaHeight + controlMargin}
+                width={areaWidth - controlMargin * 2}
+                height={controlHeight - controlMargin * 2}
+            >
+                <div style={{ display: "flex", justifyContent: "space-between", height: "100%", gap: "1px" }}>
                     <button onClick={() => kifuStore.player.backward()} style={{ minWidth: "70px", fontSize: "25px" }}>
                         ←
                     </button>
                     {/*TODO: kifu list bug when zoomed*/}
                     <KifuList player={kifuStore.player} isPortrait={false} />
-                    <div style={{ display: "flex", flexDirection: "column" }}>
+                    <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                        {/*TODO: long press to keep moving*/}
                         <button
                             onClick={() => kifuStore.player.forward()}
                             style={{ minWidth: "70px", fontSize: "25px", flexGrow: 1 }}

@@ -148,7 +148,11 @@ export const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state
                     }
                     textAttributes.textAnchor = "middle";
 
-                    tgChildren.push(<text {...textAttributes}>{t}</text>);
+                    tgChildren.push(
+                        <text key={i} {...textAttributes}>
+                            {t}
+                        </text>,
+                    );
 
                     return (
                         <g key={i} transform={tgTransform}>

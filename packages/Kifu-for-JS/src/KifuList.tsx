@@ -47,7 +47,7 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) =>
 
     const containerRef = useRef<HTMLDivElement>();
     const ref = useRef<HTMLDivElement>();
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (ref.current && containerRef.current) {
             if (tesuuInitiatedByScroll !== tesuu) {
                 scrollToCenter(ref.current, containerRef.current);

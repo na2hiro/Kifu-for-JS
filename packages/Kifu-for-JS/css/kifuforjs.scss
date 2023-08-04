@@ -225,6 +225,10 @@
       width: 100%;
     }
 
+    [role=option] {
+      padding: 0 2px;
+    }
+
     [aria-selected="true"] {
       background-color: #cecece;
 
