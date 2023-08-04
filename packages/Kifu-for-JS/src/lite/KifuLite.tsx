@@ -4,8 +4,10 @@ import * as React from "react";
 import { useEffect, useState } from "react";
 import KifuStore from "../stores/KifuStore";
 import { Zumen } from "./zumen/Zumen";
-import { toJS } from "mobx";
 import KifuList from "../KifuList";
+
+import "../../css/kifuforjs.scss";
+import ForkList from "../ForkList";
 
 export interface IProps {
     filePath?: string;
@@ -15,6 +17,9 @@ export interface IProps {
     responsive?: boolean;
 }
 
+const areaWidth = 300;
+const areaHeight = 250;
+const controlHeight = 100;
 const PORTRAIT_VIEW_QUERY = "(max-aspect-ratio: 2/3), (max-width: 570px)";
 
 const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu }) => {
@@ -33,14 +38,13 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
         latestMove = kifuStore.player.getMove(kifuStore.player.tesuu - 1);
     }
 
-    const areaWidth = 300;
-    const areaHeight = 250;
-
     return (
         <Zumen
             state={kifuStore.player.getState()}
             latestMove={latestMove}
             players={[kifuStore.player.kifu.header["先手"], kifuStore.player.kifu.header["後手"]]}
+            width={areaWidth}
+            height={areaHeight + controlHeight}
         >
             <rect
                 fillOpacity={0}
@@ -58,9 +62,23 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
                 height={areaHeight}
                 onClick={() => kifuStore.player.forward()}
             ></rect>
-            <foreignObject x={0} y={0} width={100} height={100}>
-                <button onClick={() => kifuStore.player.forward()}>next</button>
-                <button onClick={() => kifuStore.player.backward()}>previous</button>
+            <foreignObject x={0} y={areaHeight} width={areaWidth} height={controlHeight}>
+                <div style={{ display: "flex", justifyContent: "space-between", height: "100%" }}>
+                    <button onClick={() => kifuStore.player.backward()} style={{ minWidth: "70px", fontSize: "25px" }}>
+                        ←
+                    </button>
+                    {/*TODO: kifu list bug when zoomed*/}
+                    <KifuList player={kifuStore.player} isPortrait={false} />
+                    <div style={{ display: "flex", flexDirection: "column" }}>
+                        <button
+                            onClick={() => kifuStore.player.forward()}
+                            style={{ minWidth: "70px", fontSize: "25px", flexGrow: 1 }}
+                        >
+                            →
+                        </button>
+                        <ForkList kifuStore={kifuStore} />
+                    </div>
+                </div>
             </foreignObject>
         </Zumen>
     );

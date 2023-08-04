@@ -86,12 +86,10 @@ export const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state
             xmlns="http://www.w3.org/2000/svg"
             style={{
                 fontFamily: "serif",
-                width,
-                height,
                 // TODO: allow selection in text children
                 userSelect: "none",
             }}
-            viewBox={"0 0 " + kx * 12 + " " + kx * 10}
+            viewBox={"0 0 " + width + " " + height}
         >
             <g>
                 <rect
