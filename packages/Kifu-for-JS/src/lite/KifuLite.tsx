@@ -21,7 +21,6 @@ const areaWidth = 300;
 const areaHeight = 250;
 const controlHeight = 100;
 const controlMargin = 5;
-const PORTRAIT_VIEW_QUERY = "(max-aspect-ratio: 2/3), (max-width: 570px)";
 
 const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu }) => {
     const [kifuStore, _] = useState<KifuStore>(() => givenKifuStore || new KifuStore());
@@ -75,7 +74,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
                         ←
                     </button>
                     {/*TODO: kifu list bug when zoomed*/}
-                    <KifuList player={kifuStore.player} isPortrait={false} />
+                    <KifuList player={kifuStore.player} isPortrait={false} style={{ fontSize: "x-small" }} />
                     <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                         {/*TODO: long press to keep moving*/}
                         <button

@@ -1,12 +1,22 @@
 import { JKFPlayer } from "json-kifu-format";
 import { observer } from "mobx-react";
 import * as React from "react";
-import { FunctionComponent, useCallback, useEffect, useLayoutEffect, useRef, useState } from "react";
+import {
+    CSSProperties,
+    FunctionComponent,
+    ReactNode,
+    useCallback,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState,
+} from "react";
 import { pad } from "./utils/util";
 
 export interface IProps {
     player: JKFPlayer;
     isPortrait: boolean;
+    style?: CSSProperties;
 }
 
 @observer
@@ -21,25 +31,27 @@ export default class KifuList extends React.Component<IProps, any> {
     }
 
     public render() {
-        const { player } = this.props;
+        const { player, style } = this.props;
         const options = player.getReadableKifuState().map((kifu, i) => {
-            const text =
-                (kifu.comments.length > 0 ? "*" : "\xa0") +
-                pad(i.toString(), "\xa0", 3) +
-                " " +
-                kifu.kifu +
-                " " +
-                kifu.forks.join(" ");
+            const node = (
+                <>
+                    <span style={{ fontFamily: "monospace" }}>{kifu.comments.length > 0 ? "*" : "\xa0"}</span>
+                    <span style={{ display: "inline-block", minWidth: "20px", textAlign: "right" }}>
+                        {i.toString()}
+                    </span>
+                    {" " + kifu.kifu + " " + kifu.forks.join(" ")}
+                </>
+            );
             return {
-                text,
+                node,
                 value: i,
             };
         });
-        return <DivList options={options} onChange={this.onChange} tesuu={player.tesuu} />;
+        return <DivList options={options} onChange={this.onChange} tesuu={player.tesuu} style={style} />;
     }
 }
 
-const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) => {
+const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu, style }) => {
     const [containerHeight, setContainerHeight] = useState<number | null>(null);
     const [paddingHeight, setPaddingHeight] = useState<string>("");
     const [rowHeight, setRowHeight] = useState<number | null>(null);
@@ -126,10 +138,11 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) =>
             tabIndex={0}
             role="listbox"
             aria-label="手数"
+            style={style}
         >
             <div className="kifuforjs-kifulist-inner">
                 <div style={{ height: paddingHeight }} />
-                {options.map(({ text, value }) => (
+                {options.map(({ node, value }) => (
                     <div
                         key={value}
                         role="option"
@@ -138,7 +151,7 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) =>
                         aria-selected={value === tesuu}
                         ref={value === tesuu ? ref : null}
                     >
-                        {text}
+                        {node}
                     </div>
                 ))}
                 <div style={{ height: paddingHeight }} />
@@ -148,15 +161,17 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu }) =>
 };
 
 function scrollToCenter(element, container) {
+    // scrollTop is integer, thus it cannot scroll to the center pixel-perfectly. TODO: improve it somehow
     container.scrollTop =
         element.offsetTop + element.getBoundingClientRect().height / 2 - container.getBoundingClientRect().height / 2;
 }
 
 interface IKifuProps {
     options: Array<{
-        text: string;
+        node: ReactNode;
         value: number;
     }>;
     onChange: (tesuu: number) => void;
     tesuu: number;
+    style?: CSSProperties;
 }
