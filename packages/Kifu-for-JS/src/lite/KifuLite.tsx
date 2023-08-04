@@ -26,26 +26,19 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
         }
     }, [filePath, kifu]);
 
+    let latestMove = kifuStore.player.getMove();
+    if (!latestMove && kifuStore.player.tesuu > 0) {
+        latestMove = kifuStore.player.getMove(kifuStore.player.tesuu - 1);
+    }
+
     return (
-        <Zumen
-            zumen={
-                "後手の持駒：なし\n" +
-                "９ ８ ７ ６ ５ ４ ３ ２ １\n" +
-                "+---------------------------+\n" +
-                "|v香v桂 ・ ・ ・v玉v角v桂v香|一\n" +
-                "| ・v飛 ・v銀v金 ・v金 ・ ・|二\n" +
-                "|v歩 ・ ・v歩 ・ ・v銀v歩v歩|三\n" +
-                "| ・v歩v歩 ・v歩v歩v歩 ・ ・|四\n" +
-                "| ・ ・ ・ ・ ・ ・ ・ ・ ・|五\n" +
-                "| ・ ・ 歩 歩 歩 ・ 歩 ・ ・|六\n" +
-                "| 歩 歩 銀 金 ・ 歩 銀 歩 歩|七\n" +
-                "| ・ ・ 金 ・ ・ ・ ・ 飛 ・|八\n" +
-                "| 香 桂 角 玉 ・ ・ ・ 桂 香|九\n" +
-                "+---------------------------+\n" +
-                "先手の持駒：なし\n" +
-                "手数＝25 ▲３七銀 まで"
-            }
-        />
+        <Zumen state={kifuStore.player.getState()} latestMove={latestMove}>
+            <foreignObject x={0} y={0} width={100} height={100}>
+                <button onClick={() => kifuStore.player.forward()}>next</button>
+                <button onClick={() => kifuStore.player.backward()}>previous</button>
+                <button onClick={() => kifuStore.player.goto(76)}>76th</button>
+            </foreignObject>
+        </Zumen>
     );
 };
 

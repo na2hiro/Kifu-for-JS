@@ -7,7 +7,7 @@
  */
 
 import {Color, Piece, Shogi, Kind, kindToString} from "shogi.js";
-import {IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
+import {IHandFormat, IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
 import {canPromote, normalizeMinimal} from "./normalizer";
 import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
 
@@ -218,7 +218,7 @@ export default class JKFPlayer {
         return ret;
     }
 
-    private static getHandsState(shogi: Shogi) {
+    private static getHandsState(shogi: Shogi): [IHandFormat, IHandFormat] {
         return [shogi.getHandsSummary(Color.Black), shogi.getHandsSummary(Color.White)];
     }
 
@@ -445,7 +445,7 @@ export default class JKFPlayer {
         return this.getMoveFormat(tesuu).comments || [];
     }
 
-    public getMove(tesuu: number = this.tesuu) {
+    public getMove(tesuu: number = this.tesuu): IMoveMoveFormat | undefined {
         return this.getMoveFormat(tesuu).move;
     }
 

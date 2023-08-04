@@ -29,12 +29,17 @@ const convKomaStr = function (str) {
  * Converts the given text to a shogi board representation.
  *
  * Ban is an array of 98 elements.
- * The first 81 elements (indexed from 0 to 80) are the board squares, starting from the top left.
- * The next 7 elements (indexed from 81 to 87) are the captured pieces for the first player.
- * The next 7 elements (indexed from 88 to 93) are the captured pieces for the second player.
- * 94 ?
- * The next 2 elements (indexed from 95 to 96) are name of the players.
- * The last element (indexed 97) is the position of the latest move. negative if not available.
+ * <ul>
+ * <li>The first 81 elements (indexed from 0 to 80) are the board squares, starting from the top left.<ul>
+ *   <li>5th position: turn</li>
+ *   <li>4th position: promoted or not</li>
+ * </ul>3rd to 1st: kind</li>
+ * <li>The next 7 elements (indexed from 81 to 87) are the amount of captured pieces for the first player.</li>
+ * <li>The next 7 elements (indexed from 88 to 93) are the amount of captured pieces for the second player.</li>
+ * <li>94 ?</li>
+ * <li>The next 2 elements (indexed from 95 to 96) are name of the players.</li>
+ * <li>The last element (indexed 97) is the position of the latest move. negative if not available.</li>
+ * </ul>
  *
  * @param {string} text - The text to parse.
  * @returns {number[]} - The shogi board representation.
@@ -75,14 +80,14 @@ export const readzumen = function (text: string) {
         x = 9;
         re2 = new RegExp("([\\+\\-vV\\^\\s])(.)", "g");
         while ((mk = re2.exec(mr[1])) != null) {
-            s = "vV-".indexOf(mk[1]) > -1 ? 2 : 0;
+            s = "vV-".indexOf(mk[1]) > -1 ? 2 : 0; // 5th: turn
             if ((c = KomaStr.indexOf(mk[2])) > -1) {
                 if (c > 7) {
                     c -= 8;
-                    s = s | 1;
+                    s = s | 1; // 4th: promoted
                 }
                 //xysAry[c]+=""+x+y+s;
-                ban[y * 9 - x] = s * 8 + c + 1;
+                ban[y * 9 - x] = s * 8 + c + 1; // 1st-3rd: kind
             }
             if (--x < 1) {
                 break;

@@ -3,8 +3,12 @@
  (c) maasa. | http://www.geocities.jp/ookami_maasa/shogizumen/
 */
 
-import { KanSuuji, KomaStr, readzumen, ZenSuuji } from "./zumenLib";
-import React, { FC, ReactNode /*, SVGTextElementAttributes*/ } from "react";
+import { KanSuuji, ZenSuuji } from "./zumenLib";
+import React, { FC, PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
+import { IHandFormat, IMoveMoveFormat, IStateFormat } from "json-kifu-format/src/Formats";
+import { cellEqual } from "./zumenCompat";
+import { isRawKind, kindToString, values as kindValues } from "shogi.js/src/Kind";
+import { Color } from "shogi.js";
 
 /*
 var drawall = function () {
@@ -34,34 +38,36 @@ var svgNS = "http://www.w3.org/2000/svg";
 var sgm = 1;
 var scolor = "currentColor";
 
-var mgpack = function (v, ban) {
-    var r = "";
-    for (var i = 1; i < 8; i++) {
-        var a = ban[81 + v * 7 + i - 1];
-        if (a > 0) {
-            r += KomaStr.charAt(i);
-            if (a > 1) {
-                if (a > 10) {
-                    r += "十";
-                    a -= 10;
-                }
-                r += KanSuuji.charAt(a - 1);
-            }
-        }
+function amountToString(amount: number) {
+    if (amount <= 1) return "";
+    let r = "";
+    if (amount > 10) {
+        r += "十";
+        amount -= 10;
     }
-    if (r == "") {
-        return "なし";
-    }
-    return r;
+    return r + KanSuuji.charAt(amount - 1);
+}
+
+var mgpack = function (hand: IHandFormat) {
+    return (
+        kindValues
+            .map((kind) => ({ kind, amount: hand[kind] }))
+            .filter(({ kind, amount }) => isRawKind(kind) && amount > 0)
+            .reverse()
+            .map(({ kind, amount }) => kindToString(kind, true) + amountToString(amount))
+            .join("") || "なし"
+    );
 };
 type MochigomaProps = {
     v: number;
     kx: number;
-    ban: unknown[];
+    name?: string;
+    hand: IHandFormat;
 };
-const Mochigoma: FC<MochigomaProps> = ({ v, kx, ban }) => {
-    var t = v == 0 ? "☗" + ban[95] + "　" : "☖" + ban[96] + "　";
-    t += mgpack(v, ban);
+const turns = ["先手", "後手"];
+const marks = "☗☖";
+const Mochigoma: FC<MochigomaProps> = ({ v, kx, hand, name = turns[v] }) => {
+    const t = marks[v] + name + "　" + mgpack(hand);
     const py = (-t.length * kx * 9) / 14;
 
     const r = t.length > 14 ? 14 / t.length : 1;
@@ -80,26 +86,9 @@ const Mochigoma: FC<MochigomaProps> = ({ v, kx, ban }) => {
             ))}
             {sgm && (
                 <polygon
-                    points={
-                        "0," +
-                        py +
-                        " " +
-                        kx * 0.23 +
-                        "," +
-                        (py + kx * 0.1) +
-                        " " +
-                        kx * 0.3 +
-                        "," +
-                        (py + kx * 0.6) +
-                        " " +
-                        kx * -0.3 +
-                        "," +
-                        (py + kx * 0.6) +
-                        " " +
-                        kx * -0.23 +
-                        "," +
-                        (py + kx * 0.1)
-                    }
+                    points={`0,${py} ${kx * 0.23},${py + kx * 0.1} ${kx * 0.3},${py + kx * 0.6} ${kx * -0.3},${
+                        py + kx * 0.6
+                    } ${kx * -0.23},${py + kx * 0.1}`}
                     fill={v != 0 ? "none" : scolor}
                     stroke={scolor}
                     strokeWidth={kx / 25}
@@ -115,13 +104,13 @@ const Mochigoma: FC<MochigomaProps> = ({ v, kx, ban }) => {
 type Props = {
     width?: number;
     height?: number;
-    zumen: string;
+    state?: IStateFormat;
+    latestMove?: IMoveMoveFormat;
 };
-export const Zumen: React.FC<Props> = ({ width, height, zumen }) => {
-    const ban = readzumen(zumen);
-    if (!ban) return null;
+export const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, latestMove, children }) => {
+    if (!state) return null;
 
-    const bxy = ban[97];
+    console.log({ state });
 
     let kx = 25;
 
@@ -246,44 +235,48 @@ export const Zumen: React.FC<Props> = ({ width, height, zumen }) => {
                 {Array.from({ length: 81 }, (v, i) => i).map((i) => {
                     const tgChildren: ReactNode[] = [];
                     let tgTransform: string;
-                    if (ban[i] <= 0) {
+                    const banElement = state.board[8 - (i % 9)][Math.floor(i / 9)];
+                    if (!("kind" in banElement && "color" in banElement)) {
                         return null;
                     }
                     const x = (i % 9) * kx + dx + kx / 2 + dp / 2;
                     const y = Math.floor(i / 9) * kx + dy + kx / 2 + dp / 2;
 
-                    let t = KomaStr.charAt((ban[i] - 1) & 15);
+                    let t = kindToString(banElement.kind);
                     const textAttributes: /*SVGTextElementAttributes<any>*/ any = {};
-                    if ("全圭杏".indexOf(t) != -1) {
-                        t = KomaStr.charAt((ban[i] - 1) & 7);
+                    if (t.length === 2) {
+                        // 成X
+                        t = t[1];
                         tgChildren.push(
                             <text
                                 fill={scolor}
                                 fontSize={kx * 0.82}
                                 textAnchor="middle"
                                 dy={-kx * 0.09}
-                                {...(i == bxy ? { fontFamily: "sans-serif", fontWeight: "bold" } : {})}
+                                {...(cellEqual(i, latestMove?.to)
+                                    ? { fontFamily: "sans-serif", fontWeight: "bold" }
+                                    : {})}
                             >
                                 成
                             </text>,
                         );
 
-                        textAttributes.dy = x * 0.32 + kx * 0.41;
-                        if (ban[i] > 16) {
+                        textAttributes.dy = kx * (0.32 + 0.41);
+                        if (banElement.color === Color.White) {
                             tgTransform = "translate(" + x + "," + y + ") scale(-1,-0.5)";
                         } else {
                             tgTransform = "translate(" + x + "," + y + ") scale(1,0.5)";
                         }
                     } else {
                         textAttributes.dy = kx * 0.32;
-                        if (ban[i] > 16) {
+                        if (banElement.color === Color.White) {
                             tgTransform = "translate(" + x + "," + y + ") scale(-1,-1)";
                         } else {
                             tgTransform = "translate(" + x + "," + y + ")";
                         }
                     }
                     textAttributes.fontSize = kx * 0.82;
-                    if (i == bxy) {
+                    if (cellEqual(i, latestMove?.to)) {
                         textAttributes.style = { fontWeight: "bold" };
                         textAttributes.fontFamily = "sans-serif";
                     }
@@ -298,8 +291,8 @@ export const Zumen: React.FC<Props> = ({ width, height, zumen }) => {
                     );
                 })}
             </g>
-            <Mochigoma v={0} kx={kx} ban={ban} />;
-            <Mochigoma v={1} kx={kx} ban={ban} />;
+            <Mochigoma v={0} kx={kx} hand={state.hands[0]} />;
+            <Mochigoma v={1} kx={kx} hand={state.hands[1]} />;{children}
         </svg>
     );
 };
