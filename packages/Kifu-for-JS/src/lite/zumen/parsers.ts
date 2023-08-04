@@ -1,3 +1,7 @@
+/**
+ * This parser is deprecated and kept for documentation purposes.
+ * TODO: rewrite so it will generate object which Zumen component accepts.
+ */
 const HanSuuji = "123456789";
 export const ZenSuuji = "１２３４５６７８９";
 export const KanSuuji = "一二三四五六七八九";
