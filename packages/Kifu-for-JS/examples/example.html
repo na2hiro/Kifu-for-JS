@@ -51,6 +51,15 @@ JavaもFlashも使わない，JavaScriptだけで動く<a href="https://github.c
 		</ul>
 </ul>
 <h2><a id="example">例</a></h2>
+<h3><a id="kiflite">KIFファイル読み込み (lite)</a></h3>
+<div id="kiflite-container" style="max-width: 400px;"></div>
+<script>var kifuLite = Kifu.load("./files/kif/jt201409130101.kif","kiflite-container", {mode: "lite"});</script>
+
+<!--
+TODO: Want to have a markup like this:
+<script type="application/shogi-jkf" src="./files/kif/jt201409130101.kif" data-setting-mode="lite"></script>
+-->
+
 <h3><a id="kif">KIFファイル読み込み</a></h3>
 <script>var kifu1 = Kifu.load("./files/kif/jt201409130101.kif");</script>
 <h4>分岐棋譜</h4>

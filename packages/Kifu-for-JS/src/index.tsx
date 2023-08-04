@@ -4,10 +4,12 @@ import { render } from "react-dom";
 import Kifu from "./Kifu";
 import KifuStore from "./stores/KifuStore";
 import { onDomReady } from "./utils/util";
+import KifuLite from "./lite/KifuLite";
 export const mobx = { autorun, when, reaction };
 
 export interface IOptions {
     responsive?: boolean;
+    mode?: "lite" | "normal";
 }
 
 export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
@@ -46,7 +48,11 @@ function loadCommon(
         onDomReady(() => {
             const container = document.getElementById(id);
             const kifuStore = new KifuStore();
-            render(<Kifu {...options} kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+            if (options?.mode === "lite") {
+                render(<KifuLite {...options} kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+            } else {
+                render(<Kifu {...options} kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+            }
             resolve(kifuStore);
         });
     });

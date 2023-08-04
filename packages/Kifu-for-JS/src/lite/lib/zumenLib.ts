@@ -25,6 +25,20 @@ const convKomaStr = function (str) {
     str = str.replace("个", "と");
     return str;
 };
+/**
+ * Converts the given text to a shogi board representation.
+ *
+ * Ban is an array of 98 elements.
+ * The first 81 elements (indexed from 0 to 80) are the board squares, starting from the top left.
+ * The next 7 elements (indexed from 81 to 87) are the captured pieces for the first player.
+ * The next 7 elements (indexed from 88 to 93) are the captured pieces for the second player.
+ * 94 ?
+ * The next 2 elements (indexed from 95 to 96) are name of the players.
+ * The last element (indexed 97) is the position of the latest move. negative if not available.
+ *
+ * @param {string} text - The text to parse.
+ * @returns {number[]} - The shogi board representation.
+ */
 export const readzumen = function (text: string) {
     var mr, mk, x, y, s, c, i, re2;
     const ban = new Array(98);
