@@ -8,6 +8,7 @@ import KifuList from "../KifuList";
 
 import "../../css/kifuforjs.scss";
 import ForkList from "../ForkList";
+import Comment from "../Comment";
 
 export interface IProps {
     filePath?: string;
@@ -19,7 +20,7 @@ export interface IProps {
 
 const areaWidth = 300;
 const areaHeight = 250;
-const controlHeight = 100;
+const controlHeight = 150;
 const controlMargin = 5;
 
 const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu }) => {
@@ -69,22 +70,30 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
                 width={areaWidth - controlMargin * 2}
                 height={controlHeight - controlMargin * 2}
             >
-                <div style={{ display: "flex", justifyContent: "space-between", height: "100%", gap: "1px" }}>
-                    <button onClick={() => kifuStore.player.backward()} style={{ minWidth: "70px", fontSize: "25px" }}>
-                        ←
-                    </button>
-                    {/*TODO: kifu list bug when zoomed*/}
-                    <KifuList player={kifuStore.player} isPortrait={false} style={{ fontSize: "x-small" }} />
-                    <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-                        {/*TODO: long press to keep moving*/}
+                <div style={{ display: "grid", height: "100%", gap: "1px", gridAutoRows: "1fr" }}>
+                    <div style={{ display: "flex", justifyContent: "space-between", height: "100%", gap: "1px" }}>
                         <button
-                            onClick={() => kifuStore.player.forward()}
-                            style={{ minWidth: "70px", fontSize: "25px", flexGrow: 1 }}
+                            onClick={() => kifuStore.player.backward()}
+                            disabled={kifuStore.player.tesuu === 0}
+                            style={{ minWidth: "70px", fontSize: "10px" }}
                         >
-                            →
+                            ◀
                         </button>
-                        <ForkList kifuStore={kifuStore} />
+                        {/*TODO: kifu list bug when zoomed*/}
+                        <KifuList player={kifuStore.player} isPortrait={false} style={{ fontSize: "small" }} />
+                        <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
+                            {/*TODO: long press to keep moving*/}
+                            <button
+                                onClick={() => kifuStore.player.forward()}
+                                style={{ minWidth: "70px", fontSize: "10px", flexGrow: 1 }}
+                                disabled={kifuStore.player.tesuu === kifuStore.player.kifu.moves.length - 1}
+                            >
+                                ▶
+                            </button>
+                            <ForkList kifuStore={kifuStore} />
+                        </div>
                     </div>
+                    <Comment kifuStore={kifuStore} rows={5} style={{ fontSize: "small", resize: "none" }} />
                 </div>
             </foreignObject>
         </Zumen>

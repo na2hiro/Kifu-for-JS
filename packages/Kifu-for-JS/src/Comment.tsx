@@ -1,23 +1,26 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import KifuStore from "./stores/KifuStore";
+import { CSSProperties } from "react";
 
 export interface IProps {
     kifuStore: KifuStore;
+    rows?: number;
+    style?: CSSProperties;
 }
 
-@observer
-export default class Comment extends React.Component<IProps> {
-    public render() {
-        const { player } = this.props.kifuStore;
-        return (
-            <textarea
-                rows={10}
-                className="kifuforjs-comment"
-                disabled={true}
-                value={this.props.kifuStore.errors.join("\n") || player.getComments().join("\n")}
-                aria-label="局面コメント"
-            />
-        );
-    }
-}
+const Comment: React.FC<IProps> = ({ kifuStore, rows = 10, style }) => {
+    const { player } = kifuStore;
+    return (
+        <textarea
+            key={kifuStore.player.tesuu}
+            rows={rows}
+            className="kifuforjs-comment"
+            disabled={true}
+            value={kifuStore.errors.join("\n") || player.getComments().join("\n")}
+            aria-label="局面コメント"
+            style={style}
+        />
+    );
+};
+export default observer(Comment);
