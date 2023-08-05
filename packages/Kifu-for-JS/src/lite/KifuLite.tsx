@@ -3,7 +3,7 @@ import * as React from "react";
 
 import { useEffect, useState } from "react";
 import KifuStore from "../stores/KifuStore";
-import { Zumen } from "./zumen/Zumen";
+import Zumen from "./zumen/Zumen";
 import KifuList from "../KifuList";
 
 import "../../css/kifuforjs.scss";
@@ -21,16 +21,17 @@ export interface IProps {
 const areaWidth = 300;
 const areaHeight = 250;
 const controlHeight = 150;
-const controlMargin = 5;
+const controlMarginTop = 4;
+const controlMargin = 8;
 
 const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu }) => {
     const [kifuStore, _] = useState<KifuStore>(() => givenKifuStore || new KifuStore());
 
     useEffect(() => {
         if (filePath) {
-            kifuStore.loadFile(filePath);
+            kifuStore.loadFile(filePath).then(() => {});
         } else {
-            kifuStore.loadKifu(kifu);
+            kifuStore.loadKifu(kifu).then(() => {});
         }
     }, [filePath, kifu]);
 
@@ -66,7 +67,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
             ></rect>
             <foreignObject
                 x={controlMargin}
-                y={areaHeight + controlMargin}
+                y={areaHeight + controlMarginTop}
                 width={areaWidth - controlMargin * 2}
                 height={controlHeight - controlMargin * 2}
             >
@@ -80,7 +81,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
                             ◀
                         </button>
                         {/*TODO: kifu list bug when zoomed*/}
-                        <KifuList player={kifuStore.player} isPortrait={false} style={{ fontSize: "small" }} />
+                        <KifuList player={kifuStore.player} isPortrait={false} style={{ fontSize: "x-small" }} />
                         <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                             {/*TODO: long press to keep moving*/}
                             <button
@@ -93,7 +94,15 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu 
                             <ForkList kifuStore={kifuStore} />
                         </div>
                     </div>
-                    <Comment kifuStore={kifuStore} rows={5} style={{ fontSize: "small", resize: "none" }} />
+                    <Comment
+                        kifuStore={kifuStore}
+                        rows={5}
+                        style={{
+                            fontSize: "small",
+                            resize: "none",
+                            backgroundColor: "white",
+                        }}
+                    />
                 </div>
             </foreignObject>
         </Zumen>

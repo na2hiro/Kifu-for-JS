@@ -20,7 +20,7 @@ type Props = {
     latestMove?: IMoveMoveFormat;
     players?: [string | undefined, string | undefined];
 };
-export const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, latestMove, children, players }) => {
+const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, latestMove, children, players }) => {
     if (!state) return null;
 
     let kx = 25;
@@ -167,3 +167,5 @@ export const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state
         </svg>
     );
 };
+
+export default Zumen;

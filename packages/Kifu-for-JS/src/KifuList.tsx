@@ -11,7 +11,6 @@ import {
     useRef,
     useState,
 } from "react";
-import { pad } from "./utils/util";
 
 export interface IProps {
     player: JKFPlayer;
@@ -51,9 +50,17 @@ export default class KifuList extends React.Component<IProps, any> {
     }
 }
 
-const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu, style }) => {
+interface IDivListProps {
+    options: Array<{
+        node: ReactNode;
+        value: number;
+    }>;
+    onChange: (tesuu: number) => void;
+    tesuu: number;
+    style?: CSSProperties;
+}
+const DivList: FunctionComponent<IDivListProps> = ({ options, onChange, tesuu, style }) => {
     const [containerHeight, setContainerHeight] = useState<number | null>(null);
-    const [paddingHeight, setPaddingHeight] = useState<string>("");
     const [rowHeight, setRowHeight] = useState<number | null>(null);
     const [tesuuInitiatedByScroll, setTesuuInitiatedByScroll] = useState<number | null>(null);
 
@@ -68,24 +75,21 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu, styl
         }
     }, [tesuu, containerHeight]);
     useLayoutEffect(() => {
-        if (containerRef.current && ref.current) {
-            let newRowHeight = rowHeight;
-            if (rowHeight === null) {
-                newRowHeight = ref.current.getBoundingClientRect().height;
-                // Only set at first
-                setRowHeight(newRowHeight);
-            }
-
-            const { height } = containerRef.current.getBoundingClientRect();
+        if (ref.current && !rowHeight) {
+            // Only set at first. More correct if it reads heights of the first and the last rows.
+            setRowHeight(getComputedHeight(ref.current));
+        }
+    }, []);
+    useLayoutEffect(() => {
+        if (containerRef.current) {
+            // TODO: use ResizeObserver. I tried it once but couldn't figure out ResizeObserver loop limit issue.
+            const height = getComputedHeight(containerRef.current);
             if (containerHeight !== height) {
                 setContainerHeight(height);
             }
-            const newPaddingHeight = `${(height - newRowHeight) / 2 - 1}px`;
-            if (newPaddingHeight !== paddingHeight) {
-                setPaddingHeight(newPaddingHeight);
-            }
         }
     });
+    const paddingHeight = `${(containerHeight - rowHeight) / 2 - 1}px`;
     const onScroll = useCallback(() => {
         if (containerHeight === null) {
             return;
@@ -160,18 +164,11 @@ const DivList: FunctionComponent<IKifuProps> = ({ options, onChange, tesuu, styl
     );
 };
 
-function scrollToCenter(element, container) {
+function scrollToCenter(element: HTMLElement, container: HTMLElement) {
     // scrollTop is integer, thus it cannot scroll to the center pixel-perfectly. TODO: improve it somehow
-    container.scrollTop =
-        element.offsetTop + element.getBoundingClientRect().height / 2 - container.getBoundingClientRect().height / 2;
+    container.scrollTop = element.offsetTop + getComputedHeight(element) / 2 - getComputedHeight(container) / 2;
 }
 
-interface IKifuProps {
-    options: Array<{
-        node: ReactNode;
-        value: number;
-    }>;
-    onChange: (tesuu: number) => void;
-    tesuu: number;
-    style?: CSSProperties;
+function getComputedHeight(el: HTMLElement) {
+    return parseInt(getComputedStyle(el).height.replace("px", ""));
 }
