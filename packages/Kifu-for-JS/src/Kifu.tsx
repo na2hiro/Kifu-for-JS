@@ -20,8 +20,6 @@ import "../css/kifuforjs.scss";
 import Comment from "./Comment";
 
 export interface IProps {
-    filePath?: string;
-    kifu?: string;
     isOver?: boolean;
     kifuStore?: KifuStore;
     responsive?: boolean;
@@ -46,16 +44,6 @@ class Kifu extends React.Component<IProps, { isFullscreen: boolean }> {
     }
 
     public componentDidMount() {
-        const { filePath } = this.props;
-        let loadPromise;
-        if (filePath) {
-            loadPromise = this.kifuStore.loadFile(filePath);
-        } else {
-            loadPromise = this.kifuStore.loadKifu(this.props.kifu);
-        }
-        loadPromise.catch(() => {
-            // ok
-        });
         if (!this.fullscreenListener) {
             this.fullscreenListener = fscreen.addEventListener("fullscreenchange", this.onFullscreenChange);
         }
@@ -70,18 +58,6 @@ class Kifu extends React.Component<IProps, { isFullscreen: boolean }> {
             fscreen.removeEventListener("fullscreenchange", this.onFullscreenChange);
             this.fullscreenListener = null;
         }
-    }
-
-    public componentWillReceiveProps(nextProps: IProps) {
-        let loadPromise = Promise.resolve();
-        if (this.props.filePath !== nextProps.filePath) {
-            loadPromise = this.kifuStore.loadFile(this.props.filePath);
-        } else if (this.props.kifu !== nextProps.kifu) {
-            loadPromise = this.kifuStore.loadKifu(this.props.kifu);
-        }
-        loadPromise.catch(() => {
-            // ok
-        });
     }
 
     public render() {

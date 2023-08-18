@@ -48,11 +48,16 @@ function loadCommon(
         onDomReady(() => {
             const container = document.getElementById(id);
             const kifuStore = new KifuStore();
+            if (filePath) {
+                kifuStore.loadFile(filePath).then(() => {});
+            } else {
+                kifuStore.loadKifu(kifu).then(() => {});
+            }
             // TODO revert
             //if (options?.mode === "lite") {
-            render(<KifuLite {...options} kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+            render(<KifuLite {...options} kifuStore={kifuStore} />, container);
             /*} else {
-                render(<Kifu {...options} kifuStore={kifuStore} kifu={kifu} filePath={filePath} />, container);
+                render(<Kifu {...options} kifuStore={kifuStore} />, container);
             }*/
             resolve(kifuStore);
         });

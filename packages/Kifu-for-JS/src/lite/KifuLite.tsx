@@ -13,9 +13,7 @@ import Comment from "../Comment";
 export interface IProps {
     filePath?: string;
     kifu?: string;
-    isOver?: boolean;
     kifuStore?: KifuStore;
-    responsive?: boolean;
 }
 
 const areaWidth = 300;
@@ -24,16 +22,12 @@ const controlHeight = 150;
 const controlMarginTop = 4;
 const controlMargin = 8;
 
-const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, filePath, kifu }) => {
-    const [kifuStore, _] = useState<KifuStore>(() => givenKifuStore || new KifuStore());
+const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore }) => {
+    const [kifuStore, setKifuStore] = useState<KifuStore>(() => givenKifuStore || new KifuStore());
 
     useEffect(() => {
-        if (filePath) {
-            kifuStore.loadFile(filePath).then(() => {});
-        } else {
-            kifuStore.loadKifu(kifu).then(() => {});
-        }
-    }, [filePath, kifu]);
+        setKifuStore(givenKifuStore);
+    }, [givenKifuStore]);
 
     let latestMove = kifuStore.player.getMove();
     if (!latestMove && kifuStore.player.tesuu > 0) {
