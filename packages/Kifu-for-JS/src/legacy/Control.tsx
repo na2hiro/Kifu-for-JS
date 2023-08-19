@@ -1,6 +1,6 @@
 import { observer } from "mobx-react";
 import * as React from "react";
-import KifuStore from "./stores/KifuStore";
+import KifuStore from "../common/stores/KifuStore";
 
 declare const __VERSION__: string;
 

@@ -1,6 +1,6 @@
 import { JKFPlayer } from "json-kifu-format";
 import { decorate, observable, toJS } from "mobx";
-import fetchFile from "../utils/fetchFile";
+import fetchFile from "../../utils/fetchFile";
 
 const formatErrorMessage = (kifu, error) =>
     `棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．

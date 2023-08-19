@@ -2,8 +2,8 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { Color, colorToString } from "shogi.js";
 import PieceHandGroup from "./PieceHandGroup";
-import KifuStore from "./stores/KifuStore";
-import { colorToMark } from "./utils/util";
+import KifuStore from "../common/stores/KifuStore";
+import { colorToMark } from "../utils/util";
 
 export interface IProps {
     kifuStore: KifuStore;

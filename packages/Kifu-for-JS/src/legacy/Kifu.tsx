@@ -12,12 +12,12 @@ import Control from "./Control";
 import Hand from "./Hand";
 import Info from "./Info";
 import LeftControl from "./LeftControl";
-import KifuStore from "./stores/KifuStore";
-import { loadFile } from "./utils/util";
+import KifuStore from "../common/stores/KifuStore";
+import { loadFile } from "../utils/util";
 
 import { createRef } from "react";
-import "../css/kifuforjs.scss";
-import Comment from "./Comment";
+import "../../css/kifuforjs.scss";
+import Comment from "../common/Comment";
 
 export interface IProps {
     isOver?: boolean;

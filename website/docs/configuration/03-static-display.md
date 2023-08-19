@@ -15,8 +15,6 @@ TODO: 画像
 
 [局面の指定](configuration/specifying-board.md)も行うことで、棋譜中の一局面を表示することができます。
 
-12手目の局面を表示する：
-
 TODO: 画像
 
 ```html
@@ -25,12 +23,10 @@ TODO: 画像
 </script>
 ```
 
-10手目の局面での2番目の分岐からさらに3手目進んだ局面を表示する：
-
 TODO: 画像
 
 ```html
-<script type="text/kifu" data-static data-ply="[[10, 2], [3]]">
+<script type="text/kifu" data-ply="12" data-forkpointers="[[5, 1], [11, 0]]">
 ▲７六歩　△３四歩…
 </script>
 ```
@@ -67,3 +63,20 @@ TODO: 画像
 * BOD形式 (例：上記)
 * SFEN形式 (例：`ln1gkg1nl/6+P2/2sppps1p/2p3p2/p8/P1P1P3P/2NP1PP2/3s1KSR1/L1+b2G1NL w R2Pbgp 42`)
 
+## 着手表示の指定
+
+デフォルトでは、初期局面や局面読み込みなどの場合を除き、最終手が着手表示され太字になります。これらを指定したり、また取り除いたりすることができます。
+
+着手表示を抑制する場合
+
+```html
+<script type="text/kifu" data-static data-static-last="hidden" data-ply="12">
+  ▲７六歩　△３四歩…
+</script>
+```
+着手表示箇所を指定する場合
+```html
+<script type="text/kifu" data-static data-static-last="[3, 5]">
+ln1gkg1nl/6+P2/2sppps1p/2p3p2/p8/P1P1P3P/2NP1PP2/3s1KSR1/L1+b2G1NL w R2Pbgp 42
+</script>
+```

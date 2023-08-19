@@ -4,11 +4,12 @@
 */
 
 import React, { PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
-import { IMoveMoveFormat, IStateFormat } from "json-kifu-format/src/Formats";
+import { IPlaceFormat, IStateFormat } from "json-kifu-format/src/Formats";
 import { cellEqual } from "./zumenCompat";
 import { Color, kindToString } from "shogi.js";
 import { KanSuuji, scolor, ZenSuuji } from "./lib";
 import { Mochigoma } from "./Mochigoma";
+import { toJS } from "mobx";
 
 /**
  * TODO: Customize mochigoma display for tsume shogi
@@ -17,10 +18,10 @@ type Props = {
     width?: number;
     height?: number;
     state?: IStateFormat;
-    latestMove?: IMoveMoveFormat;
+    latestMoveTo?: IPlaceFormat;
     players?: [string | undefined, string | undefined];
 };
-const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, latestMove, children, players }) => {
+const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, latestMoveTo, children, players }) => {
     if (!state) return null;
 
     let kx = 25;
@@ -121,11 +122,12 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, lates
                         t = t[1];
                         tgChildren.push(
                             <text
+                                key="成"
                                 fill={scolor}
                                 fontSize={kx * 0.82}
                                 textAnchor="middle"
                                 dy={-kx * 0.09}
-                                {...(cellEqual(i, latestMove?.to)
+                                {...(cellEqual(i, latestMoveTo)
                                     ? { fontFamily: "sans-serif", fontWeight: "bold" }
                                     : {})}
                             >
@@ -142,7 +144,7 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, lates
                         tgTransform = `translate(${x},${y})${piece.color === Color.White ? " scale(-1,-1)" : ""}`;
                     }
                     textAttributes.fontSize = kx * 0.82;
-                    if (cellEqual(i, latestMove?.to)) {
+                    if (cellEqual(i, latestMoveTo)) {
                         textAttributes.style = { fontWeight: "bold" };
                         textAttributes.fontFamily = "sans-serif";
                     }

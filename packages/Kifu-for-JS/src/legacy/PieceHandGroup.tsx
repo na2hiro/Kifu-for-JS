@@ -2,7 +2,7 @@ import { Component } from "react";
 import * as React from "react";
 import { kindToString } from "shogi.js";
 import PieceHand from "./PieceHand";
-import KifuStore from "./stores/KifuStore";
+import KifuStore from "../common/stores/KifuStore";
 
 export interface IProps {
     data: any; // TODO

@@ -1,16 +1,7 @@
-import React from "react";
 import { Color } from "shogi.js";
 
 export function colorToMark(color) {
     return color === Color.Black ? "☗" : "☖";
-}
-// length <= 10
-export function pad(str, space, length) {
-    let ret = "";
-    for (let i = str.length; i < length; i++) {
-        ret += space;
-    }
-    return ret + str;
 }
 
 // ファイルオブジェクトと読み込み完了後のコールバック関数を渡す

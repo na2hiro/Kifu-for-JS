@@ -1,15 +1,23 @@
 import { autorun, reaction, when } from "mobx";
 import * as React from "react";
 import { render } from "react-dom";
-import Kifu from "./Kifu";
-import KifuStore from "./stores/KifuStore";
+import KifuStore from "./common/stores/KifuStore";
 import { onDomReady } from "./utils/util";
 import KifuLite from "./lite/KifuLite";
+import { JKFPlayer } from "json-kifu-format";
 export const mobx = { autorun, when, reaction };
+import { Shogi } from "shogi.js";
+
+type IStatic = {
+    last?: "hidden" | [number, number];
+};
 
 export interface IOptions {
-    responsive?: boolean;
-    mode?: "lite" | "normal";
+    kifu?: string;
+    src?: string;
+    ply?: number;
+    forkpointers?: [number, number][];
+    static?: IStatic;
 }
 
 export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
@@ -19,8 +27,10 @@ export function loadString(kifu: string, idOrOptions?: string | IOptions, option
         id = undefined;
     } else {
         id = idOrOptions;
+        options = options || {};
     }
-    return loadCommon(undefined, kifu, id, options);
+    options.kifu = kifu;
+    return loadCommon(id, options);
 }
 
 export function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
@@ -30,16 +40,13 @@ export function load(filePath: string, idOrOptions?: string | IOptions, options?
         id = undefined;
     } else {
         id = idOrOptions;
+        options = options || {};
     }
-    return loadCommon(filePath, undefined, id, options);
+    options.src = filePath;
+    return loadCommon(id, options);
 }
 
-function loadCommon(
-    filePath: string | undefined,
-    kifu: string | undefined,
-    id: string | undefined,
-    options: IOptions | undefined,
-): Promise<KifuStore> {
+function loadCommon(id: string | undefined, options: IOptions | undefined): Promise<KifuStore> {
     return new Promise((resolve) => {
         if (!id) {
             id = "kifuforjs_" + Math.random().toString(36).slice(2);
@@ -47,19 +54,101 @@ function loadCommon(
         }
         onDomReady(() => {
             const container = document.getElementById(id);
-            const kifuStore = new KifuStore();
-            if (filePath) {
-                kifuStore.loadFile(filePath).then(() => {});
-            } else {
-                kifuStore.loadKifu(kifu).then(() => {});
-            }
-            // TODO revert
-            //if (options?.mode === "lite") {
-            render(<KifuLite {...options} kifuStore={kifuStore} />, container);
-            /*} else {
-                render(<Kifu {...options} kifuStore={kifuStore} />, container);
-            }*/
+            const kifuStore = loadSingle(options, container!);
             resolve(kifuStore);
         });
     });
+}
+
+function loadSingle(options: IOptions, container: HTMLElement) {
+    const kifuStore = new KifuStore();
+    const thunk = () => {
+        if (options.ply) {
+            // TODO: immediately show the target board
+            kifuStore.player.goto(
+                options.ply,
+                options.forkpointers ? options.forkpointers.map(([te, forkIndex]) => ({ te, forkIndex })) : undefined,
+            );
+        }
+    };
+    if (options.src) {
+        kifuStore.loadFile(options.src).then(thunk);
+    } else {
+        kifuStore
+            .loadKifu(options.kifu.trim())
+            .catch(() => {
+                if (options.static && options.kifu) {
+                    const shogi = new Shogi();
+                    shogi.initializeFromSFENString(options.kifu.trim());
+                    kifuStore.player = JKFPlayer.fromShogi(shogi);
+                }
+                kifuStore.errors = [];
+            })
+            .then(thunk);
+    }
+    render(
+        <KifuLite
+            kifuStore={kifuStore}
+            static={
+                !options.static
+                    ? undefined
+                    : {
+                          last: Array.isArray(options.static?.last)
+                              ? { x: options.static.last[0], y: options.static.last[1] }
+                              : options.static?.last,
+                      }
+            }
+        />,
+        container,
+    );
+
+    return kifuStore;
+}
+
+if (typeof document !== "undefined") {
+    onDomReady(() => {
+        // Important to convert to array first, otherwise the NodeList will be modified as we remove the script tags
+        const scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
+        for (let i = 0; i < scripts.length; i++) {
+            const script = scripts[i];
+            if (script.type === "text/kifu") {
+                const container = document.createElement("div");
+                container.className = script.className;
+                container.setAttribute("style", script.getAttribute("style"));
+                script.replaceWith(container);
+
+                const options = parseOptionsFromAttributes(script);
+                loadSingle(options, container);
+            }
+        }
+    });
+}
+
+function parseOptionsFromAttributes(element: HTMLElement): IOptions {
+    const forkpointers = element.dataset.forkpointers ? JSON.parse(element.dataset.forkpointers) : undefined;
+    return {
+        kifu: element.textContent,
+        src: element.dataset.src,
+        ply: element.dataset.ply ? parseInt(element.dataset.ply) : undefined,
+        forkpointers:
+            Array.isArray(forkpointers) && forkpointers.every((p) => Array.isArray(p) && p.length === 2)
+                ? forkpointers
+                : undefined,
+        static: parseStatic(),
+    };
+
+    function parseStatic() {
+        if (!("static" in element.dataset)) {
+            return undefined;
+        }
+        const last = element.dataset["staticLast"];
+        if (last === "hidden") {
+            return { last: "hidden" as const };
+        }
+        const parsed = last ? JSON.parse(last) : undefined;
+        if (Array.isArray(parsed) && parsed.length === 2 && parsed.every((n) => typeof n === "number")) {
+            return { last: parsed as [number, number] };
+        }
+        return {};
+    }
 }

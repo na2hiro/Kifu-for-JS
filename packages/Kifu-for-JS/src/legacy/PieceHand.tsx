@@ -3,7 +3,7 @@ import { CSSProperties } from "react";
 import { DragSource, DropTarget } from "react-dnd";
 import { Color } from "shogi.js";
 import { getUrlWithReverse } from "./images/PieceImage";
-import KifuStore from "./stores/KifuStore";
+import KifuStore from "../common/stores/KifuStore";
 
 export interface IProps {
     kifuStore: KifuStore;

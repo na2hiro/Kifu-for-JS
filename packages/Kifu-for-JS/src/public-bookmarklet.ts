@@ -1,4 +1,4 @@
-import KifuStore from "./stores/KifuStore";
+import KifuStore from "./common/stores/KifuStore";
 
 declare var $; // jQuery
 declare var jQuery; // jQuery

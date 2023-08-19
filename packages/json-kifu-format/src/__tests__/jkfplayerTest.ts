@@ -1,7 +1,7 @@
 /* eslint-disable jest/expect-expect */
 /* eslint-disable @typescript-eslint/ban-ts-comment */
 /* eslint-disable jest/valid-expect */
-import {Shogi} from "shogi.js";
+import { Color, Shogi } from "shogi.js";
 import JKFPlayer from "../jkfplayer";
 
 // TODO Fix type errors
@@ -1056,6 +1056,21 @@ P-
             expect(player.getMoveFormat(1)).toEqual({
                 move: {from: p(7, 7), to: p(7, 6), piece: "FU", color: 0},
             });
+        });
+    });
+    describe("fromShogi", () => {
+        it("can be created from shogi", () => {
+            const shogi = new Shogi();
+            shogi.editMode(true);
+            shogi.captureByColor(7, 7, Color.White);
+            shogi.captureByColor(2, 7, Color.White);
+            shogi.editMode(false);
+            const snapshot = shogi.toCSAString();
+            const player = JKFPlayer.fromShogi(shogi);
+            player.inputMove({ color: Color.Black, piece: "HI", from: p(2, 8), to: p(2, 3), promote: true });
+            player.inputMove({ color: Color.White, piece: "KI", from: p(4, 1), to: p(3, 2) });
+            player.goto(0);
+            expect(player.shogi.toCSAString()).toBe(snapshot);
         });
     });
 });

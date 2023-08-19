@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
 import * as React from "react";
-import ForkList from "./ForkList";
-import KifuList from "./KifuList";
-import KifuStore from "./stores/KifuStore";
+import ForkList from "../common/ForkList";
+import KifuList from "../common/KifuList";
+import KifuStore from "../common/stores/KifuStore";
 
 export interface IProps {
     kifuStore: KifuStore;
