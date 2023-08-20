@@ -2,19 +2,12 @@
 slug: /
 ---
 
-import BrowserOnly from '@docusaurus/BrowserOnly';
-
 # Kifu for JS について
 
 Kifu for JS は、Webページに埋め込める将棋の棋譜再生盤ウィジェットです。
 
-<BrowserOnly>
-  {() => {
-    // TODO: make it ok for SSR
-    const {KifuLite, KifuStore} = require('kifu-for-js');
-    return <KifuLite kifuStore={new KifuStore()} />
-  }}
-</BrowserOnly>
+<!-- TODO: replace with a beautiful position -->
+<KifuLite kifu={`▲７六歩`} />
 
 ## 主な特徴
 

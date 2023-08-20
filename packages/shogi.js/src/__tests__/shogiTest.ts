@@ -93,6 +93,11 @@ describe("initializeFromSFENString", () => {
         );
         expect(shogi.toCSAString()).toMatchSnapshot();
     });
+    it("throws error for invalid SFEN", () => {
+        expect(() =>
+            shogi.initializeFromSFENString("I have a pen")
+        ).toThrowErrorMatchingInlineSnapshot(`"Invalid SFEN"`);
+    });
 });
 describe("editMode", () => {
     it("example 1", () => {

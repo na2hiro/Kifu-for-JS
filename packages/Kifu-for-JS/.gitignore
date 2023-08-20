@@ -2,6 +2,7 @@
 *.iml
 /node_modules
 *.swp
+/dist/
 /bundle/
 /coverage/
 .DS_Store

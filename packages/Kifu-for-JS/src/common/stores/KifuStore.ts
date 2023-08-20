@@ -1,6 +1,20 @@
 import { JKFPlayer } from "json-kifu-format";
-import { decorate, observable, toJS } from "mobx";
+import { decorate, observable } from "mobx";
 import fetchFile from "../../utils/fetchFile";
+import { Shogi } from "shogi.js";
+import { IPlaceFormat } from "json-kifu-format/src/Formats";
+
+export interface IOptions {
+    kifu?: string;
+    src?: string;
+    ply?: number;
+    forkpointers?: [number, number][];
+    static?: IStatic;
+}
+
+export type IStatic = {
+    last?: "hidden" | [number, number];
+};
 
 const formatErrorMessage = (kifu, error) =>
     `棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．
@@ -13,12 +27,47 @@ export default class KifuStore {
     @observable public errors: string[] = [];
     @observable public reversed: boolean;
     @observable public filePath: string;
+    @observable public staticOptions: IStatic;
     // tslint:disable-next-line:variable-name
     @observable private player_: JKFPlayer;
     private timerAutoload: number;
 
-    constructor() {
+    constructor(options?: IOptions) {
         this.player = new JKFPlayer({ header: {}, moves: [{}] });
+        this.staticOptions = options?.static;
+        if (options) {
+            const initializePly = () => {
+                if (options.ply) {
+                    this.player.goto(
+                        options.ply,
+                        options.forkpointers
+                            ? options.forkpointers.map(([te, forkIndex]) => ({ te, forkIndex }))
+                            : undefined,
+                    );
+                }
+            };
+            if (options.src) {
+                this.loadFile(options.src).then(initializePly);
+            } else if (options.kifu && options.kifu.trim() !== "") {
+                try {
+                    this.loadKifuSync(options.kifu.trim());
+                } catch (e) {
+                    if (options.static) {
+                        const shogi = new Shogi();
+                        try {
+                            // Try to recover as SFEN
+                            shogi.initializeFromSFENString(options.kifu.trim());
+                            this.player = JKFPlayer.fromShogi(shogi);
+                            this.errors = [];
+                        } catch (syntaxOrSemanticsError) {
+                            // Nvm, throw the original error
+                            throw e;
+                        }
+                    }
+                }
+                initializePly();
+            }
+        }
     }
 
     get player() {
@@ -69,6 +118,7 @@ export default class KifuStore {
             this.player = newPlayer;
         } catch (syntaxOrSemanticsError) {
             this.errors.push(formatErrorMessage(kifu, syntaxOrSemanticsError));
+            console.error(syntaxOrSemanticsError);
             throw syntaxOrSemanticsError;
         }
     }
@@ -88,6 +138,7 @@ export default class KifuStore {
                     this.player = newPlayer;
                 } catch (syntaxOrSemanticsError) {
                     this.errors.push(formatErrorMessage(data, syntaxOrSemanticsError));
+                    console.error(syntaxOrSemanticsError);
                     throw syntaxOrSemanticsError;
                 }
             },
@@ -112,6 +163,21 @@ export default class KifuStore {
 
     get hasFork() {
         return this.player.kifu.moves.some((move) => move.forks && move.forks.length > 0);
+    }
+
+    public getLatestMoveTo(): IPlaceFormat | undefined {
+        if (this.staticOptions?.last === "hidden") {
+            return undefined;
+        } else if (this.staticOptions?.last) {
+            const [x, y] = this.staticOptions.last;
+            return { x, y };
+        } else {
+            let latestMove = this.player.getMove();
+            if (!latestMove && this.player.tesuu > 0) {
+                latestMove = this.player.getMove(this.player.tesuu - 1);
+            }
+            return latestMove?.to;
+        }
     }
 }
 

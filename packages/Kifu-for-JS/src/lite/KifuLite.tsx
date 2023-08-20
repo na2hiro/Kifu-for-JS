@@ -1,8 +1,8 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { useEffect, useState } from "react";
-import KifuStore from "../common/stores/KifuStore";
+import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import KifuStore, { IOptions, IStatic } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 import KifuList from "../common/KifuList";
 
@@ -11,12 +11,12 @@ import ForkList from "../common/ForkList";
 import Comment from "../common/Comment";
 import { IPlaceFormat } from "json-kifu-format/src/Formats";
 
-export interface IProps {
+export type IProps = {
+    /**
+     * A controller object for the kifu.
+     */
     kifuStore?: KifuStore;
-    static?: {
-        last?: "hidden" | { x: number; y: number };
-    };
-}
+} & IOptions;
 
 const areaWidth = 300;
 const areaHeight = 250;
@@ -24,25 +24,39 @@ const controlHeight = 150;
 const controlMarginTop = 4;
 const controlMargin = 8;
 
-const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, static: staticc }) => {
-    const [kifuStore, setKifuStore] = useState<KifuStore>(() => givenKifuStore || new KifuStore());
+function getChildrenTextContent(children: ReactNode) {
+    if (!children) return children;
+
+    if (typeof children === "string") {
+        return children;
+    }
+    // Recursively get the text content of the children
+    // This is usually not needed, but Docusaurus wraps the children in a <p> tag with mdx
+    if (Array.isArray(children)) {
+        return children.map(getChildrenTextContent).join("\n");
+    }
+    return "";
+}
+
+const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, ...options }) => {
+    const [kifuStore, setKifuStore] = useState<KifuStore>(() => {
+        const kifu = getChildrenTextContent(children);
+        return (
+            givenKifuStore ||
+            new KifuStore({
+                kifu,
+                ...options,
+            })
+        );
+    });
 
     useEffect(() => {
-        setKifuStore(givenKifuStore);
+        if (givenKifuStore) {
+            setKifuStore(givenKifuStore);
+        }
     }, [givenKifuStore]);
 
-    let latestMoveTo: IPlaceFormat;
-    if (staticc?.last === "hidden") {
-        latestMoveTo = undefined;
-    } else if (staticc?.last) {
-        latestMoveTo = staticc?.last;
-    } else {
-        let latestMove = kifuStore.player.getMove();
-        if (!latestMove && kifuStore.player.tesuu > 0) {
-            latestMove = kifuStore.player.getMove(kifuStore.player.tesuu - 1);
-        }
-        latestMoveTo = latestMove?.to;
-    }
+    let latestMoveTo = kifuStore.getLatestMoveTo();
 
     return (
         <Zumen
@@ -50,10 +64,10 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, static: staticc
             latestMoveTo={latestMoveTo}
             players={[kifuStore.player.kifu.header["先手"], kifuStore.player.kifu.header["後手"]]}
             width={areaWidth}
-            height={areaHeight + (staticc ? 0 : controlHeight)}
+            height={areaHeight + (options.static ? 0 : controlHeight)}
         >
             {/* TODO: Show indicator for the on-board controls on first interaction */}
-            {!staticc && (
+            {!options.static && (
                 <>
                     <rect
                         fillOpacity={0}
@@ -98,7 +112,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, static: staticc
                                     <button
                                         onClick={() => kifuStore.player.forward()}
                                         style={{ minWidth: "70px", fontSize: "10px", flexGrow: 1 }}
-                                        disabled={kifuStore.player.tesuu === kifuStore.player.kifu.moves.length - 1}
+                                        disabled={kifuStore.player.tesuu === kifuStore.player.currentStream.length - 1}
                                     >
                                         ▶
                                     </button>

@@ -1,4 +1,5 @@
 import TOCInline from '@theme/TOCInline';
+import { KifuLite } from "kifu-for-js";
 
 # 局面の指定
 
@@ -10,11 +11,15 @@ import TOCInline from '@theme/TOCInline';
 
 X手目の局面から表示する場合、`data-ply` 属性を指定します。
 
-例えば、12手目の局面を表示する場合：
+例えば、3手目の局面を表示する場合：
+
+<KifuLite ply={3}>
+  ▲７六歩 △３四歩 ▲７五歩 △８四歩
+</KifuLite>
 
 ```html
-<script type="text/kifu" data-ply="12">
-▲７六歩　△３四歩…
+<script type="text/kifu" data-ply="3">
+▲７六歩 △３四歩 ▲７五歩 △８四歩
 </script>
 ```
 
@@ -25,11 +30,27 @@ X手目の局面から表示する場合、`data-ply` 属性を指定します�
 
 分岐局面から表示する場合、どの分岐を辿ったかを表す `data-forkpointers` 属性を指定します。
 
-例えば、12手目の局面だが、5手目の局面での2番目の分岐を選び、その後11手目の局面で更に1番目の分岐を選んだ局面の場合：
+例えば、5手目の局面だが、2手目の局面での0番目の分岐を選び、その後4手目の局面で更に0番目の分岐を選んだ局面の場合：
+
+<KifuLite ply={5} forkpointers={[[2, 0], [4, 0]]}>
+▲７六歩 △３四歩 ▲７五歩 △８四歩
+
+変化：2手
+△８四歩 ▲６六歩 △８五歩 ▲７七角
+
+変化：4手
+△６二銀 ▲７八飛 △８五歩 ▲７七角
+</KifuLite>
 
 ```html
-<script type="text/kifu" data-ply="12" data-forkpointers="[[5, 1], [11, 0]]">
-▲７六歩　△３四歩…
+<script type="text/kifu" data-ply="5" data-forkpointers="[[2, 0], [4, 0]]">
+▲７六歩 △３四歩 ▲７五歩 △８四歩
+
+変化：2手
+△８四歩 ▲６六歩 △８五歩 ▲７七角
+
+変化：4手
+△６二銀 ▲７八飛 △８五歩 ▲７七角
 </script>
 ```
 
