@@ -1,7 +1,7 @@
 import { KanSuuji, scolor } from "./lib";
 import { IHandFormat } from "json-kifu-format/src/Formats";
 import React, { FC } from "react";
-import { isRawKind, kindToString, values as kindValues } from "shogi.js/src/Kind";
+import { isRawKind, kindToString, values as kindValues } from "shogi.js/cjs/Kind";
 
 const sgm = 1;
 
@@ -15,7 +15,7 @@ function amountToString(amount: number) {
     return r + KanSuuji.charAt(amount - 1);
 }
 
-var handToString = function (hand: IHandFormat) {
+const handToString = function (hand: IHandFormat) {
     return (
         kindValues
             .map((kind) => ({ kind, amount: hand[kind] }))
@@ -46,7 +46,7 @@ export const Mochigoma: FC<Props> = ({ v, kx, hand, name = turns[v] }) => {
                     : "translate(" + kx * 0.65 + "," + kx * 0.8 + ") scale(-1," + -r + ")"
             }
         >
-            {Array.from({ length: t.length - sgm }, (v, i) => i).map((i) => (
+            {Array.from({ length: t.length - sgm }, (_v, i) => i).map((i) => (
                 <text key={i} fontSize={(kx * 9) / 14} fill={scolor} textAnchor="middle" x={0} y={(-i * kx * 9) / 14}>
                     {t.charAt(t.length - i - 1)}
                 </text>

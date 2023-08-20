@@ -103,7 +103,7 @@ Kifu for JS (ver. ${__VERSION__})
 
 公式サイトを開きますか？`)
         ) {
-            window.open("https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/Kifu-for-JS#readme", "kifufile");
+            open("https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/Kifu-for-JS#readme", "kifufile");
         }
     }
 }

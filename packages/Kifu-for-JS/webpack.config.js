@@ -3,7 +3,7 @@ const webpack = require("webpack");
 const { merge } = require("webpack-merge");
 const CleanWebpackPlugin = require("clean-webpack-plugin");
 const BundleAnalyzerPlugin = require("webpack-bundle-analyzer").BundleAnalyzerPlugin;
-const package = require("./package.json");
+const pkg = require("./package.json");
 
 const DEV_SERVER_PORT = 8080;
 
@@ -49,12 +49,11 @@ module.exports = (env) => {
             extensions: [".js", ".ts", ".tsx", ".png"],
         },
         plugins: [
-            new CleanWebpackPlugin([BUNDLE_DIR]),
             new webpack.DefinePlugin({
-                __VERSION__: JSON.stringify(package.version),
+                __VERSION__: JSON.stringify(pkg.version),
             }),
             new webpack.BannerPlugin({
-                banner: `Kifu for JS (${package.version})
+                banner: `Kifu for JS (${pkg.version})
 Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
 This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php`,
@@ -74,18 +73,22 @@ http://opensource.org/licenses/mit-license.php`,
         common.plugins.push(new BundleAnalyzerPlugin());
     }
 
-    // For browsers
-    const bundle = merge(common, {
+    const commonMain = merge(common, {
         entry: {
             "kifu-for-js": path.resolve(__dirname, "./src/index.tsx"),
             "kifu-for-js-legacy": path.resolve(__dirname, "./src/index-legacy.tsx"),
         },
+    });
+
+    // For browsers
+    const bundle = merge(commonMain, {
         output: {
             library: "KifuForJS",
             filename: `[name].min.js`,
             path: BUNDLE_DIR,
             publicPath: "/bundle/",
         },
+        plugins: [new CleanWebpackPlugin([BUNDLE_DIR])],
         ...(IS_PROD
             ? {}
             : {
@@ -107,6 +110,21 @@ http://opensource.org/licenses/mit-license.php`,
               }),
     });
 
+    // For npm module
+    const DIST_DIR = path.resolve(__dirname, "./dist");
+    const dist = merge(commonMain, {
+        output: {
+            libraryTarget: "commonjs2",
+            filename: "[name].js",
+            path: DIST_DIR,
+        },
+        plugins: [new CleanWebpackPlugin([DIST_DIR])],
+        externals: {
+            react: "react",
+            reactDOM: "react-dom",
+        },
+    });
+
     // For bookmarklets
     const bookmarklets = merge(common, {
         entry: {
@@ -124,7 +142,7 @@ http://opensource.org/licenses/mit-license.php`,
         },
     });
 
-    return [bundle, bookmarklets];
+    return [bundle, dist, bookmarklets];
 
     function getPublicPath() {
         if (IS_PROD_LOCAL) {

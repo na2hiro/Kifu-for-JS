@@ -75,7 +75,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, static: staticc
                         x={controlMargin}
                         y={areaHeight + controlMarginTop}
                         width={areaWidth - controlMargin * 2}
-                        height={controlHeight - controlMargin * 2}
+                        height={controlHeight - controlMargin - controlMarginTop}
                     >
                         <div style={{ display: "grid", height: "100%", gap: "1px", gridAutoRows: "1fr" }}>
                             <div
@@ -88,7 +88,6 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, static: staticc
                                 >
                                     ◀
                                 </button>
-                                {/*TODO: kifu list bug when zoomed*/}
                                 <KifuList
                                     player={kifuStore.player}
                                     isPortrait={false}
@@ -112,7 +111,7 @@ const KifuLite: React.FC<IProps> = ({ kifuStore: givenKifuStore, static: staticc
                                 style={{
                                     fontSize: "small",
                                     resize: "none",
-                                    backgroundColor: "white",
+                                    backgroundColor: "inherit",
                                 }}
                             />
                         </div>

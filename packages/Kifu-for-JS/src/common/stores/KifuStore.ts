@@ -37,8 +37,6 @@ export default class KifuStore {
             turn: observable,
         });
         this.player_ = player;
-        (window as any).player = player;
-        (window as any).toJS = toJS;
     }
 
     public flip() {
@@ -102,7 +100,7 @@ export default class KifuStore {
 
     public setReloadInterval(interval) {
         if (this.timerAutoload) {
-            window.clearInterval(this.timerAutoload);
+            clearInterval(this.timerAutoload);
         }
         const s = parseInt(interval, 10);
         if (!isNaN(s)) {

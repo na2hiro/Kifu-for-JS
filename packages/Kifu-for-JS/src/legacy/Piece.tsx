@@ -1,12 +1,12 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 import { DragSource, DropTarget } from "react-dnd";
-import { Color, colorToString, kindToString } from "shogi.js";
+import { Color, colorToString, Kind, kindToString } from "shogi.js";
 import { getUrlWithReverse } from "./images/PieceImage";
 import KifuStore from "../common/stores/KifuStore";
 
 export interface IProps {
-    data: { color?: Color; kind?: string }; // TODO
+    data: { color?: Color; kind?: Kind };
     lastMove: any; // TODO
     x: number;
     y: number;
@@ -17,7 +17,7 @@ export interface IProps {
     isDragging?: boolean;
 }
 
-function getLabel({ color, kind }: { color?: Color; kind?: string }) {
+function getLabel({ color, kind }: { color?: Color; kind?: Kind }) {
     if (typeof color === "undefined" || typeof kind === "undefined") {
         return "空き";
     }

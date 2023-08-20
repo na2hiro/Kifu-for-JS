@@ -2,21 +2,21 @@
 slug: /legacy
 ---
 
-# Kifu for JS legacy版 について
+# Kifu for JS legacy版について
 
 :::caution
 
-このページは、Kifu for JS legacy版 についての説明です。Kifu for JS の最新版については [Kifu for JS について](./) を参照してください。
+このページは、Kifu for JS legacy版についての説明です。Kifu for JS の最新版については [Kifu for JS について](./) を参照してください。
 
 :::
 
 :::tip
 
-現在Kifu for JS 3を使用していて最新版への移行を検討している場合は、[バージョン3から4への移行手順](./migration-from-3-to-4)を参照してください。
+現在Kifu for JS v4以下を使用していて最新版への移行を検討している場合は、[v4からv5への移行手順](./migration-from-4-to-5)を参照してください。
 
 :::
 
-Kifu for JS legacy版 は、Kifu for JS のバージョン 3以下で唯一サポートされていた棋譜再生盤です。バージョン4以降でも使用はできますが、基本的に機能追加の予定はなく、新旧バージョンを併用したい方向けに残しています。
+Kifu for JS legacy版 は、Kifu for JS のv4以下で唯一サポートされていた棋譜再生盤です。v5以降でも使用はできますが、基本的に機能追加の予定はなく、新旧バージョンを併用したい方向けに残しています。
 
 ![Screenshot](./k4j-main.jpg)
 
@@ -69,6 +69,6 @@ Kifu for JS legacy版の1つ目の困難は、既存のサイトやブログへ�
 * 盤面が小さすぎ、見づらい（駒台が番の横で大きく使われているため。しかも２字駒）
 * 進む、戻るなどの操作ボタンが小さすぎ、タップが難しい
 
-Javaアプレットの終焉（2015年頃）、Flashの終焉（2020年頃）の後、Kifu for Java/Flashと同じUIでは古いと考えます。これらをすべて改善したのが、[Kifu for JS 最新版](./)です。legacy版(Kifu for JS@3かそれ未満)をご利用のサイト運営者の方は、ぜひ[Kifu for JS 4への移行](./migration-from-3-to-4)をお考えください。
+Javaアプレットの終焉（2015年頃）、Flashの終焉（2020年頃）の後、Kifu for Java/Flashと同じUIでは古いと考えます。これらをすべて改善したのが、[Kifu for JS 最新版](./)です。legacy版(Kifu for JS@3かそれ未満)をご利用のサイト運営者の方は、ぜひ[Kifu for JS v5への移行](./migration-from-4-to-5)をお考えください。
 
 

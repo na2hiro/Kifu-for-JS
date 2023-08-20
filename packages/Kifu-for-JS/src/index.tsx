@@ -1,12 +1,18 @@
 import { autorun, reaction, when } from "mobx";
 import * as React from "react";
 import { render } from "react-dom";
-import KifuStore from "./common/stores/KifuStore";
+import KifuStoreS from "./common/stores/KifuStore";
 import { onDomReady } from "./utils/util";
-import KifuLite from "./lite/KifuLite";
+import KifuLiteComponent from "./lite/KifuLite";
 import { JKFPlayer } from "json-kifu-format";
-export const mobx = { autorun, when, reaction };
+
+const mobx = { autorun, when, reaction };
 import { Shogi } from "shogi.js";
+
+const KifuLite = KifuLiteComponent;
+const KifuStore = KifuStoreS;
+
+export { KifuLite, KifuStore, mobx };
 
 type IStatic = {
     last?: "hidden" | [number, number];
@@ -20,7 +26,7 @@ export interface IOptions {
     static?: IStatic;
 }
 
-export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
+export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStoreS> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
         options = idOrOptions;
@@ -33,7 +39,7 @@ export function loadString(kifu: string, idOrOptions?: string | IOptions, option
     return loadCommon(id, options);
 }
 
-export function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
+export function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStoreS> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
         options = idOrOptions;
@@ -46,7 +52,7 @@ export function load(filePath: string, idOrOptions?: string | IOptions, options?
     return loadCommon(id, options);
 }
 
-function loadCommon(id: string | undefined, options: IOptions | undefined): Promise<KifuStore> {
+function loadCommon(id: string | undefined, options: IOptions | undefined): Promise<KifuStoreS> {
     return new Promise((resolve) => {
         if (!id) {
             id = "kifuforjs_" + Math.random().toString(36).slice(2);
@@ -112,9 +118,14 @@ if (typeof document !== "undefined") {
         for (let i = 0; i < scripts.length; i++) {
             const script = scripts[i];
             if (script.type === "text/kifu") {
-                const container = document.createElement("div");
-                container.className = script.className;
-                container.setAttribute("style", script.getAttribute("style"));
+                // TODO: ideally svg replaces the script tag, but it's not possible to do that with React
+                const container = document.createElement("ins");
+                if (script.className) {
+                    container.className = script.className;
+                }
+                if (script.getAttribute("style")) {
+                    container.setAttribute("style", script.getAttribute("style"));
+                }
                 script.replaceWith(container);
 
                 const options = parseOptionsFromAttributes(script);

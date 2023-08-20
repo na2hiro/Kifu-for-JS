@@ -9,7 +9,6 @@ import { cellEqual } from "./zumenCompat";
 import { Color, kindToString } from "shogi.js";
 import { KanSuuji, scolor, ZenSuuji } from "./lib";
 import { Mochigoma } from "./Mochigoma";
-import { toJS } from "mobx";
 
 /**
  * TODO: Customize mochigoma display for tsume shogi
@@ -89,6 +88,8 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, lates
                 fontFamily: "serif",
                 // TODO: allow selection in text children
                 userSelect: "none",
+                maxWidth: "400px",
+                aspectRatio: `${width} / ${height}`,
             }}
             viewBox={"0 0 " + width + " " + height}
         >

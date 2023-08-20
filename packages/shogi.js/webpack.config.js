@@ -45,8 +45,9 @@ module.exports = (env) => {
         bundle.plugins = [new BundleAnalyzerPlugin()];
     }
 
-    // For npm module
-    const DIST_DIR = path.resolve(__dirname, "./dist");
+    /*
+    // For cjs module
+    const DIST_DIR = path.resolve(__dirname, "./cjs");
     const dist = merge(common, {
         output: {
             libraryTarget: "commonjs2",
@@ -55,5 +56,7 @@ module.exports = (env) => {
             clean: true,
         },
     });
-    return [bundle, dist];
+
+     */
+    return [bundle /*, dist*/];
 };

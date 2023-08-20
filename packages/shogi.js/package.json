@@ -2,16 +2,18 @@
     "name": "shogi.js",
     "version": "4.0.1",
     "description": "simple shogi library for JavaScript",
-    "main": "dist/shogi.js",
-    "types": "dist/src/shogi.d.ts",
+    "main": "cjs/shogi.js",
+    "types": "cjs/shogi.d.ts",
     "directories": {
         "test": "test"
     },
     "scripts": {
         "clean": "rm -rf ./dist ./bundle",
-        "build": "webpack --mode=production",
-        "build:analyze": "webpack --mode=production --env analyze=1",
-        "build:watch": "webpack --mode=development --watch",
+        "build": "npm run build:cjs && npm run bundle",
+        "bundle": "webpack --mode=production",
+        "bundle:analyze": "webpack --mode=production --env analyze=1",
+        "bundle:watch": "webpack --mode=development --watch",
+        "build:cjs": "tsc",
         "lint": "eslint ./ && prettier --check .",
         "lint:fix": "eslint ./ --fix && prettier --write .",
         "test": "jest",

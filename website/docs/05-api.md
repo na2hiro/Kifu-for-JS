@@ -42,7 +42,7 @@ TODO: どのようのKifuStoreを取得できるか
 
 #### (legacy) `reversed: boolean = false`
 
-盤面が反転表示されているかどうかを表します。バージョン 4 以降のlegacy版ではない Kifu for JS は反転機能がないため、特に意味は持ちません。
+盤面が反転表示されているかどうかを表します。v5以降のlegacy版ではない Kifu for JS は反転機能がないため、特に意味は持ちません。
 
 ### `KifuStore` の作成
 

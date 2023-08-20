@@ -6,14 +6,14 @@ declare var params; // Flash
 declare var so; // Flash
 
 async function start(): Promise<KifuStore[]> {
-    if (window.getSelection && getSelection().toString() !== "") {
+    if ("getSelection" in window && getSelection().toString() !== "") {
         return replaceSelected().catch(fail);
     } else {
         return replaceAll().catch(fail);
     }
 
     function fail(e): Promise<KifuStore[]> {
-        window.alert("読込失敗: " + e);
+        alert("読込失敗: " + e);
         throw e;
     }
 

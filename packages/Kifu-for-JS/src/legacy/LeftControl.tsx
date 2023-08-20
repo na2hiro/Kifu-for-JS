@@ -39,7 +39,7 @@ export default class LeftControl extends React.Component<IProps, {}> {
 
     public onClickDl() {
         if (this.props.kifuStore.filePath) {
-            window.open(this.props.kifuStore.filePath);
+            open(this.props.kifuStore.filePath);
         }
     }
 

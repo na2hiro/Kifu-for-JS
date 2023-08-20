@@ -13,7 +13,7 @@ TODO: 画像
 
 ## 棋譜中の局面を指定して表示
 
-[局面の指定](configuration/specifying-board.md)も行うことで、棋譜中の一局面を表示することができます。
+[局面の指定](./specifying-board)も行うことで、棋譜中の一局面を表示することができます。
 
 TODO: 画像
 

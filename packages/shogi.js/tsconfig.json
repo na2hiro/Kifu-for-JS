@@ -2,7 +2,7 @@
     "include": ["src/shogi.ts"],
     "exclude": ["**/__tests__/**/*", "**/node_modules/**/*"],
     "compilerOptions": {
-        "outDir": "dist",
+        "outDir": "cjs",
         "declaration": true,
         "module": "commonjs",
         "noEmitOnError": true,
