@@ -171,7 +171,8 @@
     }
   }
 
-  &-comment {
+  // Legacy
+  .kifuforjs &-comment {
     color: black;
   }
 
@@ -230,7 +231,7 @@
     }
 
     [aria-selected="true"] {
-      background-color: #cecece;
+      background-color: rgba(106, 106, 106, 0.35);
 
       .kifuforjs-kifulist:focus & {
         background-color: #99c8ff;

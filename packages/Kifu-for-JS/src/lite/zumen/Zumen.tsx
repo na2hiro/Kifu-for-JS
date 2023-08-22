@@ -132,13 +132,15 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({
                         tgChildren.push(
                             <text
                                 key="成"
+                                dy={-kx * 0.09}
                                 fill={scolor}
                                 fontSize={kx * 0.82}
                                 textAnchor="middle"
-                                dy={-kx * 0.09}
-                                {...(cellEqual(i, latestMoveTo)
-                                    ? { fontFamily: "sans-serif", fontWeight: "bold" }
-                                    : {})}
+                                style={{
+                                    ...(cellEqual(i, latestMoveTo)
+                                        ? { fontFamily: "sans-serif", fontWeight: "bold" }
+                                        : {}),
+                                }}
                             >
                                 成
                             </text>,
@@ -152,15 +154,13 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({
                         textAttributes.dy = kx * 0.32;
                         tgTransform = `translate(${x},${y})${piece.color === Color.White ? " scale(-1,-1)" : ""}`;
                     }
-                    textAttributes.fontSize = kx * 0.82;
                     if (cellEqual(i, latestMoveTo)) {
                         textAttributes.style = { fontWeight: "bold" };
                         textAttributes.fontFamily = "sans-serif";
                     }
-                    textAttributes.textAnchor = "middle";
 
                     tgChildren.push(
-                        <text key={i} {...textAttributes}>
+                        <text key={i} fill={scolor} textAnchor="middle" fontSize={kx * 0.82} {...textAttributes}>
                             {t}
                         </text>,
                     );
