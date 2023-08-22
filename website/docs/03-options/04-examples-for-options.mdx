@@ -1,0 +1,104 @@
+import Tabs from '@theme/Tabs';
+import TabItem from '@theme/TabItem';
+
+# オプションの指定方法の例
+
+[盤面を表示する](./getting-started/displaying-board)では、3つの表示方式を紹介しました。これらの方式によってオプションの指定方法がやや異なります。
+
+## マークアップ方式
+
+マークアップ方式では、`data-オプション名="オプション値"` というような属性を、マークアップの`<script>`タグに付与することで指定します。
+
+`ply` オプションに2を指定する例：
+
+```html
+<script type="text/kifu" data-src="./great-tsume.kif" data-ply="2"></script>
+```
+
+`static` オプションを指定し、`static-last` オプションに`hidden`を指定する例：
+
+```html
+<script type="text/kifu" data-src="./great-tsume.kif" data-static data-static-last="hidden"></script>
+<!-- trueを渡してもよい -->
+<script type="text/kifu" data-src="./great-tsume.kif" data-static="true" data-static-last="hidden"></script>
+```
+
+## JavaScript関数方式
+
+JavaScript関数方式では、`KifuForJS.load()` の第1引数にオプションを指定します。
+
+`ply` オプションに2を指定する例：
+
+```html
+<div id="board-1"></div>
+<script>
+    button.addEventListener("click", function() {
+    KifuForJS.load({
+        kifu: "▲７六歩 △３四歩",
+        ply: 2,
+    }, "board-1");
+});
+</script>
+```
+
+`static` オプションを指定する例の場合、trueを渡します。
+
+```html
+<div id="board-1"></div>
+<script>
+    button.addEventListener("click", function() {
+    KifuForJS.load({
+        kifu: "▲７六歩 △３四歩",
+        static: true,
+    }, "board-1");
+});
+</script>
+```
+
+`static` オプションを指定し、`static-last` オプションに`hidden`を指定する場合、staticをオブジェクトとし、そのオブジェクトがlastプロパティを持つようにします。 `static: true`は `static: {...}`に吸収されていることに注意してください。
+
+```html
+<div id="board-1"></div>
+<script>
+    button.addEventListener("click", function() {
+    KifuForJS.load({
+        kifu: "▲７六歩 △３四歩",
+        static: {
+            last: "hidden",
+        },
+    }, "board-1");
+});
+</script>
+```
+
+## Reactコンポーネント方式
+
+Reactコンポーネント方式では、`<KifuLite>`コンポーネントのプロパティに JavaScriptオプションと同様のオブジェクトをプロパティとして指定します。値は文字列ではなく数値なら数値型、配列なら配列で渡す必要があります。
+
+`ply` オプションに2を指定する例：
+
+```tsx
+import {KifuLite} from "kifu-for-js";
+
+export default function MyApp() {
+  return (
+    <KifuLite ply={2}>
+▲７六歩 △３四歩
+    </KifuLite>
+  );
+}
+```
+
+`static` オプションを指定し、`static-last` オプションに`hidden`を指定する例：
+
+```tsx
+import {KifuLite} from "kifu-for-js";
+
+export default function MyApp() {
+  return (
+    <KifuLite static={{last: "hidden"}}>
+▲７六歩 △３四歩
+    </KifuLite>
+  )
+}
+```

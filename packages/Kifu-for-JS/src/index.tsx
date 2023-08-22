@@ -1,17 +1,25 @@
 import { autorun, reaction, when } from "mobx";
+import { observer } from "mobx-react";
 import * as React from "react";
 import { render } from "react-dom";
 import KifuStoreS, { IOptions } from "./common/stores/KifuStore";
 import { onDomReady } from "./utils/util";
 import KifuLiteComponent from "./lite/KifuLite";
 import { parseOptionsFromAttributes } from "./common/stores/setupKifuStore";
+import KifuRegistry from "./lite/KifuRegistry";
 
 const mobx = { autorun, when, reaction };
+const mobxReact = { observer };
 const KifuLite = KifuLiteComponent;
 const KifuStore = KifuStoreS;
 
-export { KifuLite, KifuStore, mobx };
+export { KifuLite, KifuStore, mobx, mobxReact };
 
+const registry = new KifuRegistry();
+
+/**
+ * @deprecated Use load instead
+ */
 export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStoreS> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
@@ -25,16 +33,31 @@ export function loadString(kifu: string, idOrOptions?: string | IOptions, option
     return loadCommon(id, options);
 }
 
-export function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStoreS> {
+export function load(options: IOptions, id: string): Promise<KifuStoreS>;
+// Below are compatibility with v4 or less
+export function load(filePath: string, id: string): Promise<KifuStoreS>;
+export function load(filePath: string, id: string, options: IOptions): Promise<KifuStoreS>;
+export function load(filePath: string): Promise<KifuStoreS>;
+export function load(filePath: string, options: IOptions): Promise<KifuStoreS>;
+export function load(
+    filePathOrOptions: string | IOptions,
+    idOrOptions?: string | IOptions,
+    options?: IOptions,
+): Promise<KifuStoreS> {
     let id: string | undefined;
-    if (typeof idOrOptions === "object") {
-        options = idOrOptions;
-        id = undefined;
+    if (typeof filePathOrOptions === "string") {
+        if (typeof idOrOptions === "object") {
+            options = idOrOptions;
+            id = undefined;
+        } else {
+            id = idOrOptions;
+            options = options || {};
+        }
+        options.src = filePathOrOptions;
     } else {
-        id = idOrOptions;
-        options = options || {};
+        options = filePathOrOptions;
+        id = idOrOptions as string;
     }
-    options.src = filePath;
     return loadCommon(id, options);
 }
 
@@ -47,6 +70,7 @@ function loadCommon(id: string | undefined, options: IOptions | undefined): Prom
         onDomReady(() => {
             const container = document.getElementById(id);
             const kifuStore = loadSingle(options, container!);
+            registry.register(container!, kifuStore);
             resolve(kifuStore);
         });
     });
@@ -57,6 +81,10 @@ function loadSingle(options: IOptions, container: HTMLElement) {
     render(<KifuLite kifuStore={kifuStore} />, container);
 
     return kifuStore;
+}
+
+export function getKifuStore(element: HTMLElement) {
+    return registry.getKifuStore(element);
 }
 
 if (typeof document !== "undefined") {
@@ -74,10 +102,11 @@ if (typeof document !== "undefined") {
                 if (script.getAttribute("style")) {
                     container.setAttribute("style", script.getAttribute("style"));
                 }
-                script.replaceWith(container);
+                script.insertAdjacentElement("afterend", container);
 
                 const options = parseOptionsFromAttributes(script);
-                loadSingle(options, container);
+                const kifuStore = loadSingle(options, container);
+                registry.register(script, kifuStore);
             }
         }
     });

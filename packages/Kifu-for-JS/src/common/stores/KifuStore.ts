@@ -34,6 +34,10 @@ export default class KifuStore {
 
     constructor(options?: IOptions) {
         this.player = new JKFPlayer({ header: {}, moves: [{}] });
+        this.setOptions(options);
+    }
+
+    public setOptions(options?: IOptions) {
         this.staticOptions = options?.static;
         if (options) {
             const initializePly = () => {
@@ -59,8 +63,9 @@ export default class KifuStore {
                             shogi.initializeFromSFENString(options.kifu.trim());
                             this.player = JKFPlayer.fromShogi(shogi);
                             this.errors = [];
-                        } catch (syntaxOrSemanticsError) {
+                        } catch (_) {
                             // Nvm, throw the original error
+                            console.error(e);
                             throw e;
                         }
                     }
@@ -118,7 +123,6 @@ export default class KifuStore {
             this.player = newPlayer;
         } catch (syntaxOrSemanticsError) {
             this.errors.push(formatErrorMessage(kifu, syntaxOrSemanticsError));
-            console.error(syntaxOrSemanticsError);
             throw syntaxOrSemanticsError;
         }
     }

@@ -24,30 +24,36 @@ const controlHeight = 150;
 const controlMarginTop = 4;
 const controlMargin = 8;
 
+// TODO: remove this
 function getChildrenTextContent(children: ReactNode) {
     if (!children) return children;
 
-    if (typeof children === "string") {
-        return children;
+    if (typeof children === "string" || typeof children === "number" || typeof children === "boolean") {
+        return String(children);
     }
     // Recursively get the text content of the children
     // This is usually not needed, but Docusaurus wraps the children in a <p> tag with mdx
     if (Array.isArray(children)) {
-        return children.map(getChildrenTextContent).join("\n");
+        return children.map(getChildrenTextContent).join("\n\n");
+    }
+    // This is case of MDX
+    if ("props" in children) {
+        return getChildrenTextContent(children.props.children);
     }
     return "";
 }
 
 const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, ...options }) => {
     const [kifuStore, setKifuStore] = useState<KifuStore>(() => {
+        if (givenKifuStore) {
+            givenKifuStore.setOptions(options);
+            return givenKifuStore;
+        }
         const kifu = getChildrenTextContent(children);
-        return (
-            givenKifuStore ||
-            new KifuStore({
-                kifu,
-                ...options,
-            })
-        );
+        return new KifuStore({
+            kifu,
+            ...options,
+        });
     });
 
     useEffect(() => {
@@ -98,7 +104,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 <button
                                     onClick={() => kifuStore.player.backward()}
                                     disabled={kifuStore.player.tesuu === 0}
-                                    style={{ minWidth: "70px", fontSize: "10px" }}
+                                    style={{ minWidth: "70px", fontSize: "15px" }}
                                 >
                                     ◀
                                 </button>
@@ -111,7 +117,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     {/*TODO: long press to keep moving*/}
                                     <button
                                         onClick={() => kifuStore.player.forward()}
-                                        style={{ minWidth: "70px", fontSize: "10px", flexGrow: 1 }}
+                                        style={{ minWidth: "70px", fontSize: "15px", flexGrow: 1 }}
                                         disabled={kifuStore.player.tesuu === kifuStore.player.currentStream.length - 1}
                                     >
                                         ▶

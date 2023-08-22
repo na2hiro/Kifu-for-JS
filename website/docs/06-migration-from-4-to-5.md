@@ -71,7 +71,7 @@ npm install kifu-for-js@^5
 ```ts
 import {load} from "kifu-for-js";
 
-load("foobar.kif")
+load("foobar.kif", "container-id")
 ```
 
 legacy版を使いたい場合は、import先を変更します。
@@ -79,7 +79,7 @@ legacy版を使いたい場合は、import先を変更します。
 ```ts
 import {load} from "kifu-for-js/legacy";
 
-load("foobar.kif")
+load("foobar.kif", "container-id")
 ```
 
 ## 付録: バージョンとlegacy版、最新版の対応表
