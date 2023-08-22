@@ -3,14 +3,14 @@ import {useState} from "react";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# `KifuStore` による盤の監視と操作
+# TODO: `KifuStore` による盤の監視と操作
 
 状態管理ライブラリ[mobx](https://mobx.js.org)により定義した盤面及びウィジェットの状態を、外部に向けて提供しています。これにより、局面が変わったときに何か処理を行ったり、反対に外側から局面を操作したりすることができます。
 
 ## 例
 
 <Tabs groupId="display-method">
-  <TabItem value="markup" label="マークアップ方式" default>
+  <TabItem value="markup" label="タグ方式" default>
 
 ```html
 <p>
@@ -50,8 +50,7 @@ import TabItem from '@theme/TabItem';
   <TabItem value="react" label="Reactコンポーネント方式">
 
 ```tsx
-import {KifuStore, mobxReact} from "kifu-for-js";
-import {KifuLite} from "kifu-for-js";
+import {KifuLite, KifuStore, mobxReact} from "kifu-for-js";
 
 const kifuStore = new KifuStore();
 
@@ -61,7 +60,7 @@ export const MyComponent = mobxReact.observer(() => {
     <button onClick={() => kifuStore.player.goto(Math.floor(Math.random()*100))}>適当な  局面  にジャンプ</button>
     <KifuLite kifuStore={kifuStore} src="/kifu/jt201409130101.kif" />
   </>;
-})
+});
 ```
 
   </TabItem>
@@ -71,20 +70,20 @@ export const kifuStore = new KifuStore();
 
 export const MyComponent = mobxReact.observer(() => {
   return <>
-    現在{kifuStore.player.tesuu}手目です!
-    <button onClick={() => kifuStore.player.goto(Math.floor(Math.random()*100))}>適当な局面にジャンプ</button>
+    <p>現在{kifuStore.player.tesuu}手目です!
+    <button onClick={() => kifuStore.player.goto(Math.floor(Math.random()*100))}>適当な局面にジャンプ</button></p>
     <KifuLite kifuStore={kifuStore} src="/kifu/jt201409130101.kif" />
   </>;
-})
+});
 
 <MyComponent />
 
 ## `KifuStore` オブジェクトを取得する
 
 <Tabs groupId="display-method">
-  <TabItem value="markup" label="マークアップ方式" default>
+  <TabItem value="markup" label="タグ方式" default>
 
-`<script type="text/kifu">` といったマークアップを記述することで盤面を表示している場合は、`getKifuStore`関数を使って`KifuStore`オブジェクトの`Promise`を取得できます。盤面が読み込め次第resolveされます。
+`<script type="text/kifu">` といったタグを記述することで盤面を表示している場合は、`getKifuStore`関数を使って`KifuStore`オブジェクトの`Promise`を取得できます。盤面が読み込め次第resolveされます。
 
 例えば、次のように盤面を表示させたとします。
 
@@ -163,7 +162,7 @@ export default MyComponent;
     * `hands`: 持ち駒、駒種のCSA表記から数へのマッピングをそれぞれ先手と後手についてこの順に持つ配列
     * `turn`: 手番 (`Color.Black` すなわち `0`、 または `Color.White` すなわち `1`)
 * `forkPointers`: 現在の局面が分岐している場合、分岐手数目と何番目の分岐に当たるかのペアのリスト
-* `kifu`: 表示すべき棋譜のリスト。分岐の場合、現在の分岐に至るまでの初手からの棋譜と今後の棋譜がそれぞれ格納されています。 <!-- TODO: 分岐の場合の説明を追加する -->
+* `kifu`: 表示すべき棋譜のリスト。分岐の場合、現在の分岐に至るまでの初手からの棋譜と今後の棋譜がそれぞれ格納されています。
 * `tesuu`: 現在の手数
 
 また、次のメソッドがあります。
@@ -176,7 +175,7 @@ export default MyComponent;
 
 ### `filePath: string = undefined`
 
-`loadFile()`で読み込まれた棋譜ファイルのパスを表します。 `loadKifu()`で読み込まれた場合は`undefined`です。
+読み込まれた棋譜ファイルのパスを表します。 棋譜文字列を直接読み込んだ場合は`undefined`です。
 
 ### (legacy) `reversed: boolean = false`
 

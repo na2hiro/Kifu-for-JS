@@ -3,7 +3,7 @@
  (c) maasa. | http://www.geocities.jp/ookami_maasa/shogizumen/
 */
 
-import React, { PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
+import React, { CSSProperties, PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
 import { IPlaceFormat, IStateFormat } from "json-kifu-format/src/Formats";
 import { cellEqual } from "./zumenCompat";
 import { Color, kindToString } from "shogi.js";
@@ -19,8 +19,17 @@ type Props = {
     state?: IStateFormat;
     latestMoveTo?: IPlaceFormat;
     players?: [string | undefined, string | undefined];
+    style?: CSSProperties;
 };
-const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, latestMoveTo, children, players }) => {
+const Zumen: React.FC<PropsWithChildren<Props>> = ({
+    width,
+    height,
+    state,
+    latestMoveTo,
+    children,
+    players,
+    style = {},
+}) => {
     if (!state) return null;
 
     let kx = 25;
@@ -86,10 +95,9 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({ width, height, state, lates
             xmlns="http://www.w3.org/2000/svg"
             style={{
                 fontFamily: "serif",
-                // TODO: allow selection in text children
                 userSelect: "none",
-                maxWidth: "400px",
                 aspectRatio: `${width} / ${height}`,
+                ...style,
             }}
             viewBox={"0 0 " + width + " " + height}
         >

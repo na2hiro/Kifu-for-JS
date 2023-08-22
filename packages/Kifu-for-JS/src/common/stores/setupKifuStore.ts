@@ -1,14 +1,14 @@
 import { IOptions } from "./KifuStore";
 
 export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
-    const forkpointers = element.dataset.forkpointers ? JSON.parse(element.dataset.forkpointers) : undefined;
+    const forkPointers = element.dataset.forkpointers ? JSON.parse(element.dataset.forkpointers) : undefined;
     return {
         kifu: element.textContent,
         src: element.dataset.src,
         ply: element.dataset.ply ? parseInt(element.dataset.ply) : undefined,
-        forkpointers:
-            Array.isArray(forkpointers) && forkpointers.every((p) => Array.isArray(p) && p.length === 2)
-                ? forkpointers
+        forkPointers:
+            Array.isArray(forkPointers) && forkPointers.every((p) => Array.isArray(p) && p.length === 2)
+                ? forkPointers
                 : undefined,
         static: parseStatic(),
     };

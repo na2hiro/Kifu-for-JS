@@ -1,5 +1,10 @@
 # `<KifuLite>` Reactコンポーネント
 
+## 前提
+
+* `react`と`react-dom`はpeerDependenciesに入っており、インストールする必要があります。hooksを使用しているため、React 16.8以上が必要です。
+* 状態管理に`mobx@4`と`mobx-react@6`を使用しています。
+
 ## 一旦描画するだけの場合
 
 盤を表示したあと、特にその盤を監視したり操作したりする必要ない場合かつ、optionsも後に変更する必要がない場合は、このコンポーネントをuncontrolledな状態で使用できます。すなわち、`kifuStore` propを使わず、`<KifuLite>`コンポーネントのpropsにオプションをオブジェクトとして渡すだけでよいです。

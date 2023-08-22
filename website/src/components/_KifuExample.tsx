@@ -12,7 +12,7 @@ export const optionsToAttribute = (options: IOptions) => {
     prefices: string[] = []
   ) {
     for (let key in options) {
-      if (Array.isArray(options[key])) {
+      if (Array.isArray(options[key]) || options[key] === null) {
         props[`${[...prefices, key].join("-")}`] = JSON.stringify(options[key]);
       } else if (typeof options[key] === "object") {
         props[`${[...prefices, key].join("-")}`] = true;
@@ -71,7 +71,7 @@ const KifuExampleComponent = ({ children, kifu, ...props }) => {
     <>
       <KifuLite {...{ ...props, children: kifu || children }} />
       <Tabs groupId="display-method">
-        <TabItem value="markup" label="マークアップ方式" default>
+        <TabItem value="markup" label="タグ方式" default>
           <CodeBlock language="html">
             &lt;script type="text/kifu"{optionsToAttribute(props)}&gt;
             {kifu || "\n" + flattenMdxParsedChildren(children) + "\n"}
@@ -80,8 +80,7 @@ const KifuExampleComponent = ({ children, kifu, ...props }) => {
         </TabItem>
         <TabItem value="javascript" label="JavaScript関数方式">
           <CodeBlock language="html">
-            {`
-<div id="board-1"></div>
+            {`<div id="board-1"></div>
 <script>
   KifuForJS.load(${JSON.stringify(
     { kifu: kifu || flattenMdxParsedChildren(children), ...props },

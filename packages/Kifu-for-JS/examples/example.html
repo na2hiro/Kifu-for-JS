@@ -5,6 +5,12 @@
 <script src="../bundle/kifu-for-js.min.js" charset="utf-8"></script>
 <meta name="viewport" content="width=device-width, initial-scale=1"/>
 <script>KifuForJS.load("./files/ki2/9fu.ki2", "ki2dom");</script>
+
+	<style>
+		#hachimai + ins svg {
+			border: 1px black solid;
+		}
+	</style>
 </head>
 
 <body>
@@ -106,7 +112,7 @@ TODO
 
 <h3>各種設定</h3>
 <h4>X手目から</h4>
-<script type="text/kifu" data-src="./files/csa/8mai.csa" data-ply="10"></script>
+<script type="text/kifu" data-src="./files/csa/8mai.csa" data-ply="10" id="hachimai"></script>
 <h4>分岐局面から</h4>
 <script type="text/kifu" data-src="./files/kif/fork.kif" data-ply="3" data-forkpointers="[[1, 0]]"></script>
 

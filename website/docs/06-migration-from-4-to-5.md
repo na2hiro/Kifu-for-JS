@@ -21,7 +21,7 @@
 <script src="https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/kifu-for-js.min.js" charset="utf-8"></script>
 ```
 
-次のようなマークアップは、最新版として動作します。
+次のようなコードは、最新版として動作します。
 
 ```html
 <script>KifuForJS.load("../json-kifu-format/jt201409130101.kif");</script>

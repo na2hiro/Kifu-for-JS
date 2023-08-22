@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import { CSSProperties, PropsWithChildren, ReactNode, useEffect, useState } from "react";
 import KifuStore, { IOptions, IStatic } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 import KifuList from "../common/KifuList";
@@ -16,6 +16,11 @@ export type IProps = {
      * A controller object for the kifu.
      */
     kifuStore?: KifuStore;
+
+    /**
+     * CSS to be applied to the svg element
+     */
+    style?: CSSProperties;
 } & IOptions;
 
 const areaWidth = 300;
@@ -43,7 +48,7 @@ function getChildrenTextContent(children: ReactNode) {
     return "";
 }
 
-const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, ...options }) => {
+const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, style, ...options }) => {
     const [kifuStore, setKifuStore] = useState<KifuStore>(() => {
         if (givenKifuStore) {
             givenKifuStore.setOptions(options);
@@ -71,6 +76,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
             players={[kifuStore.player.kifu.header["先手"], kifuStore.player.kifu.header["後手"]]}
             width={areaWidth}
             height={areaHeight + (options.static ? 0 : controlHeight)}
+            style={{ ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }), ...style }}
         >
             {/* TODO: Show indicator for the on-board controls on first interaction */}
             {!options.static && (

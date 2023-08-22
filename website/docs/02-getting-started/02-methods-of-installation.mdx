@@ -1,13 +1,13 @@
 import TOCInline from '@theme/TOCInline';
 
-# 盤を表示する
+# 盤の設置方式
 
 盤を表示するには次のような方式があります。
 
 <TOCInline toc={toc.filter(i => i.level===2)} />
 
-## マークアップ方式
-マークアップ方式は、HTMLタグを書くだけで盤を設置できる方式です。ブログやwebサイトなどに最適です。
+## タグ方式
+タグ方式は、HTMLタグを書くだけで盤を設置できる方式です。ブログやwebサイトなどに最適です。
 
 ### 棋譜を埋め込む例
 
@@ -114,7 +114,7 @@ Kifu for JS 5では、APIの簡素化のため `load(オプション, id)` に�
 
 Kifu for JSはReactで実装されており、Reactコンポーネントとしても利用できます。Reactアプリケーションに組み込む場合、`<KifuLite>`コンポーネントを使用してください。
 
-マークアップ方式のように棋譜を子要素に渡すか、
+タグ方式のように棋譜を子要素に渡すか、
 
 ```tsx title="MyApp.tsx"
 import {KifuLite} from "kifu-for-js";

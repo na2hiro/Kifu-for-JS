@@ -8,8 +8,9 @@ export interface IOptions {
     kifu?: string;
     src?: string;
     ply?: number;
-    forkpointers?: [number, number][];
+    forkPointers?: [number, number][];
     static?: IStatic;
+    maxWidth?: number | null;
 }
 
 export type IStatic = {
@@ -28,6 +29,7 @@ export default class KifuStore {
     @observable public reversed: boolean;
     @observable public filePath: string;
     @observable public staticOptions: IStatic;
+    @observable public maxWidth: number | null;
     // tslint:disable-next-line:variable-name
     @observable private player_: JKFPlayer;
     private timerAutoload: number;
@@ -39,13 +41,14 @@ export default class KifuStore {
 
     public setOptions(options?: IOptions) {
         this.staticOptions = options?.static;
+        this.maxWidth = options?.maxWidth === null ? null : options?.maxWidth ?? 400;
         if (options) {
             const initializePly = () => {
                 if (options.ply) {
                     this.player.goto(
                         options.ply,
-                        options.forkpointers
-                            ? options.forkpointers.map(([te, forkIndex]) => ({ te, forkIndex }))
+                        options.forkPointers
+                            ? options.forkPointers.map(([te, forkIndex]) => ({ te, forkIndex }))
                             : undefined,
                     );
                 }
