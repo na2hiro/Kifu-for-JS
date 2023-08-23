@@ -1,11 +1,19 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# オプションの指定方法の例
+# オプション
 
-[盤面を表示する](./getting-started/methods-of-installation)では、3つの表示方式を紹介しました。これらの方式によってオプションの指定方法がやや異なります。
+ここでは、Kifu for JSをカスタマイズできるオプションについて説明します。
 
-## タグ方式
+import DocCardList from '@theme/DocCardList';
+
+<DocCardList />
+
+## 表示方式ごとのオプションの指定方法
+
+[盤の設置方式](../getting-started/methods-of-installation)では、3つの表示方式を紹介しました。これらの方式によってオプションの指定方法がやや異なります。
+
+### タグ方式
 
 タグ方式では、`data-オプション名="オプション値"` というような属性を、タグの`<script>`タグに付与することで指定します。
 
@@ -23,7 +31,7 @@ import TabItem from '@theme/TabItem';
 <script type="text/kifu" data-src="./great-tsume.kif" data-static="true" data-static-last="hidden"></script>
 ```
 
-## JavaScript関数方式
+### JavaScript関数方式
 
 JavaScript関数方式では、`KifuForJS.load()` の第1引数にオプションを指定します。
 
@@ -71,7 +79,7 @@ JavaScript関数方式では、`KifuForJS.load()` の第1引数にオプショ�
 </script>
 ```
 
-## Reactコンポーネント方式
+### Reactコンポーネント方式
 
 Reactコンポーネント方式では、`<KifuLite>`コンポーネントのプロパティに JavaScriptオプションと同様のオブジェクトをプロパティとして指定します。値は文字列ではなく数値なら数値型、配列なら配列で渡す必要があります。
 

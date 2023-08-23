@@ -93,6 +93,7 @@ const Zumen: React.FC<PropsWithChildren<Props>> = ({
     return (
         <svg
             xmlns="http://www.w3.org/2000/svg"
+            className="kifuforjs-lite"
             style={{
                 fontFamily: "serif",
                 userSelect: "none",

@@ -93,16 +93,12 @@ if (typeof document !== "undefined") {
         const scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
         for (let i = 0; i < scripts.length; i++) {
             const script = scripts[i];
-            if (script.type === "text/kifu") {
-                // ideally svg replaces the script tag, but it's not possible to do that with React
+            if (script.type === "text/kifu" && !script.dataset.loaded) {
+                // ideally svg is directly injected, but it's not possible to do that with React
+                // Render svg inside ins element here.
                 const container = document.createElement("ins");
-                if (script.className) {
-                    container.className = script.className;
-                }
-                if (script.getAttribute("style")) {
-                    container.setAttribute("style", script.getAttribute("style"));
-                }
                 script.insertAdjacentElement("afterend", container);
+                script.dataset.loaded = "true";
 
                 const options = parseOptionsFromAttributes(script);
                 const kifuStore = loadSingle(options, container);

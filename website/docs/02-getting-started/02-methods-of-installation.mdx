@@ -7,7 +7,10 @@ import TOCInline from '@theme/TOCInline';
 <TOCInline toc={toc.filter(i => i.level===2)} />
 
 ## タグ方式
+
 タグ方式は、HTMLタグを書くだけで盤を設置できる方式です。ブログやwebサイトなどに最適です。
+
+DOM (HTML)のロード時点で存在する全ての `<script type="text/kifu">` が読み込み対象になります。
 
 ### 棋譜を埋め込む例
 

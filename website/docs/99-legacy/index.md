@@ -71,6 +71,28 @@ Kifu for JS legacy版の1つ目の困難は、既存のサイトやブログへ�
 
 Javaアプレットの終焉（2015年頃）、Flashの終焉（2020年頃）の後、Kifu for Java/Flashと同じUIでは古いと考えます。これらをすべて改善したのが、[Kifu for JS 最新版](./)です。legacy版(Kifu for JS@3かそれ未満)をご利用のサイト運営者の方は、ぜひ[Kifu for JS v5への移行](./migration-from-4-to-5)をお考えください。
 
-## legacy版の利用
+## legacy版を利用する
 
-TODO: ここにlegacy版の利用方法を書く
+:::info
+旧版と最新版を混在させる場合は[v4からv5への移行手順](/migration-from-4-to-5#%E3%82%AA%E3%83%97%E3%82%B7%E3%83%A7%E3%83%B32-%E3%81%99%E3%81%A7%E3%81%AB%E3%81%82%E3%82%8B%E7%9B%A4%E3%81%AF%E3%81%9D%E3%81%AE%E3%81%BE%E3%81%BE%E3%81%AB%E6%9C%80%E6%96%B0%E7%89%88%E3%82%92%E6%B7%B7%E5%9C%A8%E3%81%95%E3%81%9B%E3%82%8B)をご覧ください。
+:::
+
+ページ内で１箇所、legacy版を含んだv5のスクリプトを読み込みます。
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/kifu-for-js-legacy.min.js" charset="utf-8"></script>
+```
+
+その位置で盤を表示する場合は次のようにします。
+
+```html
+<script>Kifu.load("./files/kif/jt201409130101.kif");</script>
+```
+
+指定位置で表示する場合は次のようにします。
+
+```html
+<div id="board-1"></div>
+
+<script>Kifu.load("./files/kif/jt201409130101.kif", "board-1");</script>
+```

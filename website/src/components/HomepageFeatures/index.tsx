@@ -34,7 +34,7 @@ const FeatureList: FeatureItem[] = [
     Svg: require("@site/static/img/undraw_docusaurus_mountain.svg").default,
     description: (
       <>
-        タグをコピーしてあなたのサイトやブログに貼り付けるだけで、将棋再生盤を設置できます。必要なJSファイル等は信頼性の高いCDN上にホストされています。
+        タグをコピーしてお持ちのサイトやブログに貼り付けるだけで、将棋再生盤を設置できます。必要なJSファイル等は信頼性の高いCDN上にホストされています。
       </>
     ),
   },
