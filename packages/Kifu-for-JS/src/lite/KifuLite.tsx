@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import * as React from "react";
 
-import { CSSProperties, PropsWithChildren, ReactNode, useEffect, useState } from "react";
+import { CSSProperties, PropsWithChildren, ReactNode, useEffect, useRef, useState } from "react";
 import KifuStore, { IOptions, IStatic } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 import KifuList from "../common/KifuList";
@@ -10,6 +10,7 @@ import "../../css/kifuforjs.scss";
 import ForkList from "../common/ForkList";
 import Comment from "../common/Comment";
 import { IPlaceFormat } from "json-kifu-format/src/Formats";
+import useHaptics from "./useHaptics";
 
 export type IProps = {
     /**
@@ -60,6 +61,8 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
             ...options,
         });
     });
+
+    useHaptics(kifuStore.player.tesuu);
 
     useEffect(() => {
         if (givenKifuStore) {

@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# レイアウトを調整する
+# スタイルを調整する
 
 Kifu for JSの盤面と周辺機能は、SVG画像として出力されます。ウィジェットを画像のように拡大縮小して扱え、レイアウト調整が容易です。大きさは次のとおりです。
 
@@ -27,7 +27,7 @@ Kifu for JSの盤面と周辺機能は、SVG画像として出力されます。
 
 ## CSSを当てる
 
-これだけでは足りない場合、盤の`<svg>`要素にCSSを当ててレイアウトを調整することもできます。
+これだけでは足りない場合、盤の`<svg>`要素にCSSを当ててスタイルを調整することもできます。
 
 <Tabs groupId="display-method">
   <TabItem value="markup" label="タグ方式" default>
@@ -103,3 +103,7 @@ export const MyComponent = () => {
   </TabItem>
 </Tabs>
 
+
+## 配色
+
+TODO: ダークモード
