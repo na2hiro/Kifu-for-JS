@@ -3,9 +3,11 @@ import {useState} from "react";
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# TODO: `KifuStore` による盤の監視と操作
+# `KifuStore` による盤の監視と操作
 
 状態管理ライブラリ[mobx](https://mobx.js.org)により定義した盤面及びウィジェットの状態を、外部に向けて提供しています。これにより、局面が変わったときに何か処理を行ったり、反対に外側から局面を操作したりすることができます。
+
+`KifuStore` オブジェクトを介して、盤面の監視及び操作ができます。
 
 ## 例
 
@@ -129,7 +131,7 @@ const kifuStore = getKifuStore(document.getElementById(id))
   </TabItem>
   <TabItem value="react" label="Reactコンポーネント方式">
 
-`<KifuLite>` Reactコンポーネントを利用し、ご自身のReactでアプリケーションから直接描画している場合は、このコンポーネントの`kifuStore`プロパティに`KifuStore`オブジェクトを渡すことで、`<KifuLite>` を [controlled なコンポーネント](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components)にすることができます。
+`<KifuLite>` Reactコンポーネントを利用し、ご自身のReactでアプリケーションから直接描画している場合は、[`KifuStore` オブジェクトを作成し](#kifustore-を作成する)、このコンポーネントの`kifuStore`プロパティに渡すことで、`<KifuLite>` を [controlled なコンポーネント](https://react.dev/learn/sharing-state-between-components#controlled-and-uncontrolled-components)にすることができます。
 
 ```tsx title="MyComponent.tsx"
 import React, { useEffect, useState } from "react";
@@ -149,9 +151,13 @@ export default MyComponent;
   </TabItem>
 </Tabs>
 
-## `KifuStore` の observable なフィールド
+## `KifuStore` を作成する
 
-`KifuStore`は、observableなオブジェクトです。以下のフィールドがあります。
+`new KifuStore(options)`とすることで `KifuStore` オブジェクトを作成できます。
+
+## `KifuStore` を監視する
+
+`KifuStore`は、以下のobservableなフィールドを持ったオブジェクトです。
 
 ### `player: JKFPlayer`
 
@@ -165,10 +171,6 @@ export default MyComponent;
 * `kifu`: 表示すべき棋譜のリスト。分岐の場合、現在の分岐に至るまでの初手からの棋譜と今後の棋譜がそれぞれ格納されています。
 * `tesuu`: 現在の手数
 
-また、次のメソッドがあります。
-
-* TODO: JSDocへリンク
-
 ### `errors: string[] = []`
 
 表示すべきエラーの文字列が格納されます。
@@ -181,12 +183,15 @@ export default MyComponent;
 
 盤面が反転表示されているかどうかを表します。v5以降のlegacy版ではない Kifu for JS は反転機能がないため、特に意味は持ちません。
 
-## `KifuStore` の作成
+## `KifuStore` を操作する
 
-`new KifuStore(options)`とすることで空の棋譜を作成できます。
+`KifuStore` を操作する主なメソッドは次のとおりです。
 
-## `KifuStore` の操作
-
-* 棋譜読み込み
-  * `loadFile(filePath: string)` 棋譜ファイルを読み込む
-  * `loadKifu(kifu: string)` 棋譜を直接渡して読み込む
+* 棋譜を読み込む
+  * `KifuStore#loadFile(filePath: string)` 棋譜ファイルを読み込む
+  * `KifuStore#loadKifu(kifu: string)` 棋譜文字列を渡して読み込む
+* 棋譜を再生する
+  * `KifuStore#player.forward()` 1手進む
+  * `KifuStore#player.forward()` 1手戻る
+  * `KifuStore#player.go(te: number)` `te` 手進む/戻る
+  * `KifuStore#player.goto(tesuu: number, forkPointers?: [number, number][])` 指定した手数にジャンプする（必要であれば分岐ポインタも渡す）
