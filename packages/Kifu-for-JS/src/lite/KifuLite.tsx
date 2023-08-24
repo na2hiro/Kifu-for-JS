@@ -11,6 +11,9 @@ import ForkList from "../common/ForkList";
 import Comment from "../common/Comment";
 import { IPlaceFormat } from "json-kifu-format/src/Formats";
 import useHaptics from "./useHaptics";
+import Settings from "./SettingsModal";
+import UserSetting from "../common/stores/UserSetting";
+import SettingsIcon from "./SettingsIcon";
 
 export type IProps = {
     /**
@@ -52,7 +55,9 @@ function getChildrenTextContent(children: ReactNode) {
 const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, style, ...options }) => {
     const [kifuStore, setKifuStore] = useState<KifuStore>(() => {
         if (givenKifuStore) {
-            givenKifuStore.setOptions(options);
+            if (Object.keys(options).length > 0) {
+                givenKifuStore.setOptions(options);
+            }
             return givenKifuStore;
         }
         const kifu = getChildrenTextContent(children);
@@ -62,7 +67,8 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
         });
     });
 
-    useHaptics(kifuStore.player.tesuu);
+    const userSetting = UserSetting.get();
+    useHaptics(kifuStore.player.tesuu, userSetting.hapticFeedback);
 
     useEffect(() => {
         if (givenKifuStore) {
@@ -72,17 +78,24 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
 
     let latestMoveTo = kifuStore.getLatestMoveTo();
 
+    const isStatic = !!kifuStore.staticOptions;
+    console.log({ isStatic });
+
+    const svgRef = useRef<SVGSVGElement>(null);
+    const svgHeight = areaHeight + (isStatic ? 0 : controlHeight);
+
     return (
         <Zumen
             state={kifuStore.player.getState()}
             latestMoveTo={latestMoveTo}
             players={[kifuStore.player.kifu.header["先手"], kifuStore.player.kifu.header["後手"]]}
             width={areaWidth}
-            height={areaHeight + (options.static ? 0 : controlHeight)}
+            height={svgHeight}
             style={{ ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }), ...style }}
+            ref={svgRef}
         >
             {/* TODO: Show indicator for the on-board controls on first interaction */}
-            {!options.static && (
+            {!isStatic && (
                 <>
                     <rect
                         fillOpacity={0}
@@ -147,6 +160,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                     </foreignObject>
                 </>
             )}
+            <SettingsIcon width={areaWidth} height={svgHeight} kifuStore={kifuStore} ref={svgRef} />
         </Zumen>
     );
 };

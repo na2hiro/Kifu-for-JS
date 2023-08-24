@@ -37,7 +37,8 @@ export const Mochigoma: FC<Props> = ({ v, kx, hand, name = turns[v] }) => {
     const t = marks[v] + name + "　" + handToString(hand);
     const py = (-t.length * kx * 9) / 14;
 
-    const r = t.length > 14 ? 14 / t.length : 1;
+    // Originally 14, but made 13 in order to make a space for the config icon
+    const r = t.length > 13 ? 13 / t.length : 1;
     return (
         <g
             transform={

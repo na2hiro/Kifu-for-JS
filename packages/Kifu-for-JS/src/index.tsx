@@ -96,13 +96,17 @@ if (typeof document !== "undefined") {
             if (script.type === "text/kifu" && !script.dataset.loaded) {
                 // ideally svg is directly injected, but it's not possible to do that with React
                 // Render svg inside ins element here.
-                const container = document.createElement("ins");
-                script.insertAdjacentElement("afterend", container);
-                script.dataset.loaded = "true";
+                try {
+                    const container = document.createElement("ins");
+                    script.insertAdjacentElement("afterend", container);
+                    script.dataset.loaded = "true";
 
-                const options = parseOptionsFromAttributes(script);
-                const kifuStore = loadSingle(options, container);
-                registry.register(script, kifuStore);
+                    const options = parseOptionsFromAttributes(script);
+                    const kifuStore = loadSingle(options, container);
+                    registry.register(script, kifuStore);
+                } catch (e) {
+                    console.error(e, script);
+                }
             }
         }
     });

@@ -372,7 +372,11 @@ export default class JKFPlayer {
         if (typeof num === "string") {
             num = parseInt(num, 10);
         }
-        const forks = this.getMoveFormat(this.tesuu + 1).forks;
+        const moveFormat = this.getMoveFormat(this.tesuu + 1);
+        if (!moveFormat) {
+            throw new Error(`${this.tesuu + 1}手目に有効な棋譜がありません`);
+        }
+        const forks = moveFormat.forks;
         if (!forks || forks.length <= num) {
             return false;
         }
