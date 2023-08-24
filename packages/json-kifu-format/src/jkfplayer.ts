@@ -504,13 +504,20 @@ export default class JKFPlayer {
         return JKFPlayer.getState(this.shogi);
     }
 
-    public getReadableKifuState(): Array<{kifu: string; forks: string[]; comments: string[]}> {
-        const ret = [];
+    public getReadableKifuState(): Array<{
+        kifu: string;
+        forks: string[];
+        comments: string[];
+        moveFormat: IMoveFormat;
+    }> {
+        const ret: {kifu: string; forks: string[]; comments: string[]; moveFormat: IMoveFormat}[] =
+            [];
         for (let i = 0; i <= this.getMaxTesuu(); i++) {
             ret.push({
                 comments: this.getComments(i),
                 forks: this.getReadableForkKifu(i - 1),
                 kifu: this.getReadableKifu(i),
+                moveFormat: this.getMoveFormat(i),
             });
         }
         return ret;

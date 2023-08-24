@@ -6,9 +6,9 @@
 
 ## 棋譜中の局面を指定する場合
 
-<KifuExample static ply={3}>
+<KifuForEachMethod static ply={3}>
 ▲７六歩 △３四歩 ▲７五歩 △８四歩
-</KifuExample>
+</KifuForEachMethod>
 
 [局面の指定](./specifying-ply)も参照してください。
 
@@ -16,15 +16,15 @@
 
 通常、初期局面や局面読み込みなどの場合を除き、最終手が着手表示され太字になります。 `static-last` オプションに `hidden` を指定すると、着手表示を抑制することができます。
 
-<KifuExample ply={3} static={{last:"hidden"}}>
+<KifuForEachMethod ply={3} static={{last:"hidden"}}>
   ▲７六歩 △３四歩 ▲７五歩 △８四歩
-</KifuExample>
+</KifuForEachMethod>
 
 ## 局面を直接指定する場合
 
 棋譜中の一局面ではなく、局面形式も同様に読み込むことができます。以下はBOD形式の例です。
 
-<KifuExample static kifu={`
+<KifuForEachMethod static kifu={`
 後手の持駒：飛　金三　銀三　桂二　香四　歩十三
   ９ ８ ７ ６ ５ ４ ３ ２ １
 +---------------------------+
@@ -45,9 +45,9 @@
 
 SFEN形式にも対応しています。
 
-<KifuExample static>
+<KifuForEachMethod static>
 ln1gkg1nl/6+P2/2sppps1p/2p3p2/p8/P1P1P3P/2NP1PP2/3s1KSR1/L1+b2G1NL w R2Pbgp 42
-</KifuExample>
+</KifuForEachMethod>
 
 ### 着手表示箇所を指定する
 
@@ -55,6 +55,6 @@ ln1gkg1nl/6+P2/2sppps1p/2p3p2/p8/P1P1P3P/2NP1PP2/3s1KSR1/L1+b2G1NL w R2Pbgp 42
 
 ３二へ着手表示をする場合、`static-last` オプションに `[3, 2]` を指定します。
 
-<KifuExample static={{last: [3, 2]}}>
+<KifuForEachMethod static={{last: [3, 2]}}>
 ln1gkg1nl/6+P2/2sppps1p/2p3p2/p8/P1P1P3P/2NP1PP2/3s1KSR1/L1+b2G1NL w R2Pbgp 42
-</KifuExample>
+</KifuForEachMethod>

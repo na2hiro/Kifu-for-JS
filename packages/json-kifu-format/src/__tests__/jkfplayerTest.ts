@@ -961,11 +961,80 @@ P-
             });
         });
         it("getReadableKifuState", () => {
-            expect(player.getReadableKifuState()).toEqual([
-                {kifu: "開始局面", forks: [], comments: ["hoge"]},
-                {kifu: "☗７六歩", forks: ["☗２六歩"], comments: []},
-                {kifu: "☖３四歩", forks: [], comments: []},
-            ]);
+            expect(player.getReadableKifuState()).toMatchInlineSnapshot(`
+                Array [
+                  Object {
+                    "comments": Array [
+                      "hoge",
+                    ],
+                    "forks": Array [],
+                    "kifu": "開始局面",
+                    "moveFormat": Object {
+                      "comments": Array [
+                        "hoge",
+                      ],
+                    },
+                  },
+                  Object {
+                    "comments": Array [],
+                    "forks": Array [
+                      "☗２六歩",
+                    ],
+                    "kifu": "☗７六歩",
+                    "moveFormat": Object {
+                      "forks": Array [
+                        Array [
+                          Object {
+                            "move": Object {
+                              "color": 0,
+                              "from": Object {
+                                "x": 2,
+                                "y": 7,
+                              },
+                              "piece": "FU",
+                              "to": Object {
+                                "x": 2,
+                                "y": 6,
+                              },
+                            },
+                          },
+                        ],
+                      ],
+                      "move": Object {
+                        "color": 0,
+                        "from": Object {
+                          "x": 7,
+                          "y": 7,
+                        },
+                        "piece": "FU",
+                        "to": Object {
+                          "x": 7,
+                          "y": 6,
+                        },
+                      },
+                    },
+                  },
+                  Object {
+                    "comments": Array [],
+                    "forks": Array [],
+                    "kifu": "☖３四歩",
+                    "moveFormat": Object {
+                      "move": Object {
+                        "color": 1,
+                        "from": Object {
+                          "x": 3,
+                          "y": 3,
+                        },
+                        "piece": "FU",
+                        "to": Object {
+                          "x": 3,
+                          "y": 4,
+                        },
+                      },
+                    },
+                  },
+                ]
+            `);
         });
         it("getReadableForkKifu", () => {
             expect(player.getReadableForkKifu(1)).toEqual([]);

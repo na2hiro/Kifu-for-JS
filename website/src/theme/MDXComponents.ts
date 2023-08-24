@@ -1,10 +1,13 @@
 import MDXComponents from "@theme-original/MDXComponents";
 import { KifuLite } from "kifu-for-js";
-import KifuExample from "@site/src/components/_KifuExample";
+import KifuForEachMethod from "@site/src/components/_KifuForEachMethod";
+import { Example1, Example2 } from "@site/src/components/_ExampleKifu";
 
 export default {
   // Re-use the default mapping
   ...MDXComponents,
   KifuLite,
-  KifuExample,
+  KifuForEachMethod,
+  Example1,
+  Example2,
 };

@@ -1,16 +1,7 @@
 import { JKFPlayer } from "json-kifu-format";
 import { observer } from "mobx-react";
 import * as React from "react";
-import {
-    CSSProperties,
-    FunctionComponent,
-    ReactNode,
-    useCallback,
-    useEffect,
-    useLayoutEffect,
-    useRef,
-    useState,
-} from "react";
+import { CSSProperties, FunctionComponent, ReactNode, useCallback, useLayoutEffect, useRef, useState } from "react";
 
 export interface IProps {
     player: JKFPlayer;
@@ -36,7 +27,7 @@ export default class KifuList extends React.Component<IProps, any> {
                 <>
                     <span style={{ fontFamily: "monospace" }}>{kifu.comments.length > 0 ? "*" : "\xa0"}</span>
                     <span style={{ display: "inline-block", minWidth: "20px", textAlign: "right" }}>
-                        {i.toString()}
+                        {i === 0 || kifu.moveFormat.special ? "" : i.toString()}
                     </span>
                     {" " + kifu.kifu + " " + kifu.forks.join(" ")}
                 </>

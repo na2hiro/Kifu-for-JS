@@ -1,7 +1,7 @@
 import Tabs from '@theme/Tabs';
 import TabItem from '@theme/TabItem';
 
-# スタイルを調整する
+# スタイルとレイアウト
 
 Kifu for JSの盤面と周辺機能は、SVG画像として出力されます。ウィジェットを画像のように拡大縮小して扱え、レイアウト調整が容易です。大きさは次のとおりです。
 
@@ -12,31 +12,7 @@ Kifu for JSの盤面と周辺機能は、SVG画像として出力されます。
 
 デフォルトで、描画された`<svg>`要素には`max-width: 400px`が指定されています。これにより、モバイルなどの縦長の画面では横幅いっぱいに伸び、デスクトップなどの横長の画面では最大でも横400px縦533px（静的図面は横400px縦333px）まで伸び、多くの場合で適切な大きさで表示されます。
 
-export const Example = (props) => <KifuLite {...props} kifu={`
-後手の持駒：飛二　金四　桂四　香四　歩十八
-  ９ ８ ７ ６ ５ ４ ３ ２ １
-+---------------------------+
-| ・ ・ ・v銀v玉v銀 ・ ・ ・|一
-| ・ ・ ・ ・ ・ ・ ・ ・ ・|二
-| ・ ・ ・ ・ 銀 ・ ・ ・ ・|三
-| ・ ・ ・ ・ ・ ・ ・ ・ ・|四
-| ・ ・ ・ ・ ・ ・ ・ ・ ・|五
-| ・ ・ ・ ・ ・ ・ ・ ・ 角|六
-| ・ ・ ・ ・ ・ ・ ・ ・ ・|七
-| ・ ・ ・ ・ ・ ・ ・ ・ ・|八
-| ・ ・ ・ ・ ・ ・ ・ ・ ・|九
-+---------------------------+
-先手の持駒：銀
-*最も有名な古典詰将棋。
-*銀で押さえ込むのは難しそうに見えるが？
-▲５二角成
-*焦点の捨て駒が好手。
-△同銀右 ▲６二銀打
-*どちらで取っても玉のコビンが空いて詰み。
-まで3手で詰み
-`} />;
-
-<Example />
+<Example1 />
 
 ### `max-width`を指定する/解除する
 
@@ -45,7 +21,7 @@ export const Example = (props) => <KifuLite {...props} kifu={`
 <details>
   <summary>`max-width`を指定しない場合、横長画面のデスクトップやタブレット等で異様に大きくなってしまう場合に注意してください。例を開く：</summary>
   <div>
-   <Example maxWidth={null} />
+   <Example1 maxWidth={null} />
   </div>
 </details>
 
@@ -150,7 +126,7 @@ export const MyComponent = () => {
 
 これにより、ダークモードに対応しているサイトに埋め込んでも、なるべく違和感なく表示されるようになっています。このサイトも実はダークモードに切り替えられます。メニューバーからお試しください。
 
-<Example />
+<Example1 />
 
 ### 配色例
 
@@ -163,13 +139,13 @@ export const MyComponent = () => {
 背景色が次のように白でも黒でもない場合、特に指定なしで表示すると次のようになります。これでも使えますが、やや盤面が見づらい場合も考えられます。
 
 <p style={{backgroundColor: "#ccffcc", padding: "10px"}}>
-  <Example style={{color: "black"}} />
+  <Example1 style={{color: "black"}} />
 </p>
 
 一つの方法は、白地に黒文字（ダーク系ページの場合、黒地に白文字）を指定する方法です。
 
 <p style={{backgroundColor: "#ccffcc", padding: "10px"}}>
-  <Example style={{backgroundColor: "white", color: "black"}} />
+  <Example1 style={{backgroundColor: "white", color: "black"}} />
 </p>
 
 ```html
@@ -184,7 +160,7 @@ export const MyComponent = () => {
 背景に透明度を指定すると、よりサイトの雰囲気に馴染みます。
 
 <p style={{backgroundColor: "#ccffcc", padding: "10px"}}>
-  <Example style={{backgroundColor: "rgba(255, 255, 255, 0.8)", color: "black" }} />
+  <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.8)", color: "black" }} />
 </p>
 
 ```html
@@ -201,13 +177,13 @@ export const MyComponent = () => {
 また、次のように背景画像の細部が気になる場合は、
 
 <p style={{background: "url(/img/logo.svg)", padding: "10px"}}>
-  <Example style={{backgroundColor: "rgba(255, 255, 255, 0.8)", color: "black"}} />
+  <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.8)", color: "black"}} />
 </p>
 
 ぼかしのバックドロップフィルタを入れ、不透明度を高めると良いです。
 
 <p style={{background: "url(/img/logo.svg)", padding: "10px"}}>
-  <Example style={{backgroundColor: "rgba(255, 255, 255, 0.9)", color: "black", backdropFilter: "blur(5px)"}} />
+  <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.9)", color: "black", backdropFilter: "blur(5px)"}} />
 </p>
 
 ```html

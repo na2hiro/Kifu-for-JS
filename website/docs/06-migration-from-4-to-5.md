@@ -82,11 +82,11 @@ import {load} from "kifu-for-js/legacy";
 load("foobar.kif", "container-id")
 ```
 
-## 付録: バージョンとlegacy版、最新版の対応表
+## 付録: ライブラリのバージョンとlegacy版、最新版の対応表
 
-| バージョン                                                   | legacy版 | 最新版 |
-|---------------------------------------------------------|---------|-----|
-| 3.x.x, 4.x.x                                            | ✅       | -   |
-| 5.x.x (kifu-for-js.min.js)                              | -       | ✅   |
-| 5.x.x (kifu-for-js-legacy.min.js)<br />5.x.x (npmモジュール) | ✅       | ✅   |
+| ライブラリのバージョン                                                 | legacy版 | 最新版 |
+|-------------------------------------------------------------|---------|-----|
+| `3.x.x`, `4.x.x`                                            | ✅       | -   |
+| `5.x.x` (kifu-for-js.min.js)                                | -       | ✅   |
+| `5.x.x` (kifu-for-js-legacy.min.js)<br />`5.x.x` (npmモジュール) | ✅       | ✅   |
 
