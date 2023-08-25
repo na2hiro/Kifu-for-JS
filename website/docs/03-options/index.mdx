@@ -3,11 +3,22 @@ import TabItem from '@theme/TabItem';
 
 # オプション
 
-ここでは、Kifu for JSをカスタマイズできるオプションについて説明します。
+ここでは、Kifu for JSをカスタマイズできるオプションについて説明します。個別のオプション項目は次のとおりです。
 
 import DocCardList from '@theme/DocCardList';
 
 <DocCardList />
+
+## `options` オブジェクト
+
+オプションは、一つのオブジェクト `options`として表現されます。これらは、JavaScriptオプション方式とReactコンポーネント方式で使用されます。
+
+```tsx title="optionsオブジェクトの例"
+const options = {
+  kifu: "▲７六歩 △３四歩",
+  ply: 2
+};
+```
 
 ## 表示方式ごとのオプションの指定方法
 
@@ -33,7 +44,7 @@ import DocCardList from '@theme/DocCardList';
 
 ### JavaScript関数方式
 
-JavaScript関数方式では、`KifuForJS.load()` の第1引数にオプションを指定します。
+JavaScript関数方式では、`KifuForJS.load()` の第1引数にオプションオブジェクト `options` を渡します。
 
 `ply` オプションに2を指定する例：
 
@@ -81,7 +92,7 @@ JavaScript関数方式では、`KifuForJS.load()` の第1引数にオプショ�
 
 ### Reactコンポーネント方式
 
-Reactコンポーネント方式では、`<KifuLite>`コンポーネントのプロパティに JavaScriptオプションと同様のオブジェクトをプロパティとして指定します。値は文字列ではなく数値なら数値型、配列なら配列で渡す必要があります。
+Reactコンポーネント方式では、`<KifuLite>`コンポーネントのプロパティに個別のオプションをプロパティとして指定します。
 
 `ply` オプションに2を指定する例：
 
@@ -105,6 +116,25 @@ import {KifuLite} from "kifu-for-js";
 export default function MyApp() {
   return (
     <KifuLite static={{last: "hidden"}}>
+▲７六歩 △３四歩
+    </KifuLite>
+  )
+}
+```
+
+スプレッド演算子を用いることで、`options`オブジェクトを`<KifuLite>` propsに渡すこともできます。
+
+```tsx
+import {KifuLite} from "kifu-for-js";
+
+export default function MyApp() {
+  const options = {
+    static: {
+      last: "hidden",
+    }
+  }
+  return (
+    <KifuLite {...options}>
 ▲７六歩 △３四歩
     </KifuLite>
   )

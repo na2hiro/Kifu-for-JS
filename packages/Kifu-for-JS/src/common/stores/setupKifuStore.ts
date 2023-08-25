@@ -1,9 +1,10 @@
 import { IOptions } from "./KifuStore";
+import { removeIndentation } from "../../utils/util";
 
 export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
     const forkPointers = element.dataset.forkpointers ? JSON.parse(element.dataset.forkpointers) : undefined;
     return {
-        kifu: element.textContent,
+        kifu: removeIndentation(element.textContent),
         src: element.dataset.src,
         ply: element.dataset.ply ? parseInt(element.dataset.ply) : undefined,
         forkPointers:

@@ -2,18 +2,17 @@ import { observer } from "mobx-react";
 import * as React from "react";
 
 import { CSSProperties, PropsWithChildren, ReactNode, useEffect, useRef, useState } from "react";
-import KifuStore, { IOptions, IStatic } from "../common/stores/KifuStore";
+import KifuStore, { IOptions } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 import KifuList from "../common/KifuList";
 
 import "../../css/kifuforjs.scss";
 import ForkList from "../common/ForkList";
 import Comment from "../common/Comment";
-import { IPlaceFormat } from "json-kifu-format/src/Formats";
 import useHaptics from "./useHaptics";
-import Settings from "./SettingsModal";
 import UserSetting from "../common/stores/UserSetting";
 import SettingsIcon from "./SettingsIcon";
+import { removeIndentation } from "../utils/util";
 
 export type IProps = {
     /**
@@ -38,7 +37,7 @@ function getChildrenTextContent(children: ReactNode) {
     if (!children) return children;
 
     if (typeof children === "string" || typeof children === "number" || typeof children === "boolean") {
-        return String(children);
+        return removeIndentation(String(children));
     }
     // Recursively get the text content of the children
     // This is usually not needed, but Docusaurus wraps the children in a <p> tag with mdx

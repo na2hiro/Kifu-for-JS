@@ -5,20 +5,24 @@ import React from "react";
 import { KifuLite } from "kifu-for-js";
 import { IOptions } from "kifu-for-js/src/common/stores/KifuStore";
 
-export const optionsToAttribute = (options: IOptions) => {
+export const optionsToAttribute = (
+  options: IOptions & { kifu_?: IOptions["kifu"] }
+) => {
   function optionsToAttributeMap(
     options: IOptions,
     props = {},
     prefices: string[] = []
   ) {
     for (let key in options) {
-      if (Array.isArray(options[key]) || options[key] === null) {
-        props[`${[...prefices, key].join("-")}`] = JSON.stringify(options[key]);
-      } else if (typeof options[key] === "object") {
+      const v = options[key];
+      if (key === "kifu_") key = "kifu";
+      if (Array.isArray(v) || v === null) {
+        props[`${[...prefices, key].join("-")}`] = JSON.stringify(v);
+      } else if (typeof v === "object") {
         props[`${[...prefices, key].join("-")}`] = true;
-        optionsToAttributeMap(options[key], props, [...prefices, key]);
+        optionsToAttributeMap(v, props, [...prefices, key]);
       } else {
-        props[`${[...prefices, key].join("-")}`] = options[key];
+        props[`${[...prefices, key].join("-")}`] = v;
       }
     }
 
@@ -33,14 +37,18 @@ export const optionsToAttribute = (options: IOptions) => {
     )
     .join("");
 };
-export const optionsToProps = (options: IOptions) => {
+export const optionsToProps = (
+  options: IOptions & { kifu_?: IOptions["kifu"] }
+) => {
   function optionsToAttributeMap(
     options: IOptions,
     props = {},
     prefices: string[] = []
   ) {
     for (let key in options) {
-      props[`${[...prefices, key].join("-")}`] = options[key];
+      const v = options[key];
+      if (key === "kifu_") key = "kifu"; // force kifu attribute
+      props[`${[...prefices, key].join("-")}`] = v;
     }
 
     return props;
@@ -66,15 +74,28 @@ function flattenMdxParsedChildren(children) {
   return "";
 }
 
-const KifuExampleComponent = ({ children, kifu, ...props }) => {
+const KifuExampleComponent = ({
+  suppressPreview = false,
+  children,
+  kifu,
+  kifu_,
+  ...props
+}) => {
+  const textContent = kifu_
+    ? ""
+    : kifu || addNewLinesOrEmpty(flattenMdxParsedChildren(children));
   return (
     <>
-      <KifuLite {...{ ...props, children: kifu || children }} />
+      {!suppressPreview && (
+        <KifuLite {...{ ...props, children: kifu || kifu_ || children }} />
+      )}
       <Tabs groupId="display-method">
         <TabItem value="markup" label="タグ方式" default>
           <CodeBlock language="html">
-            &lt;script type="text/kifu"{optionsToAttribute(props)}&gt;
-            {kifu || "\n" + flattenMdxParsedChildren(children) + "\n"}
+            &lt;script type="text/kifu"
+            {optionsToAttribute({ ...(kifu_ ? { kifu_ } : {}), ...props })}
+            &gt;
+            {textContent}
             &lt;/script&gt;
           </CodeBlock>
         </TabItem>
@@ -83,7 +104,7 @@ const KifuExampleComponent = ({ children, kifu, ...props }) => {
             {`<div id="board-1"></div>
 <script>
   KifuForJS.load(${JSON.stringify(
-    { kifu: kifu || flattenMdxParsedChildren(children), ...props },
+    { kifu: kifu_ || kifu || flattenMdxParsedChildren(children), ...props },
     null,
     2
   )
@@ -98,9 +119,12 @@ const KifuExampleComponent = ({ children, kifu, ...props }) => {
             {`import {KifuLite} from "kifu-for-js";
 
 export const MyComponent = () => {
-  return <KifuLite${optionsToProps(props)}>${
-              kifu || "\n" + flattenMdxParsedChildren(children) + "\n"
-            }  </KifuLite>
+  return <KifuLite${optionsToProps({
+    ...(kifu_ ? { kifu_ } : {}),
+    ...props,
+  })}>${
+              textContent.endsWith("\n") ? textContent + "  " : textContent
+            }</KifuLite>
 }`}
           </CodeBlock>
         </TabItem>
@@ -109,3 +133,8 @@ export const MyComponent = () => {
   );
 };
 export default KifuExampleComponent;
+
+function addNewLinesOrEmpty(text: string | undefined) {
+  if (!text) return "";
+  return "\n" + text + "\n";
+}

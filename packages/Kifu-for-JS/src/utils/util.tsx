@@ -31,3 +31,26 @@ export function onDomReady(callback) {
         document.addEventListener("DOMContentLoaded", callback);
     }
 }
+
+export function removeIndentation(indentedKifu: string) {
+    console.log("removeIndentation", indentedKifu);
+    const firstNonEmptyLine = indentedKifu.split("\n").filter((s) => s != "")[0];
+    if (!firstNonEmptyLine) return indentedKifu;
+    const match = /(\s+)/.exec(firstNonEmptyLine);
+    if (!match) return indentedKifu;
+    let illicitLine = false;
+    const indentRemoved = indentedKifu
+        .split("\n")
+        .map((line) => {
+            if (line.startsWith(match[1])) {
+                return line.slice(match[1].length);
+            } else if (line === "") {
+                return line;
+            }
+            illicitLine = true;
+            return line;
+        })
+        .join("\n");
+
+    return illicitLine ? indentedKifu : indentRemoved;
+}

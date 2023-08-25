@@ -148,6 +148,8 @@ const MyComponent = ({ filePath }) => {
 export default MyComponent;
 ```
 
+詳しくは[`<KifuLite>` Reactコンポーネント](./react-component#%E6%8F%8F%E7%94%BB%E5%BE%8C%E3%81%AB%E7%9B%A3%E8%A6%96%E6%93%8D%E4%BD%9C%E3%81%97%E3%81%9F%E3%82%8Aoptions%E3%82%92%E5%A4%89%E6%9B%B4%E3%81%99%E3%82%8B%E5%A0%B4%E5%90%88)を参照してください。
+
   </TabItem>
 </Tabs>
 
