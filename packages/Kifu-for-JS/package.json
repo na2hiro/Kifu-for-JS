@@ -9,7 +9,7 @@
     },
     "scripts": {
         "clean": "rm -rf ./bundle",
-        "dev": "webpack-dev-server --open examples/example-lite.html --mode development",
+        "dev": "webpack-dev-server --open examples/example-v5.html --mode development",
         "ci:cy": "start-server-and-test ci:start-server :8081 cy:run:ci",
         "ci:start-server": "http-server . -p 8081",
         "build:prodLocal": "npm run build -- --env prodLocal",

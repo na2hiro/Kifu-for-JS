@@ -54,7 +54,7 @@ module.exports = (env) => {
             }),
             new webpack.BannerPlugin({
                 banner: `Kifu for JS (${pkg.version})
-Copyright (c) 2014 na2hiro (https://github.com/na2hiro)
+Copyright (c) 2014-${new Date().getFullYear()} na2hiro (https://github.com/na2hiro)
 This software is released under the MIT License.
 http://opensource.org/licenses/mit-license.php`,
             }),

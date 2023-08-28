@@ -6,7 +6,7 @@ import KifuStoreS, { IOptions } from "./common/stores/KifuStore";
 import { onDomReady } from "./utils/util";
 import KifuLiteComponent from "./lite/KifuLite";
 import { parseOptionsFromAttributes } from "./common/stores/setupKifuStore";
-import KifuRegistry from "./lite/KifuRegistry";
+import { registry } from "./lite/KifuRegistry";
 
 const mobx = { autorun, when, reaction };
 const mobxReact = { observer };
@@ -14,8 +14,6 @@ const KifuLite = KifuLiteComponent;
 const KifuStore = KifuStoreS;
 
 export { KifuLite, KifuStore, mobx, mobxReact };
-
-const registry = new KifuRegistry();
 
 /**
  * @deprecated Use load instead
@@ -61,6 +59,9 @@ export function load(
     return loadCommon(id, options);
 }
 
+/**
+ * Load a kifu into a given container, or create a new container if id is not specified, when DOM is ready.
+ */
 function loadCommon(id: string | undefined, options: IOptions | undefined): Promise<KifuStoreS> {
     return new Promise((resolve) => {
         if (!id) {
@@ -76,6 +77,9 @@ function loadCommon(id: string | undefined, options: IOptions | undefined): Prom
     });
 }
 
+/**
+ * Load a kifu into a container.
+ */
 function loadSingle(options: IOptions, container: HTMLElement) {
     const kifuStore = new KifuStore(options);
     render(<KifuLite kifuStore={kifuStore} />, container);
@@ -87,6 +91,7 @@ export function getKifuStore(element: HTMLElement) {
     return registry.getKifuStore(element);
 }
 
+// Load kifu from script tags
 if (typeof document !== "undefined") {
     onDomReady(() => {
         const scripts = document.getElementsByTagName("script");

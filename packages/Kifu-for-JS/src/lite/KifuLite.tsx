@@ -78,7 +78,6 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
     let latestMoveTo = kifuStore.getLatestMoveTo();
 
     const isStatic = !!kifuStore.staticOptions;
-    console.log({ isStatic });
 
     const svgRef = useRef<SVGSVGElement>(null);
     const svgHeight = areaHeight + (isStatic ? 0 : controlHeight);

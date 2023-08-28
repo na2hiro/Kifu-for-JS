@@ -2,16 +2,26 @@ import { autorun, reaction, when } from "mobx";
 import * as React from "react";
 import { render } from "react-dom";
 import Kifu from "./legacy/Kifu";
-import KifuStore from "./common/stores/KifuStore";
+import KifuStore, { IOptions } from "./common/stores/KifuStore";
 import { onDomReady } from "./utils/util";
 import KifuLite from "./lite/KifuLite";
 export const mobx = { autorun, when, reaction };
 
-export interface IOptions {
-    mode?: "lite" | "normal";
-}
+// Important to keep import of index.tsx to have the side effect to scan script tags
+import { getKifuStore as getKifuStoreFunc } from "./index";
+import { registry } from "./lite/KifuRegistry";
 
-export function loadString(kifu: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
+export const getKifuStore = getKifuStoreFunc;
+
+export type ILegacyOptions = {
+    mode?: "latest" | "legacy";
+} & IOptions;
+
+export function loadString(
+    kifu: string,
+    idOrOptions?: string | ILegacyOptions,
+    options?: ILegacyOptions,
+): Promise<KifuStore> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
         options = idOrOptions;
@@ -22,7 +32,11 @@ export function loadString(kifu: string, idOrOptions?: string | IOptions, option
     return loadCommon(undefined, kifu, id, options);
 }
 
-export function load(filePath: string, idOrOptions?: string | IOptions, options?: IOptions): Promise<KifuStore> {
+export function load(
+    filePath: string,
+    idOrOptions?: string | ILegacyOptions,
+    options?: ILegacyOptions,
+): Promise<KifuStore> {
     let id: string | undefined;
     if (typeof idOrOptions === "object") {
         options = idOrOptions;
@@ -37,7 +51,7 @@ function loadCommon(
     filePath: string | undefined,
     kifu: string | undefined,
     id: string | undefined,
-    options: IOptions | undefined,
+    options: ILegacyOptions | undefined = {},
 ): Promise<KifuStore> {
     return new Promise((resolve) => {
         if (!id) {
@@ -52,11 +66,14 @@ function loadCommon(
             } else {
                 kifuStore.loadKifu(kifu).then(() => {});
             }
-            if (options?.mode === "lite") {
-                render(<KifuLite {...options} kifuStore={kifuStore} />, container);
+            console.log({ options });
+            const { mode, ...iOptions } = options;
+            if (mode === "latest") {
+                render(<KifuLite {...iOptions} kifuStore={kifuStore} />, container);
             } else {
-                render(<Kifu {...options} kifuStore={kifuStore} />, container);
+                render(<Kifu {...iOptions} kifuStore={kifuStore} />, container);
             }
+            registry.register(container!, kifuStore);
             resolve(kifuStore);
         });
     });

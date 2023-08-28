@@ -22,3 +22,5 @@ export default class KifuRegistry {
         });
     }
 }
+
+export const registry = new KifuRegistry();
