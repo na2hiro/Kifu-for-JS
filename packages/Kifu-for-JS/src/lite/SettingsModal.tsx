@@ -24,6 +24,22 @@ export const SettingsModal: React.FC<Props> = ({ onClose, kifuStore }) => {
             }}
             onClick={(e) => e.stopPropagation()}
         >
+            <button
+                onClick={onClose}
+                style={{ position: "absolute", top: 10, right: 10, background: "none", border: "none", padding: 0 }}
+            >
+                <svg
+                    fill="currentColor"
+                    style={{ opacity: 0.5 }}
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 -960 960 960"
+                    height="30"
+                    width="30"
+                >
+                    <path d="m252.615-217.232-35.383-35.383L444.616-480 217.232-707.385l35.383-35.383L480-515.384l227.385-227.384 35.383 35.383L515.384-480l227.384 227.385-35.383 35.383L480-444.616 252.615-217.232Z" />
+                </svg>
+            </button>
+
             <div style={{ display: "flex", justifyContent: "center" }}>
                 <div style={{ display: "inline-block", margin: "20px 0" }}>
                     <div
@@ -83,18 +99,6 @@ export const SettingsModal: React.FC<Props> = ({ onClose, kifuStore }) => {
                     </svg>
                 </a>
             </div>
-
-            <svg
-                fill="currentColor"
-                style={{ position: "absolute", top: 10, right: 10, opacity: 0.5 }}
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 -960 960 960"
-                height="30"
-                width="30"
-                onClick={onClose}
-            >
-                <path d="m252.615-217.232-35.383-35.383L444.616-480 217.232-707.385l35.383-35.383L480-515.384l227.385-227.384 35.383 35.383L515.384-480l227.384 227.385-35.383 35.383L480-444.616 252.615-217.232Z" />
-            </svg>
         </div>
     );
 };
@@ -102,10 +106,9 @@ export const SettingsModal: React.FC<Props> = ({ onClose, kifuStore }) => {
 function Download({ filePath }) {
     const isAvailable = !!filePath;
     return (
-        <div
-            role="button"
+        <button
+            style={{ background: "none", border: "none", padding: 0, fontSize: "inherit" }}
             aria-disabled={!isAvailable}
-            tabIndex={0}
             onClick={() =>
                 isAvailable
                     ? open(filePath)
@@ -129,16 +132,15 @@ function Download({ filePath }) {
                 )}
             </svg>
             Download Kifu
-        </div>
+        </button>
     );
 }
 
 function HapticFeedback({ kifuStore, userSetting }) {
     return (
         !kifuStore.staticOptions && (
-            <div
-                role="button"
-                tabIndex={0}
+            <button
+                style={{ background: "none", border: "none", padding: 0, fontSize: "inherit" }}
                 onClick={() => {
                     const newValue = (userSetting.hapticFeedback = !userSetting.hapticFeedback);
                     if (newValue) {
@@ -170,7 +172,7 @@ function HapticFeedback({ kifuStore, userSetting }) {
                     </svg>
                 )}
                 <div>Haptic feedback?</div>
-            </div>
+            </button>
         )
     );
 }
