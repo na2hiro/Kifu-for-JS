@@ -27,7 +27,9 @@ export default class UserSetting {
     }
 
     persist() {
-        localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(toJS(this)));
+        if (typeof localStorage !== "undefined") {
+            localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(toJS(this)));
+        }
     }
 }
 

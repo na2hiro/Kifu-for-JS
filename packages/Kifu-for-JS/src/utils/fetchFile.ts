@@ -4,6 +4,10 @@ export default function fetchFile(filePath): Promise<string> {
     return new Promise((resolve, reject) => {
         const encoding = getEncodingFromFileName(filePath);
 
+        if (typeof document === "undefined") {
+            console.info("This seems to be a server side rendering. Skip fetching file.");
+            return;
+        }
         const request = new XMLHttpRequest();
         request.open("GET", filePath, true);
         request.overrideMimeType("text/html;charset=" + encoding);
