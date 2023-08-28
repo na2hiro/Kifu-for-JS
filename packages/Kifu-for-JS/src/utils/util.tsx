@@ -33,7 +33,6 @@ export function onDomReady(callback) {
 }
 
 export function removeIndentation(indentedKifu: string) {
-    console.log("removeIndentation", indentedKifu);
     const firstNonEmptyLine = indentedKifu.split("\n").filter((s) => s != "")[0];
     if (!firstNonEmptyLine) return indentedKifu;
     const match = /(\s+)/.exec(firstNonEmptyLine);

@@ -89,8 +89,7 @@ export function getKifuStore(element: HTMLElement) {
 
 if (typeof document !== "undefined") {
     onDomReady(() => {
-        // Important to convert to array first, otherwise the NodeList will be modified as we remove the script tags
-        const scripts = Array.prototype.slice.call(document.getElementsByTagName("script"));
+        const scripts = document.getElementsByTagName("script");
         for (let i = 0; i < scripts.length; i++) {
             const script = scripts[i];
             if (script.type === "text/kifu" && !script.dataset.loaded) {

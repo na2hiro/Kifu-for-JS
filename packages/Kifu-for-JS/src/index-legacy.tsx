@@ -8,7 +8,6 @@ import KifuLite from "./lite/KifuLite";
 export const mobx = { autorun, when, reaction };
 
 export interface IOptions {
-    responsive?: boolean;
     mode?: "lite" | "normal";
 }
 

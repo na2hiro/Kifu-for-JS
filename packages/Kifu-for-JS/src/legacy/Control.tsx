@@ -6,7 +6,6 @@ declare const __VERSION__: string;
 
 export interface IProps {
     kifuStore: KifuStore;
-    isPortrait: boolean;
 }
 
 @observer
@@ -19,61 +18,42 @@ export default class Control extends React.Component<IProps> {
     }
     public render() {
         const { player } = this.props.kifuStore;
-        if (this.props.isPortrait) {
-            return (
-                <div className="kifuforjs-control" onClick={this.onClickGoTo}>
-                    <button data-go="-1" className="kifuforjs-control-mainbutton">
-                        <div>&lt;</div>
-                    </button>
-                    <button data-go="1" className="kifuforjs-control-mainbutton">
-                        <div>&gt;</div>
-                    </button>
-                    <button className="kifuforjs-control-tools" onClick={this.onClickReverse}>
-                        <div>反転</div>
-                    </button>
-                    <button className="kifuforjs-control-tools" onClick={this.onClickCredit}>
-                        <div>credit</div>
-                    </button>
-                </div>
-            );
-        } else {
-            return (
-                <div className="kifuforjs-control" onClick={this.onClickGoTo}>
-                    <button data-go="-Infinity">
-                        <div>|&lt;</div>
-                    </button>
-                    <button data-go="-10">
-                        <div>&lt;&lt;</div>
-                    </button>
-                    <button data-go="-1">
-                        <div>&lt;</div>
-                    </button>
-                    <input
-                        type="text"
-                        name="tesuu"
-                        size={3}
-                        value={player.tesuu}
-                        onChange={this.onChangeTesuu}
-                        aria-label="現在の手数"
-                    />
-                    <button data-go="1">
-                        <div>&gt;</div>
-                    </button>
-                    <button data-go="10">
-                        <div>&gt;&gt;</div>
-                    </button>
-                    <button data-go="Infinity">
-                        <div>&gt;|</div>
-                    </button>
-                    <button className="kifuforjs-control-tools" onClick={this.onClickReverse}>
-                        <div>反転</div>
-                    </button>
-                    <button className="kifuforjs-control-tools" onClick={this.onClickCredit}>
-                        <div>credit</div>
-                    </button>
-                </div>
-            );
-        }
+        return (
+            <div className="kifuforjs-control" onClick={this.onClickGoTo}>
+                <button data-go="-Infinity">
+                    <div>|&lt;</div>
+                </button>
+                <button data-go="-10">
+                    <div>&lt;&lt;</div>
+                </button>
+                <button data-go="-1">
+                    <div>&lt;</div>
+                </button>
+                <input
+                    type="text"
+                    name="tesuu"
+                    size={3}
+                    value={player.tesuu}
+                    onChange={this.onChangeTesuu}
+                    aria-label="現在の手数"
+                />
+                <button data-go="1">
+                    <div>&gt;</div>
+                </button>
+                <button data-go="10">
+                    <div>&gt;&gt;</div>
+                </button>
+                <button data-go="Infinity">
+                    <div>&gt;|</div>
+                </button>
+                <button className="kifuforjs-control-tools" onClick={this.onClickReverse}>
+                    <div>反転</div>
+                </button>
+                <button className="kifuforjs-control-tools" onClick={this.onClickCredit}>
+                    <div>credit</div>
+                </button>
+            </div>
+        );
     }
 
     private onClickGoTo(e) {

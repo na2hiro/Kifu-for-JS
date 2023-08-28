@@ -5,7 +5,6 @@ import { CSSProperties, FunctionComponent, ReactNode, useCallback, useLayoutEffe
 
 export interface IProps {
     player: JKFPlayer;
-    isPortrait: boolean;
     style?: CSSProperties;
 }
 

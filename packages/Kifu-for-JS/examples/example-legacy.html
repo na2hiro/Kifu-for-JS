@@ -1,0 +1,68 @@
+
+<html lang="ja">
+<head>
+  <title>Kifu for JS example</title>
+  <meta charset="utf-8">
+  <script src="../bundle/kifu-for-js-legacy.min.js" charset="utf-8"></script>
+  <meta name="viewport" content="width=device-width, initial-scale=1"/>
+  <script>
+    var Kifu = KifuForJS;
+  </script>
+  <script>Kifu.load("./files/ki2/9fu.ki2", "ki2dom");</script>
+</head>
+
+<body>
+<h1>Kifu for JS (legacy) 動作例</h1>
+JavaもFlashも使わない，JavaScriptだけで動く<a href="https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/Kifu-for-JS#readme">Kifu for JS</a>の動作例です．
+
+<h2>注意</h2>
+こちらは動作確認用のページです。使い方などについては<a href="https://kifu-for-js.81.la">ドキュメンテーション</a>を参照してください。
+
+<h2>目次</h2>
+<ul>
+  <li><a href="#example">例</a>
+    <ul>
+      <li><a href="#kif">KIFファイル読み込み</a></li>
+      <li><a href="#ki2">KI2ファイル読み込み (DOM id 指定)</a></li>
+      <li><a href="#csa">CSAファイル読み込み</a></li>
+      <li><a href="#jkf">JKFファイル読み込み</a></li>
+      <li><a href="#text">テキスト読み込み＆JSからのテキスト再読み込み</a></li>
+    </ul>
+  </li>
+  <li><a href="#example-mobx">mobxによる状態監視の例</a>
+    <ul>
+      <li><a href="#mobx-tesuu">手数変化を受け取る</a></li>
+    </ul>
+  </li>
+</ul>
+
+<h2><a id="example">例</a></h2>
+<h3><a id="kif">KIFファイル読み込み</a></h3>
+<script>var kifu1 = Kifu.load("./files/kif/jt201409130101.kif");</script>
+<h4>分岐棋譜</h4>
+<script>Kifu.load("./files/kif/fork.kif");</script>
+<h3><a id="ki2">KI2ファイル読み込み (DOM id 指定)</a></h3>
+<div id="ki2dom"></div>
+<h3><a id="csa">CSAファイル読み込み</a></h3>
+<script>Kifu.load("./files/csa/8mai.csa");</script>
+<h3><a id="jkf">JKFファイル読み込み</a></h3>
+<script>Kifu.load("./files/jkf/ryuou201409020101.jkf");</script>
+<h3><a id="text">テキスト読み込み＆JSからのテキスト再読み込み</a></h3>
+<script>var kifu = Kifu.loadString("▲７六歩  △８四歩  ▲６八銀");</script>
+<textarea id="kifuString" aria-label="棋譜">
+▲７六歩  △８四歩  ▲６八銀
+</textarea>
+<button onclick="kifu.then(kifuStore => kifuStore.loadKifu(document.getElementById('kifuString').value))">読み込み</button>
+</body>
+
+<h2><a id="example-mobx">mobxによる状態監視の例</a></h2>
+<h3><a id="mobx-tesuu">手数変化を受け取る</a></h3>
+<div>現在<span id="tesuu" style="font-size: large"></span>手目です!</div>
+<script>
+  Kifu.load("./files/kif/jt201409130101.kif").then((kifuStore) => {
+    Kifu.mobx.autorun(()=>{
+      document.getElementById("tesuu").textContent = kifuStore.player.tesuu;
+    })
+  });
+</script>
+</html>

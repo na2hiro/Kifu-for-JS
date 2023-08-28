@@ -129,11 +129,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 >
                                     ◀
                                 </button>
-                                <KifuList
-                                    player={kifuStore.player}
-                                    isPortrait={false}
-                                    style={{ fontSize: "x-small" }}
-                                />
+                                <KifuList player={kifuStore.player} style={{ fontSize: "x-small" }} />
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     {/*TODO: long press to keep moving*/}
                                     <button

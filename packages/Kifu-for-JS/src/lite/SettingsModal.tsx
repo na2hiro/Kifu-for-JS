@@ -132,7 +132,7 @@ export const SettingsModal: React.FC<Props> = ({ onClose, kifuStore }) => {
 
             <svg
                 fill="currentColor"
-                style={{ position: "absolute", top: 10, right: 10 }}
+                style={{ position: "absolute", top: 10, right: 10, opacity: 0.5 }}
                 xmlns="http://www.w3.org/2000/svg"
                 viewBox="0 -960 960 960"
                 height="30"
