@@ -176,13 +176,13 @@ export const MyComponent = () => {
 
 また、次のように背景画像の細部が気になる場合は、
 
-<p style={{background: "url(/img/logo.svg)", padding: "10px"}}>
+<p style={{background: "url(/img/docusaurus.png)", padding: "10px"}}>
   <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.8)", color: "black"}} />
 </p>
 
 ぼかしのバックドロップフィルタを入れ、不透明度を高めると良いです。
 
-<p style={{background: "url(/img/logo.svg)", padding: "10px"}}>
+<p style={{background: "url(/img/docusaurus.png)", padding: "10px"}}>
   <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.9)", color: "black", backdropFilter: "blur(5px)"}} />
 </p>
 

@@ -48,7 +48,7 @@ export const SettingsModal: React.FC<Props> = ({ onClose, kifuStore }) => {
                             fontSize: "40px",
                             lineHeight: "22px",
                             display: "inline-block",
-                            fontFamily: 'Lato, "Baskerville"',
+                            fontFamily: "Baskerville, serif",
                         }}
                     >
                         Kifu<span style={{ fontSize: "smaller" }}> for </span>JS

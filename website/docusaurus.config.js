@@ -3,12 +3,13 @@
 
 const lightCodeTheme = require("prism-react-renderer/themes/github");
 const darkCodeTheme = require("prism-react-renderer/themes/dracula");
+const path = require("path");
 
 /** @type {import('@docusaurus/types').Config} */
 const config = {
   title: "Kifu for JS",
   tagline: "将棋再生盤ライブラリ",
-  favicon: "img/favicon.ico",
+  favicon: "img/logo.svg",
 
   // Set the production url of your site here
   url: "https://kifu-for-js.81.la",
@@ -34,6 +35,23 @@ const config = {
 
   staticDirectories: ["static"],
 
+  plugins: [
+    // Prevent Invalid hook call error
+    // https://github.com/facebook/docusaurus/issues/8091#issuecomment-1269112001
+    () => ({
+      name: "resolve-react",
+      configureWebpack() {
+        return {
+          resolve: {
+            alias: {
+              // assuming root node_modules is up from "./packages/<your-docusaurus>
+              react: path.resolve("../node_modules/react"),
+            },
+          },
+        };
+      },
+    }),
+  ],
   presets: [
     [
       "classic",
@@ -56,6 +74,9 @@ const config = {
         theme: {
           customCss: require.resolve("./src/css/custom.css"),
         },
+        gtag: {
+          trackingID: "G-K6MBK9KMZ9",
+        },
       }),
     ],
   ],
@@ -63,12 +84,6 @@ const config = {
   themeConfig:
     /** @type {import('@docusaurus/preset-classic').ThemeConfig} */
     ({
-      // Disable dark mode while Kifu for JS doesn't support it
-      // colorMode: {
-      //   defaultMode: "light",
-      //   disableSwitch: true,
-      //   respectPrefersColorScheme: false,
-      // },
       // Replace with your project's social card
       image: "img/docusaurus-social-card.jpg",
       navbar: {

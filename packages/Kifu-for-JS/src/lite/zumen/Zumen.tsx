@@ -1,6 +1,8 @@
 /*
  shogizumen.js ver.20170713
  (c) maasa. | http://www.geocities.jp/ookami_maasa/shogizumen/
+
+ Converted to a React component by na2hiro in 2023 https://kifu-for-js.81.la
 */
 
 import React, { CSSProperties, forwardRef, PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
