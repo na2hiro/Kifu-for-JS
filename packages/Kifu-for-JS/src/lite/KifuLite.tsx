@@ -11,7 +11,7 @@ import ForkList from "../common/ForkList";
 import Comment from "../common/Comment";
 import useHaptics from "./useHaptics";
 import UserSetting from "../common/stores/UserSetting";
-import SettingsIcon from "./SettingsIcon";
+import SettingsIcon from "./settings/SettingsIcon";
 import { removeIndentation } from "../utils/util";
 
 export type IProps = {

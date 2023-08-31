@@ -60,7 +60,7 @@ Kifu for JSの盤面と周辺機能は、SVG画像として出力されます。
 
 ```html
 <style>
-  #board-1 + ins svg {
+  #board-1 + ins > svg {
     border: 1px black solid;
   }
 </style>

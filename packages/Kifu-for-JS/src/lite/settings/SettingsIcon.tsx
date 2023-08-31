@@ -1,6 +1,6 @@
 import React, { forwardRef, RefObject, useCallback, useEffect, useState } from "react";
 import { SettingsModal } from "./SettingsModal";
-import KifuStore from "../common/stores/KifuStore";
+import KifuStore from "../../common/stores/KifuStore";
 import FocusTrap from "focus-trap-react";
 
 type Props = {
@@ -59,7 +59,7 @@ const SettingsIcon = forwardRef<SVGSVGElement, Props>(({ width, height, kifuStor
             document.body.removeEventListener("click", closeIfOutsideIsClicked);
             document.body.removeEventListener("touchstart", hideIconIfOutsideIsTouched);
         };
-    }, []);
+    }, [(ref as RefObject<SVGSVGElement>).current]);
 
     const onClickIcon = useCallback(() => {
         if (isIconShown) {
@@ -108,13 +108,8 @@ const SettingsIcon = forwardRef<SVGSVGElement, Props>(({ width, height, kifuStor
                 }}
             >
                 {isOpen && (
-                    <FocusTrap>
-                        <div
-                            style={{ width: "100%", height: "100%", boxSizing: "border-box", padding: "0px" }}
-                            onClick={() => setOpen(false)}
-                        >
-                            <SettingsModal onClose={() => setOpen(false)} kifuStore={kifuStore} />
-                        </div>
+                    <FocusTrap focusTrapOptions={{ clickOutsideDeactivates: true }}>
+                        <SettingsModal onClose={() => setOpen(false)} kifuStore={kifuStore} />
                     </FocusTrap>
                 )}
             </foreignObject>

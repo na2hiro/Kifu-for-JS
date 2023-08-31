@@ -66,7 +66,6 @@ function loadCommon(
             } else {
                 kifuStore.loadKifu(kifu).then(() => {});
             }
-            console.log({ options });
             const { mode, ...iOptions } = options;
             if (mode === "latest") {
                 render(<KifuLite {...iOptions} kifuStore={kifuStore} />, container);
