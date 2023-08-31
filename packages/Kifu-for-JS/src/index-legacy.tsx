@@ -59,6 +59,9 @@ function loadCommon(id: string | undefined, options: ILegacyOptions): Promise<Ki
         }
         onDomReady(() => {
             const container = document.getElementById(id);
+            if (!container) {
+                throw new Error(`Container ${id} not found`);
+            }
             const { mode, ...iOptions } = options;
             const kifuStore = new KifuStore(iOptions);
             if (mode === "latest") {
@@ -66,7 +69,7 @@ function loadCommon(id: string | undefined, options: ILegacyOptions): Promise<Ki
             } else {
                 render(<Kifu kifuStore={kifuStore} />, container);
             }
-            registry.register(container!, kifuStore);
+            registry.register(container, kifuStore);
             resolve(kifuStore);
         });
     });

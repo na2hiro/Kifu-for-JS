@@ -1,5 +1,4 @@
 import { render, screen, within } from "@testing-library/react";
-import "jest";
 import * as React from "react";
 
 import { expectCell, selectPiece } from "../../test/testutils";

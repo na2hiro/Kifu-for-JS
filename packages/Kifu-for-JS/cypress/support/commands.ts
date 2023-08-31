@@ -1,4 +1,4 @@
-import '@testing-library/cypress/add-commands'
+import "@testing-library/cypress/add-commands";
 
 // ***********************************************
 // This example commands.js shows you how to
@@ -27,5 +27,5 @@ import '@testing-library/cypress/add-commands'
 // Cypress.Commands.overwrite("visit", (originalFn, url, options) => { ... })
 
 Cypress.Commands.add("getBySel", (selector, ...args) => {
-    return cy.get(`[data-testid=\"${selector}\"]`, ...args);
+    return cy.get(`[data-testid="${selector}"]`, ...args);
 });

@@ -1,9 +1,10 @@
 import KifuStore from "./common/stores/KifuStore";
+import { load, loadString } from "./index";
 
-declare var $; // jQuery
-declare var jQuery; // jQuery
-declare var params; // Flash
-declare var so; // Flash
+declare let $; // jQuery
+declare let jQuery; // jQuery
+declare let params; // Flash
+declare let so; // Flash
 
 async function start(): Promise<KifuStore[]> {
     if ("getSelection" in window && getSelection().toString() !== "") {
@@ -137,6 +138,6 @@ if (typeof $ === "undefined" || !$.fn || !$.fn.jquery) {
 const exp = promise.then(start);
 export default exp;
 
-async function loadKifuForJS(): Promise<{ load: any; loadString: any }> {
+async function loadKifuForJS(): Promise<{ load: typeof load; loadString: typeof loadString }> {
     return await import(/* webpackChunkName: "KifuInBookmarklet" */ "./index");
 }

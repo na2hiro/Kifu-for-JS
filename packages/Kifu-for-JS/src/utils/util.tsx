@@ -24,6 +24,7 @@ export function getEncodingFromFileName(filename) {
 export function onDomReady(callback) {
     if (
         document.readyState === "complete" ||
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         (document.readyState !== "loading" && !(document.documentElement as any).doScroll)
     ) {
         callback();
@@ -34,9 +35,13 @@ export function onDomReady(callback) {
 
 export function removeIndentation(indentedKifu: string) {
     const firstNonEmptyLine = indentedKifu.split("\n").filter((s) => s != "")[0];
-    if (!firstNonEmptyLine) { return indentedKifu; }
+    if (!firstNonEmptyLine) {
+        return indentedKifu;
+    }
     const match = /(\s+)/.exec(firstNonEmptyLine);
-    if (!match) { return indentedKifu; }
+    if (!match) {
+        return indentedKifu;
+    }
     let illicitLine = false;
     const indentRemoved = indentedKifu
         .split("\n")

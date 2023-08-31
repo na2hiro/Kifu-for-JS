@@ -3,7 +3,6 @@ import { autorun, observable, toJS } from "mobx";
 const LOCALSTORAGE_KEY = "kifuforjs";
 
 export default class UserSetting {
-
     public static get() {
         if (!this.instance) {
             this.instance = new UserSetting();
@@ -12,6 +11,7 @@ export default class UserSetting {
     }
 
     private static instance: UserSetting | undefined;
+    // eslint-disable-next-line @typescript-eslint/no-inferrable-types
     @observable public hapticFeedback: boolean = true;
 
     private constructor() {
@@ -22,7 +22,9 @@ export default class UserSetting {
                     this.hapticFeedback = settings.hapticFeedback;
                 }
                 return;
-            } catch (e) {}
+            } catch (e) {
+                // Ignore
+            }
         }
     }
 

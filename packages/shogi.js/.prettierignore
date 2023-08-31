@@ -1,6 +1,6 @@
 /bundle/
 /coverage/
-/dist/
+/cjs/
 /node_modules/
 /docs/
 /public/

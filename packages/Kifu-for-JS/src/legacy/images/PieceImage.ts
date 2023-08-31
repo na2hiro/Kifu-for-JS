@@ -1,4 +1,4 @@
-/* tslint:disable:ordered-imports object-literal-sort-keys */
+/* disable:ordered-imports object-literal-sort-keys */
 import FU0 from "./0FU.png";
 import KY0 from "./0KY.png";
 import KE0 from "./0KE.png";

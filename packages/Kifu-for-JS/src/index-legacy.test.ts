@@ -1,10 +1,10 @@
-import "jest";
+/* eslint-disable no-irregular-whitespace */
 import * as KifuForJS from "./index-legacy";
 import fetchFileRaw from "./utils/fetchFile";
 
 jest.mock("./utils/fetchFile");
 
-const fetchFile: any = fetchFileRaw;
+const fetchFile = fetchFileRaw as jest.MockedFn<typeof fetchFileRaw>;
 
 const KIF_STRING = `#KIF version=2.0 encoding=Shift_JIS
 # ---- Kifu for Windows V7 V7.08 棋譜ファイル ----
@@ -51,12 +51,7 @@ describe("loadFile", () => {
     it("shows an error about illegal kifu", async () => {
         fetchFile.mockResolvedValue(KIF_STRING_ILLEGAL);
         document.body.innerHTML = "<div id='kifu'></div>";
-        let kifuStore;
-        try {
-            kifuStore = await KifuForJS.load("somewhere.kif", "kifu");
-        } catch (e) {
-            console.log("caught", e);
-        }
+        const kifuStore = await KifuForJS.load("somewhere.kif", "kifu");
         expect(kifuStore.player.kifu.moves.length).toBe(1);
         expect(kifuStore.errors).toHaveLength(1);
         expect(kifuStore.errors).toMatchSnapshot();

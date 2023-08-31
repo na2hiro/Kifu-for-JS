@@ -8,11 +8,11 @@ import HapticFeedback from "./HapticFeedback";
 import License from "./License";
 import Logo from "./Logo";
 
-interface Props {
+interface IProps {
     onClose: () => void;
     kifuStore: KifuStore;
 }
-export const SettingsModal = forwardRef<HTMLElement, Props>(({ onClose, kifuStore }, ref) => {
+export const SettingsModal = forwardRef<HTMLElement, IProps>(({ onClose, kifuStore }, ref) => {
     const userSetting = UserSetting.get();
     const [subPage, setSubPage] = useState<React.ReactNode | null>(null);
 

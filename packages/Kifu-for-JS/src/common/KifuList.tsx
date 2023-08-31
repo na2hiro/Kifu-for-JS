@@ -9,8 +9,8 @@ export interface IProps {
 }
 
 @observer
-export default class KifuList extends React.Component<IProps, any> {
-    constructor(props) {
+export default class KifuList extends React.Component<IProps> {
+    constructor(props: IProps) {
         super(props);
         this.onChange = this.onChange.bind(this);
     }
@@ -140,7 +140,6 @@ const DivList: FunctionComponent<IDivListProps> = ({ options, onChange, tesuu, s
                     <div
                         key={value}
                         role="option"
-                        // tslint:disable-next-line jsx-no-lambda
                         onClick={() => onChange(value)}
                         aria-selected={value === tesuu}
                         ref={value === tesuu ? ref : null}
@@ -160,5 +159,5 @@ function scrollToCenter(element: HTMLElement, container: HTMLElement) {
 }
 
 function getComputedHeight(el: HTMLElement) {
-    return parseInt(getComputedStyle(el).height.replace("px", ""));
+    return parseInt(getComputedStyle(el).height.replace("px", ""), 10);
 }

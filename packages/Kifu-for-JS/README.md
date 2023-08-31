@@ -100,7 +100,7 @@ javascript:!function(){var s=document.createElement("script");s.src="https://na2
 * Webpack (バンドルツール)
 * Jest (テストフレームワーク，カバレッジ計測)
 * Cypress (end-to-endテスト)
-* TSLint (Linter)
+* ESLint (Linter)
 
 ### E2E テスト
 

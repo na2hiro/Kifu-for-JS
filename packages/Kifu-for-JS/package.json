@@ -17,8 +17,8 @@
         "build:ghpages": "webpack --env production --env ghpages",
         "build:analyze": "webpack --env production --env analyze",
         "build:watch": "webpack --watch",
-        "lint": "tslint -p ./",
-        "lint:fix": "prettier ./src --write && tslint -p ./ --fix",
+        "lint": "eslint ./ && prettier . --check",
+        "lint:fix": "eslint ./ --fix && prettier . --write",
         "test": "jest",
         "test:watch": "jest --watch",
         "cy:open": "cypress open",
@@ -83,6 +83,7 @@
         "core-js": "^3.6.5",
         "css-loader": "^6.8.1",
         "cypress": "^12.10.0",
+        "eslint": "^8.48.0",
         "http-server": "^14.1.1",
         "img-loader": "^4.0.0",
         "jest-environment-jsdom": "^28.1.2",
@@ -93,9 +94,6 @@
         "sass-loader": "^10.1.0",
         "start-server-and-test": "^2.0.0",
         "style-loader": "^3.3.3",
-        "tslint": "^5.9.1",
-        "tslint-config-prettier": "^1.10.0",
-        "tslint-react": "^3.5.1",
         "url-loader": "^4.1.1",
         "webpack-dev-server": "^4.9.3"
     }

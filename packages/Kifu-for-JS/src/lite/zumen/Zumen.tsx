@@ -15,7 +15,7 @@ import { cellEqual } from "./zumenCompat";
 /**
  * TODO: Customize mochigoma display for tsume shogi
  */
-interface Props {
+interface IProps {
     width?: number;
     height?: number;
     state?: IStateFormat;
@@ -24,9 +24,12 @@ interface Props {
     style?: CSSProperties;
     ref?: React.Ref<SVGSVGElement>;
 }
-const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<Props>>(
+
+const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
     ({ width, height, state, latestMoveTo, children, players, style = {} }, ref) => {
-        if (!state) { return null; }
+        if (!state) {
+            return null;
+        }
 
         const kx = 25;
 
@@ -91,9 +94,9 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<Props>>(
                 xmlns="http://www.w3.org/2000/svg"
                 className="kifuforjs-lite"
                 style={{
+                    aspectRatio: `${width} / ${height}`,
                     fontFamily: "serif",
                     userSelect: "none",
-                    aspectRatio: `${width} / ${height}`,
                     ...style,
                 }}
                 viewBox={"0 0 " + width + " " + height}

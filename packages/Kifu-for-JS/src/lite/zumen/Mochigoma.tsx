@@ -6,7 +6,9 @@ import { KanSuuji, scolor } from "./lib";
 const sgm = 1;
 
 function amountToString(amount: number) {
-    if (amount <= 1) { return ""; }
+    if (amount <= 1) {
+        return "";
+    }
     let r = "";
     if (amount > 10) {
         r += "十";
@@ -25,7 +27,7 @@ const handToString = function (hand: IHandFormat) {
             .join("") || "なし"
     );
 };
-interface Props {
+interface IProps {
     v: number;
     kx: number;
     name?: string;
@@ -33,7 +35,7 @@ interface Props {
 }
 const turns = ["先手", "後手"];
 const marks = "☗☖";
-export const Mochigoma: FC<Props> = ({ v, kx, hand, name = turns[v] }) => {
+export const Mochigoma: FC<IProps> = ({ v, kx, hand, name = turns[v] }) => {
     const t = marks[v] + name + "　" + handToString(hand);
     const py = (-t.length * kx * 9) / 14;
 

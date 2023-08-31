@@ -42,6 +42,7 @@ describe("bookmarklet", () => {
         cy.on("uncaught:exception", (err) => false); // ignore
 
         cy.visit("/examples/nothing-to-replace.html").then(() => {
+            // eslint-disable-next-line jest/valid-expect
             expect(stub).to.be.calledOnce;
         });
     });

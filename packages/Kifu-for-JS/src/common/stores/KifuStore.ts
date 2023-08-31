@@ -30,7 +30,6 @@ export default class KifuStore {
     @observable public filePath: string;
     @observable public staticOptions: IStatic;
     @observable public maxWidth: number | null;
-    // tslint:disable-next-line:variable-name
     @observable private player_: JKFPlayer;
     private timerAutoload: number;
 
@@ -59,7 +58,9 @@ export default class KifuStore {
             };
             if (options.src) {
                 this.loadFile(options.src)
-                    .catch(() => {})
+                    .catch(() => {
+                        // ignore and let the comment show error message hanadled inside
+                    })
                     .then(initializePly);
             } else if (options.kifu && options.kifu.trim() !== "") {
                 try {

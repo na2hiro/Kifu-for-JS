@@ -1,330 +1,331 @@
 .kifuforjs {
-  width: 570px;
-  display: flex;
-  flex-direction: column;
-  background-color: white;
-
-  &-wrapper {
+    width: 570px;
+    display: flex;
+    flex-direction: column;
     background-color: white;
-    /*overflow: auto;*/ // Apply only during fullscreen
-  }
 
-  &--responsive {
-    width: inherit;
-    min-width: 570px; // TODO smaller than this
-    max-width: 900px;
-    margin: auto;
-  }
-
-  &-columns {
-    display: flex;
-    align-items: stretch;
-  }
-
-  &-column {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &-info {
-    overflow-y: scroll;
-    font-size: small;
-    margin-bottom: 2px;
-
-    dl {
-      margin-top: 0;
-      margin-bottom: 0;
-      text-align: left;
+    &-wrapper {
+        background-color: white;
+        /*overflow: auto;*/ // Apply only during fullscreen
     }
 
-    dt {
-      font-weight: bold;
-      clear: both;
-      float: left;
-      margin-right: 3px;
-      background-color: #eee;
+    &--responsive {
+        width: inherit;
+        min-width: 570px; // TODO smaller than this
+        max-width: 900px;
+        margin: auto;
     }
 
-    dd {
-      margin-left: 20px;
-    }
-  }
-
-  &-leftcontrol {
-    display: flex;
-    flex-direction: column;
-    margin-top: 1px;
-
-    & > * {
-      margin-top: 1px;
-    }
-  }
-
-  &-pieceinhand {
-    position: relative;
-    flex: 0 0 50%;
-
-    div {
-      display: inline-block;
-    }
-
-    &--fu {
-      flex: 0 0 100%;
-    }
-  }
-
-  &-board {
-    margin: 2px;
-    border-collapse: collapse;
-    align-self: center;
-
-    th {
-      white-space: nowrap;
-      text-align: center;
-      vertical-align: middle;
-      font-weight: bold;
-    }
-  }
-
-  &-cell {
-    border: 1px #000000 solid;
-    background-color: #FDD775;
-    padding: 0;
-
-    &--lastto {
-      background-color: #FF9900;
-    }
-  }
-
-  &-halfofcolumn {
-    flex: 1 1 0;
-    display: flex;
-    flex-direction: column;
-  }
-
-  &-hand {
-    &-head {
-      flex: 0;
-      text-align: center;
-      background-color: silver;
-    }
-
-    &-body {
-      flex: 100%;
-      background-color: #eee;
-      display: flex;
-      flex-wrap: wrap;
-      align-content: flex-start;
-      padding: 2px 0;
-
-      .kifuforjs-hand--reverse & {
-        flex-direction: row-reverse;
-        flex-wrap: wrap-reverse;
-      }
-    }
-
-    &--reverse {
-      flex-direction: column-reverse;
-    }
-  }
-
-  &-control {
-    display: flex;
-    justify-content: center;
-    margin: 2px 0;
-    white-space: nowrap;
-
-    button, input {
-      height: 30px;
-      width: 55px;
-      font-size: 18px;
-      text-align: center;
-      vertical-align: bottom;
-
-      div {
-        height: 100%;
+    &-columns {
         display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-
-      @media(min-width: 700px) {
-        .kifuforjs--responsive & {
-          height: 35px;
-          width: 65px;
-          font-size: 22px;
-        }
-      }
-
-      @media(min-width: 864px) {
-        .kifuforjs--responsive & {
-          height: 40px;
-          width: 80px;
-          font-size: 26px;
-        }
-      }
+        align-items: stretch;
     }
 
-    &-tools {
-      font-size: 15px;
-    }
-  }
-
-  // Legacy
-  .kifuforjs &-comment {
-    color: black;
-  }
-
-  .kifuforjs-dragPreview {
-    z-index: 100;
-  }
-
-  &-cell,
-  &-cell img,
-  &-pieceinhand img,
-  &-pieceinhand,
-  &-dragPreview {
-    padding: 0;
-    border-spacing: 0;
-    width: 32px;
-    height: 36px;
-    vertical-align: middle;
-
-    // TODO: Pieces overflow
-    @media(min-width: 700px) {
-      .kifuforjs--responsive & {
-        width: 40px;
-        height: 45px;
-      }
+    &-column {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
     }
 
-    @media(min-width: 864px) {
-      .kifuforjs--responsive & {
-        width: 48px;
-        height: 54px;
-      }
-    }
-  }
+    &-info {
+        overflow-y: scroll;
+        font-size: small;
+        margin-bottom: 2px;
 
-  &-kifulist {
-    position: relative;
-    flex-grow: 1;
-    overflow-y: scroll;
-    overflow-x: auto;
-    border: 1px rgb(118,118,118) solid;
-    border-radius: 2px;
-    font-size: small;
-    cursor: default;
-    // scroll-behavior: smooth; // This triggers scroll events which generates unnecessary gotos
-
-    &-inner{
-      position: absolute;
-      display: flex;
-      flex-direction: column;
-      align-items: stretch;
-      width: 100%;
-    }
-
-    [role=option] {
-      padding: 0 2px;
-    }
-
-    [aria-selected="true"] {
-      background-color: rgba(106, 106, 106, 0.35);
-
-      .kifuforjs-kifulist:focus & {
-        background-color: #99c8ff;
-      }
-    }
-  }
-
-  // Portrait view
-  &--responsive {
-    $width: 32px;
-    $height: 36px;
-    $md-width: 40px;
-    $md-height: 45px;
-    $lg-width: 48px;
-    $lg-height: 54px;
-
-    // TODO: too high case
-    @media (max-aspect-ratio: 2/3), (max-width: 570px) {
-      min-width: 320px;
-
-      .kifuforjs {
-        &-columns{
-          flex-direction: column;
-        }
-        &-column{
-          $head-height: 30px;
-
-          flex-basis: initial;
-          flex-direction: row;
-          height: $height*2+$head-height;
-
-          @media(min-width: 400px) {
-            height: $md-height*2+$head-height;
-          }
-
-          @media(min-width: 480px) {
-            height: $lg-height*2+$head-height;
-          }
-        }
-
-        &-pieceinhand {
-          flex: 0 0 25%;
-
-          &--fu {
-            flex: 0 0 50%;
-          }
-        }
-
-        &-board {
-          margin: 4px;
-        }
-        &-hand {
-          flex-grow: 2;
-        }
-        &-info {
-          margin-bottom: 0;
-          margin-left: 2px;
-        }
-        &-leftcontrol {
-          margin-top: 0;
-          margin-right: 2px;
-          & > *:first-child {
+        dl {
             margin-top: 0;
-          }
-        }
-        &-control-mainbutton {
-          flex-grow: 1;
+            margin-bottom: 0;
+            text-align: left;
         }
 
-        &-cell,
-        &-cell img,
-        &-pieceinhand img,
-        &-pieceinhand,
-        &-dragPreview {
-          padding: 0;
-          border-spacing: 0;
-          width: $width;
-          height: $height;
-          vertical-align: middle;
-
-          @media(min-width: 400px) {
-            width: $md-width;
-            height: $md-height;
-          }
-
-          @media(min-width: 480px) {
-            width: $lg-width;
-            height: $lg-height;
-          }
+        dt {
+            font-weight: bold;
+            clear: both;
+            float: left;
+            margin-right: 3px;
+            background-color: #eee;
         }
-      }
+
+        dd {
+            margin-left: 20px;
+        }
     }
-  }
+
+    &-leftcontrol {
+        display: flex;
+        flex-direction: column;
+        margin-top: 1px;
+
+        & > * {
+            margin-top: 1px;
+        }
+    }
+
+    &-pieceinhand {
+        position: relative;
+        flex: 0 0 50%;
+
+        div {
+            display: inline-block;
+        }
+
+        &--fu {
+            flex: 0 0 100%;
+        }
+    }
+
+    &-board {
+        margin: 2px;
+        border-collapse: collapse;
+        align-self: center;
+
+        th {
+            white-space: nowrap;
+            text-align: center;
+            vertical-align: middle;
+            font-weight: bold;
+        }
+    }
+
+    &-cell {
+        border: 1px #000000 solid;
+        background-color: #fdd775;
+        padding: 0;
+
+        &--lastto {
+            background-color: #ff9900;
+        }
+    }
+
+    &-halfofcolumn {
+        flex: 1 1 0;
+        display: flex;
+        flex-direction: column;
+    }
+
+    &-hand {
+        &-head {
+            flex: 0;
+            text-align: center;
+            background-color: silver;
+        }
+
+        &-body {
+            flex: 100%;
+            background-color: #eee;
+            display: flex;
+            flex-wrap: wrap;
+            align-content: flex-start;
+            padding: 2px 0;
+
+            .kifuforjs-hand--reverse & {
+                flex-direction: row-reverse;
+                flex-wrap: wrap-reverse;
+            }
+        }
+
+        &--reverse {
+            flex-direction: column-reverse;
+        }
+    }
+
+    &-control {
+        display: flex;
+        justify-content: center;
+        margin: 2px 0;
+        white-space: nowrap;
+
+        button,
+        input {
+            height: 30px;
+            width: 55px;
+            font-size: 18px;
+            text-align: center;
+            vertical-align: bottom;
+
+            div {
+                height: 100%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
+
+            @media (min-width: 700px) {
+                .kifuforjs--responsive & {
+                    height: 35px;
+                    width: 65px;
+                    font-size: 22px;
+                }
+            }
+
+            @media (min-width: 864px) {
+                .kifuforjs--responsive & {
+                    height: 40px;
+                    width: 80px;
+                    font-size: 26px;
+                }
+            }
+        }
+
+        &-tools {
+            font-size: 15px;
+        }
+    }
+
+    // Legacy
+    .kifuforjs &-comment {
+        color: black;
+    }
+
+    .kifuforjs-dragPreview {
+        z-index: 100;
+    }
+
+    &-cell,
+    &-cell img,
+    &-pieceinhand img,
+    &-pieceinhand,
+    &-dragPreview {
+        padding: 0;
+        border-spacing: 0;
+        width: 32px;
+        height: 36px;
+        vertical-align: middle;
+
+        // TODO: Pieces overflow
+        @media (min-width: 700px) {
+            .kifuforjs--responsive & {
+                width: 40px;
+                height: 45px;
+            }
+        }
+
+        @media (min-width: 864px) {
+            .kifuforjs--responsive & {
+                width: 48px;
+                height: 54px;
+            }
+        }
+    }
+
+    &-kifulist {
+        position: relative;
+        flex-grow: 1;
+        overflow-y: scroll;
+        overflow-x: auto;
+        border: 1px rgb(118, 118, 118) solid;
+        border-radius: 2px;
+        font-size: small;
+        cursor: default;
+        // scroll-behavior: smooth; // This triggers scroll events which generates unnecessary gotos
+
+        &-inner {
+            position: absolute;
+            display: flex;
+            flex-direction: column;
+            align-items: stretch;
+            width: 100%;
+        }
+
+        [role="option"] {
+            padding: 0 2px;
+        }
+
+        [aria-selected="true"] {
+            background-color: rgba(106, 106, 106, 0.35);
+
+            .kifuforjs-kifulist:focus & {
+                background-color: #99c8ff;
+            }
+        }
+    }
+
+    // Portrait view
+    &--responsive {
+        $width: 32px;
+        $height: 36px;
+        $md-width: 40px;
+        $md-height: 45px;
+        $lg-width: 48px;
+        $lg-height: 54px;
+
+        // TODO: too high case
+        @media (max-aspect-ratio: 2/3), (max-width: 570px) {
+            min-width: 320px;
+
+            .kifuforjs {
+                &-columns {
+                    flex-direction: column;
+                }
+                &-column {
+                    $head-height: 30px;
+
+                    flex-basis: initial;
+                    flex-direction: row;
+                    height: $height * 2 + $head-height;
+
+                    @media (min-width: 400px) {
+                        height: $md-height * 2 + $head-height;
+                    }
+
+                    @media (min-width: 480px) {
+                        height: $lg-height * 2 + $head-height;
+                    }
+                }
+
+                &-pieceinhand {
+                    flex: 0 0 25%;
+
+                    &--fu {
+                        flex: 0 0 50%;
+                    }
+                }
+
+                &-board {
+                    margin: 4px;
+                }
+                &-hand {
+                    flex-grow: 2;
+                }
+                &-info {
+                    margin-bottom: 0;
+                    margin-left: 2px;
+                }
+                &-leftcontrol {
+                    margin-top: 0;
+                    margin-right: 2px;
+                    & > *:first-child {
+                        margin-top: 0;
+                    }
+                }
+                &-control-mainbutton {
+                    flex-grow: 1;
+                }
+
+                &-cell,
+                &-cell img,
+                &-pieceinhand img,
+                &-pieceinhand,
+                &-dragPreview {
+                    padding: 0;
+                    border-spacing: 0;
+                    width: $width;
+                    height: $height;
+                    vertical-align: middle;
+
+                    @media (min-width: 400px) {
+                        width: $md-width;
+                        height: $md-height;
+                    }
+
+                    @media (min-width: 480px) {
+                        width: $lg-width;
+                        height: $lg-height;
+                    }
+                }
+            }
+        }
+    }
 }
 
 /*.kifuforjs-cell--lastfrom{background-color: #FFCC00;}

@@ -9,7 +9,7 @@ export interface IProps {
 }
 
 @observer
-export default class LeftControl extends React.Component<IProps, {}> {
+export default class LeftControl extends React.Component<IProps> {
     constructor(props) {
         super(props);
         this.onClickDl = this.onClickDl.bind(this);
@@ -46,7 +46,7 @@ export default class LeftControl extends React.Component<IProps, {}> {
         return this.props.kifuStore.filePath;
     }
 
-    private onChangeTimer(e) {
+    private onChangeTimer(e: React.ChangeEvent<HTMLSelectElement>) {
         this.props.kifuStore.setReloadInterval(e.target.value);
     }
 }

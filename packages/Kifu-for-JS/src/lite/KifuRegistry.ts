@@ -13,7 +13,9 @@ export default class KifuRegistry {
     }
 
     public getKifuStore(element: HTMLElement) {
-        if (this.kifuStoreMap.has(element)) { return Promise.resolve(this.kifuStoreMap.get(element)); }
+        if (this.kifuStoreMap.has(element)) {
+            return Promise.resolve(this.kifuStoreMap.get(element));
+        }
         return new Promise<KifuStore>((resolve) => {
             if (!this.awaitingMap.get(element)) {
                 this.awaitingMap.set(element, []);

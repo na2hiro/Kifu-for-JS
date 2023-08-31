@@ -33,10 +33,8 @@ export function loadString(kifu: string, idOrOptions?: string | IOptions, option
 
 export function load(options: IOptions, id: string): Promise<KifuStoreS>;
 // Below are compatibility with v4 or less
-export function load(filePath: string, id: string): Promise<KifuStoreS>;
-export function load(filePath: string, id: string, options: IOptions): Promise<KifuStoreS>;
-export function load(filePath: string): Promise<KifuStoreS>;
-export function load(filePath: string, options: IOptions): Promise<KifuStoreS>;
+export function load(filePath: string, id: string, options?: IOptions): Promise<KifuStoreS>;
+export function load(filePath: string, options?: IOptions): Promise<KifuStoreS>;
 export function load(
     filePathOrOptions: string | IOptions,
     idOrOptions?: string | IOptions,
@@ -70,8 +68,11 @@ function loadCommon(id: string | undefined, options: IOptions | undefined): Prom
         }
         onDomReady(() => {
             const container = document.getElementById(id);
-            const kifuStore = loadSingle(options, container!);
-            registry.register(container!, kifuStore);
+            if (!container) {
+                throw new Error(`Container ${id} not found`);
+            }
+            const kifuStore = loadSingle(options, container);
+            registry.register(container, kifuStore);
             resolve(kifuStore);
         });
     });
@@ -94,9 +95,7 @@ export function getKifuStore(element: HTMLElement) {
 // Load kifu from script tags
 if (typeof document !== "undefined") {
     onDomReady(() => {
-        const scripts = document.getElementsByTagName("script");
-        for (let i = 0; i < scripts.length; i++) {
-            const script = scripts[i];
+        for (const script of Array.from(document.getElementsByTagName("script"))) {
             if (script.type === "text/kifu" && !script.dataset.loaded) {
                 // ideally svg is directly injected, but it's not possible to do that with React
                 // Render svg inside ins element here.

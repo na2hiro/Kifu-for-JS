@@ -34,7 +34,9 @@ const controlMargin = 8;
 
 // TODO: remove this
 function getChildrenTextContent(children: ReactNode) {
-    if (!children) { return children; }
+    if (!children) {
+        return children;
+    }
 
     if (typeof children === "string" || typeof children === "number" || typeof children === "boolean") {
         return removeIndentation(String(children));
@@ -102,7 +104,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                         width={areaWidth / 2}
                         height={areaHeight}
                         onClick={() => kifuStore.player.backward()}
-                    ></rect>
+                    />
                     <rect
                         fillOpacity={0}
                         x={areaWidth / 2}
@@ -110,7 +112,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                         width={areaWidth / 2}
                         height={areaHeight}
                         onClick={() => kifuStore.player.forward()}
-                    ></rect>
+                    />
                     <foreignObject
                         x={controlMargin}
                         y={areaHeight + controlMarginTop}

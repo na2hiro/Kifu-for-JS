@@ -7,15 +7,13 @@ export interface IProps {
 }
 
 @observer
-export default class Info extends React.Component<IProps, {}> {
+export default class Info extends React.Component<IProps> {
     public render() {
         const data = this.props.player.kifu.header;
         const dds = [];
         for (const key in data) {
-            if (data.hasOwnProperty(key)) {
-                dds.push(<dt key={"key" + key}>{key}</dt>);
-                dds.push(<dd key={"val" + key}>{data[key]}</dd>);
-            }
+            dds.push(<dt key={"key" + key}>{key}</dt>);
+            dds.push(<dd key={"val" + key}>{data[key]}</dd>);
         }
 
         return (

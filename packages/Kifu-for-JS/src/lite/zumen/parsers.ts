@@ -7,7 +7,7 @@ export const ZenSuuji = "１２３４５６７８９";
 export const KanSuuji = "一二三四五六七八九";
 export const KomaStr = "玉飛角金銀桂香歩玉龍馬金全圭杏と";
 const convMgRepeat = function (str) {
-    let re = new RegExp("[" + ZenSuuji + KanSuuji + "]", "g");
+    const re = new RegExp("[" + ZenSuuji + KanSuuji + "]", "g");
     str = str.replace(re, function (a) {
         return HanSuuji.charAt((ZenSuuji + KanSuuji).indexOf(a) % 9);
     });
@@ -70,6 +70,7 @@ export const readzumen = function (text: string) {
     re = /^([先下後上]手)：(.*)\n/gm;
     while ((mr = re.exec(text)) != null) {
         mr[2].replace(/^\s+/, "");
+        // eslint-disable-next-line no-irregular-whitespace
         mr[2].replace(/(\s|　).*$/, "");
         if (/[後上]/.test(mr[1])) {
             ban[96] = mr[2];

@@ -1,10 +1,10 @@
 import React, { useRef } from "react";
 import Logo from "./Logo";
 
-interface Props {
+interface IProps {
     openSubPage: React.Dispatch<React.SetStateAction<React.ReactNode>>;
 }
-const License: React.FC<Props> = ({ openSubPage }) => {
+const License: React.FC<IProps> = ({ openSubPage }) => {
     return (
         <button
             style={{ background: "none", border: "none", padding: 0, fontSize: "inherit" }}
