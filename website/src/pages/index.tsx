@@ -33,8 +33,8 @@ export default function Home(): React.JSX.Element {
   const { siteConfig } = useDocusaurusContext();
   return (
     <Layout
-      title={`Hello from ${siteConfig.title}`}
-      description="Description will go into a meta tag in <head />"
+      title={`将棋再生盤ライブラリ ${siteConfig.title}`}
+      description="モバイルフレンドリーな将棋再生盤ライブラリ、Kifu for JSの公式サイトです。"
     >
       <HomepageHeader />
       <main>
