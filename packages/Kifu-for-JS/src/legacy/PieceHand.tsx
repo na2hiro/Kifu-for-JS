@@ -2,8 +2,8 @@ import * as React from "react";
 import { CSSProperties } from "react";
 import { DragSource, DropTarget } from "react-dnd";
 import { Color } from "shogi.js";
-import { getUrlWithReverse } from "./images/PieceImage";
 import KifuStore from "../common/stores/KifuStore";
+import { getUrlWithReverse } from "./images/PieceImage";
 
 export interface IProps {
     kifuStore: KifuStore;

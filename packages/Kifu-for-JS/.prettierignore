@@ -1,1 +1,2 @@
 *.txt
+**/__snapshots__/*

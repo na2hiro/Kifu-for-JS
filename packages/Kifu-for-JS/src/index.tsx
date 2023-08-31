@@ -3,10 +3,10 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { render } from "react-dom";
 import KifuStoreS, { IOptions } from "./common/stores/KifuStore";
-import { onDomReady } from "./utils/util";
-import KifuLiteComponent from "./lite/KifuLite";
 import { parseOptionsFromAttributes } from "./common/stores/setupKifuStore";
+import KifuLiteComponent from "./lite/KifuLite";
 import { registry } from "./lite/KifuRegistry";
+import { onDomReady } from "./utils/util";
 
 const mobx = { autorun, when, reaction };
 const mobxReact = { observer };

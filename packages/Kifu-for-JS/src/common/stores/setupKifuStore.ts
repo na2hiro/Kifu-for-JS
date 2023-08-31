@@ -1,5 +1,5 @@
-import { IOptions } from "./KifuStore";
 import { removeIndentation } from "../../utils/util";
+import { IOptions } from "./KifuStore";
 
 export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
     const forkPointers = element.dataset.forkpointers ? JSON.parse(element.dataset.forkpointers) : undefined;
@@ -18,7 +18,7 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
         if (!("static" in element.dataset)) {
             return undefined;
         }
-        const last = element.dataset["staticLast"];
+        const last = element.dataset.staticLast;
         if (last === "hidden") {
             return { last: "hidden" as const };
         }

@@ -1,9 +1,9 @@
 import React, { useRef } from "react";
 import Logo from "./Logo";
 
-type Props = {
+interface Props {
     openSubPage: React.Dispatch<React.SetStateAction<React.ReactNode>>;
-};
+}
 const License: React.FC<Props> = ({ openSubPage }) => {
     return (
         <button

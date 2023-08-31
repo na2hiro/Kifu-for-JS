@@ -1,10 +1,10 @@
 import { autorun, reaction, when } from "mobx";
 import * as React from "react";
 import { render } from "react-dom";
-import Kifu from "./legacy/Kifu";
 import KifuStore, { IOptions } from "./common/stores/KifuStore";
-import { onDomReady } from "./utils/util";
+import Kifu from "./legacy/Kifu";
 import KifuLite from "./lite/KifuLite";
+import { onDomReady } from "./utils/util";
 export const mobx = { autorun, when, reaction };
 
 // Important to keep import of index.tsx to have the side effect to scan script tags

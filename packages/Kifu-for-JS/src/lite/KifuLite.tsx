@@ -2,17 +2,17 @@ import { observer } from "mobx-react";
 import * as React from "react";
 
 import { CSSProperties, PropsWithChildren, ReactNode, useEffect, useRef, useState } from "react";
+import KifuList from "../common/KifuList";
 import KifuStore, { IOptions } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
-import KifuList from "../common/KifuList";
 
 import "../../css/kifuforjs.scss";
-import ForkList from "../common/ForkList";
 import Comment from "../common/Comment";
-import useHaptics from "./useHaptics";
+import ForkList from "../common/ForkList";
 import UserSetting from "../common/stores/UserSetting";
-import SettingsIcon from "./settings/SettingsIcon";
 import { removeIndentation } from "../utils/util";
+import SettingsIcon from "./settings/SettingsIcon";
+import useHaptics from "./useHaptics";
 
 export type IProps = {
     /**
@@ -34,7 +34,7 @@ const controlMargin = 8;
 
 // TODO: remove this
 function getChildrenTextContent(children: ReactNode) {
-    if (!children) return children;
+    if (!children) { return children; }
 
     if (typeof children === "string" || typeof children === "number" || typeof children === "boolean") {
         return removeIndentation(String(children));
@@ -75,7 +75,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
         }
     }, [givenKifuStore]);
 
-    let latestMoveTo = kifuStore.getLatestMoveTo();
+    const latestMoveTo = kifuStore.getLatestMoveTo();
 
     const isStatic = !!kifuStore.staticOptions;
 
@@ -86,7 +86,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
         <Zumen
             state={kifuStore.player.getState()}
             latestMoveTo={latestMoveTo}
-            players={[kifuStore.player.kifu.header["先手"], kifuStore.player.kifu.header["後手"]]}
+            players={[kifuStore.player.kifu.header.先手, kifuStore.player.kifu.header.後手]}
             width={areaWidth}
             height={svgHeight}
             style={{ ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }), ...style }}

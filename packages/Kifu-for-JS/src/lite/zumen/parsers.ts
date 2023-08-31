@@ -7,7 +7,7 @@ export const ZenSuuji = "１２３４５６７８９";
 export const KanSuuji = "一二三四五六七八九";
 export const KomaStr = "玉飛角金銀桂香歩玉龍馬金全圭杏と";
 const convMgRepeat = function (str) {
-    var re = new RegExp("[" + ZenSuuji + KanSuuji + "]", "g");
+    let re = new RegExp("[" + ZenSuuji + KanSuuji + "]", "g");
     str = str.replace(re, function (a) {
         return HanSuuji.charAt((ZenSuuji + KanSuuji).indexOf(a) % 9);
     });
@@ -15,7 +15,7 @@ const convMgRepeat = function (str) {
     str = str.replace(/十([1-9])/, "1$1");
     str = str.replace("十", "10");
     str = str.replace(/(.)(1?[0-9])/g, function (a, b, c) {
-        for (var i = 0, s = ""; i < c; i++) {
+        for (let i = 0, s = ""; i < c; i++) {
             s += b;
         }
         return s;
@@ -49,7 +49,7 @@ const convKomaStr = function (str) {
  * @returns {number[]} - The shogi board representation.
  */
 export const readzumen = function (text: string) {
-    var mr, mk, x, y, s, c, i, re2;
+    let mr, mk, x, y, s, c, i, re2;
     const ban = new Array(98);
     for (let i = 0; i < 95; i++) {
         ban[i] = 0;
@@ -90,7 +90,7 @@ export const readzumen = function (text: string) {
                     c -= 8;
                     s = s | 1; // 4th: promoted
                 }
-                //xysAry[c]+=""+x+y+s;
+                // xysAry[c]+=""+x+y+s;
                 ban[y * 9 - x] = s * 8 + c + 1; // 1st-3rd: kind
             }
             if (--x < 1) {

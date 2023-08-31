@@ -1,17 +1,17 @@
-import React, { forwardRef, useState } from "react";
+import FocusTrap from "focus-trap-react";
 import { observer } from "mobx-react";
-import UserSetting from "../../common/stores/UserSetting";
+import React, { forwardRef, useState } from "react";
 import KifuStore from "../../common/stores/KifuStore";
+import UserSetting from "../../common/stores/UserSetting";
 import Download from "./Download";
 import HapticFeedback from "./HapticFeedback";
 import License from "./License";
 import Logo from "./Logo";
-import FocusTrap from "focus-trap-react";
 
-type Props = {
+interface Props {
     onClose: () => void;
     kifuStore: KifuStore;
-};
+}
 export const SettingsModal = forwardRef<HTMLElement, Props>(({ onClose, kifuStore }, ref) => {
     const userSetting = UserSetting.get();
     const [subPage, setSubPage] = useState<React.ReactNode | null>(null);

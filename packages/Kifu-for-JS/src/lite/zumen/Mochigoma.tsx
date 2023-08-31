@@ -1,12 +1,12 @@
-import { KanSuuji, scolor } from "./lib";
 import { IHandFormat } from "json-kifu-format/src/Formats";
 import React, { FC } from "react";
 import { isRawKind, kindToString, values as kindValues } from "shogi.js/cjs/Kind";
+import { KanSuuji, scolor } from "./lib";
 
 const sgm = 1;
 
 function amountToString(amount: number) {
-    if (amount <= 1) return "";
+    if (amount <= 1) { return ""; }
     let r = "";
     if (amount > 10) {
         r += "十";
@@ -25,12 +25,12 @@ const handToString = function (hand: IHandFormat) {
             .join("") || "なし"
     );
 };
-type Props = {
+interface Props {
     v: number;
     kx: number;
     name?: string;
     hand: IHandFormat;
-};
+}
 const turns = ["先手", "後手"];
 const marks = "☗☖";
 export const Mochigoma: FC<Props> = ({ v, kx, hand, name = turns[v] }) => {

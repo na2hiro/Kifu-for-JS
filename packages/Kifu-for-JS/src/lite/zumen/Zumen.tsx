@@ -5,17 +5,17 @@
  Converted to a React component by na2hiro in 2023 https://kifu-for-js.81.la
 */
 
-import React, { CSSProperties, forwardRef, PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
 import { IPlaceFormat, IStateFormat } from "json-kifu-format/src/Formats";
-import { cellEqual } from "./zumenCompat";
+import React, { CSSProperties, forwardRef, PropsWithChildren, ReactNode /*, SVGTextElementAttributes*/ } from "react";
 import { Color, kindToString } from "shogi.js";
 import { KanSuuji, scolor, ZenSuuji } from "./lib";
 import { Mochigoma } from "./Mochigoma";
+import { cellEqual } from "./zumenCompat";
 
 /**
  * TODO: Customize mochigoma display for tsume shogi
  */
-type Props = {
+interface Props {
     width?: number;
     height?: number;
     state?: IStateFormat;
@@ -23,17 +23,17 @@ type Props = {
     players?: [string | undefined, string | undefined];
     style?: CSSProperties;
     ref?: React.Ref<SVGSVGElement>;
-};
+}
 const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<Props>>(
     ({ width, height, state, latestMoveTo, children, players, style = {} }, ref) => {
-        if (!state) return null;
+        if (!state) { return null; }
 
-        let kx = 25;
+        const kx = 25;
 
         const dx = Math.floor(kx * 1.25);
         const dy = Math.floor(kx * 0.75);
 
-        let dp = 1 / 2;
+        const dp = 1 / 2;
 
         const lines: ReactNode[] = [];
         Array.from({ length: 9 }, (v, i) => i).forEach((i) => {

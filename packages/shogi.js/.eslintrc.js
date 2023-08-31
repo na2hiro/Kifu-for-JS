@@ -21,7 +21,7 @@ module.exports = {
         "webpack.config.js",
         "docs/",
         "bundle/",
-        "dist/",
+        "cjs/",
     ],
     rules: {},
 };

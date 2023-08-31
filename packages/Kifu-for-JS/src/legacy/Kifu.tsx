@@ -5,13 +5,13 @@ import { NativeTypes } from "react-dnd-html5-backend";
 import MultiBackend, { Preview } from "react-dnd-multi-backend";
 import HTML5toTouch from "react-dnd-multi-backend/lib/HTML5toTouch";
 
+import KifuStore, { IOptions } from "../common/stores/KifuStore";
+import { loadFile } from "../utils/util";
 import Board from "./Board";
 import Control from "./Control";
 import Hand from "./Hand";
 import Info from "./Info";
 import LeftControl from "./LeftControl";
-import KifuStore, { IOptions } from "../common/stores/KifuStore";
-import { loadFile } from "../utils/util";
 
 import { createRef } from "react";
 import "../../css/kifuforjs.scss";

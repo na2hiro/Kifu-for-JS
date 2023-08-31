@@ -1,13 +1,13 @@
-import React, { forwardRef, RefObject, useCallback, useEffect, useState } from "react";
-import { SettingsModal } from "./SettingsModal";
-import KifuStore from "../../common/stores/KifuStore";
 import FocusTrap from "focus-trap-react";
+import React, { forwardRef, RefObject, useCallback, useEffect, useState } from "react";
+import KifuStore from "../../common/stores/KifuStore";
+import { SettingsModal } from "./SettingsModal";
 
-type Props = {
+interface Props {
     width: number;
     height: number;
     kifuStore: KifuStore;
-};
+}
 const SettingsIcon = forwardRef<SVGSVGElement, Props>(({ width, height, kifuStore }, ref) => {
     const [isIconShown, setIconShown] = useState(false);
 
@@ -43,13 +43,13 @@ const SettingsIcon = forwardRef<SVGSVGElement, Props>(({ width, height, kifuStor
 
     useEffect(() => {
         const closeIfOutsideIsClicked = (e) => {
-            if ("current" in ref && ref.current?.contains(e.target)) return;
+            if ("current" in ref && ref.current?.contains(e.target)) { return; }
 
             setOpen(false);
         };
         document.body.addEventListener("click", closeIfOutsideIsClicked);
         const hideIconIfOutsideIsTouched = (e) => {
-            if ("current" in ref && ref.current?.contains(e.target)) return;
+            if ("current" in ref && ref.current?.contains(e.target)) { return; }
 
             setIconShown(false);
         };

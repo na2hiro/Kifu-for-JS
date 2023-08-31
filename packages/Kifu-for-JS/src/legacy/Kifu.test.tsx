@@ -2,8 +2,8 @@ import { render, screen, within } from "@testing-library/react";
 import "jest";
 import * as React from "react";
 
-import Kifu from "./Kifu";
 import { expectCell, selectPiece } from "../../test/testutils";
+import Kifu from "./Kifu";
 
 const PADDING = "\xa0";
 

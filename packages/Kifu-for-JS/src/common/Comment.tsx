@@ -1,7 +1,7 @@
 import { observer } from "mobx-react";
 import * as React from "react";
-import KifuStore from "./stores/KifuStore";
 import { CSSProperties } from "react";
+import KifuStore from "./stores/KifuStore";
 
 export interface IProps {
     kifuStore: KifuStore;

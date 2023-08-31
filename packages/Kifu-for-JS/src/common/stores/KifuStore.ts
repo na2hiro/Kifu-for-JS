@@ -1,21 +1,21 @@
 import { JKFPlayer } from "json-kifu-format";
-import { decorate, observable } from "mobx";
-import fetchFile from "../../utils/fetchFile";
-import { Shogi } from "shogi.js";
 import { IPlaceFormat } from "json-kifu-format/src/Formats";
+import { decorate, observable } from "mobx";
+import { Shogi } from "shogi.js";
+import fetchFile from "../../utils/fetchFile";
 
 export interface IOptions {
     kifu?: string;
     src?: string;
     ply?: number;
-    forkPointers?: [number, number][];
+    forkPointers?: Array<[number, number]>;
     static?: IStatic;
     maxWidth?: number | null;
 }
 
-export type IStatic = {
+export interface IStatic {
     last?: "hidden" | [number, number];
-};
+}
 
 const formatErrorMessage = (kifu, error) =>
     `棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．

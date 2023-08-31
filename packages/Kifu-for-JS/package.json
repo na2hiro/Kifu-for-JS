@@ -18,7 +18,7 @@
         "build:analyze": "webpack --env production --env analyze",
         "build:watch": "webpack --watch",
         "lint": "tslint -p ./",
-        "lint:fix": "prettier ./src/** --write && tslint -p ./ --fix",
+        "lint:fix": "prettier ./src --write && tslint -p ./ --fix",
         "test": "jest",
         "test:watch": "jest --watch",
         "cy:open": "cypress open",

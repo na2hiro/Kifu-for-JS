@@ -3,9 +3,6 @@ import { autorun, observable, toJS } from "mobx";
 const LOCALSTORAGE_KEY = "kifuforjs";
 
 export default class UserSetting {
-    @observable public hapticFeedback: boolean = true;
-
-    private static instance: UserSetting | undefined;
 
     public static get() {
         if (!this.instance) {
@@ -13,6 +10,9 @@ export default class UserSetting {
         }
         return this.instance;
     }
+
+    private static instance: UserSetting | undefined;
+    @observable public hapticFeedback: boolean = true;
 
     private constructor() {
         if (typeof localStorage !== "undefined") {
@@ -26,7 +26,7 @@ export default class UserSetting {
         }
     }
 
-    persist() {
+    public persist() {
         if (typeof localStorage !== "undefined") {
             localStorage.setItem(LOCALSTORAGE_KEY, JSON.stringify(toJS(this)));
         }
