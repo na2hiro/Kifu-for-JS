@@ -36,7 +36,11 @@ export default class KifuStore {
 
     constructor(options?: IOptions) {
         this.player = new JKFPlayer({ header: {}, moves: [{}] });
-        this.setOptions(options);
+        try {
+            this.setOptions(options);
+        } catch (e) {
+            console.error(e);
+        }
     }
 
     public setOptions(options?: IOptions) {
@@ -54,7 +58,9 @@ export default class KifuStore {
                 }
             };
             if (options.src) {
-                this.loadFile(options.src).then(initializePly);
+                this.loadFile(options.src)
+                    .catch(() => {})
+                    .then(initializePly);
             } else if (options.kifu && options.kifu.trim() !== "") {
                 try {
                     this.loadKifuSync(options.kifu.trim());

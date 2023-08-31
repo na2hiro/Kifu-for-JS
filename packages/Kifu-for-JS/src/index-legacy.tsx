@@ -28,8 +28,10 @@ export function loadString(
         id = undefined;
     } else {
         id = idOrOptions;
+        options = options || {};
     }
-    return loadCommon(undefined, kifu, id, options);
+    options.kifu = kifu;
+    return loadCommon(id, options);
 }
 
 export function load(
@@ -43,16 +45,13 @@ export function load(
         id = undefined;
     } else {
         id = idOrOptions;
+        options = options || {};
     }
-    return loadCommon(filePath, undefined, id, options);
+    options.src = filePath;
+    return loadCommon(id, options);
 }
 
-function loadCommon(
-    filePath: string | undefined,
-    kifu: string | undefined,
-    id: string | undefined,
-    options: ILegacyOptions | undefined = {},
-): Promise<KifuStore> {
+function loadCommon(id: string | undefined, options: ILegacyOptions): Promise<KifuStore> {
     return new Promise((resolve) => {
         if (!id) {
             id = "kifuforjs_" + Math.random().toString(36).slice(2);
@@ -60,17 +59,12 @@ function loadCommon(
         }
         onDomReady(() => {
             const container = document.getElementById(id);
-            const kifuStore = new KifuStore();
-            if (filePath) {
-                kifuStore.loadFile(filePath).then(() => {});
-            } else {
-                kifuStore.loadKifu(kifu).then(() => {});
-            }
             const { mode, ...iOptions } = options;
+            const kifuStore = new KifuStore(iOptions);
             if (mode === "latest") {
-                render(<KifuLite {...iOptions} kifuStore={kifuStore} />, container);
+                render(<KifuLite kifuStore={kifuStore} />, container);
             } else {
-                render(<Kifu {...iOptions} kifuStore={kifuStore} />, container);
+                render(<Kifu kifuStore={kifuStore} />, container);
             }
             registry.register(container!, kifuStore);
             resolve(kifuStore);

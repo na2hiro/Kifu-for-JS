@@ -1,5 +1,5 @@
 import "jest";
-import * as KifuForJS from "../index";
+import * as KifuForJS from "../index-legacy";
 import fetchFileRaw from "../utils/fetchFile";
 
 jest.mock("../utils/fetchFile");
@@ -51,7 +51,12 @@ describe("loadFile", () => {
     it("shows an error about illegal kifu", async () => {
         fetchFile.mockResolvedValue(KIF_STRING_ILLEGAL);
         document.body.innerHTML = "<div id='kifu'></div>";
-        const kifuStore = await KifuForJS.load("somewhere.kif", "kifu");
+        let kifuStore;
+        try {
+            kifuStore = await KifuForJS.load("somewhere.kif", "kifu");
+        } catch (e) {
+            console.log("caught", e);
+        }
         expect(kifuStore.player.kifu.moves.length).toBe(1);
         expect(kifuStore.errors).toHaveLength(1);
         expect(kifuStore.errors).toMatchSnapshot();

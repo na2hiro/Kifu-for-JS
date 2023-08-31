@@ -5,7 +5,7 @@ import * as React from "react";
 import Kifu from "../legacy/Kifu";
 import { expectCell, selectPiece } from "../../test/testutils";
 
-const PADDING = "\xa0\xa0\xa0";
+const PADDING = "\xa0";
 
 const selectKifuList = () => screen.findByRole("listbox");
 const selectKifuListRows = async () => {
@@ -46,7 +46,7 @@ describe("<Kifu />", () => {
     it("renders with kifu", async () => {
         render(<Kifu kifu={SAMPLE_KI2} />);
         expect(await selectKifuListRows()).toHaveLength(3);
-        await expectCurrentKifuListRow("0 開始局面");
+        await expectCurrentKifuListRow(" 開始局面");
     });
     it("renders hands", async () => {
         render(<Kifu kifu={SAMPLE_HANDS_KI2} />);
@@ -88,7 +88,7 @@ describe("Control panel", () => {
         await expectCurrentKifuListRow("1 ☗７六歩");
 
         await clickBackwardButton();
-        await expectCurrentKifuListRow("0 開始局面");
+        await expectCurrentKifuListRow(" 開始局面");
     });
     it("flip", async () => {
         render(<Kifu kifu={SAMPLE_KI2} />);

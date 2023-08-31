@@ -10,19 +10,19 @@ import Control from "./Control";
 import Hand from "./Hand";
 import Info from "./Info";
 import LeftControl from "./LeftControl";
-import KifuStore from "../common/stores/KifuStore";
+import KifuStore, { IOptions } from "../common/stores/KifuStore";
 import { loadFile } from "../utils/util";
 
 import { createRef } from "react";
 import "../../css/kifuforjs.scss";
 import Comment from "../common/Comment";
 
-export interface IProps {
+export type IProps = {
     isOver?: boolean;
     kifuStore?: KifuStore;
 
     connectDropTarget?: (element: any) => any; // TODO
-}
+} & IOptions;
 
 @observer
 class Kifu extends React.Component<IProps> {
@@ -31,7 +31,11 @@ class Kifu extends React.Component<IProps> {
 
     constructor(props) {
         super(props);
-        this.kifuStore = props.kifuStore || new KifuStore();
+        const { kifuStore, ...options } = props;
+        this.kifuStore = kifuStore || new KifuStore();
+        if (Object.keys(options).length > 0) {
+            this.kifuStore.setOptions(options);
+        }
         this.ref = createRef();
     }
 
