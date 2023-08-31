@@ -1,4 +1,4 @@
-import {parse} from "../ki2-parser.pegjs";
+import {parse} from "./ki2-parser.pegjs";
 
 function p(x, y) {
     return {x, y};

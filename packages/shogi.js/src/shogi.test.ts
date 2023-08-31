@@ -1,5 +1,5 @@
-import {boardBitMapToXYs, sortMoves} from "../../test/utils";
-import {Color, Shogi} from "../shogi";
+import {boardBitMapToXYs, sortMoves} from "../test/utils";
+import {Color, Shogi} from "./shogi";
 
 let shogi;
 beforeEach(() => {

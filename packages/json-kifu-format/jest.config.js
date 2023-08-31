@@ -3,7 +3,7 @@ module.exports = {
         "^.+\\.tsx?$": "ts-jest",
         "^.+\\.pegjs$": "<rootDir>/test/pegjs-jest.js",
     },
-    testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    testRegex: "((\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     moduleFileExtensions: ["ts", "tsx", "js", "jsx", "json", "node"],
     coverageThreshold: {
         global: {
@@ -16,7 +16,7 @@ module.exports = {
     collectCoverage: true,
     collectCoverageFrom: [
         "src/**",
-        "!**/__tests__/**",
+        "!**/__snapshots__/**",
         "!**/*.d.ts",
         "!src/main.ts",
         "!src/peg/**",

@@ -1,4 +1,4 @@
-import Color, {colorToString} from "../Color";
+import Color, {colorToString} from "./Color";
 
 describe("colorToString", function () {
     it("先手", () => {

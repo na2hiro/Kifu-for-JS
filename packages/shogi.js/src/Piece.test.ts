@@ -1,4 +1,4 @@
-import Piece from "../Piece";
+import Piece from "./Piece";
 
 describe("promote", () => {
     it("can be done", () => {

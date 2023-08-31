@@ -2,7 +2,7 @@ module.exports = {
     transform: {
         "^.+\\.tsx?$": "ts-jest",
     },
-    testRegex: "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    testRegex: "((\\.|/)(test|spec))\\.(jsx?|tsx?)$",
     moduleFileExtensions: ["ts", "js", "json"],
     coverageThreshold: {
         global: {
@@ -13,5 +13,5 @@ module.exports = {
         },
     },
     collectCoverage: true,
-    collectCoverageFrom: ["src/**", "!src/Kind.ts", "!**/__tests__/**", "!src/polyfills.ts"],
+    collectCoverageFrom: ["src/**", "!src/Kind.ts", "!**/__snapshots__/**", "!src/polyfills.ts"],
 };

@@ -1,7 +1,7 @@
 import {Color, Piece, Shogi} from "shogi.js";
-import {IMoveMoveFormat} from "../Formats";
-import {JKFPlayer} from "../main";
-import {addRelativeInformation, filterMovesByRelatives} from "../normalizer";
+import {IMoveMoveFormat} from "./Formats";
+import {JKFPlayer} from "./main";
+import {addRelativeInformation, filterMovesByRelatives} from "./normalizer";
 
 const emptyLine = [{}, {}, {}, {}, {}, {}, {}, {}, {}];
 describe("module Normalizer (relative information test from https://www.shogi.or.jp/faq/kihuhyouki.html)", () => {

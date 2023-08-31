@@ -1,4 +1,4 @@
-import presets, {getInitialFromPreset} from "../presets";
+import presets, {getInitialFromPreset} from "./presets";
 
 describe("preset", () => {
     it("initialized board", () => {

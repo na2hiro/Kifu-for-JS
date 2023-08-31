@@ -1,10 +1,10 @@
 import {readdirSync, readFile} from "fs";
 import {decode} from "iconv-lite";
 import {detect} from "jschardet";
-import JKFPlayer from "../jkfplayer";
+import JKFPlayer from "../src/jkfplayer";
 
 const SJIS = "cp932";
-const FILES_DIR = __dirname + "/../../test/files";
+const FILES_DIR = __dirname + "/files";
 
 makeTest("kif", (filename) => (filename.match(/u$/) ? loadUTF : loadSJIS));
 makeTest("ki2", (filename) => (filename.match(/u$/) ? loadUTF : loadSJIS));

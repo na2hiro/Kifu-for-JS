@@ -1,8 +1,8 @@
 import "jest";
-import * as KifuForJS from "../index-legacy";
-import fetchFileRaw from "../utils/fetchFile";
+import * as KifuForJS from "./index-legacy";
+import fetchFileRaw from "./utils/fetchFile";
 
-jest.mock("../utils/fetchFile");
+jest.mock("./utils/fetchFile");
 
 const fetchFile: any = fetchFileRaw;
 

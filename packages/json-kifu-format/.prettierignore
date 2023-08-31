@@ -5,7 +5,7 @@
 /docs/
 /node_modules/
 /public/
-/src/__tests__/jkfplayerTest.ts
+/packages/json-kifu-format/src/jkfplayerTest.ts
 README.md
 package-lock.json
 package.json

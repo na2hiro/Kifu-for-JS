@@ -1,5 +1,5 @@
-import {Kind, values} from "../Kind";
-import {getMoveDefinitions} from "../moveDefinitions";
+import {Kind, values} from "./Kind";
+import {getMoveDefinitions} from "./moveDefinitions";
 
 describe("move def", () => {
     it("snapshots", () => {
