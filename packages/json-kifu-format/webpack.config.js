@@ -21,8 +21,11 @@ module.exports = (env) => {
                     exclude: /node_modules/,
                 },
                 {
+                    // TODO: optimize for size than speed (default)
+                    // https://github.com/eploko/pegjs-loader#pegjs-options
                     test: /\.pegjs$/,
-                    use: "pegjs-loader",
+                    // Question mark is needed to avoid an error from parseQuery in loader-utils
+                    use: "pegjs-loader?",
                 },
             ],
         },
