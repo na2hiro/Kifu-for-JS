@@ -346,21 +346,21 @@ export class Shogi {
     public isCheck(color: Color): boolean {
         // colorが違う全てのコマの効きを調べる
         // MEMO: 王様の周りと飛角桂香だけを調べれば高速化できるかも
-        let x: Number = null;
-        let y: Number = null;
+        let x: number = null;
+        let y: number = null;
         for (let i = 1; i <= 9; i++) {
             for (let j = 1; j <= 9; j++) {
                 const piece = this.get(i, j);
                 if (!piece || piece.color !== color) {
                     continue;
                 }
-                if (piece.kind === "OU"){
+                if (piece.kind === "OU") {
                     x = i;
                     y = j;
                 }
             }
         }
-        if(x === null || y === null){
+        if (x === null || y === null) {
             return false;
         }
         let check = false;
