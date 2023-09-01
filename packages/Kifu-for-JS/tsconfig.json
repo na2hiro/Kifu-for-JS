@@ -1,15 +1,15 @@
 {
-  "include": ["./src"],
-  "exclude": ["**/__tests__/**/*"],
-  "compilerOptions": {
-    "declaration": true,
-    "experimentalDecorators": true,
-    "module": "esnext",
-    "moduleResolution": "node",
-    "esModuleInterop": true,
-    "noEmitOnError": true,
-    "jsx": "react",
-    "target": "es2015",
-    "lib": ["es2015", "dom"]
-  }
+    "include": ["./src"],
+    "exclude": ["**/__tests__/**/*"],
+    "compilerOptions": {
+        "declaration": true,
+        "experimentalDecorators": true,
+        "module": "esnext",
+        "moduleResolution": "node",
+        "esModuleInterop": true,
+        "noEmitOnError": true,
+        "jsx": "react",
+        "target": "es2015",
+        "lib": ["es2015", "dom"]
+    }
 }

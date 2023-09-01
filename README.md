@@ -5,6 +5,7 @@ Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージ�
 * [`kifu-for-js`](packages/Kifu-for-JS#readme): Kifu for JS 将棋再生盤とブックマークレット
 * [`json-kifu-format`](packages/json-kifu-format#readme): JSON棋譜フォーマットと関連ライブラリ
 * [`shogi.js`](packages/shogi.js#readme): 将棋の盤駒を扱うライブラリ
+* website: [公式サイト](https://kifu-for-js.81.la)
 
 ## 開発
 
@@ -12,7 +13,7 @@ Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージ�
 
 ### パッケージ依存関係
 
-* `shogi.js` <- `json-kifu-format` <- `kifu-for-js`
+* `shogi.js` <- `json-kifu-format` <- `kifu-for-js` <- `website`
 * `shogi.js` <- `kifu-for-js`
 
 ### 準備
@@ -37,14 +38,15 @@ Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージ�
 
 <!-- A table of npm scripts, based on package.json -->
 
-| `npm run ...` | 説明                                    |
-|---------------|---------------------------------------|
-| `lint`        | すべてのパッケージのlintを行う                     |
-| `lint:fix`    | すべてのパッケージのlintを行い、修正可能なものは修正する        |
-| `test`        | すべてのパッケージのテストを行う                      |
-| `build`       | すべてのパッケージをビルドする                       |
-| `dev`         | すべてのパッケージをビルドしてexampleページを起動し、変更を監視する |
-| `cy:open`     | exampleページに対して統合テストを行う                |
+| `npm run ...` | 説明                                                        |
+|---------------|-----------------------------------------------------------|
+| `lint`        | すべてのパッケージのlintを行う                                         |
+| `lint:fix`    | すべてのパッケージのlintを行い、修正可能なものは修正する                            |
+| `test`        | すべてのパッケージのテストを行う                                          |
+| `build`       | すべてのパッケージをビルドする                                           |
+| `dev`         | すべてのパッケージをビルドしてexampleページを起動し、変更を監視する                     |
+| `website`     | すべてのパッケージをビルドして公式サイトを起動し、公式サイトへの変更を監視する（ライブラリへの変更は監視しません） |
+| `cy:open`     | exampleページに対して統合テストを行う                                    |
 
 ### リリースワークフロー (na2hiro向け)
 1. `bump` GitHub Actions でパッケージのバージョンを上げる

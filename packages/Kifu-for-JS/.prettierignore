@@ -1,1 +1,9 @@
 *.txt
+**/__snapshots__/*
+bundle/
+coverage/
+dist/
+README.md
+package-lock.json
+package.json
+swfobject.js

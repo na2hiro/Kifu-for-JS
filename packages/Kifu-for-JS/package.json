@@ -2,14 +2,14 @@
     "name": "kifu-for-js",
     "version": "4.0.1",
     "description": "Shogi Kifu viewer for JavaScript",
-    "main": "bundle/kifu-for-js.min.js",
-    "types": "bundle/src/index.d.ts",
+    "main": "dist/kifu-for-js.js",
+    "types": "dist/src/index.d.ts",
     "directories": {
         "test": "test"
     },
     "scripts": {
         "clean": "rm -rf ./bundle",
-        "dev": "webpack-dev-server --open examples/example.html --mode development",
+        "dev": "webpack-dev-server --open examples/example-v5.html --mode development",
         "ci:cy": "start-server-and-test ci:start-server :8081 cy:run:ci",
         "ci:start-server": "http-server . -p 8081",
         "build:prodLocal": "npm run build -- --env prodLocal",
@@ -17,15 +17,16 @@
         "build:ghpages": "webpack --env production --env ghpages",
         "build:analyze": "webpack --env production --env analyze",
         "build:watch": "webpack --watch",
-        "lint": "tslint -p ./",
-        "lint:fix": "prettier ./src/** --write && tslint -p ./ --fix",
+        "lint": "eslint ./ && prettier . --check",
+        "lint:fix": "eslint ./ --fix && prettier . --write",
         "test": "jest",
         "test:watch": "jest --watch",
         "cy:open": "cypress open",
         "cy:run": "cypress run",
         "cy:run:ci": "echo \"Running Cypress...\" && cypress run --config-file cypress.ci.config.ts",
         "ghpages": "rm -rf ./public && mkdir -p ./public/src && mkdir -p ./public/out & npm run build",
-        "postghpages": "cp ./bundle/public-bookmarklet.min.js ./public/src/ && cp ./bundle/*.js ./public/out/ && cp -R examples ./public && cp -R bundle readme-ss public/"
+        "postghpages": "cp ./bundle/public-bookmarklet.min.js ./public/src/ && cp ./bundle/*.js ./public/out/ && cp -R examples ./public && cp -R bundle readme-ss public/",
+        "typecheck": "tsc --project tsconfig.typecheck.json"
     },
     "repository": {
         "type": "git",
@@ -46,18 +47,19 @@
     },
     "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/Kifu-for-JS#readme",
     "dependencies": {
-        "fscreen": "^1.1.0",
+        "focus-trap-react": "^10.2.1",
         "json-kifu-format": "^4.0.1",
         "mobx": "^4.1.1",
-        "mobx-react": "^5.0.0",
-        "react": "^16.0.0",
+        "mobx-react": "^6.3.1",
         "react-dnd": "^7.7.0",
         "react-dnd-html5-backend": "^2.1.2",
         "react-dnd-multi-backend": "^3.0.4",
         "react-dnd-touch-backend": "^0.8.3",
-        "react-dom": "^16.0.0",
-        "react-responsive": "^8.2.0",
         "shogi.js": "^4.0.1"
+    },
+    "peerDependencies": {
+        "react": "^16.14.0",
+        "react-dom": "^16.14.0"
     },
     "devDependencies": {
         "@babel/core": "^7.10.3",
@@ -80,8 +82,9 @@
         "babel-plugin-transform-regenerator": "^6.26.0",
         "clean-webpack-plugin": "^0.1.19",
         "core-js": "^3.6.5",
-        "css-loader": "^3.6.0",
+        "css-loader": "^6.8.1",
         "cypress": "^12.10.0",
+        "eslint": "^8.48.0",
         "http-server": "^14.1.1",
         "img-loader": "^4.0.0",
         "jest-environment-jsdom": "^28.1.2",
@@ -91,10 +94,7 @@
         "sass": "^1.30.0",
         "sass-loader": "^10.1.0",
         "start-server-and-test": "^2.0.0",
-        "style-loader": "^0.20.3",
-        "tslint": "^5.9.1",
-        "tslint-config-prettier": "^1.10.0",
-        "tslint-react": "^3.5.1",
+        "style-loader": "^3.3.3",
         "url-loader": "^4.1.1",
         "webpack-dev-server": "^4.9.3"
     }

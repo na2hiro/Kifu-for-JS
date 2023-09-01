@@ -8,5 +8,4 @@ test/
 jest.config.js
 npm-shrinkwrap.json
 tsconfig.json
-tslint.json
 webpack.config.js

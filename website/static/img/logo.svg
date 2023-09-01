@@ -1,0 +1,6 @@
+<svg width="200" height="200" viewBox="10 10 210 210" xmlns="http://www.w3.org/2000/svg">
+    <g transform="translate(114, 1270) scale(13, 13)">
+        <polygon points="0,-96.42857142857143 5.75,-93.92857142857143 7.5,-81.42857142857143 -7.5,-81.42857142857143 -5.75,-93.92857142857143" fill="black" stroke="white" stroke-width="0.5"></polygon>
+    </g>
+    <text text-anchor="middle" x="123" y="165" fill="white" font-size="150" font-family="Baskerville, serif">JS</text>
+</svg>

@@ -6,10 +6,12 @@
  * http://opensource.org/licenses/mit-license.php
  */
 
-import {Color, Piece, Shogi, Kind, kindToString} from "shogi.js";
-import {IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
+import {Color, Kind, kindToString, Piece, Shogi} from "shogi.js";
+import {IHandFormat, IJSONKifuFormat, IMoveFormat, IMoveMoveFormat, IStateFormat} from "./Formats";
 import {canPromote, normalizeMinimal} from "./normalizer";
 import {parseCSA, parseKI2, parseKIF} from "./peg/parsers";
+
+type ForkPointer = {te: number; forkIndex: number};
 
 export default class JKFPlayer {
     public static debug = false;
@@ -218,14 +220,14 @@ export default class JKFPlayer {
         return ret;
     }
 
-    private static getHandsState(shogi: Shogi) {
+    private static getHandsState(shogi: Shogi): [IHandFormat, IHandFormat] {
         return [shogi.getHandsSummary(Color.Black), shogi.getHandsSummary(Color.White)];
     }
 
     public shogi: Shogi;
     public kifu: IJSONKifuFormat;
     public tesuu: number;
-    public forkPointers: Array<{te: number; forkIndex: number}> = [];
+    public forkPointers: Array<ForkPointer> = [];
     private forks_ = null;
     private currentStream_: IMoveFormat[] = null;
 
@@ -252,6 +254,20 @@ export default class JKFPlayer {
         this.kifu = kifu;
         this.tesuu = 0;
         this.forkPointers = [];
+    }
+
+    public static fromShogi(shogi: Shogi) {
+        const player = new JKFPlayer({
+            header: {},
+            moves: [{}],
+            initial: {
+                preset: "OTHER",
+                data: JKFPlayer.getState(shogi),
+            },
+        });
+        player.shogi = shogi;
+
+        return player;
     }
 
     // 1手進める
@@ -285,38 +301,46 @@ export default class JKFPlayer {
     }
 
     // tesuu手目へ行く
-    public goto(tesuu: number | string) {
-        if (typeof tesuu === "string") {
-            const commaPos = tesuu.indexOf(",");
+    public goto(tesuu: number, forkPointers?: ForkPointer[]): void;
+    public goto(tesuuPointer: string): void;
+    public goto(tesuuOrTesuuPointer: number | string, forkPointers?: ForkPointer[]) {
+        let tesuu: number;
+        if (typeof tesuuOrTesuuPointer === "string") {
+            const commaPos = tesuuOrTesuuPointer.indexOf(",");
             if (commaPos > 0) {
                 // Specify tesuu pointer
-                const te = Number(tesuu.slice(0, commaPos));
-                const destPointers = JSON.parse(tesuu.slice(commaPos + 1));
-                let matchingSoFar = true;
-                for (let i = 0; i < destPointers.length; i++) {
-                    const dest = destPointers[i];
-                    const current = this.forkPointers[i];
-                    if (
-                        matchingSoFar &&
-                        current &&
-                        current.te === dest.te &&
-                        current.forkIndex === dest.forkIndex
-                    ) {
-                        // We don't need to repeat the same forking as currently while it's matching
-                        continue;
-                    }
-                    matchingSoFar = false;
-                    this.goto(dest.te - 1);
-                    this.forkAndForward(dest.forkIndex);
-                }
-                // Rewind if current fork is deeper than the destination
-                if (matchingSoFar && destPointers.length < this.forkPointers.length) {
-                    this.goto(this.forkPointers[destPointers.length].te - 1);
-                }
-                this.goto(te);
-                return;
+                tesuu = Number(tesuuOrTesuuPointer.slice(0, commaPos));
+                forkPointers = JSON.parse(tesuuOrTesuuPointer.slice(commaPos + 1));
+            } else {
+                tesuu = Number(tesuuOrTesuuPointer);
             }
-            tesuu = Number(tesuu);
+        } else {
+            tesuu = tesuuOrTesuuPointer;
+        }
+        if (forkPointers) {
+            let matchingSoFar = true;
+            for (let i = 0; i < forkPointers.length; i++) {
+                const dest = forkPointers[i];
+                const current = this.forkPointers[i];
+                if (
+                    matchingSoFar &&
+                    current &&
+                    current.te === dest.te &&
+                    current.forkIndex === dest.forkIndex
+                ) {
+                    // We don't need to repeat the same forking as currently while it's matching
+                    continue;
+                }
+                matchingSoFar = false;
+                this.goto(dest.te - 1);
+                this.forkAndForward(dest.forkIndex);
+            }
+            // Rewind if current fork is deeper than the destination
+            if (matchingSoFar && forkPointers.length < this.forkPointers.length) {
+                this.goto(this.forkPointers[forkPointers.length].te - 1);
+            }
+            this.goto(tesuu);
+            return;
         }
         if (isNaN(tesuu)) {
             return;
@@ -348,7 +372,11 @@ export default class JKFPlayer {
         if (typeof num === "string") {
             num = parseInt(num, 10);
         }
-        const forks = this.getMoveFormat(this.tesuu + 1).forks;
+        const moveFormat = this.getMoveFormat(this.tesuu + 1);
+        if (!moveFormat) {
+            throw new Error(`${this.tesuu + 1}手目に有効な棋譜がありません`);
+        }
+        const forks = moveFormat.forks;
         if (!forks || forks.length <= num) {
             return false;
         }
@@ -364,7 +392,14 @@ export default class JKFPlayer {
         if (isNaN(tesuu)) {
             tesuu = this.tesuu;
         }
-        return `${tesuu},${JSON.stringify(this.forkPointers.filter((p) => p.te <= tesuu))}`;
+        return `${tesuu},${JSON.stringify(this.getForkPointers(tesuu))}`;
+    }
+
+    public getForkPointers(tesuu?: number) {
+        if (isNaN(tesuu)) {
+            tesuu = this.tesuu;
+        }
+        return this.forkPointers.filter((p) => p.te <= tesuu);
     }
 
     // TODO: Distinguish minimal move and full move
@@ -445,7 +480,7 @@ export default class JKFPlayer {
         return this.getMoveFormat(tesuu).comments || [];
     }
 
-    public getMove(tesuu: number = this.tesuu) {
+    public getMove(tesuu: number = this.tesuu): IMoveMoveFormat | undefined {
         return this.getMoveFormat(tesuu).move;
     }
 
@@ -473,13 +508,20 @@ export default class JKFPlayer {
         return JKFPlayer.getState(this.shogi);
     }
 
-    public getReadableKifuState(): Array<{kifu: string; forks: string[]; comments: string[]}> {
-        const ret = [];
+    public getReadableKifuState(): Array<{
+        kifu: string;
+        forks: string[];
+        comments: string[];
+        moveFormat: IMoveFormat;
+    }> {
+        const ret: {kifu: string; forks: string[]; comments: string[]; moveFormat: IMoveFormat}[] =
+            [];
         for (let i = 0; i <= this.getMaxTesuu(); i++) {
             ret.push({
                 comments: this.getComments(i),
                 forks: this.getReadableForkKifu(i - 1),
                 kifu: this.getReadableKifu(i),
+                moveFormat: this.getMoveFormat(i),
             });
         }
         return ret;

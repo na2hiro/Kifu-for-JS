@@ -1,41 +1,39 @@
-<HTML>
-<HEAD>
-	<TITLE>
-		Kifu for Java による棋譜再現例
-	</TITLE>
-</HEAD>
-<BODY>
-Kifu for Java  による棋譜再現例<BR>
-<APPLET
-		CODEBASE = "."
-		CODE     = "kifuj.Applet1.class"
-		ARCHIVE  = "kifuj.jar"
-		WIDTH    = 572
-		HEIGHT   = 460
-		HSPACE   = 0
-		VSPACE   = 0
-		ALIGN    = middle
->
-	<PARAM NAME=KIFU VALUE="./files/kif/fork.kif">
-	<PARAM NAME=HELP VALUE="kifujhelp.html">
-	<PARAM NAME=LAST_COLOR VALUE="100 200 100">
-</APPLET>
-<BR>Kifu for Java Light による棋譜再現例<BR>
-<APPLET
-		CODEBASE = "."
-		CODE     = "kifujl.Applet1.class"
-		ARCHIVE  = "kifujl.jar"
-		WIDTH    = 480
-		HEIGHT   = 383
-		HSPACE   = 0
-		VSPACE   = 0
-		ALIGN    = middle
->
-	<PARAM NAME=KIFU VALUE="./files/ki2/9fu.ki2">
-	<PARAM NAME=HELP VALUE="kifujhelp.html">
-	<PARAM NAME=LAST_COLOR VALUE="100 200 100">
-	<PARAM NAME=NO_KIFU VALUE="1">
-</APPLET>
-<script src="../bundle/public-bookmarklet.min.js"></script>
-</BODY>
-</HTML>
+<html>
+    <head>
+        <title>Kifu for Java による棋譜再現例</title>
+    </head>
+    <body>
+        Kifu for Java による棋譜再現例<br />
+        <applet
+            codebase="."
+            code="kifuj.Applet1.class"
+            archive="kifuj.jar"
+            width="572"
+            height="460"
+            hspace="0"
+            vspace="0"
+            align="middle"
+        >
+            <param name="KIFU" value="./files/kif/fork.kif" />
+            <param name="HELP" value="kifujhelp.html" />
+            <param name="LAST_COLOR" value="100 200 100" />
+        </applet>
+        <br />Kifu for Java Light による棋譜再現例<br />
+        <applet
+            codebase="."
+            code="kifujl.Applet1.class"
+            archive="kifujl.jar"
+            width="480"
+            height="383"
+            hspace="0"
+            vspace="0"
+            align="middle"
+        >
+            <param name="KIFU" value="./files/ki2/9fu.ki2" />
+            <param name="HELP" value="kifujhelp.html" />
+            <param name="LAST_COLOR" value="100 200 100" />
+            <param name="NO_KIFU" value="1" />
+        </applet>
+        <script src="../bundle/public-bookmarklet.min.js"></script>
+    </body>
+</html>

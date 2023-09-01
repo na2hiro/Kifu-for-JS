@@ -1,26 +1,26 @@
 {
-  "presets": [
-    "@babel/preset-react",
-    [
-      "@babel/preset-env",
-      {
-        "useBuiltIns": "usage",
-        "corejs": 3,
-        "targets": {
-          "browsers": [
-            "last 2 versions",
-            "ie >= 11"
-          ]
-        }
-      }
+    "presets": [
+        "@babel/preset-react",
+        [
+            "@babel/preset-env",
+            {
+                "useBuiltIns": "usage",
+                "corejs": 3,
+                "targets": {
+                    "browsers": ["last 2 versions", "ie >= 11"]
+                }
+            }
+        ],
+        "@babel/preset-typescript"
     ],
-    "@babel/preset-typescript"
-  ],
-  "plugins": [
-    "syntax-dynamic-import",
-    "transform-regenerator",
-    ["@babel/plugin-proposal-decorators", {
-      "legacy": true
-    }]
-  ]
+    "plugins": [
+        "syntax-dynamic-import",
+        "transform-regenerator",
+        [
+            "@babel/plugin-proposal-decorators",
+            {
+                "legacy": true
+            }
+        ]
+    ]
 }

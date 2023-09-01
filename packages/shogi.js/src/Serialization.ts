@@ -75,6 +75,7 @@ export function fromSfen(shogi: Shogi, sfen: string) {
         }
     }
     const segments = sfen.split(" ");
+    if (segments[1] !== "w" && segments[1] !== "b") throw new Error("Invalid SFEN");
     const sfenBoard = segments[0];
     let x = 8;
     let y = 0;

@@ -1,19 +1,20 @@
-import KifuStore from "./stores/KifuStore";
+import KifuStore from "./common/stores/KifuStore";
+import { load, loadString } from "./index";
 
-declare var $; // jQuery
-declare var jQuery; // jQuery
-declare var params; // Flash
-declare var so; // Flash
+declare let $; // jQuery
+declare let jQuery; // jQuery
+declare let params; // Flash
+declare let so; // Flash
 
 async function start(): Promise<KifuStore[]> {
-    if (window.getSelection && getSelection().toString() !== "") {
+    if ("getSelection" in window && getSelection().toString() !== "") {
         return replaceSelected().catch(fail);
     } else {
         return replaceAll().catch(fail);
     }
 
     function fail(e): Promise<KifuStore[]> {
-        window.alert("読込失敗: " + e);
+        alert("読込失敗: " + e);
         throw e;
     }
 
@@ -137,6 +138,6 @@ if (typeof $ === "undefined" || !$.fn || !$.fn.jquery) {
 const exp = promise.then(start);
 export default exp;
 
-async function loadKifuForJS(): Promise<{ load: any; loadString: any }> {
+async function loadKifuForJS(): Promise<{ load: typeof load; loadString: typeof loadString }> {
     return await import(/* webpackChunkName: "KifuInBookmarklet" */ "./index");
 }

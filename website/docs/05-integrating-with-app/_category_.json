@@ -1,0 +1,10 @@
+{
+  "label": "アプリケーションに組み込む",
+  "position": 5,
+  "link": {
+    "type": "generated-index",
+    "title": "アプリケーションに組み込む",
+    "description": "スクリプトを書いて盤面の状態を監視・操作したり、ご自身のアプリケーションに組み込んだりする方法を見ていきましょう。",
+    "slug": "/integrating-with-app"
+  }
+}

@@ -1,13 +1,14 @@
-import { defineConfig } from 'cypress'
+import { defineConfig } from "cypress";
 
 export default defineConfig({
-  video: false,
-  e2e: {
-    // We've imported your old cypress plugins here.
-    // You may want to clean this up later by importing these.
-    setupNodeEvents(on, config) {
-      return require('./cypress/plugins/index.js')(on, config)
+    video: false,
+    e2e: {
+        // We've imported your old cypress plugins here.
+        // You may want to clean this up later by importing these.
+        setupNodeEvents(on, config) {
+            // eslint-disable-next-line @typescript-eslint/no-var-requires
+            return require("./cypress/plugins/index.js")(on, config);
+        },
+        baseUrl: "http://0.0.0.0:8080",
     },
-    baseUrl: 'http://0.0.0.0:8080',
-  },
-})
+});
