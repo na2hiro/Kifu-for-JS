@@ -1,15 +1,15 @@
-# Website
+# Kifu for JS Website
 
-This website is built using [Docusaurus 2](https://docusaurus.io/), a modern static website generator.
+Kifu for JS 公式サイトはモダンなスタティックサイトジェネレータ [Docusaurus 2](https://docusaurus.io/) で作られています。
 
-### Installation & local development
+### インストールと開発
 
-See the [README in the root directory](../README.md). In short, run
+[ルートディレクトリのREADME](../README.md) を参照のこと。端的に言えば以下
 
 ```shell
 npm run website
 ```
 
-### Deployment
+### リリース
 
-Continuous Delivery is set up with cloudflare pages. Go to [dashboard](https://dash.cloudflare.com/).
+Cloudflare Page により Continuous Delivery がセットアップされている。 [dashboard](https://dash.cloudflare.com/) へ。
