@@ -1,1 +1,1 @@
-declare let s: HTMLScriptElement;
+declare const s: HTMLScriptElement;
