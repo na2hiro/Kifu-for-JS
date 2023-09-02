@@ -7,7 +7,7 @@ import KifuStore, { IOptions } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 
 import "../../css/kifuforjs.scss";
-import Comment from "../common/Comment";
+import Comment from "./Comment";
 import ForkList from "../common/ForkList";
 import UserSetting from "../common/stores/UserSetting";
 import { removeIndentation } from "../utils/util";
@@ -119,12 +119,12 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                         width={areaWidth - controlMargin * 2}
                         height={controlHeight - controlMargin - controlMarginTop}
                     >
-                        <div style={{ display: "grid", height: "100%", gap: "1px", gridAutoRows: "1fr" }}>
+                        <div style={{ display: "grid", height: "100%", gridAutoRows: "1fr" }}>
                             <div
                                 style={{
                                     display: "flex",
                                     justifyContent: "space-between",
-                                    height: "68px",
+                                    height: "69px",
                                     gap: "1px",
                                 }}
                             >
@@ -155,12 +155,10 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                             <Comment
                                 kifuStore={kifuStore}
                                 // Make it smaller for Firefox which expands the textarea
-                                rows={3}
                                 style={{
-                                    fontSize: "small",
-                                    resize: "none",
                                     backgroundColor: "inherit",
-                                    borderColor: "rgba(118, 118, 118, 0.3)",
+                                    // (Firefox) Use margin instead of gap of the container
+                                    marginTop: "1px",
                                 }}
                             />
                         </div>
