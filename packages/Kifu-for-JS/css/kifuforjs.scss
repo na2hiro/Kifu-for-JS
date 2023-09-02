@@ -330,3 +330,7 @@
 
 /*.kifuforjs-cell--lastfrom{background-color: #FFCC00;}
 .kifuforjs-cell--movable{background-color: #AAAAFF;}*/
+
+script[type="text/kifu"] + ins {
+    text-decoration-line: none;
+}

@@ -145,7 +145,8 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                             </div>
                             <Comment
                                 kifuStore={kifuStore}
-                                rows={5}
+                                // Make it smaller for Firefox which expands the textarea
+                                rows={3}
                                 style={{
                                     fontSize: "small",
                                     resize: "none",
