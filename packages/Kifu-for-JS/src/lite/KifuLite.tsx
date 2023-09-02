@@ -121,7 +121,12 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                     >
                         <div style={{ display: "grid", height: "100%", gap: "1px", gridAutoRows: "1fr" }}>
                             <div
-                                style={{ display: "flex", justifyContent: "space-between", height: "100%", gap: "1px" }}
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    height: "68px",
+                                    gap: "1px",
+                                }}
                             >
                                 <button
                                     onClick={() => kifuStore.player.backward()}
@@ -130,7 +135,11 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 >
                                     ◀
                                 </button>
-                                <KifuList player={kifuStore.player} style={{ fontSize: "x-small" }} />
+                                <KifuList
+                                    player={kifuStore.player}
+                                    style={{ fontSize: "x-small" }}
+                                    noPositionAbsoluteForSafariBug={true}
+                                />
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     {/*TODO: long press to keep moving*/}
                                     <button
@@ -151,6 +160,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     fontSize: "small",
                                     resize: "none",
                                     backgroundColor: "inherit",
+                                    borderColor: "rgba(118, 118, 118, 0.3)",
                                 }}
                             />
                         </div>

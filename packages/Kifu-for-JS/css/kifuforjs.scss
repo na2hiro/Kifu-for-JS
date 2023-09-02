@@ -172,6 +172,11 @@
         }
     }
 
+    &-comment {
+        border: 1px rgb(118, 118, 118) solid;
+        border-radius: 2px;
+    }
+
     // Legacy
     .kifuforjs &-comment {
         color: black;
@@ -209,7 +214,6 @@
     }
 
     &-kifulist {
-        position: relative;
         flex-grow: 1;
         overflow-y: scroll;
         overflow-x: auto;
@@ -220,7 +224,6 @@
         // scroll-behavior: smooth; // This triggers scroll events which generates unnecessary gotos
 
         &-inner {
-            position: absolute;
             display: flex;
             flex-direction: column;
             align-items: stretch;

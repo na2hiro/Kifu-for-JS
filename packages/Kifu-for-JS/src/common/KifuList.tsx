@@ -6,6 +6,10 @@ import { CSSProperties, FunctionComponent, ReactNode, useCallback, useLayoutEffe
 export interface IProps {
     player: JKFPlayer;
     style?: CSSProperties;
+
+    // Cannot use position: absolute inside foreignObject in Safari. In that case height should be determined from outside
+    // https://stackoverflow.com/questions/51313873/svg-foreignobject-not-working-properly-on-safari
+    noPositionAbsoluteForSafariBug: boolean;
 }
 
 @observer
@@ -20,7 +24,7 @@ export default class KifuList extends React.Component<IProps> {
     }
 
     public render() {
-        const { player, style } = this.props;
+        const { player, style, noPositionAbsoluteForSafariBug } = this.props;
         const options = player.getReadableKifuState().map((kifu, i) => {
             const node = (
                 <>
@@ -36,7 +40,15 @@ export default class KifuList extends React.Component<IProps> {
                 value: i,
             };
         });
-        return <DivList options={options} onChange={this.onChange} tesuu={player.tesuu} style={style} />;
+        return (
+            <DivList
+                options={options}
+                onChange={this.onChange}
+                tesuu={player.tesuu}
+                style={style}
+                noPositionAbsoluteForSafariBug={noPositionAbsoluteForSafariBug}
+            />
+        );
     }
 }
 
@@ -48,8 +60,15 @@ interface IDivListProps {
     onChange: (tesuu: number) => void;
     tesuu: number;
     style?: CSSProperties;
+    noPositionAbsoluteForSafariBug: boolean;
 }
-const DivList: FunctionComponent<IDivListProps> = ({ options, onChange, tesuu, style }) => {
+const DivList: FunctionComponent<IDivListProps> = ({
+    options,
+    onChange,
+    tesuu,
+    style,
+    noPositionAbsoluteForSafariBug,
+}) => {
     const [containerHeight, setContainerHeight] = useState<number | null>(null);
     const [rowHeight, setRowHeight] = useState<number | null>(null);
     const [tesuuInitiatedByScroll, setTesuuInitiatedByScroll] = useState<number | null>(null);
@@ -132,9 +151,12 @@ const DivList: FunctionComponent<IDivListProps> = ({ options, onChange, tesuu, s
             tabIndex={0}
             role="listbox"
             aria-label="手数"
-            style={style}
+            style={{ ...(noPositionAbsoluteForSafariBug ? {} : { position: "relative" }), ...style }}
         >
-            <div className="kifuforjs-kifulist-inner">
+            <div
+                className="kifuforjs-kifulist-inner"
+                style={{ ...(noPositionAbsoluteForSafariBug ? {} : { position: "absolute" }) }}
+            >
                 <div style={{ height: paddingHeight }} />
                 {options.map(({ node, value }) => (
                     <div

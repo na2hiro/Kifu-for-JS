@@ -25,6 +25,7 @@ export const SettingsModal = forwardRef<HTMLElement, IProps>(({ onClose, kifuSto
                 boxSizing: "border-box",
                 background: "rgba(127, 127, 127, 0.5)",
                 backdropFilter: "blur(5px)",
+                WebkitBackdropFilter: "blur(5px)",
                 borderRadius: 2,
                 position: "relative",
             }}
