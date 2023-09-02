@@ -5,8 +5,12 @@
 
 詳しくは[Kifu for JS 公式サイト](https://kifu-for-js.81.la)をご覧ください。
 
+## デモ
+
+公式サイトの [Kifu for JSについて](https://kifu-for-js.81.la/docs/) からどうぞ。
+
 ## 更新ログ / バージョン
-[Releases](https://github.com/na2hiro/Kifu-for-JS/releases) からどうぞ．
+[Releases](https://github.com/na2hiro/Kifu-for-JS/releases) からどうぞ。
 
 ## ライセンス
 
@@ -18,9 +22,9 @@ Kifu for JS は MIT ライセンスの下で公開されています。詳しく
 
 ## ご意見・ご要望
 
-* 要望やバグ報告は [issues](https://github.com/na2hiro/Kifu-for-JS/issues) へよろしくお願いします．
-* 棋譜形式の対応には注意を払っていますが，もし動作しない棋譜がありましたら対応しますので，Twitterやissuesでご報告いただければ幸いです．
-* 棋譜形式そのものについては [JSON棋譜フォーマット](../json-kifu-format#readme) もご参照ください．
+* 要望やバグ報告は [issues](https://github.com/na2hiro/Kifu-for-JS/issues) へよろしくお願いします。
+* 棋譜形式の対応には注意を払っていますが、もし動作しない棋譜がありましたら対応しますので、Twitterやissuesでご報告いただければ幸いです。
+* 棋譜形式そのものについては [JSON棋譜フォーマット](../json-kifu-format#readme) もご参照ください。
 
 ## 開発
 
@@ -35,7 +39,7 @@ Kifu for JS は MIT ライセンスの下で公開されています。詳しく
 * React DnD
 * MobX
 * Webpack (バンドルツール)
-* Jest (テストフレームワーク，カバレッジ計測)
+* Jest (テストフレームワーク、カバレッジ計測)
 * Cypress (end-to-endテスト)
 * ESLint (Linter)
 
