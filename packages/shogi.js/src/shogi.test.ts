@@ -741,3 +741,37 @@ describe("setTurn", () => {
         expect(() => shogi.setTurn(Color.White)).toThrow();
     });
 });
+describe("isCheck", () => {
+    it("normal", () => {
+        expect(shogi.isCheck(Color.White)).toBe(false);
+        expect(shogi.isCheck(Color.Black)).toBe(false);
+    });
+    it("check position 1", () => {
+        shogi.move(7, 7, 7, 6);
+        shogi.move(3, 3, 3, 4);
+        shogi.move(8, 8, 3, 3, true);
+        expect(shogi.isCheck(Color.White)).toBe(true);
+        expect(shogi.isCheck(Color.Black)).toBe(false);
+    });
+    it("check position 2", () => {
+        shogi.initializeFromSFENString(
+            "lnsg1gsnl/5rkb1/ppppppp+Pp/9/9/9/PPPPPPP1P/1B5R1/LNSGKGSNL b P 1"
+        );
+        expect(shogi.isCheck(Color.White)).toBe(true);
+        expect(shogi.isCheck(Color.Black)).toBe(false);
+    });
+    it("check position 3", () => {
+        shogi.initializeFromSFENString(
+            "lnsgkgs1l/1r5b1/pppppp1pp/6p2/9/2P6/PPBPnPPPP/2G4R1/LNSK1GSNL b p 1"
+        );
+        expect(shogi.isCheck(Color.White)).toBe(false);
+        expect(shogi.isCheck(Color.Black)).toBe(true);
+    });
+    it("No OU", () => {
+        shogi.initializeFromSFENString(
+            "lnsg1gsnl/1r5b1/ppppppppp/9/9/9/PPPPPPPPP/1B5R1/LNSGKGSNL b K 1"
+        );
+        expect(shogi.isCheck(Color.White)).toBe(false);
+        expect(shogi.isCheck(Color.Black)).toBe(false);
+    });
+});
