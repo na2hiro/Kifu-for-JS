@@ -363,7 +363,6 @@ export class Shogi {
         if (x === null || y === null) {
             return false;
         }
-        let check = false;
         for (let i = 1; i <= 9; i++) {
             for (let j = 1; j <= 9; j++) {
                 const piece = this.get(i, j);
@@ -372,11 +371,11 @@ export class Shogi {
                 }
                 const moves = this.getMovesFrom(i, j);
                 if (moves.some((move) => move.to.x === x && move.to.y === y)) {
-                    check = true;
+                    return true;
                 }
             }
         }
-        return check;
+        return false;
     }
 
     // 以下editModeでの関数
