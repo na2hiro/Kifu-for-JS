@@ -63,6 +63,7 @@
 <a href="Shogi.Shogi.html#getMovesTo" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Moves<wbr/>To</span></a>
 <a href="Shogi.Shogi.html#initialize" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>initialize</span></a>
 <a href="Shogi.Shogi.html#initializeFromSFENString" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>initialize<wbr/>FromSFENString</span></a>
+<a href="Shogi.Shogi.html#isCheck" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>is<wbr/>Check</span></a>
 <a href="Shogi.Shogi.html#move" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>move</span></a>
 <a href="Shogi.Shogi.html#setTurn" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Turn</span></a>
 <a href="Shogi.Shogi.html#toCSAString" class="tsd-index-link tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>toCSAString</span></a>
@@ -100,14 +101,14 @@
 <div class="tsd-comment tsd-typography"><p>(x, y)の駒を取って反対側の持ち駒に加える</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:122</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:126</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="checkTurn" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>check<wbr/>Turn</span><a href="#checkTurn" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">check<wbr/>Turn<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 <div class="tsd-comment tsd-typography"><p>colorの手番で問題ないか確認する．編集モードならok．</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:142</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:146</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="flagEditMode" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>flag<wbr/>Edit<wbr/>Mode</span><a href="#flagEditMode" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">flag<wbr/>Edit<wbr/>Mode<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">boolean</span></div>
@@ -128,35 +129,35 @@
 <div class="tsd-comment tsd-typography"><p>次の手番に行く</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:134</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:138</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="popFromHand" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>pop<wbr/>From<wbr/>Hand</span><a href="#popFromHand" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">pop<wbr/>From<wbr/>Hand<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 <div class="tsd-comment tsd-typography"><p>color側のkindの駒を取って返す</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:130</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:134</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="prevTurn" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>prev<wbr/>Turn</span><a href="#prevTurn" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">prev<wbr/>Turn<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 <div class="tsd-comment tsd-typography"><p>前の手番に行く</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:138</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:142</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="pushToHand" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>push<wbr/>To<wbr/>Hand</span><a href="#pushToHand" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">push<wbr/>To<wbr/>Hand<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 <div class="tsd-comment tsd-typography"><p>駒pieceを持ち駒に加える</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:126</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:130</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class tsd-is-private"><a id="set" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><code class="tsd-tag ts-flagPrivate">Private</code> <span>set</span><a href="#set" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">set<span class="tsd-signature-symbol">:</span> <span class="tsd-signature-type">any</span></div>
 <div class="tsd-comment tsd-typography"><p>(x, y)に駒を置く</p>
 </div><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:118</li></ul></aside></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:122</li></ul></aside></section>
 <section class="tsd-panel tsd-member tsd-kind-property tsd-parent-kind-class"><a id="turn" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>turn</span><a href="#turn" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <div class="tsd-signature">turn<span class="tsd-signature-symbol">:</span> <a href="../enums/Shogi.Color.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Color</a></div>
@@ -196,7 +197,7 @@
 <h5>color: <a href="../enums/Shogi.Color.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Color</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:105</li></ul></aside></li></ul></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:109</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="drop" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>drop</span><a href="#drop" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -254,7 +255,7 @@
 <h5>y: <span class="tsd-signature-type">number</span></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:110</li></ul></aside></li></ul></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:114</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="get" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>get</span><a href="#get" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -373,6 +374,21 @@
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
 <li>Defined in shogi.js/cjs/shogi.d.ts:47</li></ul></aside></li></ul></section>
+<section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="isCheck" class="tsd-anchor"></a>
+<h3 class="tsd-anchor-link"><span>is<wbr/>Check</span><a href="#isCheck" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
+<ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
+<li class="tsd-signature tsd-anchor-link" id="isCheck.isCheck-1">is<wbr/>Check<span class="tsd-signature-symbol">(</span>color<span class="tsd-signature-symbol">: </span><a href="../enums/Shogi.Color.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Color</a><span class="tsd-signature-symbol">)</span><span class="tsd-signature-symbol">: </span><span class="tsd-signature-type">boolean</span><a href="#isCheck.isCheck-1" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></li>
+<li class="tsd-description">
+<div class="tsd-comment tsd-typography"><p>現在の局面でcolorの王に王手がかかっているか？</p>
+</div>
+<div class="tsd-parameters">
+<h4 class="tsd-parameters-title">Parameters</h4>
+<ul class="tsd-parameter-list">
+<li>
+<h5>color: <a href="../enums/Shogi.Color.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Color</a></h5></li></ul></div>
+<h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">boolean</span></h4><aside class="tsd-sources">
+<ul>
+<li>Defined in shogi.js/cjs/shogi.d.ts:105</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="move" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>move</span><a href="#move" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -410,7 +426,7 @@
 <h5>color: <a href="../enums/Shogi.Color.html" class="tsd-signature-type" data-tsd-kind="Enumeration">Color</a></h5></li></ul></div>
 <h4 class="tsd-returns-title">Returns <span class="tsd-signature-type">void</span></h4><aside class="tsd-sources">
 <ul>
-<li>Defined in shogi.js/cjs/shogi.d.ts:114</li></ul></aside></li></ul></section>
+<li>Defined in shogi.js/cjs/shogi.d.ts:118</li></ul></aside></li></ul></section>
 <section class="tsd-panel tsd-member tsd-kind-method tsd-parent-kind-class"><a id="toCSAString" class="tsd-anchor"></a>
 <h3 class="tsd-anchor-link"><span>toCSAString</span><a href="#toCSAString" aria-label="Permalink" class="tsd-anchor-icon"><svg class="icon icon-tabler icon-tabler-link" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor" fill="none" stroke-linecap="round" stroke-linejoin="round"><use href="#icon-anchor-a"></use><use href="#icon-anchor-b"></use><use href="#icon-anchor-c"></use></svg></a></h3>
 <ul class="tsd-signatures tsd-kind-method tsd-parent-kind-class">
@@ -524,6 +540,7 @@
 <li><a href="#getMovesTo" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>get<wbr/>Moves<wbr/>To</span></a></li>
 <li><a href="#initialize" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>initialize</span></a></li>
 <li><a href="#initializeFromSFENString" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>initialize<wbr/>FromSFENString</span></a></li>
+<li><a href="#isCheck" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>is<wbr/>Check</span></a></li>
 <li><a href="#move" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>move</span></a></li>
 <li><a href="#setTurn" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>set<wbr/>Turn</span></a></li>
 <li><a href="#toCSAString" class="tsd-kind-method tsd-parent-kind-class"><svg class="tsd-kind-icon" width="24" height="24" viewBox="0 0 24 24"><use href="#icon-2048-path"></use><use href="#icon-2048-text"></use></svg><span>toCSAString</span></a></li>
