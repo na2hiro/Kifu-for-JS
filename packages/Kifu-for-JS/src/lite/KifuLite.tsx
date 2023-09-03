@@ -91,7 +91,11 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
             players={[kifuStore.player.kifu.header.先手, kifuStore.player.kifu.header.後手]}
             width={areaWidth}
             height={svgHeight}
-            style={{ ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }), ...style }}
+            style={{
+                ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }),
+                touchAction: "manipulation",
+                ...style,
+            }}
             ref={svgRef}
         >
             {/* TODO: Show indicator for the on-board controls on first interaction */}
