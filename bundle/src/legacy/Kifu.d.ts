@@ -1,6 +1,6 @@
 /// <reference types="react-dnd" />
 import KifuStore, { IOptions } from "../common/stores/KifuStore";
-import "../../css/kifuforjs.scss";
+import "./kifuforjs.scss";
 export type IProps = {
     isOver?: boolean;
     kifuStore?: KifuStore;

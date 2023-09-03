@@ -4,6 +4,7 @@ import { CSSProperties } from "react";
 export interface IProps {
     player: JKFPlayer;
     style?: CSSProperties;
+    initialHeight?: number;
     noPositionAbsoluteForSafariBug: boolean;
 }
 export default class KifuList extends React.Component<IProps> {
