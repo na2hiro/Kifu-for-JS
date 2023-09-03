@@ -3,9 +3,12 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { CSSProperties, FunctionComponent, ReactNode, useCallback, useLayoutEffect, useRef, useState } from "react";
 
+const INITIAL_ROW_HEIGHT = 16.5;
+
 export interface IProps {
     player: JKFPlayer;
     style?: CSSProperties;
+    initialHeight?: number;
 
     // Cannot use position: absolute inside foreignObject in Safari. In that case height should be determined from outside
     // https://stackoverflow.com/questions/51313873/svg-foreignobject-not-working-properly-on-safari
@@ -24,7 +27,7 @@ export default class KifuList extends React.Component<IProps> {
     }
 
     public render() {
-        const { player, style, noPositionAbsoluteForSafariBug } = this.props;
+        const { player, style, noPositionAbsoluteForSafariBug, initialHeight } = this.props;
         const options = player.getReadableKifuState().map((kifu, i) => {
             const node = (
                 <>
@@ -47,6 +50,7 @@ export default class KifuList extends React.Component<IProps> {
                 tesuu={player.tesuu}
                 style={style}
                 noPositionAbsoluteForSafariBug={noPositionAbsoluteForSafariBug}
+                initialHeight={initialHeight}
             />
         );
     }
@@ -61,13 +65,16 @@ interface IDivListProps {
     tesuu: number;
     style?: CSSProperties;
     noPositionAbsoluteForSafariBug: boolean;
+    initialHeight?: number;
 }
+
 const DivList: FunctionComponent<IDivListProps> = ({
     options,
     onChange,
     tesuu,
     style,
     noPositionAbsoluteForSafariBug,
+    initialHeight,
 }) => {
     const [containerHeight, setContainerHeight] = useState<number | null>(null);
     const [rowHeight, setRowHeight] = useState<number | null>(null);
@@ -98,7 +105,10 @@ const DivList: FunctionComponent<IDivListProps> = ({
             }
         }
     });
-    const paddingHeight = `${(containerHeight - rowHeight) / 2 - 1}px`;
+    // Initial heights are used for SSR only
+    const derivedRowHeight = rowHeight ?? INITIAL_ROW_HEIGHT;
+    const derivedContainerHeight = containerHeight ?? initialHeight ?? derivedRowHeight;
+    const paddingHeight = `${(derivedContainerHeight - derivedRowHeight) / 2 - 1}px`;
     const onScroll = useCallback(() => {
         if (containerHeight === null) {
             return;
@@ -151,17 +161,40 @@ const DivList: FunctionComponent<IDivListProps> = ({
             tabIndex={0}
             role="listbox"
             aria-label="手数"
-            style={{ ...(noPositionAbsoluteForSafariBug ? {} : { position: "relative" }), ...style }}
+            style={{
+                ...(noPositionAbsoluteForSafariBug ? {} : { position: "relative" }),
+                flexGrow: 1,
+                overflowY: "scroll",
+                overflowX: "auto",
+                border: "1px rgb(118, 118, 118) solid",
+                borderRadius: "2px",
+                fontSize: "small",
+                cursor: "default",
+                ...style,
+            }}
         >
             <div
-                className="kifuforjs-kifulist-inner"
-                style={{ ...(noPositionAbsoluteForSafariBug ? {} : { position: "absolute" }) }}
+                style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "stretch",
+                    width: "100%",
+                    ...(noPositionAbsoluteForSafariBug ? {} : { position: "absolute" }),
+                }}
             >
                 <div style={{ height: paddingHeight }} />
                 {options.map(({ node, value }) => (
                     <div
                         key={value}
                         role="option"
+                        style={{
+                            padding: "0 2px",
+                            // TODO: restore following CSS
+                            // .kifuforjs-kifulist:focus-visible [aria-selected="true"] {
+                            //   background-color: #99c8ff;
+                            // }
+                            backgroundColor: value === tesuu ? "rgba(106, 106, 106, 0.35)" : undefined,
+                        }}
                         onClick={() => onChange(value)}
                         aria-selected={value === tesuu}
                         ref={value === tesuu ? ref : null}

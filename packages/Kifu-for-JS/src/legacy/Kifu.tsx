@@ -14,7 +14,7 @@ import Info from "./Info";
 import LeftControl from "./LeftControl";
 
 import { createRef } from "react";
-import "../../css/kifuforjs.scss";
+import "./kifuforjs.scss";
 import Comment from "./Comment";
 
 export type IProps = {
