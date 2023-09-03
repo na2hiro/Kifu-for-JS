@@ -7,7 +7,7 @@ import KifuStore, { IOptions } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 
 import "../../css/kifuforjs.scss";
-import Comment from "../common/Comment";
+import Comment from "./Comment";
 import ForkList from "../common/ForkList";
 import UserSetting from "../common/stores/UserSetting";
 import { removeIndentation } from "../utils/util";
@@ -91,7 +91,11 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
             players={[kifuStore.player.kifu.header.先手, kifuStore.player.kifu.header.後手]}
             width={areaWidth}
             height={svgHeight}
-            style={{ ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }), ...style }}
+            style={{
+                ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }),
+                touchAction: "manipulation",
+                ...style,
+            }}
             ref={svgRef}
         >
             {/* TODO: Show indicator for the on-board controls on first interaction */}
@@ -119,9 +123,14 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                         width={areaWidth - controlMargin * 2}
                         height={controlHeight - controlMargin - controlMarginTop}
                     >
-                        <div style={{ display: "grid", height: "100%", gap: "1px", gridAutoRows: "1fr" }}>
+                        <div style={{ display: "grid", height: "100%", gridAutoRows: "1fr" }}>
                             <div
-                                style={{ display: "flex", justifyContent: "space-between", height: "100%", gap: "1px" }}
+                                style={{
+                                    display: "flex",
+                                    justifyContent: "space-between",
+                                    height: "69px",
+                                    gap: "1px",
+                                }}
                             >
                                 <button
                                     onClick={() => kifuStore.player.backward()}
@@ -130,7 +139,11 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 >
                                     ◀
                                 </button>
-                                <KifuList player={kifuStore.player} style={{ fontSize: "x-small" }} />
+                                <KifuList
+                                    player={kifuStore.player}
+                                    style={{ fontSize: "x-small" }}
+                                    noPositionAbsoluteForSafariBug={true}
+                                />
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     {/*TODO: long press to keep moving*/}
                                     <button
@@ -145,11 +158,11 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                             </div>
                             <Comment
                                 kifuStore={kifuStore}
-                                rows={5}
+                                // Make it smaller for Firefox which expands the textarea
                                 style={{
-                                    fontSize: "small",
-                                    resize: "none",
                                     backgroundColor: "inherit",
+                                    // (Firefox) Use margin instead of gap of the container
+                                    marginTop: "1px",
                                 }}
                             />
                         </div>

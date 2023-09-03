@@ -48,8 +48,9 @@ export function removeIndentation(indentedKifu: string) {
         .map((line) => {
             if (line.startsWith(match[1])) {
                 return line.slice(match[1].length);
-            } else if (line === "") {
-                return line;
+            } else if (line.match(/^\s*$/)) {
+                // Empty line or only whitespace: allowed
+                return "";
             }
             illicitLine = true;
             return line;

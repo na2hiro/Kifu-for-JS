@@ -15,7 +15,7 @@ import LeftControl from "./LeftControl";
 
 import { createRef } from "react";
 import "../../css/kifuforjs.scss";
-import Comment from "../common/Comment";
+import Comment from "./Comment";
 
 export type IProps = {
     isOver?: boolean;

@@ -8,7 +8,7 @@ function HapticFeedback({ kifuStore, userSetting }) {
                 onClick={() => {
                     const newValue = (userSetting.hapticFeedback = !userSetting.hapticFeedback);
                     if (newValue) {
-                        navigator.vibrate(1);
+                        navigator.vibrate?.(1);
                     }
                 }}
             >

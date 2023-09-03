@@ -183,7 +183,7 @@ export const MyComponent = () => {
 ぼかしのバックドロップフィルタを入れ、不透明度を高めると良いです。
 
 <p style={{background: "url(/img/docusaurus.png)", padding: "10px"}}>
-  <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.9)", color: "black", backdropFilter: "blur(5px)"}} />
+  <Example1 style={{backgroundColor: "rgba(255, 255, 255, 0.9)", color: "black", backdropFilter: "blur(5px)", WebkitBackdropFilter: "blur(5px)"}} />
 </p>
 
 ```html
@@ -192,6 +192,7 @@ export const MyComponent = () => {
     // highlight-start
     background-color: rgba(255, 255, 255, 0.9);
     backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
     // highlight-end
     color: black;
   }

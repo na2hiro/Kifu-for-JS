@@ -6,7 +6,7 @@ export default function useHaptics(tesuu: number, on = true) {
     useEffect(() => {
         if (mounted.current) {
             if (on) {
-                navigator.vibrate(1);
+                navigator.vibrate?.(1);
             }
         } else {
             mounted.current = true;

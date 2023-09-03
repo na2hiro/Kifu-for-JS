@@ -10,7 +10,7 @@ export interface IProps {
 
 @observer
 export default class LeftControl extends React.Component<IProps> {
-    constructor(props) {
+    constructor(props: IProps) {
         super(props);
         this.onClickDl = this.onClickDl.bind(this);
         this.clickDlAvailable = this.clickDlAvailable.bind(this);
@@ -21,7 +21,7 @@ export default class LeftControl extends React.Component<IProps> {
         const { player } = this.props.kifuStore;
         return (
             <div className="kifuforjs-halfofcolumn kifuforjs-leftcontrol">
-                <KifuList player={player} />
+                <KifuList player={player} noPositionAbsoluteForSafariBug={false} />
                 <ForkList kifuStore={this.props.kifuStore} />
                 <button className="kifuforjs-dl" onClick={this.onClickDl} disabled={!this.clickDlAvailable()}>
                     棋譜保存
