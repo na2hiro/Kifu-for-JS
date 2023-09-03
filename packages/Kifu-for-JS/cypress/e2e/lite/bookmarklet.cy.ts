@@ -18,22 +18,18 @@ describe("bookmarklet", () => {
         cy.get(".kifuforjs-lite")
             .first()
             .within(() => {
-                cy.get(`.kifuforjs-kifulist-inner`).find("div[role=option]").should("have.length", 5);
+                cy.get(`.kifuforjs-kifulist`).find("div[role=option]").should("have.length", 5);
                 forwardLite().click();
-                cy.get(`.kifuforjs-kifulist-inner`)
-                    .find("div[role=option][aria-selected=true]")
-                    .should("contain.text", "1");
+                cy.get(`.kifuforjs-kifulist`).find("div[role=option][aria-selected=true]").should("contain.text", "1");
             });
 
         cy.get(".kifuforjs-lite")
             .last()
             .within(() => {
-                cy.get(`.kifuforjs-kifulist-inner`).find("div").should("have.length.above", 1);
+                cy.get(`.kifuforjs-kifulist`).find("div").should("have.length.above", 1);
                 forwardLite().click();
                 forwardLite().click();
-                cy.get(`.kifuforjs-kifulist-inner`)
-                    .find("div[role=option][aria-selected=true]")
-                    .should("contain.text", "2");
+                cy.get(`.kifuforjs-kifulist`).find("div[role=option][aria-selected=true]").should("contain.text", "2");
             });
     });
     it("should alert when nothing to replace", () => {

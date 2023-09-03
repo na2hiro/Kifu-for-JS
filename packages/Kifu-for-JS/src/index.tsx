@@ -101,6 +101,7 @@ if (typeof document !== "undefined") {
                 // Render svg inside ins element here.
                 try {
                     const container = document.createElement("ins");
+                    container.style.textDecorationLine = "none"; // remove underline in Safari
                     script.insertAdjacentElement("afterend", container);
                     script.dataset.loaded = "true";
 

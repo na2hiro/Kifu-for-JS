@@ -213,34 +213,8 @@
         }
     }
 
-    &-kifulist {
-        flex-grow: 1;
-        overflow-y: scroll;
-        overflow-x: auto;
-        border: 1px rgb(118, 118, 118) solid;
-        border-radius: 2px;
-        font-size: small;
-        cursor: default;
-        // scroll-behavior: smooth; // This triggers scroll events which generates unnecessary gotos
-
-        &-inner {
-            display: flex;
-            flex-direction: column;
-            align-items: stretch;
-            width: 100%;
-        }
-
-        [role="option"] {
-            padding: 0 2px;
-        }
-
-        [aria-selected="true"] {
-            background-color: rgba(106, 106, 106, 0.35);
-
-            .kifuforjs-kifulist:focus & {
-                background-color: #99c8ff;
-            }
-        }
+    &-kifulist:focus [aria-selected="true"] {
+        background-color: #99c8ff;
     }
 
     // Portrait view
@@ -333,7 +307,3 @@
 
 /*.kifuforjs-cell--lastfrom{background-color: #FFCC00;}
 .kifuforjs-cell--movable{background-color: #AAAAFF;}*/
-
-script[type="text/kifu"] + ins {
-    text-decoration-line: none;
-}

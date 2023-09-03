@@ -6,7 +6,6 @@ import KifuList from "../common/KifuList";
 import KifuStore, { IOptions } from "../common/stores/KifuStore";
 import Zumen from "./zumen/Zumen";
 
-import "../../css/kifuforjs.scss";
 import Comment from "./Comment";
 import ForkList from "../common/ForkList";
 import UserSetting from "../common/stores/UserSetting";
@@ -143,6 +142,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     player={kifuStore.player}
                                     style={{ fontSize: "x-small" }}
                                     noPositionAbsoluteForSafariBug={true}
+                                    initialHeight={67}
                                 />
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     {/*TODO: long press to keep moving*/}
