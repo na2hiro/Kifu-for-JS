@@ -19,6 +19,7 @@ const Comment: React.FC<IProps> = ({ kifuStore, style }) => {
                 overflowY: "auto",
                 padding: "2px",
                 fontSize: "12px",
+                fontFamily: "sans-serif",
                 border: "rgba(118, 118, 118, 0.3) 1px solid",
                 borderRadius: "2px",
                 ...style,
