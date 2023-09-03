@@ -4,7 +4,7 @@ export interface IProps {
     kifuStore: KifuStore;
 }
 export default class LeftControl extends React.Component<IProps> {
-    constructor(props: any);
+    constructor(props: IProps);
     render(): JSX.Element;
     onClickDl(): void;
     clickDlAvailable(): string;
