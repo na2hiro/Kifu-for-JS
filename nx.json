@@ -28,6 +28,11 @@
         "^build"
       ]
     },
+    "website": {
+      "dependsOn": [
+        "^build"
+      ]
+    },
     "start": {
       "dependsOn": [
         "^build"

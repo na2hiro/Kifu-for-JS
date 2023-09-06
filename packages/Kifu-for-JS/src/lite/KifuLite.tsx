@@ -52,6 +52,11 @@ function getChildrenTextContent(children: ReactNode) {
     return "";
 }
 
+const TURNS = [
+    { mark: "☗", name: "先手", komaochiName: "下手" },
+    { mark: "☖", name: "後手", komaochiName: "上手" },
+] as const;
+
 const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, style, ...options }) => {
     const [kifuStore, setKifuStore] = useState<KifuStore>(() => {
         if (givenKifuStore) {
@@ -68,7 +73,8 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
     });
 
     const userSetting = UserSetting.get();
-    useHaptics(kifuStore.player.tesuu, userSetting.hapticFeedback);
+    const { player } = kifuStore;
+    useHaptics(player.tesuu, userSetting.hapticFeedback);
 
     useEffect(() => {
         if (givenKifuStore) {
@@ -78,18 +84,31 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
 
     const latestMoveTo = kifuStore.getLatestMoveTo();
 
-    const isStatic = !!kifuStore.staticOptions;
+    const isStatic = !!kifuStore.options?.static;
 
     const svgRef = useRef<SVGSVGElement>(null);
     const svgHeight = areaHeight + (isStatic ? 0 : controlHeight);
 
+    const players: [string, string] = kifuStore.tsumeMode.enabled
+        ? ["持駒", "持駒"]
+        : (TURNS.map(({ mark, name, komaochiName }) => {
+              if (komaochiName in player.kifu.header) {
+                  return mark + (player.kifu.header[komaochiName] || komaochiName);
+              }
+              return mark + (player.kifu.header[name] || name);
+          }) as [string, string]);
+
+    const state = player.getState();
+
     return (
         <Zumen
-            state={kifuStore.player.getState()}
+            state={state}
             latestMoveTo={latestMoveTo}
-            players={[kifuStore.player.kifu.header.先手, kifuStore.player.kifu.header.後手]}
+            hideKingsHand={kifuStore.tsumeMode.hideKingsHand}
+            players={players}
             width={areaWidth}
             height={svgHeight}
+            citation={kifuStore.tsumeMode.citation}
             style={{
                 ...(kifuStore.maxWidth === null ? {} : { maxWidth: kifuStore.maxWidth }),
                 touchAction: "manipulation",
@@ -106,7 +125,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                         y={0}
                         width={areaWidth / 2}
                         height={areaHeight}
-                        onClick={() => kifuStore.player.backward()}
+                        onClick={() => player.backward()}
                     />
                     <rect
                         fillOpacity={0}
@@ -114,7 +133,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                         y={0}
                         width={areaWidth / 2}
                         height={areaHeight}
-                        onClick={() => kifuStore.player.forward()}
+                        onClick={() => player.forward()}
                     />
                     <foreignObject
                         x={controlMargin}
@@ -132,14 +151,14 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 }}
                             >
                                 <button
-                                    onClick={() => kifuStore.player.backward()}
-                                    disabled={kifuStore.player.tesuu === 0}
+                                    onClick={() => player.backward()}
+                                    disabled={player.tesuu === 0}
                                     style={{ minWidth: "70px", fontSize: "15px" }}
                                 >
                                     ◀
                                 </button>
                                 <KifuList
-                                    player={kifuStore.player}
+                                    player={player}
                                     style={{ fontSize: "x-small" }}
                                     noPositionAbsoluteForSafariBug={true}
                                     initialHeight={67}
@@ -147,9 +166,9 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     {/*TODO: long press to keep moving*/}
                                     <button
-                                        onClick={() => kifuStore.player.forward()}
+                                        onClick={() => player.forward()}
                                         style={{ minWidth: "70px", fontSize: "15px", flexGrow: 1 }}
-                                        disabled={kifuStore.player.tesuu === kifuStore.player.currentStream.length - 1}
+                                        disabled={player.tesuu === player.currentStream.length - 1}
                                     >
                                         ▶
                                     </button>

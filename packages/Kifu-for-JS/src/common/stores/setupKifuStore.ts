@@ -12,9 +12,10 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
         ply: element.dataset.ply ? parseInt(element.dataset.ply, 10) : undefined,
         src: element.dataset.src,
         static: parseStatic(),
+        tsume: parseTsume(),
     };
 
-    function parseStatic() {
+    function parseStatic(): IOptions["static"] {
         if (!("static" in element.dataset)) {
             return undefined;
         }
@@ -27,5 +28,17 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
             return { last: parsed as [number, number] };
         }
         return {};
+    }
+
+    function parseTsume(): IOptions["tsume"] {
+        if (!("tsume" in element.dataset)) {
+            return undefined;
+        }
+        if (element.dataset.tsume === "false") return false;
+
+        return {
+            kingsHand: ["", "true"].indexOf(element.dataset.tsumeKingshand) >= 0 ? true : undefined,
+            citation: ["", "true"].indexOf(element.dataset.tsumeCitation) >= 0 ? true : undefined,
+        };
     }
 }

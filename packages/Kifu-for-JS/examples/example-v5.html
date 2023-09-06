@@ -166,6 +166,7 @@
 
         <h4>図面モード(BOD)</h4>
         <script type="text/kifu" data-static>
+            作品名：不明
             後手の持駒：飛　金三　銀三　桂二　香四　歩十三
               ９ ８ ７ ６ ５ ４ ３ ２ １
             +---------------------------+
@@ -197,6 +198,32 @@
         <script type="text/kifu" data-static data-static-last="[3, 2]">
             ln1gkg1nl/6+P2/2sppps1p/2p3p2/p8/P1P1P3P/2NP1PP2/3s1KSR1/L1+b2G1NL w R2Pbgp 42
         </script>
+
+        <h3>詰将棋モード</h3>
+
+        <h4>自動判定</h4>
+        <script type="text/kifu" data-src="./files/kif/32ryu-cumbersome.kif" data-tsume></script>
+
+        <h4>手動設定</h4>
+        <script type="text/kifu" data-src="./files/kif/32ryu-cumbersome.kif" data-tsume></script>
+
+        <h4>玉方残り全部ではない場合</h4>
+        <script type="text/kifu" data-src="./files/ki2/9fu.ki2"></script>
+
+        <h4>玉方の持駒を省略しない設定</h4>
+        <script type="text/kifu" data-tsume data-tsume-kingsHand data-src="./files/kif/kanju-kemuri.kif"></script>
+
+        <h4>出典付記設定</h4>
+        <script type="text/kifu" data-tsume data-tsume-citation data-src="./files/kif/hashimoto-sos.kif"></script>
+
+        <h4>持駒表示設定＆出典付記設定</h4>
+        <script type="text/kifu" data-tsume data-tsume-kingsHand data-tsume-citation data-src="./files/kif/hashimoto-sos.kif"></script>
+
+        <h4>図面モードと併用</h4>
+        <script type="text/kifu" data-src="./files/kif/32ryu-cumbersome.kif" data-tsume data-static></script>
+
+        <h4>図面モードと併用＆持駒表示設定＆出典付記設定</h4>
+        <script type="text/kifu" data-static data-tsume data-tsume-kingsHand data-tsume-citation data-src="./files/kif/hashimoto-sos.kif"></script>
 
         <h3><a id="text">テキスト読み込み＆JSからのテキスト再読み込み</a></h3>
         <script>
