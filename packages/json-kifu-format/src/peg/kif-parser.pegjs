@@ -118,8 +118,8 @@ kifu
 			ret.initial.data.color = 0;
 		}
 		ret.initial.data.hands = [
-			makeHand(ret.header["先手の持駒"] || ret.header["下手の持駒"]),
-			makeHand(ret.header["後手の持駒"] || ret.header["上手の持駒"])
+			makeHand(ret.header[("先手の持駒" in ret.header) ? "先手の持駒" : "下手の持駒"] || ""),
+			makeHand(ret.header[("後手の持駒" in ret.header) ? "後手の持駒" : "上手の持駒"] || ""),
 		];
 		delete ret.header["先手の持駒"];
 		delete ret.header["下手の持駒"];
