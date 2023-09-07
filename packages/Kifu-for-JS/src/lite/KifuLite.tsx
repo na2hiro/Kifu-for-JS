@@ -162,6 +162,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     style={{ fontSize: "x-small" }}
                                     noPositionAbsoluteForSafariBug={true}
                                     initialHeight={67}
+                                    hidden={kifuStore.tsumeMode.answerHidden}
                                 />
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
                                     {/*TODO: long press to keep moving*/}

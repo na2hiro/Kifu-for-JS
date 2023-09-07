@@ -1,13 +1,21 @@
 /* eslint-disable @typescript-eslint/no-inferrable-types */
 import { isTsume, shouldHideKingsHand } from "../../lite/tsumeUtils";
 import KifuStore from "./KifuStore";
-import { computed, toJS } from "mobx";
+import { computed, observable, reaction } from "mobx";
 
 export default class TsumeMode {
     private kifuStore: KifuStore;
+    @observable private dirty = false;
 
     constructor(kifuStore: KifuStore) {
         this.kifuStore = kifuStore;
+
+        reaction(
+            () => this.kifuStore.player.tesuu,
+            (a, b) => {
+                this.dirty = true;
+            },
+        );
     }
 
     @computed
@@ -46,6 +54,19 @@ export default class TsumeMode {
 
         if (!author) return null;
 
+        // eslint-disable-next-line no-irregular-whitespace
         return `${author}${title}${paper}　${date}`;
+    }
+
+    get answerHidden() {
+        if (!this.enabled) return false;
+
+        if (
+            !(typeof this.kifuStore.options?.tsume === "object" && (this.kifuStore.options?.tsume.hideAnswer ?? false))
+        ) {
+            return false;
+        }
+
+        return !this.dirty;
     }
 }

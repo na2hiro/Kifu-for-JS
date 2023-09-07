@@ -8,7 +8,9 @@
 
 * 「☗先手」「☖後手」ではなく「持駒」と表記
 * 玉方の持駒が残り全部の場合、省略する（表示させることも可能）
-* 出典の表示も可能（デフォルトではオフ）
+* 次のようなオプションも指定可能です。（デフォルトではオフ）
+  * [再生するまでは解を隠す](#再生するまでは解を隠す)
+  * [出典の表示](#出典の表示)
 
 <details>
     <summary>自動判定ロジックについて</summary>
@@ -23,11 +25,9 @@
 
 </details>
 
-また、直接以下のオプションを使用することで詰将棋モードを有効・無効にすることもできます。
-
 ## 手動指定
 
-自動判定に任せず、手動で詰将棋モードを指定する方法は次のとおりです。
+自動判定に任せず、手動で詰将棋モードの有効・無効を指定する方法は次のとおりです。
 
 <KifuForEachMethod src="/kifu/32ryu-cumbersome.kif" tsume={true} />
 
@@ -45,9 +45,17 @@
 
 <KifuForEachMethod src={"/kifu/kanju-kemuri.kif"} tsume={{kingsHand: true}} />
 
+### 再生するまでは解を隠す
+
+詰将棋を解く際に、解を見てしまわないようにするためのオプションです。1手でも再生すると解が表示されます。
+
+`tsume-hideAnswer` を指定します。
+
+<KifuForEachMethod src={"/kifu/hashimoto-sos.kif"} tsume={{hideAnswer: true}} />
+
 ### 出典の表示
 
-[全日本詰将棋連盟「詰将棋の引用について」](http://tsumepara.com/contents/6info/quotation.htm)のガイドラインに従い、棋譜情報から詰将棋の出典を表示することができます。
+[全日本詰将棋連盟「詰将棋の引用について」](http://tsumepara.com/contents/6info/quotation.htm)のガイドラインに従い、棋譜情報に基づいて詰将棋の出典を表示することができます。
 
 `tsume-citation` を指定します。「作者」の情報がない場合は表示されません。
 
@@ -61,3 +69,9 @@
 玉方の持駒を表示している場合は次のように表示されます。
 
 <KifuLite src="/kifu/kanju-kemuri.kif" tsume={{kingsHand: true, citation: true}} />
+
+## 静的図面モードとの組み合わせ
+
+いずれの機能も、[静的図面モード](./image-mode)と組み合わせて使用することができます。
+
+<KifuLite src="/kifu/hashimoto-sos.kif" tsume={{citation: true}} static />

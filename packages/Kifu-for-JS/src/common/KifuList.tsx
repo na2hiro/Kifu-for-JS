@@ -9,6 +9,7 @@ export interface IProps {
     player: JKFPlayer;
     style?: CSSProperties;
     initialHeight?: number;
+    hidden?: boolean;
 
     // Cannot use position: absolute inside foreignObject in Safari. In that case height should be determined from outside
     // https://stackoverflow.com/questions/51313873/svg-foreignobject-not-working-properly-on-safari
@@ -27,7 +28,7 @@ export default class KifuList extends React.Component<IProps> {
     }
 
     public render() {
-        const { player, style, noPositionAbsoluteForSafariBug, initialHeight } = this.props;
+        const { player, ...restProps } = this.props;
         const options = player.getReadableKifuState().map((kifu, i) => {
             const node = (
                 <>
@@ -43,16 +44,7 @@ export default class KifuList extends React.Component<IProps> {
                 value: i,
             };
         });
-        return (
-            <DivList
-                options={options}
-                onChange={this.onChange}
-                tesuu={player.tesuu}
-                style={style}
-                noPositionAbsoluteForSafariBug={noPositionAbsoluteForSafariBug}
-                initialHeight={initialHeight}
-            />
-        );
+        return <DivList options={options} onChange={this.onChange} tesuu={player.tesuu} {...restProps} />;
     }
 }
 
@@ -66,6 +58,7 @@ interface IDivListProps {
     style?: CSSProperties;
     noPositionAbsoluteForSafariBug: boolean;
     initialHeight?: number;
+    hidden?: boolean;
 }
 
 const DivList: FunctionComponent<IDivListProps> = ({
@@ -75,6 +68,7 @@ const DivList: FunctionComponent<IDivListProps> = ({
     style,
     noPositionAbsoluteForSafariBug,
     initialHeight,
+    hidden = false,
 }) => {
     const [containerHeight, setContainerHeight] = useState<number | null>(null);
     const [rowHeight, setRowHeight] = useState<number | null>(null);
@@ -180,6 +174,7 @@ const DivList: FunctionComponent<IDivListProps> = ({
                     alignItems: "stretch",
                     width: "100%",
                     ...(noPositionAbsoluteForSafariBug ? {} : { position: "absolute" }),
+                    ...(hidden ? { filter: "blur(5px)" } : {}),
                 }}
             >
                 <div style={{ height: paddingHeight }} />

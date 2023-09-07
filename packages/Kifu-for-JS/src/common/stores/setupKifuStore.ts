@@ -39,6 +39,7 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
         return {
             kingsHand: ["", "true"].indexOf(element.dataset.tsumeKingshand) >= 0 ? true : undefined,
             citation: ["", "true"].indexOf(element.dataset.tsumeCitation) >= 0 ? true : undefined,
+            hideAnswer: ["", "true"].indexOf(element.dataset.tsumeHideanswer) >= 0 ? true : undefined,
         };
     }
 }
