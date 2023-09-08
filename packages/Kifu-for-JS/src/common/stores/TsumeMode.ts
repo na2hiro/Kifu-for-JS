@@ -12,7 +12,7 @@ export default class TsumeMode {
 
         reaction(
             () => this.kifuStore.player.tesuu,
-            (a, b) => {
+            () => {
                 this.dirty = true;
             },
         );

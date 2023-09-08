@@ -31,6 +31,8 @@ const controlHeight = 150;
 const controlMarginTop = 4;
 const controlMargin = 8;
 
+const buttonWidth = 70;
+
 // TODO: remove this
 function getChildrenTextContent(children: ReactNode) {
     if (!children) {
@@ -153,7 +155,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                 <button
                                     onClick={() => player.backward()}
                                     disabled={player.tesuu === 0}
-                                    style={{ minWidth: "70px", fontSize: "15px" }}
+                                    style={{ minWidth: buttonWidth, fontSize: "15px" }}
                                 >
                                     ◀
                                 </button>
@@ -168,7 +170,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     {/*TODO: long press to keep moving*/}
                                     <button
                                         onClick={() => player.forward()}
-                                        style={{ minWidth: "70px", fontSize: "15px", flexGrow: 1 }}
+                                        style={{ minWidth: buttonWidth, fontSize: "15px", flexGrow: 1 }}
                                         disabled={player.tesuu === player.currentStream.length - 1}
                                     >
                                         ▶

@@ -146,7 +146,21 @@ const DivList: FunctionComponent<IDivListProps> = ({
         },
         [tesuu],
     );
-    return (
+    return hidden ? (
+        <div
+            style={{
+                flexGrow: 1,
+                border: `1px rgb(118, 118, 118, 0.3) solid`,
+                borderRadius: "2px",
+                fontSize: "x-small",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+            }}
+        >
+            （非表示）
+        </div>
+    ) : (
         <div
             className="kifuforjs-kifulist"
             onScroll={onScroll}
@@ -174,7 +188,8 @@ const DivList: FunctionComponent<IDivListProps> = ({
                     alignItems: "stretch",
                     width: "100%",
                     ...(noPositionAbsoluteForSafariBug ? {} : { position: "absolute" }),
-                    ...(hidden ? { filter: "blur(5px)" } : {}),
+                    // Safari has a positioning bug within foreignObject
+                    // ...(hidden ? { filter: "blur(5px)" } : {}),
                 }}
             >
                 <div style={{ height: paddingHeight }} />
