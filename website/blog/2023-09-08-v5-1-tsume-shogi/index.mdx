@@ -1,0 +1,24 @@
+---
+title: "Kifu for JS v5.1 🎉 詰将棋モードを追加"
+authors: na2hiro
+image: ./cover.png
+# tags: [Kifu for JS]
+---
+
+import { KifuLite } from "kifu-for-js";
+
+<KifuLite src="/kifu/32ryu-cumbersome.kif"></KifuLite>
+
+Kifu for JS [v5.1.0 マイナーリリース](https://github.com/na2hiro/Kifu-for-JS/releases/tag/v5.1.0)において、詰将棋モードが追加されました。この機能は、詰将棋の棋譜を読み込んだ際、自動的に詰将棋に適した表示に切り替えるものです。具体的には、
+
+- 「☗先手」「☖後手」ではなく「持駒」と表記
+- 玉方の持駒が残り全部の場合、省略する
+
+また、以下のオプションも指定することができます。
+
+- 再生するまでは解を隠す
+- 出典の表示
+- あえて玉方の持駒を表示する
+- 詰将棋モードのオン・オフを手動で指定
+
+詳しくは、Docsの[詰将棋モード](/docs/options/tsume)をご覧ください。
