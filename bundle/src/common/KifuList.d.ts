@@ -5,6 +5,7 @@ export interface IProps {
     player: JKFPlayer;
     style?: CSSProperties;
     initialHeight?: number;
+    hidden?: boolean;
     noPositionAbsoluteForSafariBug: boolean;
 }
 export default class KifuList extends React.Component<IProps> {

@@ -5,6 +5,7 @@ interface IProps {
     kx: number;
     name?: string;
     hand: IHandFormat;
+    leftCrowded?: boolean;
 }
 export declare const Mochigoma: FC<IProps>;
 export {};
