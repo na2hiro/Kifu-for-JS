@@ -1,0 +1,77 @@
+# 詰将棋モード (`tsume`)
+
+詰将棋モードは、詰将棋の表示・再生に最適なモードです。詰将棋らしき棋譜が読み込まれると、自動的に切り替わります。
+
+<KifuLite src="/kifu/32ryu-cumbersome.kif" />
+
+以下のような特徴があります。
+
+* 「☗先手」「☖後手」ではなく「持駒」と表記
+* 玉方の持駒が残り全部の場合、省略する（表示させることも可能）
+* 次のようなオプションも指定可能です。（デフォルトではオフ）
+  * [再生するまでは解を隠す](#再生するまでは解を隠す)
+  * [出典の表示](#出典の表示)
+
+<details>
+    <summary>自動判定ロジックについて</summary>
+
+棋譜が詰将棋であるかどうかは、以下の条件が全て満たされているかどうかで判定します。
+
+* 初期局面が指定されている
+* 以下のいずれか
+  * 棋譜が"詰"で終わる
+  * 棋譜情報に「作品番号」「作品名」「作者」「手数」「完全性」「発表誌」「発表年月」のいずれかが存在する
+* [静的図面モード](./image-mode)におけるSFEN局面ではない
+
+</details>
+
+## 手動指定
+
+自動判定に任せず、手動で詰将棋モードの有効・無効を指定する方法は次のとおりです。
+
+<KifuForEachMethod src="/kifu/32ryu-cumbersome.kif" tsume={true} />
+
+詰将棋モードにしない例
+
+<KifuForEachMethod src="/kifu/32ryu-cumbersome.kif" tsume={false} />
+
+## 詰将棋モード内のオプション
+
+### あえて玉方の持駒を表示
+
+詰将棋モードにおいて、全ての駒（40枚、または攻め方王を除く39枚）が盤上あるいは駒台に出揃っている場合、玉方の持駒は省略されます。このオプションを有効にすると、玉方の持駒が省略されなくなります。煙詰のように玉方の持駒に注目してほしい場合に便利です。
+
+`tsume-kingsHand` を指定します。
+
+<KifuForEachMethod src={"/kifu/kanju-kemuri.kif"} tsume={{kingsHand: true}} />
+
+### 再生するまでは解を隠す
+
+詰将棋を解く際に、解を見てしまわないようにするためのオプションです。1手でも再生すると解が表示されます。
+
+`tsume-hideAnswer` を指定します。
+
+<KifuForEachMethod src={"/kifu/hashimoto-sos.kif"} tsume={{hideAnswer: true}} />
+
+### 出典の表示
+
+[全日本詰将棋連盟「詰将棋の引用について」](http://tsumepara.com/contents/6info/quotation.htm)のガイドラインに従い、棋譜情報に基づいて詰将棋の出典を表示することができます。
+
+`tsume-citation` を指定します。「作者」の情報がない場合は表示されません。
+
+<KifuForEachMethod src={"/kifu/hashimoto-sos.kif"} tsume={{citation: true}} />
+
+表記は次のとおりです。発表誌、発表年月がない場合は省略されます。
+
+* (作者)作 「(作品名)」 (発表誌) (発表年月あるいは発表日付)
+* (作者)作 (発表誌) (発表年月あるいは発表日付)
+
+玉方の持駒を表示している場合は次のように表示されます。
+
+<KifuLite src="/kifu/kanju-kemuri.kif" tsume={{kingsHand: true, citation: true}} />
+
+## 静的図面モードとの組み合わせ
+
+いずれの機能も、[静的図面モード](./image-mode)と組み合わせて使用することができます。
+
+<KifuLite src="/kifu/hashimoto-sos.kif" tsume={{citation: true}} static />

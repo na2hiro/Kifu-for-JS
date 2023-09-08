@@ -3,21 +3,72 @@ import { IPlaceFormat } from "json-kifu-format/src/Formats";
 import { decorate, observable } from "mobx";
 import { Shogi } from "shogi.js";
 import fetchFile from "../../utils/fetchFile";
+import TsumeMode from "./TsumeMode";
 
+/**
+ * Options for displaying Kifu. See https://kifu-for-js.81.la/docs/options for details.
+ */
 export interface IOptions {
+    /**
+     * Kifu string to be loaded
+     */
     kifu?: string;
+    /**
+     * URL to fetch Kifu string from
+     */
     src?: string;
+    /**
+     * Ply to start from
+     */
     ply?: number;
+    /**
+     * Array of pairs of [ply, forkIndex] to start from in case of forked Kifu
+     */
     forkPointers?: Array<[number, number]>;
+    /**
+     * Options for image mode
+     */
     static?: IStatic;
+    /**
+     * Options for tsume shogi mode
+     */
+    tsume?: ITsumeOptions;
+    /**
+     * Maximum width of the board in pixels
+     */
     maxWidth?: number | null;
 }
 
 export interface IStatic {
+    /**
+     * Specify the last move to show. If "hidden", the last move is hidden.
+     * Without this options, the last move is shown.
+     */
     last?: "hidden" | [number, number];
 }
 
-const formatErrorMessage = (kifu, error) =>
+export type ITsumeOptions =
+    | {
+          /**
+           * Show hand of king's side even though it looks redundant
+           * Default: false, meaning it omits hand display if king has all the rest of pieces (excluding king) in the hand
+           */
+          kingsHand?: boolean;
+
+          /**
+           * Show citation for the problem
+           * Default: false
+           */
+          citation?: boolean;
+
+          /**
+           * Hide the answer until the first replay is made
+           */
+          hideAnswer?: boolean;
+      }
+    | false;
+
+const formatErrorMessage = (kifu: string, error: string) =>
     `棋譜形式エラー: この棋譜ファイルを @na2hiro までお寄せいただければ対応します．
 ${error}
 === 棋譜 ===
@@ -28,7 +79,12 @@ export default class KifuStore {
     @observable public errors: string[] = [];
     @observable public reversed: boolean;
     @observable public filePath: string;
+    /**
+     * @deprecated Use `options` instead
+     */
     @observable public staticOptions: IStatic;
+    @observable public options: IOptions;
+    @observable public tsumeMode: TsumeMode;
     @observable public maxWidth: number | null;
     @observable private player_: JKFPlayer;
     private timerAutoload: number;
@@ -44,9 +100,12 @@ export default class KifuStore {
 
     public setOptions(options?: IOptions) {
         this.staticOptions = options?.static;
+        this.options = options;
+        this.tsumeMode = new TsumeMode(this);
+
         this.maxWidth = options?.maxWidth === null ? null : options?.maxWidth ?? 400;
         if (options) {
-            const initializePly = () => {
+            const onLoad = () => {
                 if (options.ply) {
                     this.player.goto(
                         options.ply,
@@ -61,7 +120,7 @@ export default class KifuStore {
                     .catch(() => {
                         // ignore and let the comment show error message hanadled inside
                     })
-                    .then(initializePly);
+                    .then(onLoad);
             } else if (options.kifu && options.kifu.trim() !== "") {
                 try {
                     this.loadKifuSync(options.kifu.trim());
@@ -80,7 +139,7 @@ export default class KifuStore {
                         }
                     }
                 }
-                initializePly();
+                onLoad();
             }
         }
     }

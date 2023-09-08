@@ -19,6 +19,8 @@ interface IProps {
     width?: number;
     height?: number;
     state?: IStateFormat;
+    hideKingsHand?: boolean;
+    citation?: string;
     latestMoveTo?: IPlaceFormat;
     players?: [string | undefined, string | undefined];
     style?: CSSProperties;
@@ -26,7 +28,7 @@ interface IProps {
 }
 
 const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
-    ({ width, height, state, latestMoveTo, children, players, style = {} }, ref) => {
+    ({ width, height, state, hideKingsHand, latestMoveTo, children, players, citation, style = {} }, ref) => {
         if (!state) {
             return null;
         }
@@ -89,6 +91,9 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                 </text>,
             );
         });
+
+        const leftCrowded = citation && !hideKingsHand;
+
         return (
             <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -175,11 +180,41 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                     })}
                 </g>
                 <Mochigoma v={0} kx={kx} hand={state.hands[0]} name={players?.[0]} />
-                <Mochigoma v={1} kx={kx} hand={state.hands[1]} name={players?.[1]} />
+                {!hideKingsHand && (
+                    <Mochigoma v={1} kx={kx} hand={state.hands[1]} name={players?.[1]} leftCrowded={leftCrowded} />
+                )}
+                {citation && <Citation citation={citation} leftCrowded={leftCrowded} />}
                 {children}
             </svg>
         );
     },
 );
+
+function Citation({ citation, leftCrowded }) {
+    const squashRatio = citation.length > 29 ? 29 / citation.length : 1;
+    return (
+        <g
+            transform={`translate(${leftCrowded ? "-12" : "0"},0) ${
+                citation.length > 29 ? `scale(1, ${squashRatio})` : ""
+            }`}
+        >
+            <text
+                fill="currentColor"
+                x={16.5}
+                y={230 / squashRatio}
+                width={100}
+                height={100}
+                writingMode={"vertical-rl"}
+                style={{
+                    fontSize: "8px",
+                    textAnchor: "end",
+                    opacity: 0.8,
+                }}
+            >
+                {citation}
+            </text>
+        </g>
+    );
+}
 
 export default Zumen;

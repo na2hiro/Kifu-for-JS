@@ -95,6 +95,7 @@ http://opensource.org/licenses/mit-license.php`,
                   devServer: {
                       port: DEV_SERVER_PORT,
                       host: "0.0.0.0",
+                      allowedHosts: "all",
                       client: {
                           progress: true,
                       },

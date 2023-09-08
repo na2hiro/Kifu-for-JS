@@ -93,3 +93,14 @@ export const getInitialFromPreset = (preset: string) => {
 
 const presets = Object.keys(presetDefinitions);
 export default presets;
+
+export const pieceHistogram: {[kind: string]: number} = {
+    FU: 18,
+    KY: 4,
+    KE: 4,
+    GI: 4,
+    KI: 4,
+    KA: 2,
+    HI: 2,
+    OU: 2,
+};

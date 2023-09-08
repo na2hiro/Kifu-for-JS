@@ -3,8 +3,6 @@ import React, { FC } from "react";
 import { isRawKind, kindToString, values as kindValues } from "shogi.js/cjs/Kind";
 import { KanSuuji, scolor } from "./lib";
 
-const sgm = 1;
-
 function amountToString(amount: number) {
     if (amount <= 1) {
         return "";
@@ -32,25 +30,34 @@ interface IProps {
     kx: number;
     name?: string;
     hand: IHandFormat;
+    leftCrowded?: boolean;
 }
 const turns = ["先手", "後手"];
-const marks = "☗☖";
-export const Mochigoma: FC<IProps> = ({ v, kx, hand, name = turns[v] }) => {
-    const t = marks[v] + name + "　" + handToString(hand);
-    const py = (-t.length * kx * 9) / 14;
+export const Mochigoma: FC<IProps> = ({ v, kx, hand, name = turns[v], leftCrowded }) => {
+    const textCount = 14;
+    const t = name + "　" + handToString(hand);
+    const py = (-t.length * kx * 9) / textCount;
 
     // Originally 14, but made 13 in order to make a space for the config icon
-    const r = t.length > 13 ? 13 / t.length : 1;
+    const r = t.length > textCount - 1 ? (textCount - 1) / t.length : 1;
+    const sgm = name[0] === "☗" || name[0] === "☖" ? 1 : 0;
     return (
         <g
             transform={
                 v == 0
                     ? "translate(" + kx * 11.35 + "," + kx * 9.7 + ") scale(1," + r + ")"
-                    : "translate(" + kx * 0.65 + "," + kx * 0.8 + ") scale(-1," + -r + ")"
+                    : "translate(" + kx * 0.65 * (leftCrowded ? 1.25 : 1) + "," + kx * 0.8 + ") scale(-1," + -r + ")"
             }
         >
             {Array.from({ length: t.length - sgm }, (_v, i) => i).map((i) => (
-                <text key={i} fontSize={(kx * 9) / 14} fill={scolor} textAnchor="middle" x={0} y={(-i * kx * 9) / 14}>
+                <text
+                    key={i}
+                    fontSize={(kx * 9) / textCount}
+                    fill={scolor}
+                    textAnchor="middle"
+                    x={0}
+                    y={(-i * kx * 9) / textCount}
+                >
                     {t.charAt(t.length - i - 1)}
                 </text>
             ))}
