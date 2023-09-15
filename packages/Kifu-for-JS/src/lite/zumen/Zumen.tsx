@@ -103,6 +103,8 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                     fontFamily: "serif",
                     userSelect: "none",
                     WebkitUserSelect: "none",
+                    lineHeight: "initial",
+                    textAlign: "left",
                     ...style,
                 }}
                 viewBox={"0 0 " + width + " " + height}
