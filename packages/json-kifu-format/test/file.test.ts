@@ -1,76 +1,50 @@
-import {readdirSync, readFile} from "fs";
+import {readdirSync, promises} from "fs";
 import {decode} from "iconv-lite";
 import {detect} from "jschardet";
 import JKFPlayer from "../src/jkfplayer";
 
+const {readFile} = promises;
+
 const SJIS = "cp932";
 const FILES_DIR = __dirname + "/files";
 
-makeTest("kif", (filename) => (filename.match(/u$/) ? loadUTF : loadSJIS));
-makeTest("ki2", (filename) => (filename.match(/u$/) ? loadUTF : loadSJIS));
-makeTest("csa", () => loadAuto);
-makeTest("jkf", () => loadUTF);
+makeTest("kif", (filename) => (filename.match(/u$/) ? loadUTF(filename) : loadSJIS(filename)));
+makeTest("ki2", (filename) => (filename.match(/u$/) ? loadUTF(filename) : loadSJIS(filename)));
+makeTest("csa", (filename) => loadAuto(filename));
+makeTest("jkf", (filename) => loadUTF(filename));
 
-function makeTest(ext, fileNameToLoadFunc) {
+function makeTest(ext: string, loader: (filename: string) => Promise<string>) {
     describe(ext + " file", () => {
         const files = readdirSync(FILES_DIR + "/" + ext);
-        for (const file of files) {
-            ((filename) => {
-                if (!filename.match(new RegExp("\\." + ext + "u?$"))) {
-                    return;
-                }
-                // eslint-disable-next-line jest/valid-title
-                it(filename, () => {
-                    return new Promise<void>((done) => {
-                        try {
-                            fileNameToLoadFunc(filename)(
-                                FILES_DIR + "/" + ext + "/" + filename,
-                                (err, data) => {
-                                    if (err) {
-                                        done(err);
-                                        return;
-                                    }
-                                    data = data.replace(/^\ufeff/, ""); // delete BOM
-                                    try {
-                                        const player: JKFPlayer =
-                                            JKFPlayer["parse" + ext.toUpperCase()](data);
-                                        player.goto(Infinity);
-                                        player.goto(0);
-                                        expect(player.kifu).toMatchSnapshot();
-                                        done();
-                                    } catch (e) {
-                                        done(e);
-                                    }
-                                }
-                            );
-                        } catch (e) {
-                            done(e);
-                        }
-                    });
-                });
-            })(file);
+        for (const filename of files) {
+            if (!filename.match(new RegExp("\\." + ext + "u?$"))) {
+                return;
+            }
+            // eslint-disable-next-line jest/valid-title
+            it(filename, async () => {
+                let data = await loader(FILES_DIR + "/" + ext + "/" + filename);
+                data = data.replace(/^\ufeff/, ""); // delete BOM
+
+                const player: JKFPlayer = JKFPlayer["parse" + ext.toUpperCase()](data);
+                player.goto(Infinity);
+                player.goto(0);
+                expect(player.kifu).toMatchSnapshot();
+            });
         }
     });
 }
-function loadUTF(filename, cb) {
-    readFile(filename, {encoding: "utf-8"}, cb);
+
+async function loadUTF(filename: string) {
+    return readFile(filename, {encoding: "utf-8"});
 }
-function loadSJIS(filename, cb) {
-    readFile(filename, (err, data) => {
-        if (err) {
-            cb(err);
-            return;
-        }
-        cb(null, decode(data, SJIS));
-    });
+
+async function loadSJIS(filename: string) {
+    const data = await readFile(filename);
+    return decode(data, SJIS);
 }
-function loadAuto(filename, cb) {
-    readFile(filename, (err, data) => {
-        if (err) {
-            cb(err);
-            return;
-        }
-        const {encoding} = detect(data);
-        cb(null, decode(data, encoding));
-    });
+
+async function loadAuto(filename: string) {
+    const data = await readFile(filename);
+    const {encoding} = detect(data);
+    return decode(data, encoding);
 }

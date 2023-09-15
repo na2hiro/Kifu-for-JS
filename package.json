@@ -6,7 +6,6 @@
     "website"
   ],
   "devDependencies": {
-    "@types/jest": "^28.1.4",
     "@typescript-eslint/eslint-plugin": "^5.28.0",
     "@typescript-eslint/parser": "^5.28.0",
     "eslint": "^8.17.0",
