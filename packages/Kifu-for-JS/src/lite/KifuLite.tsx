@@ -12,6 +12,8 @@ import UserSetting from "../common/stores/UserSetting";
 import { removeIndentation } from "../utils/util";
 import SettingsIcon from "./settings/SettingsIcon";
 import useHaptics from "./useHaptics";
+import PlayButton from "./PlayButton";
+import { useIntervalKickout } from "./useInterval";
 
 export type IProps = {
     /**
@@ -102,6 +104,8 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
 
     const state = player.getState();
 
+    const kickout = useIntervalKickout();
+
     return (
         <Zumen
             state={state}
@@ -152,13 +156,14 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     gap: "1px",
                                 }}
                             >
-                                <button
-                                    onClick={() => player.backward()}
-                                    disabled={player.tesuu === 0}
-                                    style={{ minWidth: buttonWidth, fontSize: "15px" }}
+                                <PlayButton
+                                    step={() => player.backward()}
+                                    shouldStop={() => player.tesuu === 0}
+                                    style={{ minWidth: buttonWidth }}
+                                    kickout={kickout}
                                 >
                                     ◀
-                                </button>
+                                </PlayButton>
                                 <KifuList
                                     player={player}
                                     style={{ fontSize: "x-small" }}
@@ -167,14 +172,14 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
                                     hidden={kifuStore.tsumeMode.answerHidden}
                                 />
                                 <div style={{ display: "flex", flexDirection: "column", gap: "1px" }}>
-                                    {/*TODO: long press to keep moving*/}
-                                    <button
-                                        onClick={() => player.forward()}
-                                        style={{ minWidth: buttonWidth, fontSize: "15px", flexGrow: 1 }}
-                                        disabled={player.tesuu === player.currentStream.length - 1}
+                                    <PlayButton
+                                        step={() => player.forward()}
+                                        shouldStop={() => player.tesuu === player.currentStream.length - 1}
+                                        style={{ minWidth: buttonWidth, flexGrow: 1 }}
+                                        kickout={kickout}
                                     >
                                         ▶
-                                    </button>
+                                    </PlayButton>
                                     <ForkList kifuStore={kifuStore} />
                                 </div>
                             </div>
