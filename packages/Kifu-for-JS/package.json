@@ -1,6 +1,6 @@
 {
     "name": "kifu-for-js",
-    "version": "5.2.0",
+    "version": "5.2.1",
     "description": "Shogi Kifu viewer for JavaScript",
     "main": "dist/kifu-for-js.js",
     "types": "dist/src/index.d.ts",
@@ -48,14 +48,14 @@
     "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/Kifu-for-JS#readme",
     "dependencies": {
         "focus-trap-react": "^10.2.1",
-        "json-kifu-format": "^5.2.0",
+        "json-kifu-format": "^5.2.1",
         "mobx": "^4.1.1",
         "mobx-react": "^6.3.1",
         "react-dnd": "^7.7.0",
         "react-dnd-html5-backend": "^2.1.2",
         "react-dnd-multi-backend": "^3.0.4",
         "react-dnd-touch-backend": "^0.8.3",
-        "shogi.js": "^5.2.0",
+        "shogi.js": "^5.2.1",
         "use-long-press": "^3.2.0"
     },
     "peerDependencies": {
