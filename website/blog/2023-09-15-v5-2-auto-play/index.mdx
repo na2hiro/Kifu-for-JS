@@ -1,0 +1,26 @@
+---
+title: "Kifu for JS v5.2 🎉 自動再生機能を追加"
+authors: na2hiro
+image: ./cover.png
+# tags: [Kifu for JS]
+---
+
+<p>
+    <video controls="controls" loop name="自動再生" width="100%" style={{ maxWidth: "400px" }}>
+        <source src="/img/auto-play.mp4" />
+    </video>
+</p>
+
+Kifu for JS [v5.2.0 マイナーリリース](https://github.com/na2hiro/Kifu-for-JS/releases/tag/v5.2.0)において、自動再生機能が追加されました。
+
+* **▶ボタンを長押し**することで自動再生状態に切り替わり、自動で棋譜を鑑賞することができます。
+* 押したボタンは■ボタンになり、これをもう一度押すと停止します。
+* ◀ボタンも同様です。
+
+なおこの機能は初見では発見しづらいため、今後は将棋盤を使用する際にうまくヒントを表示する方法や、使い方ドキュメントの整備を検討していきます。
+
+### 試してみる
+
+import { KifuLite } from "kifu-for-js";
+
+<KifuLite src="/kifu/32ryu-cumbersome.kif"></KifuLite>
