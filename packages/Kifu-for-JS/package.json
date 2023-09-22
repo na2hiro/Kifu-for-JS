@@ -24,7 +24,7 @@
         "cy:run": "cypress run",
         "cy:run:ci": "echo \"Running Cypress...\" && cypress run --config-file cypress.ci.config.ts",
         "ghpages": "rm -rf ./public && mkdir -p ./public/src && mkdir -p ./public/out & npm run build",
-        "postghpages": "cp ./bundle/public-bookmarklet.min.js ./public/src/ && cp ./bundle/*.js ./public/out/ && cp -R examples ./public && cp -R bundle readme-ss public/",
+        "postghpages": "cp ./src/public-bookmarklet-on-ghpages.js ./public/src/public-bookmarklet.min.js && cp ./bundle/*.js ./public/out/ && cp -R examples ./public && cp -R bundle readme-ss public/",
         "typecheck": "tsc --project tsconfig.typecheck.json"
     },
     "repository": {

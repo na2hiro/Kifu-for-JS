@@ -1,3 +1,3 @@
 const s = document.createElement("script");
-s.src = "https://na2hiro.github.io/Kifu-for-JS/out/public-bookmarklet.min.js";
+s.src = "https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/public-bookmarklet.min.js";
 document.body.appendChild(s);
