@@ -21,3 +21,4 @@ export declare function load(options: IOptions, id: string): Promise<KifuStoreS>
 export declare function load(filePath: string, id: string, options?: IOptions): Promise<KifuStoreS>;
 export declare function load(filePath: string, options?: IOptions): Promise<KifuStoreS>;
 export declare function getKifuStore(element: HTMLElement): Promise<KifuStoreS>;
+export declare function recover(): Promise<KifuStoreS[]>;
