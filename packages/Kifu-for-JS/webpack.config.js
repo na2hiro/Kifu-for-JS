@@ -11,7 +11,6 @@ module.exports = (env) => {
     const IS_GHPAGES = env.ghpages;
     const IS_PROD = env.production; // Prod or dev
     const IS_ANALYZE = env.analyze;
-    const IS_PROD_LOCAL = env.prodLocal; // To test prod build locally
     const BUNDLE_DIR = path.resolve(__dirname, "./bundle");
     const common = {
         module: {
@@ -136,7 +135,7 @@ http://opensource.org/licenses/mit-license.php`,
             filename: `[name].min.js`,
             chunkFilename: `[name].min.js`,
             path: BUNDLE_DIR,
-            publicPath: getPublicPath(),
+            publicPath: "auto",
         },
         optimization: {
             splitChunks: IS_GHPAGES ? false : undefined,
@@ -144,14 +143,4 @@ http://opensource.org/licenses/mit-license.php`,
     });
 
     return [bundle, dist, bookmarklets];
-
-    function getPublicPath() {
-        if (IS_PROD_LOCAL) {
-            return `http://localhost:8081/bundle/`;
-        } else if (IS_PROD) {
-            return "https://na2hiro.github.io/Kifu-for-JS/out/";
-        } else {
-            return `http://localhost:${DEV_SERVER_PORT}/bundle/`;
-        }
-    }
 };

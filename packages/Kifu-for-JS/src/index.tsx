@@ -7,6 +7,7 @@ import { parseOptionsFromAttributes } from "./common/stores/setupKifuStore";
 import KifuLiteComponent from "./lite/KifuLite";
 import { registry } from "./lite/KifuRegistry";
 import { onDomReady } from "./utils/util";
+import { searchForRecovery } from "./utils/recover";
 
 const mobx = { autorun, when, reaction };
 const mobxReact = { observer };
@@ -114,4 +115,9 @@ if (typeof document !== "undefined") {
             }
         }
     });
+}
+
+export async function recover() {
+    const targets = await searchForRecovery();
+    return Promise.all(targets.map((target) => load({ src: target.kifuPath }, target.targetId)));
 }

@@ -7,6 +7,12 @@
         <script type="text/javascript" src="swfobject.js"></script>
     </head>
     <body>
+        読み込むスクリプト：<select id="dropdown" onchange="location.href='?bundle='+event.target.value">
+            <option value="public-bookmarklet">public-bookmarklet (ブックマークレット)</option>
+            <option value="kifu-for-js">kifu-for-js.min.js with KifuForJS.recover() (自動解釈方式)</option>
+            <option value="">なし</option>
+        </select>
+        <hr />
         Kifu for Flash Free<br />
 
         <!-- ��֕��� -->
@@ -24,6 +30,11 @@
         </script>
 
         �E�B���h�E�̍�����ς���ƁA�R�����g���̍������ς��܂��B
-        <script src="../bundle/public-bookmarklet.min.js"></script>
+        <script src="./bundle-loader.js"></script>
+        <script>
+            if (bundle === "kifu-for-js" && "KifuForJS" in window) {
+                document.write("<script>KifuForJS.recover()<" + "/script>");
+            }
+        </script>
     </body>
 </html>
