@@ -25,13 +25,8 @@
             <option value="kifu-for-js">kifu-for-js.min.js (最新バンドル)</option>
             <option value="kifu-for-js-legacy">kifu-for-js-legacy.min.js (Legacy込みバンドル)</option>
         </select>
+        <script src="./bundle-loader.js"></script>
 
-        <script>
-            var bundle = new URLSearchParams(location.search).get("bundle") || "kifu-for-js";
-            document.write('<script src="../bundle/' + bundle + '.min.js" charset="utf-8"><' + "/script>");
-
-            document.getElementById("dropdown").value = bundle;
-        </script>
         <script>
             KifuForJS.load("./files/ki2/9fu.ki2", "ki2dom");
         </script>

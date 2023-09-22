@@ -3,6 +3,13 @@
         <title>Kifu for Java による棋譜再現例</title>
     </head>
     <body>
+        読み込むスクリプト：<select id="dropdown" onchange="location.href='?bundle='+event.target.value">
+            <option value="public-bookmarklet">public-bookmarklet (ブックマークレット)</option>
+            <option value="kifu-for-js">kifu-for-js.min.js with KifuForJS.recover() (自動解釈方式)</option>
+            <option value="">なし</option>
+        </select>
+        <hr />
+
         Kifu for Java による棋譜再現例<br />
         <applet
             codebase="."
@@ -34,6 +41,11 @@
             <param name="LAST_COLOR" value="100 200 100" />
             <param name="NO_KIFU" value="1" />
         </applet>
-        <script src="../bundle/public-bookmarklet.min.js"></script>
+        <script src="./bundle-loader.js"></script>
+        <script>
+            if (bundle === "kifu-for-js" && "KifuForJS" in window) {
+                document.write("<script>KifuForJS.recover()<" + "/script>");
+            }
+        </script>
     </body>
 </html>
