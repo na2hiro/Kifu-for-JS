@@ -1,6 +1,7 @@
 import { JKFPlayer } from "json-kifu-format";
 import { IPlaceFormat } from "json-kifu-format/src/Formats";
 import TsumeMode from "./TsumeMode";
+import ReverseMode from "./ReverseMode";
 /**
  * Options for displaying Kifu. See https://kifu-for-js.81.la/docs/options for details.
  */
@@ -22,6 +23,10 @@ export interface IOptions {
      */
     forkPointers?: Array<[number, number]>;
     /**
+     * Array of pairs of [ply, forkIndex] to start from in case of forked Kifu
+     */
+    reverse?: IReverseOptions;
+    /**
      * Options for image mode
      */
     static?: IStatic;
@@ -33,6 +38,12 @@ export interface IOptions {
      * Maximum width of the board in pixels
      */
     maxWidth?: number | null;
+}
+export interface IReverseOptions {
+    /**
+     * name to match to auto-reverse the board initially
+     */
+    name?: string;
 }
 export interface IStatic {
     /**
@@ -60,7 +71,6 @@ export type ITsumeOptions = {
 export default class KifuStore {
     signature: number;
     errors: string[];
-    reversed: boolean;
     filePath: string;
     /**
      * @deprecated Use `options` instead
@@ -68,6 +78,7 @@ export default class KifuStore {
     staticOptions: IStatic;
     options: IOptions;
     tsumeMode: TsumeMode;
+    reverseMode: ReverseMode;
     maxWidth: number | null;
     private player_;
     private timerAutoload;

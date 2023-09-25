@@ -1,4 +1,6 @@
-/// <reference types="react" />
-export default function Download({ filePath }: {
-    filePath: any;
-}): JSX.Element;
+import React from "react";
+type Props = {
+    filePath: string;
+};
+declare const Download: React.FC<Props>;
+export default Download;

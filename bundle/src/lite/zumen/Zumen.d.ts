@@ -13,6 +13,7 @@ interface IProps {
     players?: [string | undefined, string | undefined];
     style?: CSSProperties;
     ref?: React.Ref<SVGSVGElement>;
+    reverse?: boolean;
 }
-declare const Zumen: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<IProps>, "style" | "hideKingsHand" | "citation" | "children" | "width" | "height" | "state" | "latestMoveTo" | "players"> & React.RefAttributes<SVGSVGElement>>;
+declare const Zumen: React.ForwardRefExoticComponent<Pick<React.PropsWithChildren<IProps>, "reverse" | "style" | "hideKingsHand" | "citation" | "children" | "width" | "height" | "state" | "latestMoveTo" | "players"> & React.RefAttributes<SVGSVGElement>>;
 export default Zumen;

@@ -1,5 +1,6 @@
-/// <reference types="react" />
-declare function Logo({ style }: {
-    style?: {};
-}): JSX.Element;
+import React from "react";
+type Props = {
+    style?: React.CSSProperties;
+};
+declare const Logo: React.FC<Props>;
 export default Logo;
