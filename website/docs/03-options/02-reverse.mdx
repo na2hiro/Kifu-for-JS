@@ -1,0 +1,24 @@
+import TOCInline from '@theme/TOCInline';
+
+# 盤面反転 (`reverse`)
+
+最初に表示する盤面の反転状態を指定できます。
+
+## 反転する
+
+盤面反転させて表示する場合、`reverse` オプションを指定します。
+
+<KifuForEachMethod reverse={true}>
+  ▲７六歩 △３四歩 ▲７五歩 △８四歩
+</KifuForEachMethod>
+
+## 対局者名による自動反転
+
+特定の対局者名が手前になるように自動反転することもできます。`reverse-name` オプションに、名前を指定します。部分一致で判定されます。
+
+<KifuForEachMethod reverse={{name: "居飛車"}} kifu={`
+先手：石田五段
+後手：居飛車九段
+▲７六歩 △３四歩 ▲７五歩 △８四歩
+`}>
+</KifuForEachMethod>

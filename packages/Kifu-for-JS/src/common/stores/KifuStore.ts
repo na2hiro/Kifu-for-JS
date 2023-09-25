@@ -4,6 +4,7 @@ import { decorate, observable } from "mobx";
 import { Shogi } from "shogi.js";
 import fetchFile from "../../utils/fetchFile";
 import TsumeMode from "./TsumeMode";
+import ReverseMode from "./ReverseMode";
 
 /**
  * Options for displaying Kifu. See https://kifu-for-js.81.la/docs/options for details.
@@ -26,6 +27,10 @@ export interface IOptions {
      */
     forkPointers?: Array<[number, number]>;
     /**
+     * Array of pairs of [ply, forkIndex] to start from in case of forked Kifu
+     */
+    reverse?: IReverseOptions;
+    /**
      * Options for image mode
      */
     static?: IStatic;
@@ -37,6 +42,13 @@ export interface IOptions {
      * Maximum width of the board in pixels
      */
     maxWidth?: number | null;
+}
+
+export interface IReverseOptions {
+    /**
+     * name to match to auto-reverse the board initially
+     */
+    name?: string;
 }
 
 export interface IStatic {
@@ -77,7 +89,6 @@ ${kifu}`;
 export default class KifuStore {
     public signature = Math.random();
     @observable public errors: string[] = [];
-    @observable public reversed: boolean;
     @observable public filePath: string;
     /**
      * @deprecated Use `options` instead
@@ -85,6 +96,7 @@ export default class KifuStore {
     @observable public staticOptions: IStatic;
     @observable public options: IOptions;
     @observable public tsumeMode: TsumeMode;
+    @observable public reverseMode: ReverseMode;
     @observable public maxWidth: number | null;
     @observable private player_: JKFPlayer;
     private timerAutoload: number;
@@ -102,10 +114,13 @@ export default class KifuStore {
         this.staticOptions = options?.static;
         this.options = options;
         this.tsumeMode = new TsumeMode(this);
+        this.reverseMode = new ReverseMode(this);
 
         this.maxWidth = options?.maxWidth === null ? null : options?.maxWidth ?? 400;
         if (options) {
             const onLoad = () => {
+                // TODO: Take care of live updates: it should keep the current reverse
+                this.reverseMode.runAutoReverse();
                 if (options.ply) {
                     this.player.goto(
                         options.ply,
@@ -163,7 +178,7 @@ export default class KifuStore {
     }
 
     public flip() {
-        this.reversed = !this.reversed;
+        this.reverseMode.reverse();
     }
 
     public onInputMove(move) {

@@ -98,6 +98,36 @@ const SettingsIcon = forwardRef<SVGSVGElement, IProps>(({ width, height, kifuSto
                     />
                 </foreignObject>
             </g>
+            <g>
+                {/* sync_FILL0_wght400_GRAD0_opsz20.svg */}
+                <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 -960 960 960"
+                    fill="currentColor"
+                    fillOpacity={0.5}
+                    style={{
+                        opacity: isIconShown ? 1 : 0,
+                        transition: "opacity 0.5s ease",
+                    }}
+                    x={276}
+                    y={3}
+                    width={15}
+                    height={15}
+                >
+                    <path d="M216-192v-72h74q-45-40-71.5-95.5T192-480q0-101 61-177.5T408-758v75q-63 23-103.5 77.5T264-480q0 48 19.5 89t52.5 70v-63h72v192H216Zm336-10v-75q63-23 103.5-77.5T696-480q0-48-19.5-89T624-639v63h-72v-192h192v72h-74q45 40 71.5 95.5T768-480q0 101-61 177.5T552-202Z" />
+                </svg>
+                <foreignObject x={274} y={1} width={BUTTON_SIZE} height={BUTTON_SIZE}>
+                    <button
+                        onClick={() => kifuStore.flip()}
+                        style={{
+                            width: BUTTON_SIZE,
+                            height: BUTTON_SIZE,
+                            background: "none",
+                            border: "none",
+                        }}
+                    />
+                </foreignObject>
+            </g>
             <foreignObject
                 x="0"
                 y="0"

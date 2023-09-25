@@ -45,6 +45,7 @@ export const SettingsModal = forwardRef<HTMLElement, IProps>(({ onClose, kifuSto
                     display: subPage ? "none" : "initial",
                 }}
             >
+                {/* close_FILL0_wght300_GRAD0_opsz40.svg */}
                 <svg
                     fill="currentColor"
                     style={{ opacity: 0.5 }}
@@ -81,6 +82,7 @@ export const SettingsModal = forwardRef<HTMLElement, IProps>(({ onClose, kifuSto
                     style={{ color: "currentcolor", textDecoration: "underline" }}
                 >
                     公式サイトを開く
+                    {/* open_in_new_FILL0_wght300_GRAD0_opsz24.svg */}
                     <svg
                         fill="currentColor"
                         style={{ verticalAlign: "bottom" }}

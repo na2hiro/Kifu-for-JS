@@ -74,7 +74,7 @@ export default class Piece extends React.Component<IProps, any> {
 }
 
 function getPieceImage(props) {
-    return getUrlWithReverse(props.data, props.kifuStore.reversed);
+    return getUrlWithReverse(props.data, props.kifuStore.reverseMode.isReversed);
 }
 
 function equalsPos(pos1, pos2) {

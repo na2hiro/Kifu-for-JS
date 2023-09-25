@@ -11,21 +11,24 @@ export interface IProps {
 @observer
 export default class Board extends React.Component<IProps, any> {
     public render() {
-        const { reversed, player } = this.props.kifuStore;
+        const {
+            reverseMode: { isReversed },
+            player,
+        } = this.props.kifuStore;
         const board = player.getState().board;
         const lastMove = player.getMove();
         const nineY = [1, 2, 3, 4, 5, 6, 7, 8, 9];
         const nineX = nineY.slice().reverse();
 
         const ths = nineX.map((logicalX) => {
-            const x = reversed ? 10 - logicalX : logicalX;
+            const x = isReversed ? 10 - logicalX : logicalX;
             return <th key={x}>{x}</th>;
         });
 
         const trs = nineY.map((logicalY) => {
-            const y = reversed ? 10 - logicalY : logicalY;
+            const y = isReversed ? 10 - logicalY : logicalY;
             const pieces = nineX.map((logicalX) => {
-                const x = reversed ? 10 - logicalX : logicalX;
+                const x = isReversed ? 10 - logicalX : logicalX;
                 return (
                     <Piece
                         key={x}
