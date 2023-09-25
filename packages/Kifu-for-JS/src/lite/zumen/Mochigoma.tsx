@@ -31,20 +31,23 @@ interface IProps {
     name?: string;
     hand: IHandFormat;
     leftCrowded?: boolean;
+    reverse: boolean;
 }
 const turns = ["先手", "後手"];
-export const Mochigoma: FC<IProps> = ({ v, kx, hand, name = turns[v], leftCrowded }) => {
+export const Mochigoma: FC<IProps> = ({ v, kx, hand, name = turns[v], leftCrowded, reverse }) => {
     const textCount = 14;
     const t = name + "　" + handToString(hand);
     const py = (-t.length * kx * 9) / textCount;
+    const vPos = reverse ? 1 - v : v;
 
     // Originally 14, but made 13 in order to make a space for the config icon
-    const r = t.length > textCount - 1 ? (textCount - 1) / t.length : 1;
+    const textAreaCount = vPos == 0 ? 14 : 13;
+    const r = t.length > textAreaCount ? textAreaCount / t.length : 1;
     const sgm = name[0] === "☗" || name[0] === "☖" ? 1 : 0;
     return (
         <g
             transform={
-                v == 0
+                vPos == 0
                     ? "translate(" + kx * 11.35 + "," + kx * 9.7 + ") scale(1," + r + ")"
                     : "translate(" + kx * 0.65 * (leftCrowded ? 1.25 : 1) + "," + kx * 0.8 + ") scale(-1," + -r + ")"
             }

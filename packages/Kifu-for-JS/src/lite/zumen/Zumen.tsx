@@ -25,10 +25,14 @@ interface IProps {
     players?: [string | undefined, string | undefined];
     style?: CSSProperties;
     ref?: React.Ref<SVGSVGElement>;
+    reverse?: boolean;
 }
 
 const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
-    ({ width, height, state, hideKingsHand, latestMoveTo, children, players, citation, style = {} }, ref) => {
+    (
+        { width, height, state, hideKingsHand, latestMoveTo, children, players, citation, style = {}, reverse = false },
+        ref,
+    ) => {
         if (!state) {
             return null;
         }
@@ -75,7 +79,7 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                     fill={scolor}
                     textAnchor="middle"
                 >
-                    {ZenSuuji.charAt(8 - i)}
+                    {ZenSuuji.charAt(reverse ? i : 8 - i)}
                 </text>,
             );
             lines.push(
@@ -87,12 +91,13 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                     fill={scolor}
                     textAnchor="middle"
                 >
-                    {KanSuuji.charAt(i)}
+                    {KanSuuji.charAt(reverse ? 8 - i : i)}
                 </text>,
             );
         });
 
-        const leftCrowded = citation && !hideKingsHand;
+        // Need to show both citation and hand on the left
+        const leftCrowded = citation && (!hideKingsHand || reverse);
 
         return (
             <svg
@@ -126,7 +131,9 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                     {Array.from({ length: 81 }, (v, i) => i).map((i) => {
                         const tgChildren: ReactNode[] = [];
                         let tgTransform: string;
-                        const piece = state.board[8 - (i % 9)][Math.floor(i / 9)];
+                        const piece = reverse
+                            ? state.board[i % 9][8 - Math.floor(i / 9)]
+                            : state.board[8 - (i % 9)][Math.floor(i / 9)];
                         if (!("kind" in piece && "color" in piece)) {
                             return null;
                         }
@@ -146,7 +153,7 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                                     fontSize={kx * 0.82}
                                     textAnchor="middle"
                                     style={{
-                                        ...(cellEqual(i, latestMoveTo)
+                                        ...(cellEqual(i, latestMoveTo, reverse)
                                             ? { fontFamily: "sans-serif", fontWeight: "bold" }
                                             : {}),
                                     }}
@@ -157,13 +164,15 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
 
                             textAttributes.dy = kx * (0.32 + 0.41);
                             tgTransform = `translate(${x},${y}) scale(${
-                                piece.color === Color.White ? "-1,-0.5" : "1,0.5"
+                                (piece.color === Color.White) !== reverse ? "-1,-0.5" : "1,0.5"
                             })`;
                         } else {
                             textAttributes.dy = kx * 0.32;
-                            tgTransform = `translate(${x},${y})${piece.color === Color.White ? " scale(-1,-1)" : ""}`;
+                            tgTransform = `translate(${x},${y})${
+                                (piece.color === Color.White) !== reverse ? " scale(-1,-1)" : ""
+                            }`;
                         }
-                        if (cellEqual(i, latestMoveTo)) {
+                        if (cellEqual(i, latestMoveTo, reverse)) {
                             textAttributes.style = { fontWeight: "bold" };
                             textAttributes.fontFamily = "sans-serif";
                         }
@@ -181,9 +190,23 @@ const Zumen = forwardRef<SVGSVGElement, PropsWithChildren<IProps>>(
                         );
                     })}
                 </g>
-                <Mochigoma v={0} kx={kx} hand={state.hands[0]} name={players?.[0]} />
+                <Mochigoma
+                    v={0}
+                    kx={kx}
+                    hand={state.hands[0]}
+                    name={players?.[0]}
+                    reverse={reverse}
+                    leftCrowded={leftCrowded}
+                />
                 {!hideKingsHand && (
-                    <Mochigoma v={1} kx={kx} hand={state.hands[1]} name={players?.[1]} leftCrowded={leftCrowded} />
+                    <Mochigoma
+                        v={1}
+                        kx={kx}
+                        hand={state.hands[1]}
+                        name={players?.[1]}
+                        leftCrowded={leftCrowded}
+                        reverse={reverse}
+                    />
                 )}
                 {citation && <Citation citation={citation} leftCrowded={leftCrowded} />}
                 {children}

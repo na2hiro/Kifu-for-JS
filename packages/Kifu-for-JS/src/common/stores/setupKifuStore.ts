@@ -11,9 +11,21 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
         kifu: removeIndentation(element.textContent),
         ply: element.dataset.ply ? parseInt(element.dataset.ply, 10) : undefined,
         src: element.dataset.src,
+        reverse: parseReverse(),
         static: parseStatic(),
         tsume: parseTsume(),
     };
+
+    function parseReverse(): IOptions["reverse"] {
+        const name = element.dataset.reverseName;
+        if (name) {
+            return { name };
+        }
+        if (!("reverse" in element.dataset)) {
+            return undefined;
+        }
+        return {};
+    }
 
     function parseStatic(): IOptions["static"] {
         if (!("static" in element.dataset)) {

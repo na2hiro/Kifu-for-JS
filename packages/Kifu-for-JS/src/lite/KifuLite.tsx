@@ -14,6 +14,7 @@ import SettingsIcon from "./settings/SettingsIcon";
 import useHaptics from "./useHaptics";
 import PlayButton from "./PlayButton";
 import { useIntervalKickout } from "./useInterval";
+import { TURNS } from "./utils";
 
 export type IProps = {
     /**
@@ -55,11 +56,6 @@ function getChildrenTextContent(children: ReactNode) {
     }
     return "";
 }
-
-const TURNS = [
-    { mark: "☗", name: "先手", komaochiName: "下手" },
-    { mark: "☖", name: "後手", komaochiName: "上手" },
-] as const;
 
 const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuStore, children, style, ...options }) => {
     const [kifuStore, setKifuStore] = useState<KifuStore>(() => {
@@ -108,6 +104,7 @@ const KifuLite: React.FC<PropsWithChildren<IProps>> = ({ kifuStore: givenKifuSto
 
     return (
         <Zumen
+            reverse={kifuStore.reverseMode.isReversed}
             state={state}
             latestMoveTo={latestMoveTo}
             hideKingsHand={kifuStore.tsumeMode.hideKingsHand}

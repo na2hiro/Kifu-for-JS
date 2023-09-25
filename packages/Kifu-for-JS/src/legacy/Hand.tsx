@@ -13,10 +13,13 @@ export interface IProps {
 @observer
 export default class Hand extends React.Component<IProps, any> {
     public render() {
-        const { reversed, player } = this.props.kifuStore;
+        const {
+            reverseMode: { isReversed },
+            player,
+        } = this.props.kifuStore;
         const { defaultColor } = this.props;
         const kinds = ["FU", "KY", "KE", "GI", "KI", "KA", "HI"];
-        const color = reversed ? 1 - defaultColor : defaultColor;
+        const color = isReversed ? 1 - defaultColor : defaultColor;
         const state = player.getState();
         const hand = state.hands[color];
         const playerName = [

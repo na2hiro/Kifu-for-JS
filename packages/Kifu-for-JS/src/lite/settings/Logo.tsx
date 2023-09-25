@@ -2,7 +2,10 @@ import React from "react";
 
 declare const __VERSION__: string;
 
-function Logo({ style = {} }) {
+type Props = {
+    style?: React.CSSProperties;
+};
+const Logo: React.FC<Props> = ({ style = {} }) => {
     return (
         <div style={{ display: "inline-flex", flexDirection: "column", ...style }}>
             <div
@@ -22,5 +25,5 @@ function Logo({ style = {} }) {
             </div>
         </div>
     );
-}
+};
 export default Logo;

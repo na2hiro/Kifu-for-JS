@@ -5,6 +5,9 @@ import React from "react";
 import { KifuLite } from "kifu-for-js";
 import { IOptions } from "kifu-for-js/src/common/stores/KifuStore";
 
+// e.g. data-reverse is confusing to be required with nested usages like data-reverse-name="player"
+const attributesToDedup = ["reverse"];
+
 export const optionsToAttribute = (
   options: IOptions & { kifu_?: IOptions["kifu"] }
 ) => {
@@ -19,7 +22,9 @@ export const optionsToAttribute = (
       if (Array.isArray(v) || v === null) {
         props[`${[...prefices, key].join("-")}`] = JSON.stringify(v);
       } else if (typeof v === "object") {
-        props[`${[...prefices, key].join("-")}`] = true;
+        if (!attributesToDedup.includes(key)) {
+          props[`${[...prefices, key].join("-")}`] = true;
+        }
         optionsToAttributeMap(v, props, [...prefices, key]);
       } else {
         props[`${[...prefices, key].join("-")}`] = v;

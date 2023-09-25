@@ -48,6 +48,7 @@ function LicenseSubPage() {
                     <div>This software,</div>
                     <a href="https://kifu-for-js.81.la" target="_blank" style={{ textDecorationLine: "none" }}>
                         <Logo style={{ margin: "5px 0" }} />
+                        {/* open_in_new_FILL0_wght300_GRAD0_opsz24.svg */}
                         <svg
                             fill="currentColor"
                             style={{ verticalAlign: "baseline" }}
