@@ -5,8 +5,9 @@ export declare const mobx: {
     when: typeof when;
     reaction: typeof reaction;
 };
-import { getKifuStore as getKifuStoreFunc } from "./index";
+import { getKifuStore as getKifuStoreFunc, setDefaultOptions as setDefaultOptionsFunc } from "./index";
 export declare const getKifuStore: typeof getKifuStoreFunc;
+export declare const setDefaultOptions: typeof setDefaultOptionsFunc;
 export type ILegacyOptions = {
     mode?: "latest" | "legacy";
 } & IOptions;

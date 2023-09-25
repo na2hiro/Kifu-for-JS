@@ -13,6 +13,8 @@ declare const mobxReact: {
 declare const KifuLite: React.FC<React.PropsWithChildren<import("./lite/KifuLite").IProps>>;
 declare const KifuStore: typeof KifuStoreS;
 export { KifuLite, KifuStore, mobx, mobxReact };
+export declare let defaultOptions: IOptions;
+export declare function setDefaultOptions(options: IOptions): void;
 /**
  * @deprecated Use load instead
  */
