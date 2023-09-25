@@ -1,11 +1,17 @@
 # Kifu for JS monorepo ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
+<font size=4>[Kifu for JS 公式サイトはこちら](https://kifu-for-js.81.la)</font>
+
+[![Kifu for JS official site](packages/Kifu-for-JS/readme-ss/site-screenshot.png)](https://kifu-for-js.81.la)
+
+## このリポジトリについて
+
 Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージのREADMEは各パッケージのディレクトリにあります。
 
 * [`kifu-for-js`](packages/Kifu-for-JS#readme): Kifu for JS 将棋再生盤とブックマークレット
 * [`json-kifu-format`](packages/json-kifu-format#readme): JSON棋譜フォーマットと関連ライブラリ
 * [`shogi.js`](packages/shogi.js#readme): 将棋の盤駒を扱うライブラリ
-* website: [公式サイト](https://kifu-for-js.81.la)
+* [website](website): 公式サイト (https://kifu-for-js.81.la)
 
 ## 開発
 
@@ -52,3 +58,8 @@ Kifu for JSと関連ライブラリのmonorepoです。個々のパッケージ�
 1. `bump` GitHub Actions でパッケージのバージョンを上げる
 2. リリースページからリリースを生成
 3. `publish` GitHub Actions がリリースをビルド・公開する
+4. [jsDelivrのcacheをパージする](https://www.jsdelivr.com/tools/purge)
+```
+https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/kifu-for-js.min.js
+https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/public-bookmarklet.min.js
+```

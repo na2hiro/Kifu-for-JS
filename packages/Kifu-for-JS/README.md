@@ -5,6 +5,8 @@
 
 詳しくは[Kifu for JS 公式サイト](https://kifu-for-js.81.la)をご覧ください。
 
+[![Kifu for JS official site](readme-ss/site-screenshot.png)](https://kifu-for-js.81.la)
+
 ## デモ
 
 公式サイトの [Kifu for JSについて](https://kifu-for-js.81.la/docs/) からどうぞ。
