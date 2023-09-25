@@ -3,11 +3,11 @@ import { observer } from "mobx-react";
 import * as React from "react";
 import { render } from "react-dom";
 import KifuStoreS, { IOptions } from "./common/stores/KifuStore";
-import { parseOptionsFromAttributes } from "./common/stores/setupKifuStore";
 import KifuLiteComponent from "./lite/KifuLite";
 import { registry } from "./lite/KifuRegistry";
 import { onDomReady } from "./utils/util";
 import { searchForRecovery } from "./utils/recover";
+import { mergeOptions, parseOptionsFromAttributes } from "./utils/optionsUtils";
 
 const mobx = { autorun, when, reaction };
 const mobxReact = { observer };
@@ -15,6 +15,11 @@ const KifuLite = KifuLiteComponent;
 const KifuStore = KifuStoreS;
 
 export { KifuLite, KifuStore, mobx, mobxReact };
+
+export let defaultOptions: IOptions = {};
+export function setDefaultOptions(options: IOptions) {
+    defaultOptions = options;
+}
 
 /**
  * @deprecated Use load instead
@@ -83,7 +88,7 @@ function loadCommon(id: string | undefined, options: IOptions | undefined): Prom
  * Load a kifu into a container.
  */
 function loadSingle(options: IOptions, container: HTMLElement) {
-    const kifuStore = new KifuStore(options);
+    const kifuStore = new KifuStore(mergeOptions(options, defaultOptions));
     render(<KifuLite kifuStore={kifuStore} />, container);
 
     return kifuStore;

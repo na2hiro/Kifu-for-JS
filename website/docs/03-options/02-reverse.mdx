@@ -22,3 +22,20 @@ import TOCInline from '@theme/TOCInline';
 ▲７六歩 △３四歩 ▲７五歩 △８四歩
 `}>
 </KifuForEachMethod>
+
+:::info
+
+[デフォルトオプション](/docs/options#デフォルトオプション) で `reverse-name` を指定すると、全ての盤で一括して指定することができ、自戦記などに便利です。
+
+```html title="例"
+<script>KifuForJS.setDefaultOptions({
+    reverse: {
+        name: "na2hiro"
+    }
+})</script>
+
+<script type="text/kifu" data-src="棋譜1.kif"></script>
+<script type="text/kifu" data-src="棋譜2.kif"></script>
+```
+
+:::
