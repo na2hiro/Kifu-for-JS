@@ -1,9 +1,9 @@
-import { removeIndentation } from "../../utils/util";
-import { IOptions } from "./KifuStore";
+import { removeIndentation } from "./util";
+import { IOptions } from "../common/stores/KifuStore";
 
 export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
     const forkPointers = element.dataset.forkpointers ? JSON.parse(element.dataset.forkpointers) : undefined;
-    return {
+    return omitUndefined({
         forkPointers:
             Array.isArray(forkPointers) && forkPointers.every((p) => Array.isArray(p) && p.length === 2)
                 ? forkPointers
@@ -14,7 +14,7 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
         reverse: parseReverse(),
         static: parseStatic(),
         tsume: parseTsume(),
-    };
+    });
 
     function parseReverse(): IOptions["reverse"] {
         const name = element.dataset.reverseName;
@@ -54,4 +54,40 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
             hideAnswer: ["", "true"].indexOf(element.dataset.tsumeHideanswer) >= 0 ? true : undefined,
         };
     }
+}
+
+export function mergeOptions(options: IOptions, defaultOptions: IOptions) {
+    console.log(options, defaultOptions);
+    return {
+        ...defaultOptions,
+        ...options,
+        ...(defaultOptions.reverse || options.reverse
+            ? {
+                  reverse: {
+                      ...defaultOptions.reverse,
+                      ...options.reverse,
+                  },
+              }
+            : {}),
+        ...(defaultOptions.static || options.static
+            ? {
+                  static: {
+                      ...defaultOptions.static,
+                      ...options.static,
+                  },
+              }
+            : {}),
+        ...(defaultOptions.tsume || options.tsume
+            ? {
+                  tsume: {
+                      ...defaultOptions.tsume,
+                      ...options.tsume,
+                  },
+              }
+            : {}),
+    };
+}
+
+function omitUndefined<T>(obj: T): T {
+    return Object.fromEntries(Object.entries(obj).filter(([, value]) => value !== undefined)) as T;
 }

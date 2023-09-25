@@ -8,10 +8,12 @@ import { onDomReady } from "./utils/util";
 export const mobx = { autorun, when, reaction };
 
 // Important to keep import of index.tsx to have the side effect to scan script tags
-import { getKifuStore as getKifuStoreFunc } from "./index";
+import { getKifuStore as getKifuStoreFunc, setDefaultOptions as setDefaultOptionsFunc, defaultOptions } from "./index";
 import { registry } from "./lite/KifuRegistry";
+import { mergeOptions } from "./utils/optionsUtils";
 
 export const getKifuStore = getKifuStoreFunc;
+export const setDefaultOptions = setDefaultOptionsFunc;
 
 export type ILegacyOptions = {
     mode?: "latest" | "legacy";
@@ -63,7 +65,7 @@ function loadCommon(id: string | undefined, options: ILegacyOptions): Promise<Ki
                 throw new Error(`Container ${id} not found`);
             }
             const { mode, ...iOptions } = options;
-            const kifuStore = new KifuStore(iOptions);
+            const kifuStore = new KifuStore(mergeOptions(iOptions, defaultOptions));
             if (mode === "latest") {
                 render(<KifuLite kifuStore={kifuStore} />, container);
             } else {

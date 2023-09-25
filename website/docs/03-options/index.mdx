@@ -140,3 +140,65 @@ export default function MyApp() {
   )
 }
 ```
+
+## デフォルトオプション
+
+ページ内で基本的に同じオプションを指定しておきたい場合、オプションのデフォルト値を指定することができます。 `setDefaultOptions`関数を呼びます。
+
+```html
+<script>KifuForJS.setDefaultOptions({
+    reverse: {
+        name: "na2hiro" // 対局者na2hiroが手前に来るようにする
+    },
+    maxWidth: 500 // 幅最大500px
+})</script>
+
+<!-- デフォルトオプションが適用される -->
+<script type="text/kifu" data-src="./great-tsume.kif"></script>
+<!-- オプションを上書きすることもできる -->
+<script type="text/kifu" data-src="./great-tsume-2.kif" data-maxWidth="200"></script>
+```
+
+### ライブラリをCDNから読み込む場合
+
+次のように、読み込むscriptタグの直後に配置します。
+
+```html
+<script src="https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/kifu-for-js.min.js" charset="utf-8"></script>
+<script>KifuForJS.setDefaultOptions({
+    // ここにoptionsオブジェクトを記述。例えば次の通り
+    reverse: {
+        name: "na2hiro" // 対局者na2hiroが手前に来るようにする
+    },
+    maxWidth: 500
+})</script>
+```
+
+:::info
+
+もしHTMLファイルを１つ１つ管理していて、複数のページで同じデフォルトオプションをまとめて指定したい場合、この記述をJSファイルに書き出すと、デフォルトオプションの一括管理ができて良いでしょう。
+
+```js title="kifuforjs-options.js"
+KifuForJS.setDefaultOptions({
+    // ここにoptionsオブジェクトを記述。例えば次の通り
+    reverse: {
+        name: "na2hiro" // 対局者na2hiroが手前に来るようにする
+    },
+    maxWidth: 500
+})
+```
+
+```html title="個々のHTMLファイル"
+<script src="https://cdn.jsdelivr.net/npm/kifu-for-js@5/bundle/kifu-for-js.min.js" charset="utf-8"></script>
+<script src="./kifuforjs-options.js"></script>
+```
+
+:::
+
+### npmモジュールとして利用する場合
+
+```js
+import {setDefaultOptions} from "kifu-for-js";
+
+setDefaultOptions({/*...*/})
+```
