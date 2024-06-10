@@ -15,7 +15,7 @@ function amountToString(amount: number) {
     return r + KanSuuji.charAt(amount - 1);
 }
 
-const handToString = function (hand: IHandFormat) {
+export const handToString = function (hand: IHandFormat) {
     return (
         kindValues
             .map((kind) => ({ kind, amount: hand[kind] }))
