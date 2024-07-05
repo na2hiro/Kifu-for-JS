@@ -15,7 +15,7 @@
     "lerna": "^7.2.0",
     "pre-push": "^0.1.4",
     "prettier": "^2.7.1",
-    "ts-loader": "^4.5.0",
+    "ts-loader": "^9.5.1",
     "typedoc": "^0.24.1",
     "typescript": "^5.0.4",
     "webpack": "^5.78.0",
