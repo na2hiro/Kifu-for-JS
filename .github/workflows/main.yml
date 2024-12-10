@@ -10,7 +10,7 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Use Node 16
+      - name: Use Node 22
         uses: actions/setup-node@v3
         with:
           node-version: 16
@@ -28,10 +28,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Use Node 16
+      - name: Use Node 22
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
@@ -46,10 +46,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Use Node 16
+      - name: Use Node 22
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
@@ -64,10 +64,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Use Node 16
+      - name: Use Node 22
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
@@ -82,10 +82,10 @@ jobs:
       - name: Checkout repo
         uses: actions/checkout@v3
 
-      - name: Use Node 16
+      - name: Use Node 22
         uses: actions/setup-node@v3
         with:
-          node-version: 16
+          node-version: 22
 
       - name: Install dependencies
         uses: bahmutov/npm-install@v1
