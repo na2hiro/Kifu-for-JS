@@ -1,4 +1,4 @@
-# Kifu for JS monorepo ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+# Kifu for JS monorepo [![](https://data.jsdelivr.com/v1/package/npm/kifu-for-js/badge?style=rounded)](https://www.jsdelivr.com/package/npm/kifu-for-js) ![Build Status](https://github.com/na2hiro/Kifu-for-JS/actions/workflows/main.yml/badge.svg) [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 <font size=4>[Kifu for JS 公式サイトはこちら](https://kifu-for-js.81.la)</font>
 
