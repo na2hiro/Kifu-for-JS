@@ -57,7 +57,6 @@ export function parseOptionsFromAttributes(element: HTMLElement): IOptions {
 }
 
 export function mergeOptions(options: IOptions, defaultOptions: IOptions) {
-    console.log(options, defaultOptions);
     return {
         ...defaultOptions,
         ...options,

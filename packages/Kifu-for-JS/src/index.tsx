@@ -114,12 +114,28 @@ if (typeof document !== "undefined") {
                     const options = parseOptionsFromAttributes(script);
                     const kifuStore = loadSingle(options, container);
                     registry.register(script, kifuStore);
+                    autorun(() => {
+                        if (
+                            kifuStore.errors.length > 0 &&
+                            kifuStore.errors[0].startsWith("棋譜形式エラー") &&
+                            options.kifu.includes("&#")
+                        ) {
+                            kifuStore.setOptions({
+                                kifu: unescapeHTML(options.kifu),
+                            });
+                        }
+                    });
                 } catch (e) {
                     console.error(e, script);
                 }
             }
         }
     });
+}
+function unescapeHTML(str) {
+    const tempDiv = document.createElement("div");
+    tempDiv.innerHTML = str;
+    return tempDiv.textContent || tempDiv.innerText || "";
 }
 
 export async function recover() {
