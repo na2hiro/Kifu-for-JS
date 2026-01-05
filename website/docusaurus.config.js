@@ -66,6 +66,7 @@ const config = {
         },
         blog: {
           showReadingTime: true,
+          blogSidebarCount: 20,
           // Please change this to your repo.
           // Remove this to remove the "edit this page" links.
           // editUrl:
@@ -101,8 +102,13 @@ const config = {
           },
           { to: "/blog", label: "Blog", position: "left" },
           {
-            href: "https://github.com/na2hiro/Kifu-for-JS",
-            label: "GitHub",
+            href: "https://kifu-for-js.canny.io/feature-requests",
+            label: "要望・バグ報告",
+            position: "right",
+          },
+          {
+            href: "https://github.com/sponsors/na2hiro",
+            label: "このプロジェクトを支援する",
             position: "right",
           },
         ],
@@ -123,8 +129,9 @@ const config = {
             title: "Community",
             items: [
               {
-                label: "GitHub Discussions",
-                href: "https://github.com/na2hiro/Kifu-for-JS/discussions",
+                href: "https://kifu-for-js.canny.io/feature-requests",
+                label: "要望・バグ報告・ヘルプ",
+                position: "right",
               },
               {
                 label: "Twitter (@na2hiro)",
