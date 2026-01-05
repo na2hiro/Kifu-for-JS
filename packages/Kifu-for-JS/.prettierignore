@@ -7,3 +7,6 @@ README.md
 package-lock.json
 package.json
 swfobject.js
+src/**/*.d.ts
+!src/legacy/images/declarations.d.ts
+test/**/*.d.ts

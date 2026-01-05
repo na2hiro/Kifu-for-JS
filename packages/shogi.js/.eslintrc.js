@@ -22,6 +22,7 @@ module.exports = {
         "docs/",
         "bundle/",
         "cjs/",
+        "src/**/*.d.ts",
     ],
     rules: {},
 };
