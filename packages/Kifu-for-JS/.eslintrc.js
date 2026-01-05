@@ -19,6 +19,9 @@ module.exports = {
         "bundle/",
         "dist/",
         "swfobject.js",
+        "src/**/*.d.ts",
+        "!src/legacy/images/declarations.d.ts",
+        "test/**/*.d.ts",
     ],
     rules: {},
 };

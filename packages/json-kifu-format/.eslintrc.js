@@ -23,6 +23,8 @@ module.exports = {
         "docs/",
         "bundle/",
         "dist/",
+        "src/**/*.d.ts",
+        "!src/typings.d.ts",
     ],
     rules: {},
 };
