@@ -40,7 +40,7 @@
     },
     "homepage": "https://github.com/na2hiro/Kifu-for-JS/tree/master/packages/json-kifu-format#readme",
     "devDependencies": {
-        "@types/node": "^13.1.1",
+        "@types/node": "^18.0.0",
         "ajv-cli": "^5.0.0",
         "clean-webpack-plugin": "^4.0.0",
         "iconv-lite": "^0.6.3",
