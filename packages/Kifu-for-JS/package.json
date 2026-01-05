@@ -83,7 +83,7 @@
         "clean-webpack-plugin": "^0.1.19",
         "core-js": "^3.6.5",
         "css-loader": "^6.8.1",
-        "cypress": "^12.10.0",
+        "cypress": "^15.8.1",
         "eslint": "^8.48.0",
         "http-server": "^14.1.1",
         "img-loader": "^4.0.0",
